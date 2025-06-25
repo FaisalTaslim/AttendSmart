@@ -1,0 +1,31 @@
+footer {
+    background-color: var(--bg-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+footer > * {
+    font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+}
+.foot-content {
+    display: flex;
+    flex-direction: row;
+    width: 70%;
+    gap: 10vh;
+    justify-content: center;
+}
+.foot1, .foot2 {
+    display: flex;
+    flex-direction: row;
+    gap: 10vh;
+}
+.useful-links, .legal, .socials, .contacts {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+footer > p {
+    margin: 10px;
+}

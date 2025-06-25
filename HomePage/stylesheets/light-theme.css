@@ -1,0 +1,19 @@
+:root {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F5F6FA;
+
+  --text-primary: #1A1A1A;
+  --text-secondary: #4B4B5E;
+
+  --accent: #7F5AF0;         /* Same accent to keep brand identity */
+  --accent-hover: #6C4BD1;   /* Slightly deeper violet on hover */
+
+  --link: #5E60CE;           /* Premium deep blue-lavender */
+  --link-hover: #8284FA;
+
+  --border-color: #E0E0E0;
+  --shadow: rgba(0, 0, 0, 0.08);
+
+  --error: #D32F2F;
+  --tip-text: #FBC02D;
+}
