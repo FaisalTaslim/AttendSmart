@@ -1,0 +1,21 @@
+Update Your Repo
+----------------
+1. Open Terminal
+2. Run these commands
+
+> git add .
+> git commit -m "your commit message here"
+> git push
+
+To check status before committing
+---------------------------------
+git status
+
+- It tells you:
+    - What's modified?
+    - What's new?
+    - What's staged?
+
+One liner code:
+---------------
+> git add . && git commit -m "quick update" && git push
