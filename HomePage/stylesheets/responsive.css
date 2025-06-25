@@ -174,3 +174,26 @@
     .foot-content {width: 80%}
     .about {padding: 34px 10px;}
 }
+
+@media screen and (max-width: 550px) and (max-height: 750px) {
+    .hide {display: none;}
+    .foot-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 98%;
+    }
+    .foot1 {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 15px;
+    }
+    .foot2 {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    .foot-content > * {font-size: 18px;}
+    .foot-links {text-decoration: none;}
+}
