@@ -41,8 +41,8 @@ body {
     border-bottom: 2px solid var(--border-color);
 }
 .bg-content {
-    height: 59vh;
-    width: 35vw;
+    height: 70vh;
+    width: 46vw;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -151,3 +151,8 @@ body {
     font-size: clamp(1.2rem, 1.5vw, 1.0rem);
     color: var(--text-primary);
 }
+.lower-section > p {
+        line-height: 30px;
+        font-size: 16px;
+        text-align: center;
+    }
