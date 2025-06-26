@@ -170,11 +170,7 @@
     .foot-links {text-decoration: none;}
 }
 
-@media screen and (min-width: 1200px) and (max-width: 1300px) and (min-height: 750px) and (max-height: 850px) {
-    .foot-content {width: 80%}
-    .about {padding: 34px 10px;}
-}
-
+/*For Surface Duo*/
 @media screen and (max-width: 550px) and (max-height: 750px) {
     .hide {display: none;}
     .foot-content {
@@ -196,4 +192,10 @@
     }
     .foot-content > * {font-size: 18px;}
     .foot-links {text-decoration: none;}
+}
+
+/*NestHub Max*/
+@media screen and (min-width: 1200px) and (max-width: 1300px) and (min-height: 750px) and (max-height: 850px) {
+    .foot-content {width: 80%}
+    .about {padding: 34px 10px;}
 }

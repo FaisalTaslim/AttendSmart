@@ -47,7 +47,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 25px;
-    display: none;
+    align-items: center;
+    /* display: none; */
 }
 .hero-bg::before {
     content: "";
@@ -80,11 +81,12 @@ body {
     line-height: 35px;
 }
 .log-content {
-    display: flex;
+    /* display: flex; */
     flex-direction: column;
     gap: 15px;
     align-items: center;
     height: 95%;
+    display: none;
 }
 .log-content > img {
     height: 100vh;

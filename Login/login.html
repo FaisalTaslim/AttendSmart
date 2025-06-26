@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogBook</title>
+    <title>Login</title>
     <link rel="stylesheet" href="../HomePage/stylesheets/navStyles.css">
     <link rel="stylesheet" href="../HomePage/stylesheets/footStyles.css">
     <link rel="stylesheet" href="../HomePage/stylesheets/dark-theme.css">
     <link rel="stylesheet" href="../HomePage/stylesheets/scrollbar.css">
 
-    <link rel="stylesheet" href="./stylesheets/mainStyles.css">
-    <link rel="stylesheet" href="./stylesheets/responsiveness.css">
-     <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./mainStyles.css">
+    <link rel="stylesheet" href="./responsiveness.css">
+    <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -21,6 +22,7 @@
         href="https://fonts.googleapis.com/css2?family=Pacifico&family=Rock+Salt&family=WDXL+Lubrifont+TC&display=swap"
         rel="stylesheet">
 </head>
+
 <body>
     <header>
         <nav id="navbar" class="">
@@ -31,7 +33,7 @@
                 <div class="nav-links">
                     <a href="#" class="nav-links-property hide">Home</a>
                     <a href="#" class="nav-links-property hide">About</a>
-                    <a href="#" class="nav-links-property hide">Getting Started</a>
+                    <a href="#" class="nav-links-property hide" id="getting-started">Getting Started</a>
                 </div>
             </div>
             <div class="nav-group2">
@@ -39,7 +41,7 @@
                     <a href="#" class="nav-links-property hide">Dashboard</a>
                     <a href="#" class="nav-links-property hide">Support</a>
                     <a href="#" class="nav-links-property hide">Logs</a>
-                    <a href="#" class="nav-links-property hide">Register</a>
+                    <a href="#" class="nav-links-property hide" id="register">Register</a>
                     <a href="#" class="nav-links-property hide">Login</a>
                     <p class="nav-links-property"><i class="fa-solid fa-moon"></i></p>
                     <p class="nav-links-property" id="sun"><i class="fa-regular fa-sun"></i></p>
@@ -66,18 +68,33 @@
     <main>
         <section class="hero-bg">
             <div class="bg-content">
-                <h1>AttendSmart LogBook</h1>
-                <p>
-                    The AttendSmart Log serves as the official changelog of the project — a transparent record of all updates, tweaks, and upcoming features. From newly added functionalities to policy changes and performance improvements, every notable change is documented here. 
-                </p>
-                <p>
-                    Whether you're part of the team or just curious about what's new, this log keeps you in the loop — no surprises, just progress.
-                </p>
-                <p><strong>Stay updated all the time!</strong></p>
-                <p class="nav-links-property" style="width:fit-content;">Open LogBook</p>
-            </div>
-            <div class="log-content">
-                <img src="./404 Error Page not Found with people connecting a plug-rafiki.svg"page-eaten">
+                <div class="left-side">
+                    <div class="left-side-header">
+                        <h1>Welcome back!</h1>
+                        <p class="fontSize">Log into your account</p>
+                    </div>
+                    <form class="login-form" action="#" method="POST">
+                        <label for="userid">User ID</label>
+                        <input type="text" id="userid" name="userid" placeholder="Enter your User ID" required>
+
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your Password" required>
+
+                        <button type="submit" class="continue-btn">Continue</button>
+                    </form>
+                    <div class="quick-links">
+                        <p class="nav-links-property fontSize">Getting Started</p>
+                        <p class="nav-links-property fontSize">Register</p>
+                    </div>
+                    <div class="lower-section">
+                        <p class="fontSize">
+                            While clicking continue, you agree to our <a href="#" class="links">Terms & Condition</a> and <a href="#" class="links">Privacy Policy</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="right-side">
+                    <img src="./login_img.jpg" alt="" id="login-img">
+                </div>
             </div>
         </section>
     </main>
@@ -118,4 +135,5 @@
     </footer>
     <script src="../HomePage/javascript/sideNav.js"></script>
 </body>
+
 </html>
