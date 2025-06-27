@@ -53,8 +53,9 @@ header {
     border:2px solid var(--border-color)
 }
 .nav-links-property:hover {
-  background-color: var(--accent-hover); 
-  transform: translateY(-2px);
-  transition: 0.2s ease;
+    cursor: pointer;
+    background-color: var(--accent-hover); 
+    transform: translateY(-2px);
+    transition: 0.2s ease;
 }
 #sun {display: none;}
