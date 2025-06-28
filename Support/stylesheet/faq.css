@@ -12,6 +12,7 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
+    font-family: "Roboto Condensed", sans-serif;
 }
 main {
     height: 100vh;
@@ -21,9 +22,6 @@ main {
     display: flex;
     flex-direction: column;
     gap: 10px;
-}
-body {
-    font-family: "Roboto Condensed", sans-serif;
 }
 .links {
     color: var(--link);
@@ -60,11 +58,13 @@ body {
     padding: 20px;
     border-right: 2px solid var(--border-color);
 }
-#help-desk-heading > * {text-align: center;}
-#help-desk-heading > h1 {
+#help-desk-heading>* {
+    text-align: center;
+}
+#help-desk-heading>h1 {
     font-size: clamp(1.0rem, 6vw, 2.5rem);
 }
-#help-desk-heading > p {
+#help-desk-heading>p {
     font-size: clamp(1rem, 2vw, 1.5rem);
 }
 .fontSize {
@@ -83,7 +83,7 @@ body {
 #simple-textbox {
     padding: 10px 15px;
     font-size: 16px;
-    border: 2px solid #7F5AF0; 
+    border: 2px solid #7F5AF0;
     border-radius: 8px;
     outline: none;
     width: 80%;
@@ -96,7 +96,6 @@ body {
     border-color: var(--accent-hover);
     box-shadow: 0 0 8px rgba(127, 90, 240, 0.4);
 }
-
 .main-support-content {
     height: 70%;
     width: 100%;
@@ -106,13 +105,14 @@ body {
     flex-direction: row;
 }
 #about-attendsmart-support {
-    width: 40%; height: 95%;
+    width: 50%;
+    height: 95%;
     padding: 20px;
     border-right: 2px solid var(--border-color);
 }
 .main-forms-area {
     height: 95%;
-    width: 60%;
+    width: 50%;
     overflow: auto;
     padding: 20px;
 }
@@ -150,7 +150,7 @@ body {
     margin-bottom: 1rem;
     line-height: 1.6;
 }
-.support-list > li > i {
+.support-list>li>i {
     color: var(--accent);
     font-size: clamp(1.3rem, 2vw, 1.5rem);
 }
@@ -160,9 +160,9 @@ body {
     gap: 10px;
 }
 .faq-section {
-    display: flex;
     flex-direction: column;
     gap: 20px;
+    display: none;
 }
 details {
     background-color: var(--bg-secondary);
@@ -175,7 +175,7 @@ details {
     flex-direction: column;
     gap: 15px;
 }
-details > ul {
+details>ul {
     padding-left: 25px;
 }
 summary {
@@ -198,19 +198,19 @@ summary {
     margin-bottom: 0.8rem;
     line-height: 1.6;
 }
-.level-1 > li::before {
+.level-1>li::before {
     content: "➤";
     color: var(--accent);
     position: absolute;
     left: -1.2rem;
 }
-.level-2 > li::before {
+.level-2>li::before {
     content: "↳";
     color: var(--accent-hover);
     position: absolute;
     left: -1.2rem;
 }
-.level-3 > li::before {
+.level-3>li::before {
     content: "•";
     color: var(--text-secondary);
     position: absolute;

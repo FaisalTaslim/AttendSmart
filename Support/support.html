@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="../HomePage/stylesheets/dark-theme.css">
     <link rel="stylesheet" href="../HomePage/stylesheets/scrollbar.css">
 
-    <link rel="stylesheet" href="./stylesheet/mainStyles.css">
+    <link rel="stylesheet" href="./stylesheet/faq.css">
+    <link rel="stylesheet" href="./stylesheet/issueForm.css">
+    <link rel="stylesheet" href="./stylesheet/feedback.css">
     <link rel="stylesheet" href="./stylesheet/responsiveness.css">
     <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -150,7 +152,11 @@
                         <details>
                             <summary>I paid for the premium, but I didn't get the access to the software.</summary>
                             <p class="fontSize">
-                                We're sorry for the inconvenience! Please reach out to <b style="color: var(--tip-text)">support@attendsmart.io</b>. Use your registered email to send us  a mail. Add a subject matching to your problem, i.e., "Didn't receieve the premium access". Include your Organization name, your Employee ID, and a photo proof of the amount you paid for the premium. Then wait for the reply from our end!
+                                We're sorry for the inconvenience! Please reach out to <b
+                                    style="color: var(--tip-text)">support@attendsmart.io</b>. Use your registered email
+                                to send us a mail. Add a subject matching to your problem, i.e., "Didn't receieve the
+                                premium access". Include your Organization name, your Employee ID, and a photo proof of
+                                the amount you paid for the premium. Then wait for the reply from our end!
                             </p>
                         </details>
 
@@ -175,33 +181,41 @@
 
                         <details>
                             <summary>How can I report proxy or fake attendance?</summary>
-                            <p class="fontSize">AttendSmart is built with features to <strong>minimize proxy attendance</strong> through
+                            <p class="fontSize">AttendSmart is built with features to <strong>minimize proxy
+                                    attendance</strong> through
                                 secure tracking methods. However, if someone bypasses the system by logging into another
                                 user's account, the responsibility for monitoring and disciplinary action lies with the
                                 respective organization.</p>
 
                             <p class="fontSize">To help with this, AttendSmart provides advanced tools like:</p>
                             <ul>
-                                <li class="fontSize"><strong>Dashboard activity logs</strong> to trace user behavior</li>
-                                <li class="fontSize"><strong>Suspend / Freeze features</strong> to temporarily restrict access or halt
+                                <li class="fontSize"><strong>Dashboard activity logs</strong> to trace user behavior
+                                </li>
+                                <li class="fontSize"><strong>Suspend / Freeze features</strong> to temporarily restrict
+                                    access or halt
                                     attendance tracking for specific users</li>
                             </ul>
 
-                            <p class="fontSize">These features are designed to empower admins and maintain transparency in attendance
+                            <p class="fontSize">These features are designed to empower admins and maintain transparency
+                                in attendance
                                 records.</p>
                         </details>
 
                         <details>
                             <summary>How can I delete my account?</summary>
                             <p class="fontSize">
-                                If you're a student or employee, account deletion requests must be handled by your organization's admin. For security and compliance reasons, only admins have the authority to manage or remove user accounts. Please contact your respective admin for assistance.
+                                If you're a student or employee, account deletion requests must be handled by your
+                                organization's admin. For security and compliance reasons, only admins have the
+                                authority to manage or remove user accounts. Please contact your respective admin for
+                                assistance.
                             </p>
                         </details>
 
                         <details>
                             <summary>Can I suggest a feature?</summary>
                             <p class="fontSize">
-                                Absolutely! We love new ideas. Use the <strong>Feedback Form</strong> on the Support page
+                                Absolutely! We love new ideas. Use the <strong>Feedback Form</strong> on the Support
+                                page
                                 to send us your suggestions.
                             </p>
                         </details>
@@ -209,7 +223,9 @@
                         <details>
                             <summary>Is AttendSmart free or paid?</summary>
                             <p class="fontSize">
-                                AttendSmart is currently a paid software. We’re a small, independent team, and every contribution goes directly into maintaining the platform and building better features for our users. Your support helps us grow, improve, and keep things running smoothly.
+                                AttendSmart is currently a paid software. We’re a small, independent team, and every
+                                contribution goes directly into maintaining the platform and building better features
+                                for our users. Your support helps us grow, improve, and keep things running smoothly.
                             </p>
                         </details>
 
@@ -217,9 +233,49 @@
                             <summary>How secure is my data?</summary>
                             <p class="fontSize">
                                 Your data security is important to us. We follow industry-standard
-                                practices for encryption and access control. More security layers will be added in future updates.
+                                practices for encryption and access control. More security layers will be added in
+                                future updates.
                             </p>
                         </details>
+                    </section>
+
+                    <section class="issue-form-section">
+                        <h2>Issue Submission Form</h2>
+                        <form class="issue-form" action="#" method="POST">
+                            <label for="org-name">Organization Name</label>
+                            <input type="text" id="org-name" name="organization" required>
+
+                            <label for="branch-name">Branch Name</label>
+                            <input type="text" id="branch-name" name="branch"
+                                placeholder="Leave Empty if invalid field w.r.t your organization">
+
+                            <label for="user-id">User ID</label>
+                            <input type="text" id="user-id" name="userID" required>
+
+                            <label for="issue-description">Describe your issue</label>
+                            <textarea id="issue-description" name="issue" rows="5" required></textarea>
+
+                            <button type="submit">Submit</button>
+                        </form>
+                    </section>
+
+                    <section class="feedback-form-section">
+                        <h2>We’d Love Your Feedback</h2>
+                        <form class="feedback-form" action="#" method="POST">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" required>
+
+                            <label for="email">Your Email</label>
+                            <input type="email" id="email" name="email" required>
+
+                            <label for="org-name-feedback">Organization Name</label>
+                            <input type="text" id="org-name-feedback" name="organization" required>
+
+                            <label for="feedback-message">Your Feedback</label>
+                            <textarea id="feedback-message" name="feedback" rows="5" required></textarea>
+
+                            <button type="submit">Send Feedback</button>
+                        </form>
                     </section>
 
                 </div>
