@@ -160,9 +160,9 @@ main {
     gap: 10px;
 }
 .faq-section {
+    display: flex;
     flex-direction: column;
     gap: 20px;
-    display: none;
 }
 details {
     background-color: var(--bg-secondary);
