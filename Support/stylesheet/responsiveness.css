@@ -2,19 +2,72 @@
     main {
         width: 100%;
     }
-    body.no-scroll {
-        overflow: hidden;
-    }
-    .hide {
-        display: none;
-    }
-    #menu-toggle {
-        display: block;
+    body.no-scroll {overflow: hidden;}
+    body {gap: 25px}
+    .hide {display: none;}
+    #menu-toggle {display: block;}
+    .hero-bg {
+        height: fit-content;
+        justify-content: center;
+        align-items: center;
     }
     .bg-content {
-        height: 75vh;
-        width: 87vw;
-        border: 1px solid var(--text-primary)
+        height: fit-content !important;
+        width: 96vw !important;
+        flex-direction: column;
+        margin: 25px 0;
+        padding: 25px;
+    }
+    #help-desk-heading {
+        height: fit-content;
+        width: 99%;
+        padding: 0px;
+        border-right: unset;
+    }
+    .search-support-content {
+        height: fit-content;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+    #simple-textbox {width: 98%;}
+    #about-attendsmart-support {
+        width: 100%;
+        padding: 0;
+        border-right:unset;
+    }
+    .main-support-content {
+        flex-direction: column;
+        height: fit-content;
+        gap: 15px;
+    }
+    .support-section {
+        height: fit-content;
+        padding: 1.2rem;
+    }
+    .support-buttons {
+        flex-shrink: 1;
+        flex-direction: column;
+    }
+    .support-buttons > * {
+        display: flex;
+        flex-direction: row;
+        flex-grow: 1;
+        gap: 10px;
+        justify-content: space-between;
+    }
+    .main-forms-area {
+        padding: 0px;
+        width: 100%;
+    }
+    .feedback-form-section {
+        margin: 0px;
+        width: 100%;
+        padding: 1.5rem;
+    }
+    .issue-form-section {
+        width: 100%;
+        padding: 1.5rem;
     }
     .font-1 {font-size: 16px;}
     .slide-menu {
@@ -71,16 +124,6 @@
     }
     .foot-content > * {font-size: 18px;}
     .foot-links {text-decoration: none;}
-    .right-side {display: none;}
-    .left-side {
-        width: 90%;
-        height: 100%;
-    }
-    .lower-section > p {
-        line-height: 30px;
-        font-size: 16px;
-        text-align: center;
-    }
 }
 
 @media screen and (min-width: 481px) and (max-width: 1024px) {
@@ -90,13 +133,71 @@
     .hide {
         display: none;
     }
-    #menu-toggle {
-        display: block;
+    body {gap: 25px}
+    .hide {display: none;}
+    #menu-toggle {display: block;}
+    .hero-bg {
+        height: fit-content;
+        justify-content: center;
+        align-items: center;
     }
     .bg-content {
-        height: 60vh;
-        width: 87vw;
-        border: 1px solid var(--text-primary)
+        height: fit-content !important;
+        width: 96vw !important;
+        flex-direction: column;
+        margin: 25px 0;
+        padding: 25px;
+    }
+    #help-desk-heading {
+        height: fit-content;
+        width: 99%;
+        padding: 0px;
+        border-right: unset;
+    }
+    .search-support-content {
+        height: fit-content;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+    #simple-textbox {width: 98%;}
+    #about-attendsmart-support {
+        width: 100%;
+        padding: 0;
+        border-right:unset;
+    }
+    .main-support-content {
+        flex-direction: column;
+        height: fit-content;
+        gap: 15px;
+    }
+    .support-section {
+        height: fit-content;
+        padding: 1.2rem;
+        width: 100%;
+        max-width: 100%;
+    }
+    .support-buttons {
+        flex-direction: row;
+    }
+    .support-buttons > * {
+        display: flex;
+        flex-direction: row;
+        gap: 25px;
+        justify-content: space-between;
+    }
+    .main-forms-area {
+        padding: 0px;
+        width: 100%;
+    }
+    .feedback-form-section {
+        margin: 0px;
+        width: 100%;
+        padding: 1.5rem;
+    }
+    .issue-form-section {
+        width: 100%;
+        padding: 1.5rem;
     }
     .font-1 {font-size: 16px;}
     .slide-menu {
@@ -181,7 +282,6 @@
     .bg-content {
         height: 84vh;
         width: 87vw;
-        border: 1px solid var(--text-primary);
     }
     .left-side-header > h1 {font-size:  30px;}
     .fontSize {font-size: 16px;}
@@ -204,6 +304,7 @@
         height: 84vh;
         width: 77vw;
     }
+    .bg-content {width: 100vw;}
 }
 
  /* Styles for Nest Hub 2nd Gen */
@@ -213,8 +314,16 @@
         .bg-content {
             height: 99vh;
             width: 81vw;
+            height: fit-content;
         }
         #getting-started, #register {
             display: none;
         }
+        .hero-bg {
+            height: fit-content;
+        }
+        #help-desk-heading, .search-support-content {
+            height: fit-content;
+        }
+        .support-section {width: 100%;}
 }

@@ -1,5 +1,7 @@
 .issue-form-section {
     display: none;
+    display: flex;
+    flex-direction: column;
     width: 85%;
     margin: 0 auto;
     padding: 2rem;

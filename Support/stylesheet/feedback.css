@@ -1,5 +1,7 @@
 .feedback-form-section {
+    display: flex;
     display: none;
+    flex-direction: column;
     width: 85%;
     margin: 0 auto;
     padding: 2rem;
