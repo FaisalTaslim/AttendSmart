@@ -114,7 +114,7 @@
                             </div>
                             <div class="part2-support-buttons">
                                 <span class="nav-links-property">Form Support</span>
-                                <span class="nav-links-property">Contact Details</span>
+                                <span class="nav-links-property" onclick="scrollToFooter()">Contact Details</span>
                             </div>
                         </section>
                     </section>
@@ -322,6 +322,30 @@
         </div>
     </footer>
     <script src="../HomePage/javascript/sideNav.js"></script>
+    <script>
+        function scrollToFooter() {
+            const toast = document.createElement('div');
+            toast.textContent = "Contact info is in the footer. Use only if other methods don’t work.";
+            toast.style.position = 'fixed';
+            toast.style.bottom = '30px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.backgroundColor = '#333';
+            toast.style.color = '#fff';
+            toast.style.padding = '12px 20px';
+            toast.style.borderRadius = '8px';
+            toast.style.zIndex = '9999';
+            toast.style.fontSize = '1rem';
+            toast.style.boxShadow = '0 0 10px rgba(0,0,0,0.3)';
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+                document.querySelector('footer').scrollIntoView({ behavior: 'smooth' });
+            }, 2500);
+        }
+
+    </script>
 </body>
 
 </html>
