@@ -101,9 +101,8 @@
                                 <strong>Frequently Asked Questions (FAQs)</strong> – Get quick answers to common queries
                                 and how-tos.
                             </li>
-                            <li>
-                                <strong>Contact Details</strong> – Need to talk? Reach out via email or phone — we’re
-                                happy to help.
+                            <li id="contact-warn" onclick="scrollToFooter">
+                                <strong>Contact Details</strong> – You'll find the contact details in the footer. Remember, use Contact Support only when you're not able to reach out through other methods.
                             </li>
                         </ul>
                         <h3>Available Support Features</h3>
@@ -250,8 +249,7 @@
                             <input type="text" id="org-name" name="organization" required>
 
                             <label for="branch-name">Branch Name</label>
-                            <input type="text" id="branch-name" name="branch"
-                                placeholder="Leave empty if invalid field for you">
+                            <input type="text" id="branch-name" name="branch">
 
                             <label for="user-id">User ID</label>
                             <input type="text" id="user-id" name="userID" required>
@@ -324,27 +322,8 @@
     <script src="../HomePage/javascript/sideNav.js"></script>
     <script>
         function scrollToFooter() {
-            const toast = document.createElement('div');
-            toast.textContent = "Contact info is in the footer. Use only if other methods don’t work.";
-            toast.style.position = 'fixed';
-            toast.style.bottom = '30px';
-            toast.style.left = '50%';
-            toast.style.transform = 'translateX(-50%)';
-            toast.style.backgroundColor = '#333';
-            toast.style.color = '#fff';
-            toast.style.padding = '12px 20px';
-            toast.style.borderRadius = '8px';
-            toast.style.zIndex = '9999';
-            toast.style.fontSize = '1rem';
-            toast.style.boxShadow = '0 0 10px rgba(0,0,0,0.3)';
-            document.body.appendChild(toast);
-
-            setTimeout(() => {
-                toast.remove();
-                document.querySelector('footer').scrollIntoView({ behavior: 'smooth' });
-            }, 2500);
+            document.querySelector('footer').scrollIntoView({ behavior: 'smooth' });
         }
-
     </script>
 </body>
 

@@ -158,6 +158,9 @@ main {
     flex-direction: row;
     gap: 10px;
 }
+#contact-warn {
+    color: var(--error)
+}
 .faq-section {
     display: flex;
     display: none;

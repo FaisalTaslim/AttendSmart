@@ -12,7 +12,6 @@ header {
     flex-direction: row;
     height: 10vh;
     width: 100%;
-    gap: 10px;
     align-items: center;
     justify-content: space-between;
     border-bottom: 2px solid var(--border-color);
@@ -25,25 +24,25 @@ header {
     font-family: "Rock Salt", cursive;
     font-weight: 400;
     font-style: normal;
-    font-size: 20px;
+    font-size: clamp(1.3rem, 2vw, 1.5rem);
 }
 .logo {
-    margin-left: 25px;
+    margin-left: 1.4rem;
 }
 .nav-group1 {
     display: flex; 
     flex-direction: row;
-    gap: 25px;
+    gap: 1.3rem;
 }
 .nav-links {
-    margin-right: 25px;
+    margin-right: 1.6rem;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 25px;
+    gap: 1.3rem;
 }
 .nav-links>a {
-    font-size: 16px;
+    font-size: 1.1rem;
     text-decoration:none;
     color:var(--text-primary);
 }
