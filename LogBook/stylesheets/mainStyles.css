@@ -6,6 +6,7 @@
 }
 html {
     overflow-x: hidden;
+    font-size: 17px;
 }
 body {
     height: 100%;
@@ -21,7 +22,7 @@ main {
     border-bottom: 2px solid var(--border-color);
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: clamp(0.8rem, 2vw, 1.5rem);
 }
 .links {
     color: var(--link);
@@ -44,9 +45,8 @@ main {
     max-width: 51vw;
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: clamp(1rem, 2vw, 1.5rem);
     align-items: center;
-    /* display: none; */
 }
 .hero-bg::before {
     content: "";
@@ -75,11 +75,10 @@ main {
 }
 .bg-content>p {
     font-size: clamp(1rem, 2vw, 1.5rem);
+    line-height: clamp(1.5rem, 2vw, 2rem);
     text-align: center;
-    line-height: 35px;
 }
 .log-content {
-    /* display: flex; */
     flex-direction: column;
     gap: 15px;
     align-items: center;
