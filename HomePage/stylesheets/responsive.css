@@ -115,7 +115,6 @@
 
     .hero-bg {height: 100vh;}
     .bg-content {max-widtH: 85vw;}
-    .bg-content > p {line-height: 30px;}
     .about {height: fit-content;}
     .about-details {
         flex-direction: column;
