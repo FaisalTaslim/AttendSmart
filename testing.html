@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Attendance Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    input {
+      padding: 0.5rem;
+      margin-right: 1rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>🕒 Attendance Session</h1>
+  <p>Join the session in 5 seconds. Once started, you can't rejoin.</p>
+
+  <div id="session-area">
+    <input type="text" id="code-input" placeholder="Enter code" disabled />
+    <button id="submit-btn" disabled>Submit</button>
+  </div>
+  <p id="status"></p>
+
+  <script>
+    let hasJoined = false;
+    const input = document.getElementById('code-input');
+    const submitBtn = document.getElementById('submit-btn');
+    const status = document.getElementById('status');
+
+    // Allow join after 1 second (to simulate session start window)
+    setTimeout(() => {
+      hasJoined = true;
+      sessionStorage.setItem("attendanceSession", "active");
+      input.disabled = false;
+      status.textContent = "✅ Joined. Stay on this page! Auto-submit in 15s.";
+    }, 1000);
+
+    // Auto-submit at 15s
+    setTimeout(() => {
+      if (!sessionStorage.getItem("attendanceSession")) {
+        status.textContent = "❌ Session expired or invalidated.";
+        input.disabled = true;
+        return;
+      }
+      const code = input.value.trim();
+      if (code) {
+        status.textContent = "✅ Attendance submitted with code: " + code;
+      } else {
+        status.textContent = "❌ Code was empty. Attendance failed.";
+      }
+      input.disabled = true;
+    }, 15000);
+
+    // If user switches tab or browser loses focus
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) {
+        sessionStorage.removeItem("attendanceSession");
+      }
+    });
+
+    // Optional: Manual submit just to discourage clicking
+    submitBtn.addEventListener("click", () => {
+      alert("Auto-submit will handle it. No need to click.");
+    });
+  </script>
+</body>
+</html>
