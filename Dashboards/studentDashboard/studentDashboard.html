@@ -92,6 +92,44 @@
                     <button onclick="startSession()">Join Classroom</button>
                 </div>
             </div>
+            <div class="other-contents">
+                <div class="attendance-status">
+                    <h1>Attendance status</h1>
+                    <span class="subject-blocks">
+                        <h3><strong>Subject Name: </strong></h3>
+                        <p><strong>Total Lectures: </strong> </p>
+                        <p><strong>Attended Lectures: </strong> </p>
+                        <p><strong>Percentage: </strong> </p>
+                    </span>
+                    <span class="subject-blocks">
+                        <h3><strong>Subject Name: </strong></h3>
+                        <p><strong>Total Lectures: </strong> </p>
+                        <p><strong>Attended Lectures: </strong> </p>
+                        <p><strong>Percentage: </strong> </p>
+                    </span>
+                </div>
+                <div class="leave-and-notices attendance-status">
+                    <div class="leave-notice-btn">
+                        <button class="btn">Notices</button>
+                        <button class="btn">Request Leave</button>
+                    </div>
+                    <div class="display-leave-and-notices-contents">
+                        <div class="notices"></div>
+                        <div class="request-leave">
+                            <form class="leave-form">
+                                <label for="leave-date">Select Date:</label>
+                                <input type="date" id="leave-date" name="leave-date" required>
+
+                                <label for="reason">Reason:</label>
+                                <textarea id="reason" name="reason" rows="3" placeholder="Write your reason..."
+                                    required></textarea>
+
+                                <button type="submit" class="btn">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
     <footer>
