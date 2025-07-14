@@ -4,9 +4,7 @@
     box-sizing: border-box;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
-html {
-    /* overflow-x: hidden; */
-}
+
 body {
     width: 99vw;
     margin: 0;
@@ -73,7 +71,7 @@ main {
 .fontSize {
     line-height: 30px;
     color: var(--text-primary);
-    font-size: clamp(1.2rem, 1.5vw, 1.0rem);
+    font-size: clamp(1.0rem, 2vw, 1.2rem);
     color: var(--text-primary);
 }
 .display-student-details {
@@ -117,8 +115,8 @@ main {
     margin: 0px auto;
 }
 .quick-buttons button {
-    padding: 12px 18px;
-    font-size: 16px;
+    padding: 6px 12px;
+    font-size: 14px;
     font-weight: 600;
     color: white;
     background-color: var(--accent);
@@ -143,7 +141,7 @@ main {
     gap: 10px;
     padding: 15px;
     margin: 0 25px;
-    border: 2px solid var(--border-color);
+    justify-content: center;
 }
 .attendance-status {
     width: 22%;
@@ -211,6 +209,10 @@ main {
     font-size: clamp(1.5rem, 1.2vw, 1.7rem);
     color: var(--text-primary);
 }
+.request-leave {
+    display: flex;
+    justify-content: center;
+}
 .leave-form {
     display: flex;
     flex-direction: column;
@@ -242,4 +244,13 @@ main {
     flex-direction: column;
     justify-content: center;
 }
-.notices {display: none;}
+.notices {
+    display: none;
+    height: 100%;
+    width: 98%;
+}
+.svg {
+    height: 90%; width: 90%;
+    margin: auto;
+}
+.warn {color: var(--error);}
