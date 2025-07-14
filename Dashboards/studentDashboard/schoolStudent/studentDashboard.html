@@ -9,8 +9,9 @@
     <link rel="stylesheet" href="../../../HomePage/stylesheets/footStyles.css">
     <link rel="stylesheet" href="../../../HomePage/stylesheets/dark-theme.css">
     <link rel="stylesheet" href="../../../HomePage/stylesheets/scrollbar.css">
-    <link rel="stylesheet" href="./mainStyles.css">
-    <link rel="stylesheet" href="./responsive.css">
+
+    <link rel="stylesheet" href="./stylesheets/mainStyles.css">
+    <link rel="stylesheet" href="./stylesheets/responsive.css">
 
     <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -62,6 +63,17 @@
                     <a href="#">Register</a>
                     <a href="#">Login</a>
                 </div>
+                <div class="quick-buttons-slide-menu">
+                    <p class="sidemenu-heading"><strong>Quick Buttons</strong></p>
+                    <div class="edit-tasks">
+                        <button onclick="editInfo()">Edit Info</button>
+                        <button>Change Password</button>
+                    </div>
+                    <div class="student-tasks">
+                        <button onclick="startSession()">Join Session</button>
+                        <button onclick="startSession()">Join Classroom</button>
+                    </div>
+                </div>
             </div>
         </nav>
     </header>
@@ -87,10 +99,14 @@
                 </div>
                 <div class="quick-buttons">
                     <h1>Quick Buttons</h1>
-                    <button onclick="editInfo()">Edit Info</button>
-                    <button onclick="startSession()">Join Session</button>
-                    <button onclick="startSession()">Join Classroom</button>
-                    <button>Change Password</button>
+                    <div class="edit-tasks">
+                        <button onclick="editInfo()">Edit Info</button>
+                        <button>Change Password</button>
+                    </div>
+                    <div class="student-tasks">
+                        <button onclick="startSession()">Join Session</button>
+                        <button onclick="startSession()">Join Classroom</button>
+                    </div>
                 </div>
             </div>
             <div class="other-contents">
@@ -184,7 +200,8 @@
     </footer>
     <script src="../../../HomePage/javascript/sideNav.js"></script>
     <script src="../../../HomePage/javascript/update-footerLayout-for-tablets.js"></script>
-    <script src="./toggleNotice.js"></script>
+    <script src="./javascript/toggleNotice.js"></script>
+    <script src="./javascript/change-content.js"></script>
 </body>
 
 </html>
