@@ -68,7 +68,6 @@
         margin:0; padding:10px;
     }
     .attendance-status {width: 98%; gap: 20px;}
-    .attendance-status > * {flex-grow: 1}
     .attendance-status h1 {
         text-align: center;
     }
@@ -166,7 +165,6 @@
         gap: 10px;
     }
     .bg-content {
-        height: 100%;
         flex-direction: column;
         padding-bottom: 15px;
         margin: 0px;
@@ -177,26 +175,32 @@
     }
     .display-student-details {width: 80%;}
     .quick-buttons {display: none;}
-    .other-contents {
-        flex-direction: column;
-        margin:0; padding:10px;
-        align-items: center;
-    }
-    .attendance-status {width: 85%; gap: 20px;}
-    .attendance-status > * {flex-grow: 1}
     .attendance-status h1 {
         text-align: center;
     }
+    .attendance-related, .not-attendance {
+        width: 98%;
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+    }
+    .attendance-status {
+        width: 50%;
+        height: 500px;
+        overflow: auto;
+    }
+    .other-contents {flex-direction: column;}
+    .svg {width: 84%;}
     .notices .svg {display: none;}
     .svg {width: 60%;}
     .request-leave {
-        display: flex !important;
+        display: flex;
         flex-direction: column;
         gap: 15px;
         justify-content: center;
         align-items: center;
     }
-    .leave-form {width: 80%;}
+    .leave-form {width: 100%;}
     .warn {text-align: center;}
     .fontSize, li {
         font-size: 1.2rem;
@@ -221,23 +225,13 @@
     }
     .foot-content > * {font-size: 18px;}
     .foot-links {text-decoration: none;}
-    .attendance-related, .not-attendance {
-            width: 98%;
-            display: flex;
-            flex-direction: row;
-            gap: 15px;
-        }
-        .attendance-status {
-            width: 50%;
-            height: 98%;
-        }
-        .other-contents {flex-direction: column;}
-        .svg {width: 84%;}
+    
 }
 
 /*For Surface Duo*/
 @media screen and (max-width: 550px) and (max-height: 750px) {
     .hide {display: none;}
+    .attendance-status {width: 95%}
     .foot-content {
         display: flex;
         flex-direction: column;
@@ -288,9 +282,10 @@
             flex-direction: row;
             gap: 15px;
         }
+        .attendance-status > * {flex-grow: 0;}
         .attendance-status {
             width: 50%;
-            height: 98%;
+            height: 500px;
         }
         .other-contents {flex-direction: column;}
         .svg {width: 84%;}

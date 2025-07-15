@@ -81,7 +81,8 @@
                             <button class="switch-btn" id="student-btn">Register as Student</button>
                             <button class="switch-btn" id="employee-btn">Register as Employee</button>
                         </div>
-                        <div class="form-group" style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0px;">
+                        <div class="form-group"
+                            style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0px;">
                             <input type="checkbox" id="termsCheck" name="termsCheck" required>
                             <label for="termsCheck" style="font-size: 0.95rem; color: var(--text-secondary);">
                                 I agree to the
@@ -272,20 +273,25 @@
                                     <input type="text" id="empId" name="empId" required />
                                 </div>
                                 <div class="form-group">
-                                    <label for="empContact">Contact Number</label>
-                                    <input type="tel" id="empContact" name="empContact" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="empEmail">Email</label>
-                                    <input type="email" id="empEmail" name="empEmail" required />
-                                </div>
-                                <div class="form-group">
                                     <label for="workType">Works in</label>
                                     <select id="workType" name="workType" required>
                                         <option value="">-- Select --</option>
                                         <option value="school_college">School / College</option>
                                         <option value="corporate">Corporate</option>
                                     </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="designation">Designation or Job Role</label>
+                                    <input type="text" id="designation" name="designation"
+                                        placeholder="e.g. Developer, Teacher etc" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="empContact">Contact Number</label>
+                                    <input type="tel" id="empContact" name="empContact" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="empEmail">Email</label>
+                                    <input type="email" id="empEmail" name="empEmail" required />
                                 </div>
                                 <div class="form-group">
                                     <label for="empOrgName">Organization Name</label>

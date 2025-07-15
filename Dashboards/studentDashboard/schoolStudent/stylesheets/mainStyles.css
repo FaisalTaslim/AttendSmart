@@ -103,7 +103,7 @@ main {
 .quick-buttons > h1 {
     font-size: clamp(1.6rem, 1.5vw, 1.8rem);
 }
-.students-basic-details p strong {
+.students-basic-details p strong, .attendance-status p strong {
     background-color: var(--accent);
     padding: 2px 5px;
     border-radius: 10px;
