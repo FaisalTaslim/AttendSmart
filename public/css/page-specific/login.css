@@ -1,0 +1,185 @@
+.hero-bg {
+    height: 90vh;
+    filter: unset;
+}
+.bg-content {
+    height: 70vh;
+    width: 46vw;
+    max-width: unset;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--text-primary);
+    border-radius: 20px;
+    gap: 0px;
+}
+.bg-content>h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    color: #FFFFFF;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    text-align: center;
+    font-weight: 500;
+    font-family: "Pacifico", cursive;
+}
+.bg-content>p {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    text-align: center;
+    line-height: 35px;
+}
+.left-side, .right-side {
+    width: 50%;
+    height: 100%;
+}
+.left-side {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+    overflow: auto;
+}
+.left-side-header {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+}
+.left-side > * {
+    color: var(--text-primary);
+}
+.quick-links {
+    width: 100%;
+    padding: 15px 0px;
+    border-top: 2px solid var(--border-color);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+}
+.left-side-header > h1 {
+    font-size: clamp(25px, 2vw, 25px);
+}
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 300px;
+}
+.login-form label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+.login-form input {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+.login-form input:focus {
+    border-color: var(--accent);
+    outline: none;
+}
+.continue-btn {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--accent);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+.continue-btn:hover {
+    background-color: var(--accent-hover);
+}
+#login-img {
+    height: 100%;
+    width: 100%;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+.fontSize {
+    line-height: 30px;
+    font-size: clamp(1.2rem, 1.5vw, 1.0rem);
+}
+.lower-section > p {
+    line-height: 30px;
+    font-size: 16px;
+    text-align: center;
+}
+
+@media screen and (max-width: 480px) {
+    .bg-content {
+        height: 75vh;
+        width: 87vw;
+        border: 1px solid var(--text-primary)
+    }
+    .font-1 {font-size: 16px;}
+    .foot-content {gap: 20px;}
+    .foot1 {gap: 15px;}
+    .foot2 {gap: 15px;}
+    .foot-content > * {font-size: 18px;}
+    .foot-links {text-decoration: none;}
+    .right-side {display: none;}
+    .left-side {
+        width: 90%;
+        height: 100%;
+    }
+    .lower-section > p {
+        line-height: 30px;
+        font-size: 16px;
+        text-align: center;
+    }
+}
+@media screen and (min-width: 481px) and (max-width: 1024px) {
+    .bg-content {
+        height: 60vh;
+        width: 87vw;
+        border: 1px solid var(--text-primary);
+        max-width: unset !important;
+    }
+    .font-1 {font-size: 16px;}
+    .sidemenu-heading {font-size: 2rem;}
+    .left-side-header > h1 {font-size: 2em;}
+    
+}
+@media screen and (max-width: 550px) and (max-height: 750px) {
+    .bg-content {
+        height: 84vh;
+        width: 87vw;
+        border: 1px solid var(--text-primary);
+    }
+    .left-side-header > h1 {font-size:  30px;}
+    .fontSize {font-size: 16px;}
+    .right-side {display: none;}
+    .left-side {
+        width: 90%;
+        height: 100%;
+    }
+    .lower-section > p {
+        line-height: 30px;
+        font-size: 16px;
+        text-align: center;
+    }
+}
+@media screen and (min-width: 1200px) and (max-width: 1300px) and (min-height: 750px) and (max-height: 850px) {
+    .bg-content {
+        height: 84vh;
+        width: 77vw;
+    }
+}
+@media screen and (min-width: 950px) and (max-width: 1024px) and 
+       (min-height: 580px) and (max-height: 620px) {
+        .hero-bg {height:110vh;}
+        .bg-content {
+            height: 99vh;
+            width: 81vw;
+        }
+        #getting-started, #register {
+            display: none;
+        }
+}

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/global/global-layout.css">
+    <link rel="stylesheet" href="/css/page-specific/login.css">
+    <link rel="stylesheet" href="/css/global/dark-theme.css">
+    <link rel="stylesheet" href="/css/global/scrollbar.css">
+
+    <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Underdog&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Pacifico&family=Rock+Salt&family=WDXL+Lubrifont+TC&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav id="navbar" class="">
+            <div class="nav-group1">
+                <div class="font-1 logo">
+                    <p><strong>AttendSmart</strong></p>
+                </div>
+                <div class="nav-links">
+                    <a href="/" class="nav-links-property hide">Home</a>
+                    <a href="/getStarted" class="nav-links-property hide" id="getting-started">Getting Started</a>
+                </div>
+            </div>
+            <div class="nav-group2">
+                <div class="nav-links">
+                    <a href="/dard" class="nav-links-property hide">Dashboard</a>
+                    <a href="/support" class="nav-links-property hide">Support</a>
+                    <a href="/log" class="nav-links-property hide">Logs</a>
+                    <a href="/register" class="nav-links-property hide" id="register">Register</a>
+                    <a href="/login" class="nav-links-property hide">Login</a>
+                    <p class="nav-links-property"><i class="fa-solid fa-moon"></i></p>
+                    <p class="nav-links-property" id="sun"><i class="fa-regular fa-sun"></i></p>
+                    <p class="nav-links-property" id="menu-toggle"><i class="fa-solid fa-bars"></i></p>
+                </div>
+            </div>
+
+            <div class="slide-menu">
+                <div class="nav-close-icon">
+                    <p class="sidemenu-heading"><strong>AttendSmart</strong></p>
+                    <p class="nav-links-property"><i class="fa-solid fa-xmark" id="close-toggle"></i></p>
+                </div>
+                <div class="slide-menu-links">
+                    <a href="/getStarted" class="nav-links-property hide" id="getting-started">Getting Started</a>
+                    <a href="/dashboard" class="nav-links-property hide">Dashboard</a>
+                    <a href="/support" class="nav-links-property hide">Support</a>
+                    <a href="/log" class="nav-links-property hide">Logs</a>
+                    <a href="/register" class="nav-links-property hide" id="register">Register</a>
+                    <a href="/login" class="nav-links-property hide">Login</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="hero-bg">
+            <div class="bg-content">
+                <div class="left-side">
+                    <div class="left-side-header">
+                        <h1>Welcome back!</h1>
+                        <p class="fontSize">Log into your account</p>
+                    </div>
+                    <form class="login-form" action="#" method="POST">
+                        <label for="userid">User ID</label>
+                        <input type="text" id="userid" name="userid" placeholder="Enter your User ID" required>
+
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your Password" required>
+
+                        <button type="submit" class="continue-btn">Continue</button>
+                        <button type="submit" class="continue-btn">Forgot Password? Click Here.</button>
+                    </form>
+                    <div class="quick-links">
+                        <p class="nav-links-property fontSize">Getting Started</p>
+                        <p class="nav-links-property fontSize">Register</p>
+                    </div>
+                    <div class="lower-section">
+                        <p class="fontSize">
+                            While clicking continue, you agree to our <a href="#" class="links" target="_blank">Terms & Condition</a> and <a href="#" class="links" target="_blank">Privacy Policy</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="right-side">
+                    <img src="/img/login.jpg" alt="" id="login-img">
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="foot-content">
+            <div class="foot1">
+                <div class="useful-links">
+                    <p><strong>Useful-links</strong></p>
+                    <a href="/register" class="links foot-links" target="_blank">Register</a>
+                    <a href="/support" class="links foot-links" target="_blank">Support</a>
+                    <a href="/logbook" class="links foot-links" target="_blank">LogBook</a>
+                    <a href="/dashboard" class="links foot-links" target="_blank">Dashboard</a>
+                </div>
+                <div class="legal">
+                    <p><strong>Legal</strong></p>
+                    <a href="/term" class="links foot-links" target="_blank">Terms & conditions</a>
+                    <a href="/policy" class="links foot-links" target="_blank">Privacy Policy</a>
+                    <a href="/refund" class="links foot-links" target="_blank">Refund Policy</a>
+                </div>
+                <div class="socials">
+                    <p><strong>Socials</strong></p>
+                    <a href="#" class="links foot-links" target="_blank"><i class="fa-brands fa-instagram"></i> |
+                        @faisal_9542</a>
+                    <a href="#" class="links foot-links" target="_blank"><i class="fa-brands fa-discord"></i> |
+                        @famaeoxiaa</a>
+                    <a href="#" class="links foot-links" target="_blank"><i class="fa-brands fa-github"></i> |
+                        @FaisalTaslim</a>
+                </div>
+            </div>
+            <div class="foot2">
+                <div class="contacts">
+                    <p><strong>Contacts</strong></p>
+                    <p><i class="fa-solid fa-phone"></i> | +91 7449925137 </p>
+                    <p><i class="fa-solid fa-envelope"></i> | mailto: support@attendsmart.io</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/global/sideNav.js"></script>
+    <script src="/js/global/update-footerLayout-for-tablets.js"></script>
+</body>
+
+</html>

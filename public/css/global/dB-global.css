@@ -1,0 +1,379 @@
+body {
+    width: 99vw;
+    margin: 0;
+    gap: 10px;
+}
+.hero-bg {
+    flex-direction: column;
+    gap: 20px;
+    filter: unset;
+}
+.bg-content {
+    height: 36%;
+    width: 98%;
+    max-width: unset;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    margin: 0 25px;
+    border-bottom: 2px solid var(--border-color);
+}
+#studentDashboard-heading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    width: 50%;
+    height: 90%;
+    padding: 20px;
+    border-right: 2px solid var(--border-color);
+}
+#studentDashboard-heading>* {text-align: center;}
+#studentDashboard-heading>h1 {font-size: clamp(1.7rem, 6vw, 2.5rem);}
+#studentDashboard-heading>p {font-size: clamp(1.3rem, 2vw, 1.5rem);}
+.fontSize {
+    line-height: 30px;
+    color: var(--text-primary);
+    font-size: clamp(1.0rem, 2vw, 1.2rem);
+    color: var(--text-primary);
+}
+.display-student-details {
+    height: 95%;
+    width: 30%;
+    display: flex;
+    flex-direction: row;
+    padding: 20px 30px;
+    margin: 0px 10px;
+    justify-content: space-between;
+    background-color: var(--bg-secondary);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.students-basic-details {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.profile-image {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    background-color: var(--accent);
+}
+.quick-buttons > h1 {
+    font-size: clamp(1.6rem, 1.5vw, 1.8rem);
+}
+.students-basic-details p strong, .attendance-status p strong {
+    background-color: var(--accent);
+    padding: 2px 5px;
+    border-radius: 10px;
+}
+.quick-buttons {
+    height: 95%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    margin: 0px auto;
+}
+.student-tasks, .edit-tasks {
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px
+}
+.quick-buttons button {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    background-color: var(--accent);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.quick-buttons button:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+}
+.quick-buttons button:active {
+    transform: scale(0.95);
+}
+
+.other-contents {
+    width: 98%;
+    height: 64%;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding: 15px;
+    margin: 0 25px;
+    justify-content: center;
+}
+.attendance-status {
+    width: 22%;
+    height: 98%;
+    border: 2px solid var(--border-color);
+    border-radius: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    overflow: auto;
+}
+.attendance-status > h1 {
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+.subject-blocks {
+    border: 2px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 12px;
+}
+.subject-blocks > h3 {
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--border-color);
+}
+.subject-blocks > * {color: var(--text-secondary)}
+.leave-and-notices {
+    display: flex; 
+    flex-direction: column;
+    gap: 15px;
+}
+.request-leave {
+    display: flex;
+    justify-content: center;
+}
+.notices {
+    display: none;
+    height: 100%;
+    width: 98%;
+}
+.leave-notice-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 20%;
+}
+.btn {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    background-color: var(--accent);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
+    transition: background-color 0.25s ease, transform 0.15s ease;
+    flex-grow: 1;
+}
+.btn:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-1px);
+}
+.fa-pen-to-square {
+    line-height: 30px;
+    color: var(--text-primary);
+    font-size: clamp(1.5rem, 1.2vw, 1.7rem);
+    color: var(--text-primary);
+}
+.leave-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    background-color: var(--bg-secondary);
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    font-family: sans-serif;
+}
+.leave-form label {
+    font-weight: 600;
+    font-size: 14px;
+}
+.leave-form input,
+.leave-form textarea {
+    padding: 6px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    resize: vertical;
+}
+.leave-form textarea {height: 150px;}
+.btn:active {transform: scale(0.97);}
+.display-leave-and-notices-contents {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.svg {
+    height: 90%; width: 90%;
+    margin: auto;
+}
+.warn {color: var(--error);}
+
+@media screen and (max-width: 480px) {
+    main {padding: 10px;}
+    .hero-bg {
+        height: fit-content;
+        gap: 10px;
+    }
+    .bg-content {
+        height: 100%;
+        flex-direction: column;
+        padding: 0px;
+        margin: 0px;
+    }
+    #studentDashboard-heading {
+        width: 98%;
+        border: unset;
+    }
+    .display-student-details {width: 98%;}
+    .student-pfp {display: none;}
+
+    .student-tasks, .edit-tasks {
+        flex-direction: row;
+        justify-content: center;
+    }
+    .quick-buttons > * {text-align: center;}
+    .other-contents {
+        flex-direction: column;
+        margin:0; padding:10px;
+    }
+    .attendance-status {width: 98%; gap: 20px;}
+    .attendance-status h1 {
+        text-align: center;
+    }
+    .notices .svg, .quick-buttons-slide-menu {display: none;}
+    .warn {text-align: center;}
+    .foot-content {gap: 20px}
+    .foot1 {gap: 15px}
+    .foot2 {gap: 15px}
+    .foot-content > * {font-size: 18px;}
+}
+
+@media screen and (min-width: 481px) and (max-width: 1024px) {
+    .quick-buttons-slide-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .quick-buttons-slide-menu .sidemenu-heading  strong {font-size: 2.0rem !important}
+    .edit-tasks button, .student-tasks button {
+        padding: 13px 16px;
+        font-size: 16px;
+        font-weight: 600;
+        color: white;
+        background-color: var(--accent);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .quick-buttons-slide-menu button:hover {
+        background-color: var(--accent-hover);
+        transform: translateY(-2px);
+    }
+    .quick-buttons-slide-menu button:active {
+        transform: scale(0.95);
+    }
+
+    .hero-bg {
+        height: fit-content;
+        gap: 10px;
+    }
+    .bg-content {
+        flex-direction: column;
+        padding-bottom: 15px;
+        margin: 0px;
+    }
+    #studentDashboard-heading {
+        width: 98%;
+        border: unset;
+    }
+    .display-student-details {width: 80%;}
+    .quick-buttons {display: none;}
+    .attendance-status h1 {
+        text-align: center;
+    }
+    .attendance-related, .not-attendance {
+        width: 98%;
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+    }
+    .attendance-status {
+        width: 50%;
+        height: 500px;
+        overflow: auto;
+    }
+    .other-contents {flex-direction: column;}
+    .svg {width: 84%;}
+    .notices .svg {display: none;}
+    .svg {width: 60%;}
+    .request-leave {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        justify-content: center;
+        align-items: center;
+    }
+    .leave-form {width: 100%;}
+    .warn {text-align: center;}
+    .fontSize, li {
+        font-size: 1.2rem;
+        padding-bottom: 0.9rem;
+    }
+    .foot-content > * {font-size: 18px;}
+}
+
+@media screen and (max-width: 550px) and (max-height: 750px) {
+    .attendance-status {width: 95%}
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1300px) and (min-height: 750px) and (max-height: 850px) {
+    .foot-content {width: 80%}
+    .bg-content {height: 43%;}
+    .student-pfp {display: none;}
+    .attendance-status {width: 25%;}
+}
+
+@media screen and (min-width: 950px) and (max-width: 1024px) and 
+       (min-height: 580px) and (max-height: 620px) {
+        .slide-menu {overflow-y: auto;}
+        .nav-links > a, .nav-links > p {
+            font-size: 1.2rem;
+        }
+        .leave-notice-btn {
+            width: 80%;
+            margin: auto;
+        }
+        .bg-content {flex-direction: row;}
+        .attendance-related, .not-attendance {
+            width: 98%;
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+        }
+        .attendance-status > * {flex-grow: 0;}
+        .attendance-status {
+            width: 50%;
+            height: 500px;
+        }
+        .other-contents {flex-direction: column;}
+        .svg {width: 84%;}
+        .sidemenu-heading {font-size: 2.0rem;}
+        .slide-menu-links > a {font-size: 1.2rem;}
+        .quick-buttons-slide-menu .sidemenu-heading strong {font-size: 1.6rem !important;}
+}
