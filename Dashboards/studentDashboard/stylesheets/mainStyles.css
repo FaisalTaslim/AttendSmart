@@ -41,7 +41,7 @@ main {
     padding-bottom: 20px;
 }
 .bg-content {
-    height: 35%;
+    height: 36%;
     width: 98%;
     display: flex;
     flex-direction: row;
@@ -142,7 +142,7 @@ main {
 
 .other-contents {
     width: 98%;
-    height: 65%;
+    height: 64%;
     display: flex;
     flex-direction: row;
     gap: 10px;
