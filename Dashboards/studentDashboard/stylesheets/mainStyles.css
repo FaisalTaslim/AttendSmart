@@ -187,6 +187,15 @@ main {
     flex-direction: column;
     gap: 15px;
 }
+.request-leave {
+    display: flex;
+    justify-content: center;
+}
+.notices {
+    display: none;
+    height: 100%;
+    width: 98%;
+}
 .leave-notice-btn {
     display: flex;
     flex-direction: column;
@@ -215,10 +224,6 @@ main {
     color: var(--text-primary);
     font-size: clamp(1.5rem, 1.2vw, 1.7rem);
     color: var(--text-primary);
-}
-.request-leave {
-    display: flex;
-    justify-content: center;
 }
 .leave-form {
     display: flex;
@@ -249,11 +254,6 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
-.notices {
-    display: none;
-    height: 100%;
-    width: 98%;
 }
 .svg {
     height: 90%; width: 90%;

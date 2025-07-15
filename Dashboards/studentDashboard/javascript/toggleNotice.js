@@ -10,8 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     showNoticesBtn.addEventListener("click", () => {
         notices.style.display = "block";
-       
-    }); requestLeave.style.display = "none";
+        requestLeave.style.display = "none";
+    });
 
     showLeaveBtn.addEventListener("click", () => {
         notices.style.display = "none";
