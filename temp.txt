@@ -1,0 +1,15 @@
+const express = require('express');
+const router = express.Router();
+const Org = require('../models/Org');
+
+router.post('/create-org', async (req, res) => {
+    try {
+        const orgData = await Org.create(req.body);
+        console.log(`Organization ${orgData.orgName} registered successfully`);
+        res.redirect('/');
+    } catch(err) {
+        res.send(`<h2>❌ Error: ${err.message}</h2>`);
+    }
+})
+
+module.exports = router;
