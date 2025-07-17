@@ -142,10 +142,6 @@
 }
 
 #studentType {margin-bottom: 5px;}
-#student-form,
-#employee-form {
-    display: none;
-}
 #admin-form {
     display: flex;
 }

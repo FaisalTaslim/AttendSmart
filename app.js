@@ -22,9 +22,13 @@ app.set('view engine', 'ejs');
 
 const mainRoutes = require('./routes/mainRoutes');
 const orgRoutes = require('./routes/orgRoutes');
+const schoolStudentRoutes = require('./routes/schoolStudentRoutes');
+const registerRoutes = require('./routes/registerRoutes');
 
 app.use('/', mainRoutes);
 app.use('/api/org', orgRoutes);
+app.use('/api', schoolStudentRoutes); 
+app.use('/register', registerRoutes)
 
 
 const PORT = process.env.PORT || 3000;

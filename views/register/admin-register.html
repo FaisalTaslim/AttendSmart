@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="/css/global/global-layout.css">
-    <link rel="stylesheet" href="/css/page-specific/register.css">
+    <link rel="stylesheet" href="/css/global/register.css">
     <link rel="stylesheet" href="/css/global/dark-theme.css">
     <link rel="stylesheet" href="/css/global/scrollbar.css">
 
@@ -74,9 +74,15 @@
                             form.
                         </p>
                         <div class="form-switcher">
-                            <button class="switch-btn" id="admin-btn">Register as Admin</button>
-                            <button class="switch-btn" id="student-btn">Register as Student</button>
-                            <button class="switch-btn" id="employee-btn">Register as Employee</button>
+                            <button class="switch-btn" id="student-btn" onclick="window.location.href='/register/school'">
+                                Register as School Student
+                            </button>
+                            <button class="switch-btn" id="student-btn" onclick="window.location.href='/register/college'">
+                                Register as College Student
+                            </button>
+                            <button class="switch-btn" id="employee-btn" onclick="window.location.href='/register/employee'"">
+                                Register as Employee
+                            </button>
                         </div>
                         <div class="form-group"
                             style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0px;">
@@ -170,169 +176,6 @@
                         </div>
                         <button type="submit" class="submit-btn">Register Organization</button>
                     </form>
-
-                    <form class="student-form-wrapper" id="student-form">
-                        <h2 class="form-title">Student Registration</h2>
-
-                        <div class="form-group full-width">
-                            <label for="studentType" id="iamLabel"><strong>I am a: </strong></label>
-                            <select id="studentType" name="studentType" required>
-                                <option value="">Select Student Type</option>
-                                <option value="school">School Student</option>
-                                <option value="college">College Student</option>
-                            </select>
-                        </div>
-
-                        <div class="form-section" id="school-student-fields" style="display: none;">
-                            <h3>School Student Details</h3>
-                            <input type="hidden" name="role" value="school-student" />
-                            <div class="form-flex">
-                                <div class="form-subFlex">
-                                    <div class="form-group">
-                                        <label for="schoolUserName">Full Name</label>
-                                        <input type="text" id="schoolUserName" name="name" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="schoolRoll">Roll Number</label>
-                                        <input type="text" id="schoolRoll" name="roll" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="schoolDivision">Division</label>
-                                        <input type="text" id="schoolDivision" name="division" required />
-                                    </div>
-                                </div>
-                                <div class="form-subFlex">
-                                    <div class="form-group">
-                                        <label for="schoolContact">Contact Number</label>
-                                        <input type="tel" id="schoolContact" name="contact" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="schoolEmail">Email</label>
-                                        <input type="email" id="schoolEmail" name="email" required />
-                                    </div>
-                                </div>
-                                <div class="form-subFlex">
-                                    <div class="form-group">
-                                        <label for="schoolOrg">Organization Name</label>
-                                        <input type="text" id="schoolOrg" name="org" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="schoolBranch">Branch</label>
-                                        <input type="text" id="schoolBranch" name="orgBranch" required />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="Password1">Set Password</label>
-                                    <input type="text" id="Password1" name="password" requied />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-section" id="college-student-fields" style="display: none;">
-                            <h3>College Student Details</h3>
-                            <input type="hidden" name="role" value="college-student" />
-                            <div class="form-flex">
-                                <div class="form-subFlex">
-                                    <div class="form-group">
-                                        <label for="collegeUserName">Full Name</label>
-                                        <input type="text" id="collegeUserName" name="name" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="collegeRoll">Full Roll Number</label>
-                                        <input type="text" id="collegeRoll" name="roll" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="collegeDept">Department</label>
-                                        <input type="text" id="collegeDept" name="dept" required />
-                                    </div>
-                                </div>
-                                <div class="form-subFlex">
-                                    <div class="form-group">
-                                        <label for="collegeContact">Contact Number</label>
-                                        <input type="tel" id="collegeContact" name="contact" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="collegeEmail">Email</label>
-                                        <input type="email" id="collegeEmail" name="email" required />
-                                    </div>
-                                </div>
-                                <div class="form-subFlex">
-                                    <div class="form-group">
-                                        <label for="collegeOrg">Organization Name</label>
-                                        <input type="text" id="collegeOrg" name="org" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="collegeBranch">Branch</label>
-                                        <input type="text" id="collegeBranch" name="orgBranch" required />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="Password2">Set Password</label>
-                                    <input type="text" id="Password2" name="password" requied />
-                                </div>
-                            </div>
-                        </div>
-                        <button type="submit" class="submit-btn">Register Student</button>
-                    </form>
-
-                    <form class="employee-form-wrapper" id="employee-form">
-                        <h2 class="form-title">Employee Registration</h2>
-
-                        <div class="form-section">
-                            <input type="hidden" name="role" value="employee" />
-                            <div class="form-flex">
-                                <div class="form-subFlex">
-                                    <div class="form-group">
-                                        <label for="empName">Full Name</label>
-                                        <input type="text" id="empName" name="Name" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="empId">Employee ID</label>
-                                        <input type="text" id="empId" name="Id" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="designation">Designation or Job Role</label>
-                                        <input type="text" id="designation" name="designation"
-                                            placeholder="e.g. Developer, Teacher etc" required>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="workType">Works in</label>
-                                    <select id="workType" name="workType" required>
-                                        <option value="">-- Select --</option>
-                                        <option value="school_college">School / College</option>
-                                        <option value="corporate">Corporate</option>
-                                    </select>
-                                </div>
-                                <div class="form-subFlex">
-                                    <div class="form-group">
-                                        <label for="empContact">Contact Number</label>
-                                        <input type="tel" id="empContact" name="contact" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="empEmail">Email</label>
-                                        <input type="email" id="empEmail" name="email" required />
-                                    </div>
-                                </div>
-                                <div class="form-subFlex">
-                                    <div class="form-group">
-                                        <label for="empOrgName">Organization Name</label>
-                                        <input type="text" id="empOrgName" name="org" required />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="empOrgBranch">Organization Branch</label>
-                                        <input type="text" id="empOrgBranch" name="orgBranch" required />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="Password3">Set Password</label>
-                                    <input type="text" id="Password3" name="password" requied />
-                                </div>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="submit-btn">Register Employee</button>
-                    </form>
                 </div>
             </div>
         </section>
@@ -373,8 +216,6 @@
     </footer>
     <script src="/js/global/sideNav.js"></script>
     <script src="/js/global/update-footerLayout-for-tablets.js"></script>
-    <script src="/js/page-specific/reg-switch.js"></script>
-    <script src="/js/page-specific/reg-toggleStudentForm.js"></script>
 </body>
 
 </html>
