@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Dashboard</title>
-    <link rel="stylesheet" href="../../public/css/global/global-layout.css">
-    <link rel="stylesheet" href="../../public/css/global/dB-global.css">
-    <link rel="stylesheet" href="../../public/css/global/dark-theme.css">
-    <link rel="stylesheet" href="../../public/css/global/scrollbar.css">
+    <link rel="stylesheet" href="/css/global/global-layout.css">
+    <link rel="stylesheet" href="/css/global/dB-global.css">
+    <link rel="stylesheet" href="/css/global/dark-theme.css">
+    <link rel="stylesheet" href="/css/global/scrollbar.css">
 
     <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,17 +30,17 @@
                 </div>
                 <div class="nav-links">
                     <a href="#" class="nav-links-property hide">Home</a>
-                    <a href="#" class="nav-links-property hide">About</a>
-                    <a href="#" class="nav-links-property hide" id="getting-started">Get Started</a>
+                    <a href="/getStarted" class="nav-links-property hide" id="getting-started">Getting Started</a>
                 </div>
             </div>
             <div class="nav-group2">
                 <div class="nav-links">
-                    <a href="#" class="nav-links-property hide">Dashboard</a>
-                    <a href="#" class="nav-links-property hide">Support</a>
-                    <a href="#" class="nav-links-property hide">Logs</a>
-                    <a href="#" class="nav-links-property hide" id="register">Register</a>
-                    <a href="#" class="nav-links-property hide">Login</a>
+                    <a href="/getStarted" class="nav-links-property hide" id="getting-started">Getting Started</a>
+                    <a href="/dashboard" class="nav-links-property hide">Dashboard</a>
+                    <a href="/support" class="nav-links-property hide">Support</a>
+                    <a href="/log" class="nav-links-property hide">Logs</a>
+                    <a href="/register" class="nav-links-property hide" id="register">Register</a>
+                    <a href="/login" class="nav-links-property hide">Login</a>
                     <p class="nav-links-property"><i class="fa-solid fa-moon"></i></p>
                     <p class="nav-links-property" id="sun"><i class="fa-regular fa-sun"></i></p>
                     <p class="nav-links-property" id="menu-toggle"><i class="fa-solid fa-bars"></i></p>
@@ -53,12 +53,12 @@
                     <p class="nav-links-property"><i class="fa-solid fa-xmark" id="close-toggle"></i></p>
                 </div>
                 <div class="slide-menu-links">
-                    <a href="#">Getting Started</a>
-                    <a href="#">Dashboard</a>
-                    <a href="#">Support</a>
-                    <a href="#">Logs</a>
-                    <a href="#">Register</a>
-                    <a href="#">Login</a>
+                    <a href="/getStarted" class="nav-links-property hide" id="getting-started">Getting Started</a>
+                    <a href="/dashboard" class="nav-links-property hide">Dashboard</a>
+                    <a href="/support" class="nav-links-property hide">Support</a>
+                    <a href="/log" class="nav-links-property hide">Logs</a>
+                    <a href="/register" class="nav-links-property hide" id="register">Register</a>
+                    <a href="/login" class="nav-links-property hide">Login</a>
                 </div>
                 <div class="quick-buttons-slide-menu">
                     <p class="sidemenu-heading"><strong>Quick Buttons</strong></p>
@@ -120,7 +120,7 @@
                 <div class="attendance-status attendance-history">
                     <h1>Attendance History</h1>
                     <p class="warn">No Data yet! Come back later.</p>
-                    <img src="../../public/img/dB-noData.svg" alt="No Data" class="svg">
+                    <img src="/img/dB-noData.svg" alt="No Data" class="svg">
                 </div>
                 <div class="leave-and-notices attendance-status">
                     <div class="leave-notice-btn">
@@ -130,7 +130,7 @@
                     <div class="display-leave-and-notices-contents">
                         <div class="notices">
                             <p class="warn">No Data yet! Come back later.</p>
-                            <img src="../../public/img/dB-noData.svg" alt="No Data" class="svg">
+                            <img src="/img/dB-noData.svg" alt="No Data" class="svg">
                         </div>
                         <div class="request-leave">
                             <form class="leave-form">
@@ -160,16 +160,16 @@
             <div class="foot1">
                 <div class="useful-links">
                     <p><strong>Useful-links</strong></p>
-                    <a href="#Register" class="links foot-links" target="_blank">Register</a>
-                    <a href="#Support" class="links foot-links" target="_blank">Support</a>
-                    <a href="#LogBook" class="links foot-links" target="_blank">LogBook</a>
-                    <a href="#Dashboard" class="links foot-links" target="_blank">Dashboard</a>
+                    <a href="/register" class="links foot-links" target="_blank">Register</a>
+                    <a href="/support" class="links foot-links" target="_blank">Support</a>
+                    <a href="/log" class="links foot-links" target="_blank">LogBook</a>
+                    <a href="/Dashboard/dashboard-home" class="links foot-links" target="_blank">Dashboard</a>
                 </div>
                 <div class="legal">
                     <p><strong>Legal</strong></p>
-                    <a href="#" class="links foot-links" target="_blank">Terms & conditions</a>
-                    <a href="#" class="links foot-links" target="_blank">Privacy Policy</a>
-                    <a href="#" class="links foot-links" target="_blank">Refund Policy</a>
+                    <a href="/terms" class="links foot-links" target="_blank">Terms & conditions</a>
+                    <a href="/privacy" class="links foot-links" target="_blank">Privacy Policy</a>
+                    <a href="/refund" class="links foot-links" target="_blank">Refund Policy</a>
                 </div>
             </div>
             <div class="foot2">
@@ -190,10 +190,10 @@
             </div>
         </div>
     </footer>
-    <script src="../public/js/global/sideNav.js"></script>
-    <script src="../public/js/global/update-footerLayout-for-tablets.js"></script>
-    <script src="../../public/js/page-specific/dashboard/change-content.js"></script>
-    <script src="../../public/js/page-specific/dashboard/toggleNotice.js"></script>
+    <script src="/js/global/sideNav.js"></script>
+    <script src="/js/global/update-footerLayout-for-tablets.js"></script>
+    <script src="/js/page-specific/dashboard/change-content.js"></script>
+    <script src="/js/page-specific/dashboard/toggleNotice.js"></script>
 </body>
 
 </html>
