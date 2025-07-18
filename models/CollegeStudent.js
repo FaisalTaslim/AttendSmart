@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const collegeStudentSchema = new Schema({
-    name: {
+    userName: {
         type: String,
         required: true,
         trim: true
@@ -27,28 +27,9 @@ const collegeStudentSchema = new Schema({
     password: {type: String, required: true, trim: true},
     org: { type: Schema.Types.ObjectId, ref: 'org' },
     
-    attendanceSummary: {
-        type: [
-            {
-                subjectName: {type: String, default: ""},
-                totalLectures: {type: Number, default: 0},
-                attendedLectures: {type: Number, default: 0},
-                percentage: {type: Number, default: 0}
-            }
-        ],
-        default: []
-    },
-    attendanceHistory: {
-        type: [
-            {
-                subjectName: {type: String, required: true},
-                date: {type: Date, required: true},
-                status: {type: String, enum: ['Present', 'Absent'], required: true}
-            }
-        ],
-        default: []
-    }
+    attendanceSummary: [{ type: Schema.Types.ObjectId, ref: 'attendanceSummary' }],
+    attendanceHistory: [{ type: Schema.Types.ObjectId, ref: 'attendanceHistory' }],
     
 }, { timestamps: true });
 
-module.exports = mongoose.model('CollegeStudent', collegeStudentSchema);
+module.exports = mongoose.model('collegeStudent', collegeStudentSchema);
