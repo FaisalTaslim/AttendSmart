@@ -87,7 +87,7 @@
                 </div>
 
                 <div class="right-side">
-                    <form class="employee-form-wrapper" id="employee-form">
+                    <form action="/api/register-employee" class="employee-form-wrapper" id="employee-form" method="POST">
                         <h2 class="form-title">Employee Registration</h2>
 
                         <div class="form-section">
@@ -96,11 +96,11 @@
                                 <div class="form-subFlex">
                                     <div class="form-group">
                                         <label for="empName">Full Name</label>
-                                        <input type="text" id="empName" name="Name" required />
+                                        <input type="text" id="empName" name="userName" required />
                                     </div>
                                     <div class="form-group">
                                         <label for="empId">Employee ID</label>
-                                        <input type="text" id="empId" name="Id" required />
+                                        <input type="text" id="employeeId" name="employeeId" required />
                                     </div>
                                     <div class="form-group">
                                         <label for="designation">Designation or Job Role</label>
@@ -129,7 +129,7 @@
                                 <div class="form-subFlex">
                                     <div class="form-group">
                                         <label for="empOrgName">Organization Name</label>
-                                        <input type="text" id="empOrgName" name="org" required />
+                                        <input type="text" id="empOrgName" name="orgName" required />
                                     </div>
                                     <div class="form-group">
                                         <label for="empOrgBranch">Organization Branch</label>

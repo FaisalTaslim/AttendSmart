@@ -24,12 +24,14 @@ const mainRoutes = require('./routes/mainRoutes');
 const orgRoutes = require('./routes/orgRoutes');
 const schoolStudentRoutes = require('./routes/schoolStudentRoutes');
 const collegeStudentRoutes = require('./routes/collegeStudentRoutes');
+const employeeRoutes = require('./routes/employeeRoutes');
 const registerRoutes = require('./routes/registerRoutes');
 
 app.use('/', mainRoutes);
 app.use('/api/org', orgRoutes);
 app.use('/api', schoolStudentRoutes); 
 app.use('/api', collegeStudentRoutes);
+app.use('/api', employeeRoutes);
 app.use('/register', registerRoutes)
 
 

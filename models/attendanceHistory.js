@@ -20,3 +20,20 @@ const attendanceHistorySchema = mongoose.Schema({
 }, {timestamp: true});
 
 module.exports = mongoose.model('attendanceHistory', attendanceHistorySchema);
+
+const attendanceHistoryEmployeeSchema = new Schema({
+    employee: {
+        type: Schema.Types.ObjectId,
+        ref: 'Employee', 
+        required: true
+    },
+    checkIn: {type: Date, required: true},
+    checkOut: {type: Date, required: true},
+    status: {
+        type: String,
+        enum: ['Present', 'Absent'],
+        required: true
+    }
+}, { timestamps: true });
+
+module.exports = mongoose.model('attendanceHistoryEmployee', attendanceHistoryEmployeeSchema);
