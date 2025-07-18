@@ -21,18 +21,22 @@ app.set('view engine', 'ejs');
 
 
 const mainRoutes = require('./routes/mainRoutes');
+const registerRoutes = require('./routes/registerRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
+
 const orgRoutes = require('./routes/orgRoutes');
 const schoolStudentRoutes = require('./routes/schoolStudentRoutes');
 const collegeStudentRoutes = require('./routes/collegeStudentRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
-const registerRoutes = require('./routes/registerRoutes');
 
 app.use('/', mainRoutes);
+app.use('/register', registerRoutes);
+app.use('/dashboard', dashboardRoutes);
+
 app.use('/api/org', orgRoutes);
 app.use('/api', schoolStudentRoutes); 
 app.use('/api', collegeStudentRoutes);
 app.use('/api', employeeRoutes);
-app.use('/register', registerRoutes)
 
 
 const PORT = process.env.PORT || 3000;
