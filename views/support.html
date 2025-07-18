@@ -14,11 +14,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-    href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Underdog&display=swap"
-    rel="stylesheet">
+        href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Underdog&display=swap"
+        rel="stylesheet">
     <link
-    href="https://fonts.googleapis.com/css2?family=Pacifico&family=Rock+Salt&family=WDXL+Lubrifont+TC&display=swap"
-    rel="stylesheet">
+        href="https://fonts.googleapis.com/css2?family=Pacifico&family=Rock+Salt&family=WDXL+Lubrifont+TC&display=swap"
+        rel="stylesheet">
     <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
 </head>
 
@@ -98,7 +98,9 @@
                                 and how-tos.
                             </li>
                             <li id="contact-warn" onclick="scrollToFooter">
-                                <strong>Contact Details</strong> – You'll find the contact details in the footer. Remember, use Contact Support only when you're not able to reach out through other methods.
+                                <strong>Contact Details</strong> – You'll find the contact details in the footer.
+                                Remember, use Contact Support only when you're not able to reach out through other
+                                methods.
                             </li>
                         </ul>
                         <h3>Available Support Features</h3>
@@ -114,8 +116,8 @@
 
                         <details>
                             <summary>How do I reset my password?</summary>
-                            <p class="fontSize">Go to the <a href="/login" class="links"
-                                    target="_blank">Login Page</a> and click on “Forgot Password.” You’ll receive a
+                            <p class="fontSize">Go to the <a href="/login" class="links" target="_blank">Login Page</a>
+                                and click on “Forgot Password.” You’ll receive a
                                 reset link on your
                                 registered email.</p>
                         </details>
@@ -234,19 +236,22 @@
 
                     <section class="issue-form-section">
                         <h2>Issue Submission Form</h2>
-                        <form class="issue-form" action="#" method="POST">
-                            <label for="org-name">Organization Name</label>
+                        <form class="issue-form" action="/api/support"" method="POST">
+                            <label for="org-name">Organization Name:</label>
                             <input type="text" id="org-name" name="orgName" required>
 
-                            <label for="branch-name">Branch Name</label>
+                            <label for="branch-name">Branch Name:</label>
                             <input type="text" id="branch-name" name="orgBranch" required>
 
-                            <label for="branch-name">User Name</label>
+                            <label for="branch-name">Enter UserName:</label>
                             <input type="text" id="branch-name" name="userName" required>
 
-                            <label for="user-id">User ID</label>
-                            <input type="text" id="user-id" name="userID"
+                            <label for="user-id">Enter UserID:</label>
+                            <input type="text" id="user-id" name="userId"
                                 placeholder="example: adminId, employeeID, roll number" required>
+
+                            <label for="email">Enter Email:</label>
+                            <input type="text" id="email" name="email" required>
 
                             <label for="supportType">Choose an option:</label>
                             <select name="supportType" id="supportType" required>
@@ -256,7 +261,7 @@
                             </select>
 
                             <label for="issue-description">Describe your thoughts:</label>
-                            <textarea id="issue-description" name="issue" rows="5" required></textarea>
+                            <textarea id="issue-description" name="thoughts" rows="5" required></textarea>
 
                             <button type="submit">Submit</button>
                         </form>

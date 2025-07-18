@@ -26,6 +26,7 @@ const orgRoutes = require('./routes/orgRoutes');
 const schoolStudentRoutes = require('./routes/schoolStudentRoutes');
 const collegeStudentRoutes = require('./routes/collegeStudentRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
+const supportRoute = require('./routes/supportRoute');
 
 app.use('/', mainRoutes);
 app.use('/register', registerRoutes);
@@ -35,7 +36,7 @@ app.use('/api/org', orgRoutes);
 app.use('/api', schoolStudentRoutes); 
 app.use('/api', collegeStudentRoutes);
 app.use('/api', employeeRoutes);
-
+app.use('/api', supportRoute);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

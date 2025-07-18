@@ -3,7 +3,7 @@ const issueBtn = document.getElementById("issueBtn");
 const faqSection = document.querySelector(".faq-section");
 const issueFormSection = document.querySelector(".issue-form-section");
 
-faqBtn.addEventListener("click", () => {
+faqBtn.addEventListener("click", (e) => {
     if(issueFormSection.style.display === 'flex' && faqSection.style.display === 'none') {
         issueFormSection.style.display = 'none';
         faqSection.style.display = 'flex';
@@ -15,7 +15,7 @@ faqBtn.addEventListener("click", () => {
     e.stopPropagation();
 });
 
-issueBtn.addEventListener("click", () => {
+issueBtn.addEventListener("click", (e) => {
     if(faqSection.style.display === 'flex' && issueFormSection.style.display === 'none') {
         issueFormSection.style.display = 'flex';
         faqSection.style.display = 'none';
