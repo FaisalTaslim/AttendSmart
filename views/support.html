@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/css/global/scrollbar.css">
 
     <link rel="stylesheet" href="/css/page-specific/support/faq.css">
-    <link rel="stylesheet" href="/css/page-specific/support/feedback.css">
     <link rel="stylesheet" href="/css/page-specific/support/issueForm.css">
     <link rel="stylesheet" href="/css/page-specific/support/sup-responsive.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -104,14 +103,8 @@
                         </ul>
                         <h3>Available Support Features</h3>
                         <section class="support-buttons">
-                            <div class="part1-support-buttons">
-                                <span class="nav-links-property">FAQ</span>
-                                <span class="nav-links-property">Feedback Form</span>
-                            </div>
-                            <div class="part2-support-buttons">
-                                <span class="nav-links-property">Form Support</span>
-                                <span class="nav-links-property" onclick="scrollToFooter()">Contact Details</span>
-                            </div>
+                            <button class="btn" id="faqBtn">FAQ</button>
+                            <button class="btn" id="issueBtn">Form Submissions</button>
                         </section>
                     </section>
                 </div>
@@ -243,40 +236,31 @@
                         <h2>Issue Submission Form</h2>
                         <form class="issue-form" action="#" method="POST">
                             <label for="org-name">Organization Name</label>
-                            <input type="text" id="org-name" name="organization" required>
+                            <input type="text" id="org-name" name="orgName" required>
 
                             <label for="branch-name">Branch Name</label>
-                            <input type="text" id="branch-name" name="branch">
+                            <input type="text" id="branch-name" name="orgBranch" required>
+
+                            <label for="branch-name">User Name</label>
+                            <input type="text" id="branch-name" name="userName" required>
 
                             <label for="user-id">User ID</label>
-                            <input type="text" id="user-id" name="userID" required>
+                            <input type="text" id="user-id" name="userID"
+                                placeholder="example: adminId, employeeID, roll number" required>
 
-                            <label for="issue-description">Describe your issue</label>
+                            <label for="supportType">Choose an option:</label>
+                            <select name="supportType" id="supportType" required>
+                                <option value="" disabled selected>-- Select an option --</option>
+                                <option value="feedback">Feedback</option>
+                                <option value="problem">Report a problem</option required>
+                            </select>
+
+                            <label for="issue-description">Describe your thoughts:</label>
                             <textarea id="issue-description" name="issue" rows="5" required></textarea>
 
                             <button type="submit">Submit</button>
                         </form>
                     </section>
-
-                    <section class="feedback-form-section">
-                        <h2>We’d Love Your Feedback</h2>
-                        <form class="feedback-form" action="#" method="POST">
-                            <label for="name">Your Name</label>
-                            <input type="text" id="name" name="name" required>
-
-                            <label for="email">Your Email</label>
-                            <input type="email" id="email" name="email" required>
-
-                            <label for="org-name-feedback">Organization Name</label>
-                            <input type="text" id="org-name-feedback" name="organization" required>
-
-                            <label for="feedback-message">Your Feedback</label>
-                            <textarea id="feedback-message" name="feedback" rows="5" required></textarea>
-
-                            <button type="submit">Send Feedback</button>
-                        </form>
-                    </section>
-
                 </div>
             </div>
         </section>
@@ -316,13 +300,9 @@
             </div>
         </div>
     </footer>
-    <script src="../public/js/global/sideNav.js"></script>
-    <script src="../public/js/global/update-footerLayout-for-tablets.js"></script>
-    <script>
-        function scrollToFooter() {
-            document.querySelector('footer').scrollIntoView({ behavior: 'smooth' });
-        }
-    </script>
+    <script src="/js/global/sideNav.js"></script>
+    <script src="/js/global/update-footerLayout-for-tablets.js"></script>
+    <script src="/js/page-specific/sup-changeContent.js"></script>
 </body>
 
 </html>

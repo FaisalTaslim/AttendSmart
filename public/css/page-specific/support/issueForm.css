@@ -1,6 +1,5 @@
 .issue-form-section {
     display: none;
-    display: flex;
     flex-direction: column;
     width: 85%;
     margin: 0 auto;
@@ -41,7 +40,7 @@
     border-color: var(--accent);
     box-shadow: 0 0 5px var(--accent);
 }
-.issue-form button {
+.issue-form button, .btn {
     margin-top: 1rem;
     padding: 0.8rem;
     font-size: 1rem;
@@ -51,7 +50,14 @@
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    text-align: center;
 }
 .issue-form button:hover {
     background-color: var(--accent-hover);
+}
+select {
+    padding: 0.5rem;
+    width: 100%;
+    margin-top: 1rem;
+    font-size: 1rem;
 }

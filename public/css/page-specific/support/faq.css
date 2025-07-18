@@ -70,9 +70,11 @@ main {
 }
 #about-attendsmart-support {
     width: 50%;
-    height: 95%;
+    height: 100%;
     padding: 20px;
     border-right: 2px solid var(--border-color);
+    display: flex;
+    justify-content: center;
 }
 .main-forms-area {
     height: 95%;
@@ -81,7 +83,7 @@ main {
     padding: 20px;
 }
 .support-section {
-    padding: 2rem;
+    padding: 1.5rem;
     background-color: var(--bg-secondary);
     color: var(--text-primary);
     border-radius: 12px;
@@ -128,7 +130,6 @@ main {
 }
 .faq-section {
     display: flex;
-    display: none;
     flex-direction: column;
     gap: 20px;
 }
