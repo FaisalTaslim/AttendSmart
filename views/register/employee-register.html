@@ -73,16 +73,6 @@
                             Please select your registration type below. You will be redirected to the appropriate
                             form.
                         </p>
-                        <div class="form-group"
-                            style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0px;">
-                            <input type="checkbox" id="termsCheck" name="termsCheck" required>
-                            <label for="termsCheck" style="font-size: 0.95rem; color: var(--text-secondary);">
-                                I agree to the
-                                <a href="/terms" target="_blank" style="color:var(--link)">Terms & Conditions</a> and
-                                <a href="/privacy" target="_blank" style="color:var(--link)">Privacy Policy</a>
-                            </label>
-                        </div>
-
                     </div>
                 </div>
 
@@ -142,7 +132,15 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="form-group"
+                            style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0px;" id="register-terms">
+                            <input type="checkbox" id="termsCheck" name="termsCheck" required>
+                            <label for="termsCheck" style="font-size: 0.95rem; color: var(--text-secondary);">
+                                I agree to the
+                                <a href="/terms" target="_blank" style="color:var(--link)">Terms & Conditions</a> and
+                                <a href="/privacy" target="_blank" style="color:var(--link)">Privacy Policy</a>
+                            </label>
+                        </div>
                         <button type="submit" class="submit-btn">Register Employee</button>
                     </form>
                 </div>

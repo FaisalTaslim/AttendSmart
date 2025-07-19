@@ -30,6 +30,7 @@ const orgSchema = new mongoose.Schema({
     orgContact: {type: String, trim: true},
     orgEmail: {type: String, trim: true},
     orgWebsite: {type: String},
+    termsCheck: {type: String, default: "not accepted", required: true}
 
 }, { timestamps: true });
 

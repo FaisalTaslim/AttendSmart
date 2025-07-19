@@ -37,6 +37,7 @@ const employeeSchema = new Schema({
         ref: 'summaryEmployee'
     },
     attendanceHistory: [{ type: Schema.Types.ObjectId, ref: 'attendanceHistory' }],
+    termsCheck: {type: String, required: true}
 
 }, { timestamps: true });
 

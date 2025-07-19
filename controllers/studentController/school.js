@@ -16,6 +16,7 @@ exports.createSchoolStudent = async (req, res) => {
             orgName,
             orgBranch,
             subjectName,
+            termsCheck
         } = req.body;
 
         console.log("Received subjectName from form:", subjectName);
@@ -42,6 +43,7 @@ exports.createSchoolStudent = async (req, res) => {
             contact,
             email,
             password: hashedPassword,
+            termsCheck,
             attendanceSummary: []
         });
 

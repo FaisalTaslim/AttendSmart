@@ -32,6 +32,7 @@ const schoolStudentSchema = new Schema({
     password: { type: String, required: true, trim: true },
     attendanceSummary: [{ type: Schema.Types.ObjectId, ref: 'attendanceSummary' }],
     attendanceHistory: [{ type: Schema.Types.ObjectId, ref: 'attendanceHistory' }],
+    termsCheck: {type: String, required: true}
 
 }, { timestamps: true });
 

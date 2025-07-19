@@ -16,6 +16,7 @@ exports.createEmployee = async (req, res) => {
             password,
             orgName,
             orgBranch,
+            termsCheck,
         } = req.body;
 
         const salt = await bcrypt.genSalt(10);
@@ -43,6 +44,7 @@ exports.createEmployee = async (req, res) => {
             contact,
             email,
             password: hashedPassword,
+            termsCheck
         });
 
         const summary = await EmployeeSummary.create({

@@ -16,6 +16,7 @@ exports.createCollegeStudent = async (req, res) => {
             orgName,
             orgBranch,
             subjectName,
+            termsCheck
         } = req.body;
 
         console.log("Received subjectName from form:", subjectName);
@@ -42,7 +43,7 @@ exports.createCollegeStudent = async (req, res) => {
             contact,
             email,
             password: hashedPassword,
-            orgId: findOrg._id,
+            termsCheck,
             attendanceSummary: []
         });
 
@@ -51,7 +52,7 @@ exports.createCollegeStudent = async (req, res) => {
 
         for (const subject of filteredSubjects) {
             const summary = {
-                student: newStudent._id,
+                student: newStudent.uniqueId,
                 subjectName: subject,
                 totalLectures: 0,
                 attendedLectures: 0,

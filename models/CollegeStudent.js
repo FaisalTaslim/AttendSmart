@@ -29,6 +29,7 @@ const collegeStudentSchema = new Schema({
     
     attendanceSummary: [{ type: Schema.Types.ObjectId, ref: 'attendanceSummary' }],
     attendanceHistory: [{ type: Schema.Types.ObjectId, ref: 'attendanceHistory' }],
+    termsCheck: {type: String, required: true, default: "not-accepted"}
     
 }, { timestamps: true });
 

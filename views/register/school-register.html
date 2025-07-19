@@ -73,21 +73,12 @@
                             Please select your registration type below. You will be redirected to the appropriate
                             form.
                         </p>
-                        <div class="form-group"
-                            style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0px;">
-                            <input type="checkbox" id="termsCheck" name="termsCheck" required>
-                            <label for="termsCheck" style="font-size: 0.95rem; color: var(--text-secondary);">
-                                I agree to the
-                                <a href="/terms" target="_blank" style="color:var(--link)">Terms & Conditions</a> and
-                                <a href="/privacy" target="_blank" style="color:var(--link)">Privacy Policy</a>
-                            </label>
-                        </div>
-
                     </div>
                 </div>
 
                 <div class="right-side">
-                    <form action="/api/register-school-student" class="student-form-wrapper" id="student-form" method="POST">
+                    <form action="/api/register-school-student" class="student-form-wrapper" id="student-form"
+                        method="POST">
                         <h2 class="form-title">Student Registration</h2>
 
                         <div class="form-section" id="school-student-fields">
@@ -195,6 +186,15 @@
                                     <input type="text" id="Password2" name="password" requied />
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group"
+                             id='register-terms' style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0px;">
+                            <input type="checkbox" id="termsCheck" name="termsCheck" required>
+                            <label for="termsCheck" style="font-size: 0.95rem; color: var(--text-secondary);">
+                                I agree to the
+                                <a href="/terms" target="_blank" style="color:var(--link)">Terms & Conditions</a> and
+                                <a href="/privacy" target="_blank" style="color:var(--link)">Privacy Policy</a>
+                            </label>
                         </div>
                         <button type="submit" class="submit-btn">Register Student</button>
                     </form>
