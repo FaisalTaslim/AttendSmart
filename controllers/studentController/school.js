@@ -1,7 +1,8 @@
 const schoolStudent = require('../../models/SchoolStudent');
-const AttendanceSummary = require('../../models/attendanceSummary');
+const { StudentSummary } = require('../../models/attendanceSummary');
 const Org = require('../../models/Org');
 const bcrypt = require('bcrypt');
+const Counter = require('../../models/counter');
 
 exports.createSchoolStudent = async (req, res) => {
     try {
@@ -22,18 +23,25 @@ exports.createSchoolStudent = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
+        let counterDoc = await Counter.findOne();
+
+        const newSchoolStudentNumber = (Number(counterDoc.newStudentValue) + 1).toString();
+        counterDoc.newStudentValue = newSchoolStudentNumber;
+        await counterDoc.save();
+
         const findOrg = await Org.findOne({ orgName, orgBranch });
-        if (!findOrg) 
+        if (!findOrg)
             return res.send(`<h2>❌ Error: Organization not found</h2>`);
 
         const newStudent = await schoolStudent.create({
+            orgId: findOrg._id,
+            uniqueId: newSchoolStudentNumber,
             userName,
             roll,
             division,
             contact,
             email,
             password: hashedPassword,
-            orgId: findOrg._id,
             attendanceSummary: []
         });
 
@@ -42,14 +50,14 @@ exports.createSchoolStudent = async (req, res) => {
 
         for (const subject of filteredSubjects) {
             const summary = {
-                student: newStudent._id,
+                student: newStudent.uniqueId,
                 subjectName: subject,
                 totalLectures: 0,
                 attendedLectures: 0,
                 percentage: 0
             };
 
-            const createdSummary = await AttendanceSummary.create(summary);
+            const createdSummary = await StudentSummary.create(summary);
             console.log(`✅ Attendance summary created: ${createdSummary.subjectName}`);
 
             newStudent.attendanceSummary.push(createdSummary._id);

@@ -3,8 +3,7 @@ const { Schema } = mongoose;
 
 const attendanceSummarySchema = new Schema({
     student: {
-        type: Schema.Types.ObjectId,
-        ref: 'schoolStudent',
+        type: String,
         required: true
     },
     subjectName: {
@@ -18,8 +17,7 @@ const attendanceSummarySchema = new Schema({
 
 const attendanceSummaryEmployee = new Schema({
     employee: {
-        type: Schema.Types.ObjectId,
-        ref: 'Employee',
+        type: String,
         required: true
     },
     totalDays: {type: Number, default: 0},

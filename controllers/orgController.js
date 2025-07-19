@@ -1,5 +1,6 @@
-const Org = require('../models/Org');
+const Counter = require('../models/counter');
 const bcrypt = require('bcrypt');
+const Org = require('../models/Org');
 
 exports.createOrg = async (req, res) => {
     try {
@@ -14,7 +15,14 @@ exports.createOrg = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(adminPassword, salt);
 
+        let counterDoc = await Counter.findOne();
+
+        const newAdminNumber = (Number(counterDoc.newAdminValue) + 1).toString();
+        counterDoc.newAdminValue = newAdminNumber;
+        await counterDoc.save();
+
         const newOrg = {
+            uniqueId: newAdminNumber,
             ...req.body,
             admin: [
                 {

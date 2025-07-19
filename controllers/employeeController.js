@@ -2,6 +2,7 @@ const Employee = require('../models/Employee');
 const { EmployeeSummary } = require('../models/attendanceSummary');
 const Org = require('../models/Org');
 const bcrypt = require('bcrypt');
+const Counter = require('../models/counter');
 
 exports.createEmployee = async (req, res) => {
     try {
@@ -20,12 +21,21 @@ exports.createEmployee = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
+        let counterDoc = await Counter.findOne();
+
+        const newEmployeeNumber = (Number(counterDoc.newEmployeeValue) + 1).toString();
+        counterDoc.newEmployeeValue = newEmployeeNumber;
+        await counterDoc.save();
+
+
         const findOrg = await Org.findOne({ orgName, orgBranch });
         if (!findOrg) {
             return res.send(`<h2>❌ Error: Organization not found</h2>`);
         }
 
         const newEmployee = await Employee.create({
+            uniqueId: newEmployeeNumber,
+            org: findOrg._id,
             userName,
             employeeId,
             workType,
@@ -33,11 +43,10 @@ exports.createEmployee = async (req, res) => {
             contact,
             email,
             password: hashedPassword,
-            orgId: findOrg._id
         });
 
         const summary = await EmployeeSummary.create({
-            employee: newEmployee._id,
+            employee: newEmployee.uniqueId,
             totalDays: 0,
             attendedDays: 0,
             percentage: 0

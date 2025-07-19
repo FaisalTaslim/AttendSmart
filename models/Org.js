@@ -2,8 +2,13 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const orgSchema = new mongoose.Schema({
+    uniqueId: {
+        type: String, 
+        required: true,
+        unique: true
+    },
     orgName: {type: String, required: true},
-    orgBranch: {type: String, default: null},
+    orgBranch: {type: String, required: true},
     orgType: {
         type: String,
         enum: ['school', 'college', 'corporate'], required: true

@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const collegeStudentSchema = new Schema({
+    uniqueId: {type: String, required: true, unique: true},
+    org: { type: Schema.Types.ObjectId, ref: 'org' },
     userName: {
         type: String,
         required: true,
@@ -10,7 +12,6 @@ const collegeStudentSchema = new Schema({
     roll: {
         type: String,
         required: true,
-        unique: true
     },
     dept: {type: String, required: true},
     contact: {type: String, required: true},
@@ -25,7 +26,6 @@ const collegeStudentSchema = new Schema({
         trim: true
     },
     password: {type: String, required: true, trim: true},
-    org: { type: Schema.Types.ObjectId, ref: 'org' },
     
     attendanceSummary: [{ type: Schema.Types.ObjectId, ref: 'attendanceSummary' }],
     attendanceHistory: [{ type: Schema.Types.ObjectId, ref: 'attendanceHistory' }],

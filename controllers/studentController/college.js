@@ -1,7 +1,8 @@
 const collegeStudent = require('../../models/CollegeStudent');
-const AttendanceSummary = require('../../models/attendanceSummary');
+const { StudentSummary } = require('../../models/attendanceSummary');
 const Org = require('../../models/Org');
 const bcrypt = require('bcrypt');
+const Counter = require('../../models/counter');
 
 exports.createCollegeStudent = async (req, res) => {
     try {
@@ -22,11 +23,19 @@ exports.createCollegeStudent = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
+        let counterDoc = await Counter.findOne();
+
+        const newCollegeStudentNumber = (Number(counterDoc.newStudentValue) + 1).toString();
+        counterDoc.newStudentValue = newCollegeStudentNumber;
+        await counterDoc.save();
+
         const findOrg = await Org.findOne({ orgName, orgBranch });
-        if (!findOrg) 
+        if (!findOrg)
             return res.send(`<h2>❌ Error: Organization not found</h2>`);
 
         const newStudent = await collegeStudent.create({
+            orgId: findOrg._id,
+            uniqueId: newCollegeStudentNumber,
             userName,
             roll,
             dept,
@@ -49,7 +58,7 @@ exports.createCollegeStudent = async (req, res) => {
                 percentage: 0
             };
 
-            const createdSummary = await AttendanceSummary.create(summary);
+            const createdSummary = await StudentSummary.create(summary);
             console.log(`✅ Attendance summary created: ${createdSummary.subjectName}`);
 
             newStudent.attendanceSummary.push(createdSummary._id);

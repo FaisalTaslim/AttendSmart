@@ -6,9 +6,10 @@ mongoose.connect('mongodb://localhost:27017/AttendSmart')
         console.log("✅ Connected to Database...");
 
         const newCounter = new Counter({
-            originalCountValue: "#1",
-            newStudentValue: "#0",
-            newEmployeeValue: "#0",
+            originalCountValue: "0",
+            newAdminValue: "1",
+            newStudentValue: "0",
+            newEmployeeValue: "0",
         });
 
         await newCounter.save();

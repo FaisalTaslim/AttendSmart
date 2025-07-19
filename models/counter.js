@@ -5,14 +5,15 @@ const counterSchema = mongoose.Schema({
     originalCountValue: {
         type: String,
         required: true,
-        default: "#1"
+        default: "0"
     },
+    newAdminValue: {type: String, required: true, default: "0"},
     newStudentValue: {type: String, required: true,
-         default: "#0"},
+         default: "0"},
     newEmployeeValue: {
         type: String,
         required: true,
-        default: "#0"
+        default: "0"
     }
 });
 
