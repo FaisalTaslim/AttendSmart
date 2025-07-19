@@ -7,15 +7,24 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI);
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/AttendSmart');
-mongoose.connect(process.env.MONGODB_URI)
-
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+const session = require('express-session');
+
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 2,
+        httpOnly: true
+    }
+}));
 
 
 const mainRoutes = require('./routes/mainRoutes');
@@ -39,6 +48,7 @@ app.use('/api', collegeStudentRoutes);
 app.use('/api', employeeRoutes);
 app.use('/api', supportRoute);
 app.use('/auth', loginRoutes)
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

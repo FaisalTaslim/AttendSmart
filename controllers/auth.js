@@ -16,62 +16,80 @@ const auth = async (req, res) => {
         } = req.body;
 
         const role = userRole;
+        let user;
+
         if (role === 'Org') {
-            const findInOrg = await Org.findOne({ uniqueId: uniqueID });
-            if (!findInOrg)
-                res.redirect('/register');
-            else {
-                const isMatch = await bcrypt.compare(password, findInOrg.admin[0].adminPassword);
+            user = await Org.findOne({ uniqueId: uniqueID });
+            if (!user) return res.redirect('/register');
 
-                if (!isMatch)
-                    res.redirect('/error-login');
-                else
-                    console.log('Logged in Admin user!');
-            }
+            const isMatch = await bcrypt.compare(password, user.admin[0].adminPassword);
+            if (!isMatch) return res.redirect('/error-login');
+
+            req.session.user = {
+                id: user.uniqueId,
+                role: 'Org',
+                name: user.admin[0].adminName
+            };
+
+            console.log('✅ Logged in Admin user!');
+            return res.redirect('/dashboard');
         }
+
         else if (role === 'SchoolStudent') {
-            const findSchoolStudent = await SchoolStudent.findOne({ uniqueId: uniqueID });
+            user = await SchoolStudent.findOne({ uniqueId: uniqueID });
+            if (!user) return res.redirect('/register');
 
-            if (!findSchoolStudent)
-                res.redirect('/register');
-            else {
-                const isMatch = await bcrypt.compare(password, findSchoolStudent.password);
-                if (!isMatch)
-                    res.redirect('/error-login');
-                else
-                    console.log('Logged in Student User!');
-            }
+            const isMatch = await bcrypt.compare(password, user.password);
+            if (!isMatch) return res.redirect('/error-login');
+
+            req.session.user = {
+                id: user.uniqueId,
+                role: 'SchoolStudent',
+                name: user.userName
+            };
+
+            console.log('✅ Logged in School Student!');
+            return res.redirect('/dashboard');
         }
+
         else if (role === 'CollegeStudent') {
-            const findCollegeStudent = await CollegeStudent.findOne({ uniqueId: uniqueID });
+            user = await CollegeStudent.findOne({ uniqueId: uniqueID });
+            if (!user) return res.redirect('/register');
 
-            if (!findCollegeStudent)
-                res.redirect('/register');
-            else {
-                const isMatch = await bcrypt.compare(password, findCollegeStudent.password);
-                if (!isMatch)
-                    res.redirect('/error-login');
-                else
-                    console.log('Logged in College User!');
-            }
-        }
-        else {
-            const findEmployee = await Employee.findOne({ uniqueId: uniqueID });
+            const isMatch = await bcrypt.compare(password, user.password);
+            if (!isMatch) return res.redirect('/error-login');
 
-            if (!findEmployee)
-                res.redirect('/register');
-            else {
-                const isMatch = await bcrypt.compare(password, findEmployee.password);
-                if (!isMatch)
-                    res.redirect('/error-login');
-                else
-                    console.log('Logged in Employee User!');
-            }
+            req.session.user = {
+                id: user.uniqueId,
+                role: 'CollegeStudent',
+                name: user.userName
+            };
+
+            console.log('✅ Logged in College Student!');
+            return res.redirect('/dashboard');
         }
+
+        else if (role === 'Employee') {
+            user = await Employee.findOne({ uniqueId: uniqueID });
+            if (!user) return res.redirect('/register');
+
+            const isMatch = await bcrypt.compare(password, user.password);
+            if (!isMatch) return res.redirect('/error-login');
+
+            req.session.user = {
+                id: user.uniqueId,
+                role: 'Employee',
+                name: user.userName
+            };
+
+            console.log('✅ Logged in Employee!');
+            return res.redirect('/dashboard');
+        }
+
     } catch (err) {
         console.error("❌ Login error:", err);
         res.status(500).send("Something went wrong!");
     }
-}
+};
 
-module.exports = {auth};
+module.exports = { auth };
