@@ -29,7 +29,7 @@ router.get('/employee-e', ensureLoggedIn, checkRole(['Employee']), (req, res) =>
 });
 
 router.get('/org', ensureLoggedIn, checkRole(['Org']), (req, res) => {
-    res.sendFile(path.join(viewsPath, 'admin.html')); // Make sure this file exists
+    res.sendFile(path.join(viewsPath, 'admin.html'));
 });
 
 module.exports = router;
