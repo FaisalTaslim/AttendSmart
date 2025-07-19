@@ -18,4 +18,8 @@ Object.entries(routes).forEach(([route, file]) => {
     });
 });
 
+router.get('/error-login', (req, res) => {
+    res.send('<h2>Password Mismatched!</h2>')
+})
+
 module.exports = router;

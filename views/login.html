@@ -70,9 +70,20 @@
                         <h1>Welcome back!</h1>
                         <p class="fontSize">Log into your account</p>
                     </div>
-                    <form class="login-form" action="#" method="POST">
-                        <label for="userid">User ID</label>
-                        <input type="text" id="userid" name="userid" placeholder="Enter your User ID" required>
+                    <form class="login-form" action="/auth/login" method="POST">
+                        <label for="userid">Unique ID</label>
+                        <input type="text" id="userid" name="uniqueID" placeholder="Enter your Unique ID" required>
+
+                        <div class="select-container">
+                            <label for="userRole">Select Your Role:</label>
+                            <select name="userRole" id="userRole" required>
+                                <option value="" disabled selected>-- Choose your role --</option>
+                                <option value="Org">Admin</option>
+                                <option value="SchoolStudent">School Student</option>
+                                <option value="CollegeStudent">College Student</option>
+                                <option value="Employee">Employee</option>
+                            </select>
+                        </div>
 
                         <label for="password">Password</label>
                         <input type="password" id="password" name="password" placeholder="Enter your Password" required>
@@ -86,7 +97,8 @@
                     </div>
                     <div class="lower-section">
                         <p class="fontSize">
-                            While clicking continue, you agree to our <a href="#" class="links" target="_blank">Terms & Condition</a> and <a href="#" class="links" target="_blank">Privacy Policy</a>
+                            While clicking continue, you agree to our <a href="#" class="links" target="_blank">Terms &
+                                Condition</a> and <a href="#" class="links" target="_blank">Privacy Policy</a>
                         </p>
                     </div>
                 </div>
