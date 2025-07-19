@@ -25,6 +25,8 @@ exports.createSupportDB = async (req, res) => {
 
         await newSupportDb.save();
         console.log("Successful support DB");
+        res.redirect('/support');
+
     } catch(err) {
         console.error(err);
     }
