@@ -43,7 +43,7 @@ const auth = async (req, res) => {
             if (!isMatch) return res.redirect('/error-login');
 
             req.session.user = {
-                id: user.uniqueId,
+                uniqueId: user.uniqueId,
                 role: 'SchoolStudent',
                 name: user.userName
             };
@@ -60,7 +60,7 @@ const auth = async (req, res) => {
             if (!isMatch) return res.redirect('/error-login');
 
             req.session.user = {
-                id: user.uniqueId,
+                uniqueId: user.uniqueId,
                 role: 'CollegeStudent',
                 name: user.userName
             };
@@ -77,7 +77,7 @@ const auth = async (req, res) => {
             if (!isMatch) return res.redirect('/error-login');
 
             req.session.user = {
-                id: user.uniqueId,
+                uniqueId: user.uniqueId,
                 role: 'Employee',
                 name: user.userName
             };

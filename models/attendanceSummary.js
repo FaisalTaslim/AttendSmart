@@ -12,7 +12,8 @@ const attendanceSummarySchema = new Schema({
     },
     totalLectures: {type: Number, default: 0},
     attendedLectures: {type: Number, default: 0},
-    percentage: {type: Number, default: 0}
+    percentage: {type: Number, default: 0},
+    
 }, { timestamps: true });
 
 const attendanceSummaryEmployee = new Schema({
@@ -22,7 +23,16 @@ const attendanceSummaryEmployee = new Schema({
     },
     totalDays: {type: Number, default: 0},
     attendedDays: {type: Number, default: 0},
-    percentage: {type: Number, default: 0}
+    percentage: {type: Number, default: 0},
+    monthlySummary: [
+    {
+        month: String,
+        totalDays: Number,
+        attendedDays: Number,
+        percentage: Number,
+        default: []
+    }]
+
 }, { timestamps: true });
 
 module.exports = {

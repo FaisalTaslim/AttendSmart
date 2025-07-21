@@ -51,7 +51,7 @@ exports.createEmployee = async (req, res) => {
             employee: newEmployee.uniqueId,
             totalDays: 0,
             attendedDays: 0,
-            percentage: 0
+            percentage: 0,
         });
 
         newEmployee.attendanceSummary = summary._id;

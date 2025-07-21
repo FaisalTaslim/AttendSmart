@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Home</title>
     <link rel="stylesheet" href="/css/global/global-layout.css">
+    <link rel="stylesheet" href="/css/global/dB-global.css">
     <link rel="stylesheet" href="/css/page-specific/dashboardHome.css">
     <link rel="stylesheet" href="/css/global/dark-theme.css">
     <link rel="stylesheet" href="/css/global/scrollbar.css">
@@ -77,18 +78,16 @@
         <section class="hero-bg">
             <div class="bg-content">
                 <div class="dashboard-container">
-                    <div class="dashboard-left">
-                        <h2>Choose Your Dashboard</h2>
-                        <button onclick="location.href='/dashboard/school'">Student Dashboard</button>
-                        <button onclick="location.href='/dashboard/employee-c'">Corporate Employees</button>
-                        <button onclick="location.href='/dashboard/employee-e'">Educational Employees</button>
-                        <button onclick="location.href='/dashboard'">Admin Dashboard</button>
-                    </div>
                     <div class="dashboard-right">
                         <h1>Welcome to AttendSmart</h1>
                         <p>Manage attendance with clarity, speed, and control!</p>
                         <p>Choose your dashboard and jump into a smarter system designed for your role.</p>
                         <p class="quote">“Smart systems don’t just track time — they respect it.”</p>
+                    </div>
+                    <div class="dashboard-left">
+                        <h2>Choose Your Dashboard</h2>
+                        <button onclick="location.href='/dashboard/corporateUser'">Corporate Employee</button>
+                        <button onclick="location.href='/dashboard'">Admin Dashboard</button>
                     </div>
                 </div>
             </div>

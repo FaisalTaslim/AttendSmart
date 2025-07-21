@@ -26,6 +26,12 @@ app.use(session({
     }
 }));
 
+app.use((req, res, next) => {
+    res.locals.isAuthenticated = req.session.user ? true : false;
+    res.locals.loggedUser = req.session.user || null;
+    next();
+});
+
 
 const mainRoutes = require('./routes/mainRoutes');
 const registerRoutes = require('./routes/registerRoutes');
@@ -47,7 +53,7 @@ app.use('/api', schoolStudentRoutes);
 app.use('/api', collegeStudentRoutes);
 app.use('/api', employeeRoutes);
 app.use('/api', supportRoute);
-app.use('/auth', loginRoutes)
+app.use('/auth', loginRoutes);
 
 
 const PORT = process.env.PORT || 3000;

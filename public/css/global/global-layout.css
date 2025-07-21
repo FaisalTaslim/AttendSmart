@@ -61,6 +61,11 @@ header {width: 99vw;}
 #menu-toggle {
     cursor: pointer;
 }
+.login-logout {
+    display: flex;
+    flex-direction: row;
+    gap: 1.3rem;
+}
 .font-1 {
     font-family: "Rock Salt", cursive;
     font-weight: 400;
@@ -82,7 +87,7 @@ header {width: 99vw;}
     align-items: center;
     gap: 1.3rem;
 }
-.nav-links>a {
+.nav-links > a, .login-logout > a{
     font-size: 1.1rem;
     text-decoration:none;
     color:var(--text-primary);
@@ -91,7 +96,6 @@ header {width: 99vw;}
     padding: 5px 10px;
     border-radius: 10px;
     border:2px solid var(--border-color);
-    text-align: center;
 }
 .nav-links-property:hover {
     cursor: pointer;

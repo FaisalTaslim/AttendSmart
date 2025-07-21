@@ -1,12 +1,10 @@
-.hero-bg {
-    height: 88vh;
-}
+.hero-bg {height: 88vh;}
 .bg-content {
     height: 83%;
     width: 60%;
     max-width: unset;
     margin: auto;
-    border: 2px solid white;
+    border-bottom: unset;
 }
 .dashboard-container {
     display: flex;
@@ -14,6 +12,8 @@
     gap: 2rem;
     padding: 3rem;
     height: 98%;
+    background-color: var(--bg-secondary);
+    border-radius: 10px;
 }
 .dashboard-left {
     justify-content: center;
@@ -68,4 +68,30 @@
 .dashboard-right .quote {
     font-style: italic;
     color: var(--accent-light, #8ab4f8);
+}
+
+@media screen and (max-width: 480px) {
+    .hero-bg {
+        height: fit-content;
+        border-bottom: unset;
+    }
+    .bg-content {width: 98%;}
+    .dashboard-container {flex-direction: column; padding: 1rem;}
+    .dashboard-left, .dashboard-right {
+        width: 98%;
+        padding: 1rem;
+    }
+}
+
+@media screen and (min-width: 481px) and (max-width: 1024px) {
+    .hero-bg {
+        height: fit-content;
+        border-bottom: unset;
+    }
+    .bg-content {width: 98%;}
+    .dashboard-container {flex-direction: column; padding: 1rem;}
+    .dashboard-left, .dashboard-right {
+        width: 98%;
+        padding: 1rem;
+    }
 }
