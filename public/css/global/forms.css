@@ -11,7 +11,7 @@
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 15px;
 }
 .form-group label {
     font-size: 0.95rem;
@@ -24,13 +24,13 @@
     border: 1px solid var(--border-color);
     border-radius: 10px;
     font-size: 1rem;
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
+    background-color: var(--text-primary);
+    color: black;
     transition: border 0.2s ease;
 }
 .form-group input:focus,
 .form-group select:focus {
     border-color: var(--accent);
     outline: none;
-    background-color: var(--bg-secondary);
+    background-color: var(--text-primary);
 }

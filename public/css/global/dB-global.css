@@ -102,55 +102,42 @@ body {
 }
 .edit-info {
     width: 98%;
+    height: 98%;
+    overflow: auto;
     display: none;
     flex-direction: column;
     gap: 15px;
     justify-content: center;
     align-items: center;
 }
-.leave-and-notices {
+.attendance-overview, .attendance-history {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 98%;
+    overflow: auto;
+}
+.leave-request {
     display: flex; 
     flex-direction: column;
     gap: 15px;
+    overflow: auto;
+    height: 95%;
 }
 .request-leave {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
 }
+.request-leave > h2 {text-align: center;}
 .notices {
     display: none;
+    flex-direction: column;
+    gap: 15px;
     height: 100%;
     width: 98%;
 }
-.leave-notice-btn {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    height: 20%;
-}
-.btn {
-    width: 12rem;
-    padding: 10px 12px;
-    font-size: 16px;
-    font-weight: 500;
-    color: white;
-    background-color: var(--accent);
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
-    transition: background-color 0.25s ease, transform 0.15s ease;
-}
-.btn:hover {
-    background-color: var(--accent-hover);
-    transform: translateY(-1px);
-}
-.fa-pen-to-square {
-    line-height: 30px;
-    color: var(--text-primary);
-    font-size: clamp(1.5rem, 1.2vw, 1.7rem);
-    color: var(--text-primary);
-}
+
 .leave-form {
     display: flex;
     flex-direction: column;
@@ -175,13 +162,30 @@ body {
 }
 .leave-form textarea {height: 150px;}
 .btn:active {transform: scale(0.97);}
-.display-leave-and-notices-contents {
+.display-leave-contents {
     height: 80%;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
+.btn {
+    width: 12rem;
+    padding: 10px 12px;
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+    background-color: var(--accent);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
+    transition: background-color 0.25s ease, transform 0.15s ease;
+}
+.btn:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-1px);
+}
 .warn {color: var(--error);}
 
 @media screen and (max-width: 480px) {
@@ -197,16 +201,30 @@ body {
         padding: 0px;
         margin: 0px;
     }
-    #studentDashboard-heading {
+    #userDashboard-heading {
         width: 98%;
         border: unset;
     }
-    .display-student-details {width: 98%;}
-    .student-pfp {display: none;}
+    .display-user-details {width: 98%;}
+    .user-pfp {display: none;}
     .other-contents {
         flex-direction: column;
         margin:0; padding:10px;
+        height: fit-content;
+        width: 98%;
     }
+    .dashboard-buttons {
+        width: 99%;
+        border: unset;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid var(--border-color);
+    }
+    .dashboard-contents {
+        width: 98%;
+    }
+    .form-flex {width: 98%;}
+    .form-subFlex {flex-direction: column;}
     .warn {text-align: center;}
     .foot-content {gap: 20px}
     .foot1 {gap: 15px}
@@ -224,12 +242,32 @@ body {
         padding-bottom: 15px;
         margin: 0px;
     }
-    #studentDashboard-heading {
+    #userDashboard-heading {
         width: 98%;
         border: unset;
     }
-    .display-student-details {width: 80%;}
-    .other-contents {flex-direction: column;}
+    .display-user-details {width: 80%;}
+    .other-contents {
+        flex-direction: column;
+        margin: 0 auto; 
+        padding:10px;
+        height: fit-content;
+        width: 95%;
+        justify-content: center;
+        align-items: center;
+    }
+    .other-contents > .dashboard-buttons {display: none;}
+    .dashboard-buttons {
+        width: 99%;
+        border: unset;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid var(--border-color);
+    }
+    .dashboard-contents {
+        width: 98%;
+    }
+    .form-flex {width: 98%;}
     .warn {text-align: center;}
     .fontSize, li {
         font-size: 1.2rem;

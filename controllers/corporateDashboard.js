@@ -22,7 +22,7 @@ router.get('/', checkRole(['Employee']), async (req, res) => {
             designation,
             contact,
             email,
-            monthlySummary
+            monthlySummary,
         });
 
     } catch (error) {

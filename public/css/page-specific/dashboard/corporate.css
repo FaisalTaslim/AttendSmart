@@ -18,8 +18,3 @@ td {
 tr:nth-child(even) {
     background-color: var(--bg-primary);
 }
-.attendance-overview {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}

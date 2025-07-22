@@ -43,6 +43,7 @@ const collegeStudentRoutes = require('./routes/collegeStudentRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
 const supportRoute = require('./routes/supportRoute');
 const loginRoutes = require('./routes/loginRoutes');
+const userLeaveRoute = require('./routes/userLeaveRoute');
 
 app.use('/', mainRoutes);
 app.use('/register', registerRoutes);
@@ -54,7 +55,7 @@ app.use('/api', collegeStudentRoutes);
 app.use('/api', employeeRoutes);
 app.use('/api', supportRoute);
 app.use('/auth', loginRoutes);
-
+app.use('/api/request-leave', userLeaveRoute);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
