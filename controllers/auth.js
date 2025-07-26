@@ -26,7 +26,7 @@ const auth = async (req, res) => {
             if (!isMatch) return res.redirect('/error-login');
 
             req.session.user = {
-                id: user.uniqueId,
+                uniqueId: user.uniqueId,
                 role: 'Org',
                 name: user.admin[0].adminName
             };
@@ -47,6 +47,19 @@ const auth = async (req, res) => {
                 role: 'SchoolStudent',
                 name: user.userName
             };
+            const rawIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+            const ip = rawIP?.split(',')[0].trim();
+
+            const findOrg = await Org.findOne({uniqueId: user.org})
+
+            findOrg.logs.push({
+                logType: "loginLogs",
+                ipAddress: ip,
+                activity: `Student: (${user.userName}, roll: ${user.roll}, divison: ${user.division}) with ip: ${ip} logged in.`,
+                timestamp: Date.now()
+            });
+
+            await findOrg.save();
 
             console.log('✅ Logged in School Student!');
             return res.redirect('/dashboard');
@@ -65,6 +78,19 @@ const auth = async (req, res) => {
                 name: user.userName
             };
 
+            const rawIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+            const ip = rawIP?.split(',')[0].trim();
+
+            const findOrg = await Org.findOne({uniqueId: user.org})
+            findOrg.logs.push({
+                logType: "loginLogs",
+                ipAddress: ip,
+                activity: `Student: (${user.userName}, roll: ${user.roll}, dept: ${user.dept}) with ip: ${ip} logged in.`,
+                timestamp: Date.now()
+            });
+
+            await findOrg.save();
+
             console.log('✅ Logged in College Student!');
             return res.redirect('/dashboard');
         }
@@ -81,6 +107,20 @@ const auth = async (req, res) => {
                 role: 'Employee',
                 name: user.userName
             };
+
+            const rawIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+            const ip = rawIP?.split(',')[0].trim();
+
+            const findOrg = await Org.findOne({uniqueId: user.org})
+
+            findOrg.logs.push({
+                logType: "loginLogs",
+                ipAddress: ip,
+                activity: `Employee: (${user.userName}, employeeId: ${user.employeeId}, with ip: ${ip} logged in.`,
+                timestamp: Date.now()
+            });
+
+            await findOrg.save();
 
             console.log('✅ Logged in Employee!');
             return res.redirect('/dashboard');

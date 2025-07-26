@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const orgSchema = new mongoose.Schema({
     uniqueId: {
-        type: String, 
+        type: String,
         required: true,
         unique: true
     },
@@ -30,6 +30,34 @@ const orgSchema = new mongoose.Schema({
     orgContact: {type: String, trim: true},
     orgEmail: {type: String, trim: true},
     orgWebsite: {type: String},
+    expectedEmployees: {type: Number, required: true},
+    expectedStudents: {
+        type: Number,  
+        default: 0
+    },
+    registeredEmployees: {
+        type: Number,
+        default: 0
+    },
+    registeredStudents: {
+        type: Number,
+        default: 0
+    },
+    logs: [
+        {
+            logType: {
+                type: String,
+                enum: ['registerLogs', 'loginLogs', 'editLogs', 'supportLogs'],
+                required: true
+            },
+            activity: {type: String, required: true},
+            timestamp: {type: Date, default: Date.now},
+            ipAddress: {
+                type: String
+            },
+        }
+    ],
+    employeeCode: {type: String, required: true, default: ""},
     termsCheck: {type: String, default: "not accepted", required: true}
 
 }, { timestamps: true });

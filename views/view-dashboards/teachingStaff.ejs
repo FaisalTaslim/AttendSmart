@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teaching Staff</title>
+    <link rel="stylesheet" href="/css/global/global-layout.css">
+    <link rel="stylesheet" href="/css/global/forms.css">
+    <link rel="stylesheet" href="/css/global/dB-global.css">
+    <link rel="stylesheet" href="/css/page-specific/dashboard/corporate.css">
+    <link rel="stylesheet" href="/css/global/dark-theme.css">
+    <link rel="stylesheet" href="/css/global/scrollbar.css">
+
+    <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Underdog&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Pacifico&family=Rock+Salt&family=WDXL+Lubrifont+TC&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav id="navbar" class="">
+            <div class="nav-group1">
+                <div class="logo">
+                    <p class="font-1"><strong>AttendSmart</strong></p>
+                </div>
+                <div class="nav-links">
+                    <a href="/" class="nav-links-property hide">Home</a>
+                    <a href="/getStarted" class="nav-links-property hide" id="getting-started">Getting Started</a>
+                </div>
+            </div>
+            <div class="nav-group2">
+                <div class="nav-links">
+                    <a href="/dashboard" class="nav-links-property hide">Dashboard</a>
+                    <a href="/support" class="nav-links-property hide">Support</a>
+                    <a href="/log" class="nav-links-property hide">Logs</a>
+                    <a href="/register" class="nav-links-property hide" id="register">Register</a>
+                    <div class="login-logout">
+                        <% if (!isAuthenticated) { %>
+                            <a href="/login" class="nav-links-property">Login</a>
+                            <% } else { %>
+                                <a href="/logout" class="nav-links-property hide">Logout</a>
+                                <% } %>
+                    </div>
+                    <p class="nav-links-property"><i class="fa-solid fa-moon"></i></p>
+                    <p class="nav-links-property" id="sun"><i class="fa-regular fa-sun"></i></p>
+                    <p class="nav-links-property" id="menu-toggle"><i class="fa-solid fa-bars"></i></p>
+                </div>
+            </div>
+
+            <div class="slide-menu">
+                <div class="nav-close-icon">
+                    <p class="sidemenu-heading"><strong>AttendSmart</strong></p>
+                    <p class="nav-links-property"><i class="fa-solid fa-xmark" id="close-toggle"></i></p>
+                </div>
+                <div class="slide-menu-links">
+                    <a href="/getStarted" class="nav-links-property" id="getting-started">Getting Started</a>
+                    <a href="/dashboard" class="nav-links-property">Dashboard</a>
+                    <a href="/support" class="nav-links-property">Support</a>
+                    <a href="/log" class="nav-links-property">Logs</a>
+                    <a href="/register" class="nav-links-property" id="register">Register</a>
+                    <a href="/login" class="nav-links-property">Login</a>
+                </div>
+                <div class="slide-menu-links">
+                    <h3>Dashboard Navigation</h3>
+                    <button class="btn" id="attendance-overview">Attendance Overview</button>
+                    <button class="btn" id="history">Attendance History</button>
+                    <button class="btn" id="edit">Edit info</button>
+                    <button class="btn" id="notice">Notices</button>
+                    <button class="btn" id="leave">Request a Leave</button>
+                    <button class="btn" id="mark">Mark Attendance</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="hero-bg">
+            <div class="bg-content">
+                <div id="userDashboard-heading">
+                    <h1>Welcome, <%= userName %>!</h1>
+                    <p>Mark Attendance!</p>
+                    <p>Apply for leave, and check notices</p>
+                    <p>Get your Reports, History and Summaries</p>
+                </div>
+                <div class="display-user-details">
+                    <div class="user-basic-details">
+                        <h1>Employee Details</h1>
+                        <p id="userId">
+                            <strong>uniqueID: </strong>
+                            &nbsp;<%= uniqueId %>
+                        </p>
+                        <p id="employeeId">
+                            <strong>EmployeeId: </strong>
+                            &nbsp;<%= employeeId %>
+                        </p>
+                        <p id="userName">
+                            <strong>userName: </strong>
+                            &nbsp;<%= userName %>
+                        </p>
+                        <p id="designation">
+                            <strong>Role: </strong>
+                            &nbsp;<%= designation %>
+                        </p>
+                        <p id="contact">
+                            <strong>Contact: </strong>
+                            &nbsp;<%= contact %>
+                        </p>
+                        <p id="email">
+                            <strong>Email: </strong>
+                            &nbsp;<%= email %>
+                        </p>
+                    </div>
+                    <div class="user-pfp">
+                        <div class="profile-image"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="other-contents">
+                <div class="dashboard-buttons">
+                    <h2>Navigate Your Dashboard</h2>
+                    <button class="btn" id="attendance-overview">Attendance Overview</button>
+                    <button class="btn" id="history">Attendance History</button>
+                    <button class="btn" id="edit">Edit info</button>
+                    <button class="btn" id="notice">Notices</button>
+                    <button class="btn" id="leave">Request a Leave</button>
+                    <button class="btn" id="mark">Mark Attendance</button>
+                    <button class="btn" id="edit-attendance">Edit Student Attendance</button>
+                    <button class="btn" id="get-report">Get Student report</button>
+                </div>
+                <div class="dashboard-contents">
+                    <div class="attendance-overview">
+                        <h2 style="text-align: center;">Monthly Attendance Summary</h2>
+                    </div>
+                    <div class="edit-info">
+                        <h1 style="margin-bottom: 1rem; text-align: center;">Edit Account Details</h1>
+                        <form class="form-flex">
+                            <div class="form-subFlex">
+                                <div class="form-group">
+                                    <label for="uniqueId">unique ID</label>
+                                    <input type="text" name="uniqueId" id="uniqueId" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="userName">Name</label>
+                                    <input type="text" name="userName" id="userName">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="employeeId">Employee ID</label>
+                                    <input type="text" name="employeeId" id="employeeId">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" id="email">
+                            </div>
+
+                            <div class="form-subFlex">
+                                <div class="form-group">
+                                    <label for="designation">Designation</label>
+                                    <input type="text" name="designation" id="designation">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="contact">Contact</label>
+                                    <input type="tel" name="contact" id="contact">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn">Submit</button>
+                        </form>
+                    </div>
+                    <div class="leave-request attendance-status">
+                        <div class="request-leave">
+                            <h2>Request a Leave</h2>
+                            <form class="leave-form form-group" action="/api/request-leave" method="POST">
+                                <label for="leave-date">Select Start Date:</label>
+                                <input type="date" id="leave-date" name="leaveStartDate" required>
+
+                                <label for="leave-date">Select End Date:</label>
+                                <input type="date" id="leave-date" name="leaveEndDate" required>
+
+                                <label for="reason">Reason:</label>
+                                <select name="leaveType">
+                                    <option>-- Select --</option>
+                                    <option value="Sick Leave">Sick Leave</option>
+                                    <option value="Casual Leave">Casual Leave</option>
+                                    <option value="Emergency">Emergency</option>
+                                    <option value="Unpaid Leave">Unpaid Leave</option>
+                                </select>
+                                <textarea id="reason" name="reason" rows="3" placeholder="Write your reason..."
+                                    required></textarea>
+
+                                <button type="submit" class="btn">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="notices">
+
+                    </div>
+                    <div class="attendance-history">
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="foot-content">
+            <div class="foot1">
+                <div class="useful-links">
+                    <p><strong>Useful-links</strong></p>
+                    <a href="/register" class="links foot-links" target="_blank">Register</a>
+                    <a href="/support" class="links foot-links" target="_blank">Support</a>
+                    <a href="/log" class="links foot-links" target="_blank">LogBook</a>
+                    <a href="/dashboard" class="links foot-links" target="_blank">Dashboard</a>
+                </div>
+                <div class="legal">
+                    <p><strong>Legal</strong></p>
+                    <a href="/terms" class="links foot-links" target="_blank">Terms & conditions</a>
+                    <a href="/privacy" class="links foot-links" target="_blank">Privacy Policy</a>
+                    <a href="/refund" class="links foot-links" target="_blank">Refund Policy</a>
+                </div>
+            </div>
+            <div class="foot2">
+                <div class="socials">
+                    <p><strong>Socials</strong></p>
+                    <a href="#" class="links foot-links" target="_blank"><i class="fa-brands fa-instagram"></i> |
+                        @faisal_9542</a>
+                    <a href="#" class="links foot-links" target="_blank"><i class="fa-brands fa-discord"></i> |
+                        @famaeoxiaa</a>
+                    <a href="#" class="links foot-links" target="_blank"><i class="fa-brands fa-github"></i> |
+                        @FaisalTaslim</a>
+                </div>
+                <div class="contacts">
+                    <p><strong>Contacts</strong></p>
+                    <p><i class="fa-solid fa-phone"></i> | +91 7449925137 </p>
+                    <p><i class="fa-solid fa-envelope"></i> | mailto: support@attendsmart.io</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/global/sideNav.js"></script>
+    <script src="/js/global/update-footerLayout-for-tablets.js"></script>
+    <script src="/js/page-specific/dashboard/change-content.js"></script>
+    <script src="/js/page-specific/dashboard/switch-contents-corp.js"></script>
+</body>
+
+</html>

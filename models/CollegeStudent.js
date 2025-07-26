@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const collegeStudentSchema = new Schema({
+    org: {type: String, required: true},
     uniqueId: {type: String, required: true, unique: true},
-    org: { type: Schema.Types.ObjectId, ref: 'org' },
     userName: {
         type: String,
         required: true,
@@ -25,12 +25,22 @@ const collegeStudentSchema = new Schema({
         },
         trim: true
     },
-    password: {type: String, required: true, trim: true},
-    
-    attendanceSummary: [{ type: Schema.Types.ObjectId, ref: 'attendanceSummary' }],
-    attendanceHistory: [{ type: Schema.Types.ObjectId, ref: 'attendanceHistory' }],
-    termsCheck: {type: String, required: true, default: "not-accepted"}
-    
+    subjects: {
+        type: [String],
+        required: true
+    },
+    password: {type: String, required: true, trim: true, unique: true},
+
+    attendanceSummary: [{type: Schema.Types.ObjectId, ref: 'attendanceSummary'}],
+    attendanceHistory: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'attendanceHistory'
+        }
+    ],
+
+    termsCheck: { type: String, required: true, default: "not-accepted" }
+
 }, { timestamps: true });
 
 module.exports = mongoose.model('collegeStudent', collegeStudentSchema);

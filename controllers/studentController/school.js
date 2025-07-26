@@ -30,44 +30,62 @@ exports.createSchoolStudent = async (req, res) => {
         counterDoc.newStudentValue = newSchoolStudentNumber;
         await counterDoc.save();
 
-        const findOrg = await Org.findOne({ orgName, orgBranch });
-        if (!findOrg)
-            return res.send(`<h2>❌ Error: Organization not found</h2>`);
-
-        const newStudent = await schoolStudent.create({
-            orgId: findOrg._id,
-            uniqueId: newSchoolStudentNumber,
-            userName,
-            roll,
-            division,
-            contact,
-            email,
-            password: hashedPassword,
-            termsCheck,
-            attendanceSummary: []
+        const findOrg = await Org.findOne({
+            orgName: { $regex: new RegExp(`^${orgName}$`, 'i') },
+            orgBranch: { $regex: new RegExp(`^${orgBranch}$`, 'i') }
         });
 
-        const subjects = Array.isArray(subjectName) ? subjectName : [subjectName];
-        const filteredSubjects = subjects.filter(subject => subject && subject.trim() !== "");
+        if (!findOrg)
+            return res.send(`<h2>❌ Error: Organization not found</h2>`);
+        else {
+            const subject = Array.isArray(subjectName) ? subjectName : [subjectName];
+            const filteredSubjects = subject.filter(subject => subject && subject.trim() !== "");
 
-        for (const subject of filteredSubjects) {
-            const summary = {
-                student: newStudent.uniqueId,
-                subjectName: subject,
-                totalLectures: 0,
-                attendedLectures: 0,
-                percentage: 0
-            };
+            const newStudent = await schoolStudent.create({
+                orgId: findOrg.uniqueId,
+                uniqueId: newSchoolStudentNumber,
+                userName,
+                roll,
+                division,
+                contact,
+                email,
+                password: hashedPassword,
+                termsCheck,
+                subjects: filteredSubjects,
+                attendanceSummary: []
+            });
 
-            const createdSummary = await StudentSummary.create(summary);
-            console.log(`✅ Attendance summary created: ${createdSummary.subjectName}`);
+            for (const subject of filteredSubjects) {
+                const summary = {
+                    student: newStudent.uniqueId,
+                    subjectName: subject,
+                    totalLectures: 0,
+                    attendedLectures: 0,
+                    percentage: 0
+                };
 
-            newStudent.attendanceSummary.push(createdSummary._id);
+                const createdSummary = await StudentSummary.create(summary);
+                console.log(`✅ Attendance summary created: ${createdSummary.subjectName}`);
+
+                newStudent.attendanceSummary.push(createdSummary._id);
+            }
+
+            await newStudent.save();
+
+            const rawIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+            const ip = rawIP?.split(',')[0].trim();
+
+            findOrg.logs.push({
+                logType: "registerLogs",
+                ipAddress: ip,
+                activity: `New college student (${userName}, roll: ${newStudent.roll}, dept: ${newStudent.division}) registered.`,
+                timestamp: Date.now()
+            });
+
+            findOrg.registeredStudents += 1;
+
+            res.redirect('/login')
         }
-
-        await newStudent.save();
-
-        res.send(`<h2>✅ Student created and attendance summaries saved!</h2>`);
 
     } catch (err) {
         console.error(err);

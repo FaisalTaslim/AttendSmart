@@ -13,6 +13,7 @@ app.use(express.json());
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.set('trust proxy', true);
 
 const session = require('express-session');
 
@@ -34,16 +35,17 @@ app.use((req, res, next) => {
 
 
 const mainRoutes = require('./routes/mainRoutes');
-const registerRoutes = require('./routes/registerRoutes');
+const registerRoutes = require('./routes/registerViews');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 
-const orgRoutes = require('./routes/orgRoutes');
-const schoolStudentRoutes = require('./routes/schoolStudentRoutes');
-const collegeStudentRoutes = require('./routes/collegeStudentRoutes');
-const employeeRoutes = require('./routes/employeeRoutes');
-const supportRoute = require('./routes/supportRoute');
+const orgRoutes = require('./routes/createOrg');
+const schoolStudentRoutes = require('./routes/createScStdn');
+const collegeStudentRoutes = require('./routes/createClgStdn');
+const employeeRoutes = require('./routes/createEmp');
+const supportRoute = require('./routes/createSupport');
 const loginRoutes = require('./routes/loginRoutes');
 const userLeaveRoute = require('./routes/userLeaveRoute');
+const qrRoutes = require('./routes/qrRoutes');
 
 app.use('/', mainRoutes);
 app.use('/register', registerRoutes);
@@ -56,8 +58,9 @@ app.use('/api', employeeRoutes);
 app.use('/api', supportRoute);
 app.use('/auth', loginRoutes);
 app.use('/api/request-leave', userLeaveRoute);
+app.use('/get-qr-employee', qrRoutes);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });

@@ -4,7 +4,6 @@ const router = express.Router();
 
 const viewsPath = path.join(__dirname, '../views');
 
-// Route map for static HTML pages
 const routes = {
     '/': 'index.html',
     '/login': 'login.html',

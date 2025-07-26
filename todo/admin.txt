@@ -1,0 +1,93 @@
+Perfect, Faisal! That simplifies the Admin Dashboard for now — no live session timers, just **QR-based attendance** control. That still gives us plenty to work with, and you can always upgrade it later.
+
+Here’s how you can **tailor the Admin Dashboard** based on QR-only attendance:
+
+---
+
+### 🎯 **Admin Dashboard Features (QR-Based Attendance Only)**
+
+#### ✅ 1. **Generate QR Code for Attendance**
+
+* Allow admin to generate a **one-time QR code**.
+* Options:
+
+  * For a specific **class/department**.
+  * For a **particular date/time slot**.
+* Can be shown on screen or downloaded as PNG.
+
+> You can generate this QR on server-side using a library like `qrcode` in Node.js.
+
+---
+
+#### ✅ 2. **View Attendance Records**
+
+* See a **table or chart** view of all attendance logs submitted via QR.
+* Filters:
+
+  * By class
+  * By student
+  * By date
+* You can show stats like:
+
+  * Total present
+  * Total absent
+  * No. of entries via QR
+
+---
+
+#### ✅ 3. **Manual Attendance Edit**
+
+* Admin can search and **manually add/edit** entries if a student missed marking via QR.
+* Add a **“+ Add Attendance”** or **“Fix Attendance”** button.
+
+---
+
+#### ✅ 4. **User Management**
+
+* Add/Edit/Delete:
+
+  * Teachers
+  * Students
+  * Other admins
+* Assign roles and permissions.
+
+---
+
+#### ✅ 5. **Export Attendance Data**
+
+* Export CSV or Excel reports (daily, monthly, class-wise).
+* Helps when colleges or companies want to archive it.
+
+---
+
+#### ✅ 6. **Leave Application Handling** (optional but neat)
+
+* Students can apply for leave if they missed scanning the QR.
+* Admin reviews and marks **Approved** or **Rejected**.
+* Automatically updates the attendance logs.
+
+---
+
+### 🧠 Suggested Admin Sidebar Layout (Simple and Neat)
+
+```
+- Dashboard
+- Generate QR
+- Attendance Logs
+- Manage Users
+- Edit Attendance
+- Export Reports
+```
+
+You don’t need the live session or timer-based stuff for now. This QR-focused structure keeps things clean and still very practical 💡
+
+---
+
+If you want help building:
+
+* The route for QR generation
+* Attendance log table with filters
+* A user-friendly form to edit attendance
+
+...just give me a nudge! 😎
+Want me to help sketch the folder structure and pages needed for this version?

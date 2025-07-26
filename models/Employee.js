@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const employeeSchema = new Schema({
+    org: { type: String, required: true},
     uniqueId: {
         type: String, 
         required: true,
@@ -13,7 +14,6 @@ const employeeSchema = new Schema({
         trim: true
     },
     employeeId: { type: String, required: true},
-    org: { type: Schema.Types.ObjectId, ref: 'org' },
     workType: {
         type: String,
         enum: ['school_college', 'corporate'],
@@ -34,7 +34,8 @@ const employeeSchema = new Schema({
     password: { type: String, required: true, trim: true },
     attendanceSummary: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'summaryEmployee'
+        ref: 'summaryEmployee',
+        default: null
     },
     attendanceHistory: [{ type: Schema.Types.ObjectId, ref: 'attendanceHistory' }],
     termsCheck: {type: String, required: true}

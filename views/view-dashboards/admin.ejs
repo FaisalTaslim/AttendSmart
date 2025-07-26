@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Home</title>
+    <title>Teaching Staff</title>
     <link rel="stylesheet" href="/css/global/global-layout.css">
+    <link rel="stylesheet" href="/css/global/forms.css">
     <link rel="stylesheet" href="/css/global/dB-global.css">
-    <link rel="stylesheet" href="/css/page-specific/dashboardHome.css">
+    <link rel="stylesheet" href="/css/page-specific/dashboard/admin.css">
     <link rel="stylesheet" href="/css/global/dark-theme.css">
     <link rel="stylesheet" href="/css/global/scrollbar.css">
 
@@ -40,7 +41,13 @@
                     <a href="/support" class="nav-links-property hide">Support</a>
                     <a href="/log" class="nav-links-property hide">Logs</a>
                     <a href="/register" class="nav-links-property hide" id="register">Register</a>
-                    <a href="/login" class="nav-links-property hide">Login</a>
+                    <div class="login-logout">
+                        <% if (!isAuthenticated) { %>
+                            <a href="/login" class="nav-links-property">Login</a>
+                            <% } else { %>
+                                <a href="/logout" class="nav-links-property hide">Logout</a>
+                                <% } %>
+                    </div>
                     <p class="nav-links-property"><i class="fa-solid fa-moon"></i></p>
                     <p class="nav-links-property" id="sun"><i class="fa-regular fa-sun"></i></p>
                     <p class="nav-links-property" id="menu-toggle"><i class="fa-solid fa-bars"></i></p>
@@ -60,16 +67,9 @@
                     <a href="/register" class="nav-links-property" id="register">Register</a>
                     <a href="/login" class="nav-links-property">Login</a>
                 </div>
-                <div class="quick-buttons-slide-menu">
-                    <p class="sidemenu-heading"><strong>Quick Buttons</strong></p>
-                    <div class="edit-tasks">
-                        <button onclick="editInfo()">Edit Info</button>
-                        <button>Change Password</button>
-                    </div>
-                    <div class="student-tasks">
-                        <button onclick="startSession()">Join Session</button>
-                        <button onclick="startSession()">Join Classroom</button>
-                    </div>
+                <div class="slide-menu-links">
+                    <h3>Dashboard Navigation</h3>
+                    <button class="btn" id="attendance-overview">Attendance Overview</button>
                 </div>
             </div>
         </nav>
@@ -77,20 +77,87 @@
     <main>
         <section class="hero-bg">
             <div class="bg-content">
-                <div class="dashboard-container">
-                    <div class="dashboard-right">
-                        <h1>Welcome to AttendSmart</h1>
-                        <p>Manage attendance with clarity, speed, and control!</p>
-                        <p>Choose your dashboard and jump into a smarter system designed for your role.</p>
-                        <p class="quote">“Smart systems don’t just track time — they respect it.”</p>
+                <div id="userDashboard-heading">
+                    <h1>Welcome, <%= adminName %>
+                    </h1>
+                    <p>Mark Attendance!</p>
+                    <p>Apply for leave, and check notices</p>
+                    <p>Get your Reports, History and Summaries</p>
+                </div>
+                <div class="display-user-details">
+                    <div class="user-basic-details">
+                        <h1>Admin Details</h1>
+                        <p id="userId">
+                            <strong>uniqueID: </strong>
+                            &nbsp;<%= uniqueId %>
+                        </p>
+                        <p id="userName">
+                            <strong>userName: </strong>
+                            &nbsp;<%= adminName %>
+                        </p>
+                        <p id="adminId">
+                            <strong>Admin ID: </strong>
+                            &nbsp;<%= adminId %>
+                        </p>
+                        <p id="contact">
+                            <strong>Contact: </strong>
+                            &nbsp;<%= adminContact %>
+                        </p>
+                        <p id="email">
+                            <strong>Email: </strong>
+                            &nbsp;<%= adminEmail %>
+                        </p>
                     </div>
-                    <div class="dashboard-left">
-                        <h2>Choose Your Dashboard</h2>
-                        <button onclick="location.href='/dashboard/schoolUser'">School Students</button>
-                        <button onclick="location.href='/dashboard/collegeUser'">College Students</button>
-                        <button onclick="location.href='/dashboard/teachingStaff'">Teaching Staff</button>
-                        <button onclick="location.href='/dashboard/corporateUser'">Corporate Employee</button>
-                        <button onclick="location.href='/dashboard/admin'">Admin Dashboard</button>
+                    <div class="user-pfp">
+                        <div class="profile-image"></div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="other-contents">
+                <div class="dashboard-buttons">
+                    <h2>Navigate Your Dashboard</h2>
+                    <button class="btn" onclick="window.open('/get-qr-employee', '_blank')">Generate Employee QR</button>
+                    <button class="btn">Generate Student QR</button>
+                    <button class="btn" id="browse-logs">Browse Logs</button>
+                </div>
+                <div class="dashboard-contents">
+                    <div class="view-logs">
+                        <div class="audit-log-heading">
+                            <h2>Audit Log</h2>
+                            <form method = "GET" action = "" id="filterForm" style="margin-bottom: 20px;">
+                                <label for="logFilter">Filter By:</label>
+                                <select id="logFilter" name="logType">
+                                    <option value="all">All Logs</option>
+                                    <option value="registerLogs">Register Logs</option>
+                                    <option value="supportLogs">Support Logs</option>
+                                    <option value="loginLogs">Login Logs</option>
+                                    <option value="editLogs">Edit Logs</option>
+                                </select>
+                            </form>
+                        </div>
+
+                        <div class="log-entries">
+                            <% if (logs.length === 0) { %>
+                                <p>No logs found.</p>
+                            <% } else { %>
+                                <% logs.forEach(log => { %>
+                                    <div class="style-logs log-item" data-type="<%= log.logType %>">
+                                        <h3 style="margin-bottom: 8px;">
+                                            <strong>Type:</strong>
+                                            <%= log.logType === 'registerLogs' ? 'Register Log' :
+                                                log.logType === 'supportLogs' ? 'Support Log' :
+                                                log.logType === 'loginLogs' ? 'Login Log' :
+                                                log.logType === 'editLogs' ? 'Edit Log' :
+                                            %>
+                                        </h3>
+                                        <p><strong>Activity:</strong> <%= log.activity %></p>
+                                        <p><strong>Timestamp:</strong> <%= new Date(log.timestamp).toLocaleString() %></p>
+                                        <p><strong>IP Address:</strong> <%= log.ipAddress || "N/A" %></p>
+                                    </div>
+                                <% }) %>
+                            <% } %>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -133,6 +200,8 @@
     </footer>
     <script src="/js/global/sideNav.js"></script>
     <script src="/js/global/update-footerLayout-for-tablets.js"></script>
-</body>
+    <script src="/js/page-specific/dashboard/change-content.js"></script>
+    <script src="/js/page-specific/dashboard/switch-contents-corp.js"></script>
+    <script src="/js/page-specific/dashboard/auditLog.js"></script>
 
 </html>
