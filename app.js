@@ -45,7 +45,8 @@ const employeeRoutes = require('./routes/createEmp');
 const supportRoute = require('./routes/createSupport');
 const loginRoutes = require('./routes/loginRoutes');
 const userLeaveRoute = require('./routes/userLeaveRoute');
-const qrRoutes = require('./routes/qrRoutes');
+const { router: qrRoutes } = require('./routes/qrRoutes');
+const qrRoutesTeacher = require('./routes/qrRoutesTeacher');
 
 app.use('/', mainRoutes);
 app.use('/register', registerRoutes);
@@ -59,6 +60,7 @@ app.use('/api', supportRoute);
 app.use('/auth', loginRoutes);
 app.use('/api/request-leave', userLeaveRoute);
 app.use('/get-qr-employee', qrRoutes);
+app.use('/get-qr-student', qrRoutesTeacher);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {

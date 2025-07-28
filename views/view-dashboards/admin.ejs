@@ -117,17 +117,18 @@
             <div class="other-contents">
                 <div class="dashboard-buttons">
                     <h2>Navigate Your Dashboard</h2>
-                    <button class="btn" onclick="window.open('/get-qr-employee', '_blank')">Generate Employee QR</button>
-                    <button class="btn">Generate Student QR</button>
+                    <button class="btn" onclick="window.open('/get-qr-employee', '_blank')">Generate Employee
+                        QR</button>
+                    <button class="btn">Manage Users</button>
                     <button class="btn" id="browse-logs">Browse Logs</button>
                 </div>
                 <div class="dashboard-contents">
                     <div class="view-logs">
                         <div class="audit-log-heading">
                             <h2>Audit Log</h2>
-                            <form method = "GET" action = "" id="filterForm" style="margin-bottom: 20px;">
+                            <form method="GET" action="" id="filterForm" style="margin-bottom: 20px;">
                                 <label for="logFilter">Filter By:</label>
-                                <select id="logFilter" name="logType">
+                                <select class='logFilter' id="logFilter" name="logType">
                                     <option value="all">All Logs</option>
                                     <option value="registerLogs">Register Logs</option>
                                     <option value="supportLogs">Support Logs</option>
@@ -138,25 +139,74 @@
                         </div>
 
                         <div class="log-entries">
-                            <% if (logs.length === 0) { %>
+                            <% if (logs.length===0) { %>
                                 <p>No logs found.</p>
-                            <% } else { %>
-                                <% logs.forEach(log => { %>
-                                    <div class="style-logs log-item" data-type="<%= log.logType %>">
-                                        <h3 style="margin-bottom: 8px;">
-                                            <strong>Type:</strong>
-                                            <%= log.logType === 'registerLogs' ? 'Register Log' :
-                                                log.logType === 'supportLogs' ? 'Support Log' :
-                                                log.logType === 'loginLogs' ? 'Login Log' :
-                                                log.logType === 'editLogs' ? 'Edit Log' :
-                                            %>
-                                        </h3>
-                                        <p><strong>Activity:</strong> <%= log.activity %></p>
-                                        <p><strong>Timestamp:</strong> <%= new Date(log.timestamp).toLocaleString() %></p>
-                                        <p><strong>IP Address:</strong> <%= log.ipAddress || "N/A" %></p>
-                                    </div>
-                                <% }) %>
-                            <% } %>
+                                <% } else { %>
+                                    <% logs.forEach(log=> { %>
+                                        <div class="style-logs log-item" data-type="<%= log.logType %>">
+                                            <h3 style="margin-bottom: 8px;">
+                                                <strong>Type:</strong>
+                                                <%= log.logType==='registerLogs' ? 'Register Log' :
+                                                    log.logType==='supportLogs' ? 'Support Log' :
+                                                    log.logType==='loginLogs' ? 'Login Log' : log.logType==='editLogs'
+                                                    ? 'Edit Log' : 'Unknown Log' %>
+                                            </h3>
+                                            <p><strong>Activity:</strong>
+                                                <%= log.activity %>
+                                            </p>
+                                            <p><strong>Timestamp:</strong>
+                                                <%= new Date(log.timestamp).toLocaleString() %>
+                                            </p>
+                                            <p><strong>IP Address:</strong>
+                                                <%= log.ipAddress || "N/A" %>
+                                            </p>
+                                        </div>
+                                        <% }) %>
+                                            <% } %>
+                        </div>
+                    </div>
+                    <div class="manage-users">
+                        <div class="manage-users-heading">
+                            <h2>Manage Users</h2>
+                            <form style="margin-bottom: 20px;">
+                                <label for="logFilter">Filter By:</label>
+                                <select class='logFilter' id="logFilterUsers" name="logType">
+                                    <option value="all">-- Users --</option>
+                                    <option value="registerLogs">Students</option>
+                                    <option value="supportLogs">Employees</option>
+                                </select>
+                                <% if(orgType==='college' ) { %>
+                                    <select class='logFilter' id="logFilterDept" name="department">
+                                        <option value="all">-- Department --</option>
+                                        <option value="CSE">CSE</option>
+                                        <option value="ME">ME</option>
+                                        <option value="ECE">ECE</option>
+                                        <option value="EEE">EEE</option>
+                                        <option value="IT">IT</option>
+                                        <option value="EE">EE</option>
+                                        <option value="CE">CE</option>
+                                    </select>
+                                    <% } else if(orgType==='school' ) { %>
+                                        <select class='logFilter' id="logFilterStandard" name="department">
+                                            <option value="all">-- Department --</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>
+                                    <% } %>
+                            </form>
+                        </div>
+                        <div class="manage-users-table">
+                            
                         </div>
                     </div>
                 </div>

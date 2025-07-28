@@ -1,0 +1,15 @@
+.divide-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+.user-specific {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+.student-specific {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}

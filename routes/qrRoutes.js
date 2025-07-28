@@ -4,7 +4,7 @@ const ensureLoggedIn = require('../middleware/authMiddleware');
 const Org = require('../models/Org');
 const QRCode = require('qrcode');
 
-function generateEmployeeCode(length = 6) {
+function generateUserCode(length = 6) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let code = '';
     for (let i = 0; i < length; i++) {
@@ -22,7 +22,7 @@ router.get('/', ensureLoggedIn, async (req, res) => {
             return res.status(404).send('Organization not found');
         }
 
-        const code = generateEmployeeCode();
+        const code = generateUserCode();
         getOrg.employeeCode = code;
         await getOrg.save();
 
@@ -41,5 +41,7 @@ router.get('/', ensureLoggedIn, async (req, res) => {
         res.status(500).send('Could not generate QR code');
     }
 });
-
-module.exports = router;
+module.exports = {
+    router,
+    generateUserCode
+};

@@ -57,7 +57,6 @@ const orgSchema = new mongoose.Schema({
             },
         }
     ],
-    employeeCode: {type: String, required: true, default: ""},
     termsCheck: {type: String, default: "not accepted", required: true}
 
 }, { timestamps: true });

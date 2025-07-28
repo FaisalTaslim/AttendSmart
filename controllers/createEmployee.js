@@ -11,6 +11,7 @@ exports.createEmployee = async (req, res) => {
             employeeId,
             workType,
             designation,
+            dept,
             contact,
             email,
             password,
@@ -43,6 +44,7 @@ exports.createEmployee = async (req, res) => {
                 org: findOrg.uniqueId,
                 userName,
                 employeeId,
+                dept,
                 workType,
                 designation,
                 contact,
@@ -71,6 +73,7 @@ exports.createEmployee = async (req, res) => {
             });
 
             findOrg.registeredEmployees += 1;
+            await findOrg.save();
 
             res.redirect('/login')
         }

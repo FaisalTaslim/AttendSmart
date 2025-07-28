@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const employeeSchema = new Schema({
-    org: { type: String, required: true},
+    org: {type: String, required: true},
     uniqueId: {
         type: String, 
         required: true,
@@ -14,6 +14,7 @@ const employeeSchema = new Schema({
         trim: true
     },
     employeeId: { type: String, required: true},
+    dept: {type: String, default: ""},
     workType: {
         type: String,
         enum: ['school_college', 'corporate'],

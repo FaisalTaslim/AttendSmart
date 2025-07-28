@@ -8,7 +8,7 @@ router.get('/', checkRole(['Org']), async (req, res) => {
         const user = req.session.user.uniqueId;
         const findUser = await Org.findOne({ uniqueId: user });
 
-        const {uniqueId, admin} = findUser;
+        const {uniqueId, admin, orgType} = findUser;
         const adminId = admin[0]?.adminId;
         const adminName = admin[0]?.adminName;
         const adminEmail = admin[0]?.adminEmail;
@@ -23,6 +23,7 @@ router.get('/', checkRole(['Org']), async (req, res) => {
             adminContact,
             adminEmail,
             logs,
+            orgType
         });
 
     } catch (error) {

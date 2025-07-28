@@ -1,6 +1,7 @@
 const Counter = require('../models/counter');
 const bcrypt = require('bcrypt');
 const Org = require('../models/Org');
+const SessionLog = require('../models/sessionLog');
 
 exports.createOrg = async (req, res) => {
     try {

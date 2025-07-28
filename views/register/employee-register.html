@@ -78,7 +78,8 @@
                 </div>
 
                 <div class="right-side">
-                    <form action="/api/register-employee" class="employee-form-wrapper" id="employee-form" method="POST">
+                    <form action="/api/register-employee" class="employee-form-wrapper" id="employee-form"
+                        method="POST">
                         <h2 class="form-title">Employee Registration</h2>
 
                         <div class="form-section">
@@ -98,6 +99,10 @@
                                         <input type="text" id="designation" name="designation"
                                             placeholder="e.g. Developer, Teacher etc" required>
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="empDept">Department</label>
+                                    <input type="text" id="empDept" name="dept" placeholder="Use abbreviations. Eg: CSE, ECE. Leave Empty if you're an Employee in a school"/>
                                 </div>
                                 <div class="form-group">
                                     <label for="workType">Works in</label>
@@ -134,7 +139,8 @@
                             </div>
                         </div>
                         <div class="form-group"
-                            style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0px;" id="register-terms">
+                            style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0px;"
+                            id="register-terms">
                             <input type="checkbox" id="termsCheck" name="termsCheck" required>
                             <label for="termsCheck" style="font-size: 0.95rem; color: var(--text-secondary);">
                                 I agree to the

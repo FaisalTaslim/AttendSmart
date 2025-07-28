@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/global/global-layout.css">
     <link rel="stylesheet" href="/css/global/forms.css">
     <link rel="stylesheet" href="/css/global/dB-global.css">
-    <link rel="stylesheet" href="/css/page-specific/dashboard/corporate.css">
+    <link rel="stylesheet" href="/css/page-specific/dashboard/teachingStaff.css">
     <link rel="stylesheet" href="/css/global/dark-theme.css">
     <link rel="stylesheet" href="/css/global/scrollbar.css">
 
@@ -124,14 +124,21 @@
             <div class="other-contents">
                 <div class="dashboard-buttons">
                     <h2>Navigate Your Dashboard</h2>
-                    <button class="btn" id="attendance-overview">Attendance Overview</button>
-                    <button class="btn" id="history">Attendance History</button>
-                    <button class="btn" id="edit">Edit info</button>
-                    <button class="btn" id="notice">Notices</button>
-                    <button class="btn" id="leave">Request a Leave</button>
-                    <button class="btn" id="mark">Mark Attendance</button>
-                    <button class="btn" id="edit-attendance">Edit Student Attendance</button>
-                    <button class="btn" id="get-report">Get Student report</button>
+                    <div class="divide-buttons">
+                        <div class="user-specific">
+                            <button class="btn" id="attendance-overview">Attendance Overview</button>
+                            <button class="btn" id="history">Attendance History</button>
+                            <button class="btn" id="edit">Edit info</button>
+                            <button class="btn" id="notice">Notices</button>
+                            <button class="btn" id="leave">Request a Leave</button>
+                        </div>
+                        <div class="student-specific">
+                            <button class="btn" id="mark">Scan QR</button>
+                            <button id="qrBtn" class="btn" onclick="handleGenerateQR()">Generate Student QR</button>
+                            <button class="btn" id="edit-attendance">Edit Student Attendance</button>
+                            <button class="btn" id="get-report">Get Student report</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="dashboard-contents">
                     <div class="attendance-overview">
@@ -202,7 +209,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="notices">
+                    <div class="generateQr">
 
                     </div>
                     <div class="attendance-history">
@@ -251,6 +258,7 @@
     <script src="/js/global/update-footerLayout-for-tablets.js"></script>
     <script src="/js/page-specific/dashboard/change-content.js"></script>
     <script src="/js/page-specific/dashboard/switch-contents-corp.js"></script>
+    <script src="/js/page-specific/dashboard/teachingStaff.js"></script>
 </body>
 
 </html>
