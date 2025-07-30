@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teaching Staff</title>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" href="/css/global/global-layout.css">
     <link rel="stylesheet" href="/css/global/forms.css">
     <link rel="stylesheet" href="/css/global/dB-global.css">
+    <link rel="stylesheet" href="/css/page-specific/dashboard/teachingStaff.css">
     <link rel="stylesheet" href="/css/page-specific/dashboard/admin.css">
     <link rel="stylesheet" href="/css/global/dark-theme.css">
     <link rel="stylesheet" href="/css/global/scrollbar.css">
@@ -117,10 +118,23 @@
             <div class="other-contents">
                 <div class="dashboard-buttons">
                     <h2>Navigate Your Dashboard</h2>
-                    <button class="btn" onclick="window.open('/get-qr-employee', '_blank')">Generate Employee
-                        QR</button>
-                    <button class="btn">Manage Users</button>
-                    <button class="btn" id="browse-logs">Browse Logs</button>
+                    <div class="divide-buttons">
+                        <div class="left-side">
+                            <button class="btn" onclick="window.open('/get-qr-employee', '_blank')">Generate Employee
+                                QR</button>
+                            <button id="qrBtn" class="btn" onclick="handleGenerateQR()">Generate Student QR</button>
+                            <button class="btn">View Records</button>
+                            <button class="btn">Edit Attendance</button>
+                            <button class="btn">Manage Leave Requests</button>
+                        </div>
+                        <div class="right-side">
+                            <button class="btn">View Session History</button>
+                            <button class="btn">Send Notice</button>
+                            <button class="btn">Manage Users</button>
+                            <button class="btn" id="browse-logs">Browse Logs</button>
+                            <button class="btn" id="browse-logs">Edit Your Info</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="dashboard-contents">
                     <div class="view-logs">
@@ -202,11 +216,11 @@
                                             <option value="11">11</option>
                                             <option value="12">12</option>
                                         </select>
-                                    <% } %>
+                                        <% } %>
                             </form>
                         </div>
                         <div class="manage-users-table">
-                            
+
                         </div>
                     </div>
                 </div>
@@ -253,5 +267,6 @@
     <script src="/js/page-specific/dashboard/change-content.js"></script>
     <script src="/js/page-specific/dashboard/switch-contents-corp.js"></script>
     <script src="/js/page-specific/dashboard/auditLog.js"></script>
+    <script src="/js/page-specific/dashboard/teachingStaff.js"></script>
 
 </html>

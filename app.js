@@ -45,8 +45,8 @@ const employeeRoutes = require('./routes/createEmp');
 const supportRoute = require('./routes/createSupport');
 const loginRoutes = require('./routes/loginRoutes');
 const userLeaveRoute = require('./routes/userLeaveRoute');
-const { router: qrRoutes } = require('./routes/qrRoutes');
-const qrRoutesTeacher = require('./routes/qrRoutesTeacher');
+const { router: qrRoutes } = require('./routes/qrRoutesEmployee');
+const qrRoutesTeacher = require('./routes/qrRoutesStudent');
 
 app.use('/', mainRoutes);
 app.use('/register', registerRoutes);

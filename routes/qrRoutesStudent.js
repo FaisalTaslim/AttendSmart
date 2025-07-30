@@ -5,29 +5,40 @@ const ensureLoggedIn = require('../middleware/authMiddleware');
 const Org = require('../models/Org');
 const Employee = require('../models/Employee');
 const QRCode = require('qrcode');
-const {generateUserCode } = require('./qrRoutes');
-const SessionLog = require('../models/sessionLog');
+const { generateUserCode } = require('./qrRoutesEmployee');
+const SessionLog = require('../models/studentSessionLog');
 
 router.get('/', ensureLoggedIn, async (req, res) => {
     try {
         const userId = req.session.user.uniqueId;
+        let role = req.session.user.role;
+        let users, org;
 
-        const user = await Employee.findOne({ uniqueId: userId });
-        if (!user) return res.status(404).send('Employee not found');
+        if (role === 'Employee') {
+            users = await Employee.findOne({ uniqueId: userId });
+            org = await Org.findOne({ uniqueId: users.org });
+        }
 
-        const org = await Org.findOne({ uniqueId: user.org });
-        if (!org) return res.status(404).send('Organization not found');
+        if (role === 'Org') {
+            users = await Org.findOne({ uniqueId: userId });
+            org = users;
+        }
 
         const subject = req.query.subject || 'Unknown';
         const code = generateUserCode();
 
+        let sessionInstigator;
+        if (role === 'Org') sessionInstigator = users.admin[0].adminName;
+        else sessionInstigator = user.userName;
+
         const newSession = new SessionLog({
             studentCode: code,
-            sessionInstigator: user.userName,
+            sessionInstigator: sessionInstigator,
             subjectName: subject,
             orgUniqueId: org.uniqueId,
             createdAt: Date.now()
         });
+
 
         await newSession.save();
 

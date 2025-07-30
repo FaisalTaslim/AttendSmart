@@ -3,6 +3,7 @@ const router = express.Router();
 const ensureLoggedIn = require('../middleware/authMiddleware');
 const Org = require('../models/Org');
 const QRCode = require('qrcode');
+const EmployeeSessionLog = require('../models/employeeSessionLog');
 
 function generateUserCode(length = 6) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -16,6 +17,8 @@ function generateUserCode(length = 6) {
 router.get('/', ensureLoggedIn, async (req, res) => {
     try {
         const orgId = req.session.user.uniqueId;
+        const instigator = req.session.user.name;
+
         const getOrg = await Org.findOne({ uniqueId: orgId });
 
         if (!getOrg) {
@@ -23,8 +26,16 @@ router.get('/', ensureLoggedIn, async (req, res) => {
         }
 
         const code = generateUserCode();
-        getOrg.employeeCode = code;
-        await getOrg.save();
+
+        const sessionLog = new EmployeeSessionLog({
+            org: orgId,
+            employeeCode: code,
+            sessionInstigator: instigator,
+            department: req.session.user.department || '',
+            orgUniqueId: orgId
+        });
+
+        await sessionLog.save();
 
         const qrData = {
             uniqueId: orgId,
@@ -41,6 +52,7 @@ router.get('/', ensureLoggedIn, async (req, res) => {
         res.status(500).send('Could not generate QR code');
     }
 });
+
 module.exports = {
     router,
     generateUserCode
