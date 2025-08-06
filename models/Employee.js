@@ -33,12 +33,6 @@ const employeeSchema = new Schema({
         trim: true
     },
     password: { type: String, required: true, trim: true },
-    attendanceSummary: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'summaryEmployee',
-        default: null
-    },
-    attendanceHistory: [{ type: Schema.Types.ObjectId, ref: 'attendanceHistory' }],
     termsCheck: {type: String, required: true}
 
 }, { timestamps: true });

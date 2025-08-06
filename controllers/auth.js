@@ -6,17 +6,15 @@ const SchoolStudent = require('../models/SchoolStudent');
 const CollegeStudent = require('../models/CollegeStudent');
 const Org = require('../models/Org');
 const Employee = require('../models/Employee');
+const Logs = require('../models/logs')
 
 const auth = async (req, res) => {
     try {
-        const {
-            uniqueID,
-            userRole,
-            password
-        } = req.body;
-
+        const { uniqueID, userRole, password } = req.body;
         const role = userRole;
         let user;
+
+        let orgId = null;
 
         if (role === 'Org') {
             user = await Org.findOne({ uniqueId: uniqueID });
@@ -31,8 +29,9 @@ const auth = async (req, res) => {
                 name: user.admin[0].adminName
             };
 
+            orgId = user.uniqueId;
+
             console.log('✅ Logged in Admin user!');
-            return res.redirect('/dashboard');
         }
 
         else if (role === 'SchoolStudent') {
@@ -47,22 +46,10 @@ const auth = async (req, res) => {
                 role: 'SchoolStudent',
                 name: user.userName
             };
-            const rawIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-            const ip = rawIP?.split(',')[0].trim();
 
-            const findOrg = await Org.findOne({uniqueId: user.org})
-
-            findOrg.logs.push({
-                logType: "loginLogs",
-                ipAddress: ip,
-                activity: `Student: (${user.userName}, roll: ${user.roll}, divison: ${user.division}) with ip: ${ip} logged in.`,
-                timestamp: Date.now()
-            });
-
-            await findOrg.save();
+            orgId = user.org;
 
             console.log('✅ Logged in School Student!');
-            return res.redirect('/dashboard');
         }
 
         else if (role === 'CollegeStudent') {
@@ -78,21 +65,9 @@ const auth = async (req, res) => {
                 name: user.userName
             };
 
-            const rawIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-            const ip = rawIP?.split(',')[0].trim();
-
-            const findOrg = await Org.findOne({uniqueId: user.org})
-            findOrg.logs.push({
-                logType: "loginLogs",
-                ipAddress: ip,
-                activity: `Student: (${user.userName}, roll: ${user.roll}, dept: ${user.dept}) with ip: ${ip} logged in.`,
-                timestamp: Date.now()
-            });
-
-            await findOrg.save();
+            orgId = user.org;
 
             console.log('✅ Logged in College Student!');
-            return res.redirect('/dashboard');
         }
 
         else if (role === 'Employee') {
@@ -108,28 +83,33 @@ const auth = async (req, res) => {
                 name: user.userName
             };
 
-            const rawIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-            const ip = rawIP?.split(',')[0].trim();
-
-            const findOrg = await Org.findOne({uniqueId: user.org})
-
-            findOrg.logs.push({
-                logType: "loginLogs",
-                ipAddress: ip,
-                activity: `Employee: (${user.userName}, employeeId: ${user.employeeId}, with ip: ${ip} logged in.`,
-                timestamp: Date.now()
-            });
-
-            await findOrg.save();
+            orgId = user.org;
 
             console.log('✅ Logged in Employee!');
-            return res.redirect('/dashboard');
         }
+
+        if (orgId) {
+            const logDoc = await Logs.findOne({ org: orgId });
+            if (logDoc) {
+                logDoc.loginLogs.push({
+                    userId: user.uniqueId,
+                    role: req.session.user.role,
+                    ip: req.ip
+                });
+                await logDoc.save();
+                console.log(`📥 Login log saved for ${user.userName} (${role})`);
+            } else {
+                console.log("⚠️ No log document found for this organization.");
+            }
+        }
+
+        return res.redirect('/dashboard');
 
     } catch (err) {
         console.error("❌ Login error:", err);
         res.status(500).send("Something went wrong!");
     }
 };
+
 
 module.exports = { auth };

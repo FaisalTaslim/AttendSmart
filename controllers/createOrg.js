@@ -1,7 +1,8 @@
 const Counter = require('../models/counter');
 const bcrypt = require('bcrypt');
 const Org = require('../models/Org');
-const SessionLog = require('../models/studentSessionLog');
+const Logs = require('../models/logs');
+const Department = require('../models/departments');
 
 exports.createOrg = async (req, res) => {
     try {
@@ -17,39 +18,59 @@ exports.createOrg = async (req, res) => {
         const hashedPassword = await bcrypt.hash(adminPassword, salt);
 
         let counterDoc = await Counter.findOne();
-
         const newAdminNumber = (Number(counterDoc.newAdminValue) + 1).toString();
         counterDoc.newAdminValue = newAdminNumber;
         await counterDoc.save();
 
         if (isNaN(req.body.expectedEmployees) && isNaN(req.body.expectedStudents)) {
-            res.send(`<h2>❌ Error: Number of Employees, and students must be in digits </h2>`)
+            return res.send(`<h2>❌ Error: Number of Employees and Students must be digits</h2>`);
         }
-        else {
-            let code = '';
-        
-            const newOrg = {
-                uniqueId: newAdminNumber,
-                expectedTeachers: Number(req.body.expectedTeachers),
-                expectedStudents: Number(req.body.expectedStudents),
-                ...req.body,
-                admin: [
-                    {
-                        adminName,
-                        adminId,
-                        adminContact,
-                        adminEmail,
-                        adminPassword: hashedPassword,
-                    }
-                ],
-                employeeCode: code
-            };
 
-            const orgData = await Org.create(newOrg);
-            console.log(`✅ Organization ${orgData.orgName} registered successfully`);
-            res.redirect(`/login`);
-        }
+        const newOrg = {
+            uniqueId: newAdminNumber,
+            expectedTeachers: Number(req.body.expectedTeachers),
+            expectedStudents: Number(req.body.expectedStudents),
+            ...req.body,
+            admin: [
+                {
+                    adminName,
+                    adminId,
+                    adminContact,
+                    adminEmail,
+                    adminPassword: hashedPassword,
+                }
+            ]
+        };
+
+        const orgData = await Org.create(newOrg);
+        console.log(`✅ Organization ${orgData.orgName} registered successfully`);
+
+        const departmentDoc = await Department.create({
+            org: newAdminNumber,
+            schoolStudentStandard: [],
+            collegeDepartments: [],
+            employeeDepartments: []
+        });
+        console.log(`📁 Department schema initialized for orgId: ${departmentDoc.org}`);
+
+        const newLog = {
+            org: newAdminNumber,
+            registerLogs: [`Organization created at ${new Date().toLocaleString()}`],
+            loginLogs: [],
+            supportLogs: [],
+            employeeSessionLogs: [],
+            studentSessionLog: [],
+            studentAttendanceHistory: [],
+            employeeAttendanceHistory: []
+        };
+
+        const logData = await Logs.create(newLog);
+        console.log(`📝 Log created successfully for orgId: ${logData.org}`);
+
+        return res.redirect('/login');
+
     } catch (err) {
+        console.error("❌ Error while creating org:", err);
         res.send(`<h2>❌ Error: ${err.message}</h2>`);
     }
 };

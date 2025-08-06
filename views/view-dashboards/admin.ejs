@@ -153,30 +153,7 @@
                         </div>
 
                         <div class="log-entries">
-                            <% if (logs.length===0) { %>
-                                <p>No logs found.</p>
-                                <% } else { %>
-                                    <% logs.forEach(log=> { %>
-                                        <div class="style-logs log-item" data-type="<%= log.logType %>">
-                                            <h3 style="margin-bottom: 8px;">
-                                                <strong>Type:</strong>
-                                                <%= log.logType==='registerLogs' ? 'Register Log' :
-                                                    log.logType==='supportLogs' ? 'Support Log' :
-                                                    log.logType==='loginLogs' ? 'Login Log' : log.logType==='editLogs'
-                                                    ? 'Edit Log' : 'Unknown Log' %>
-                                            </h3>
-                                            <p><strong>Activity:</strong>
-                                                <%= log.activity %>
-                                            </p>
-                                            <p><strong>Timestamp:</strong>
-                                                <%= new Date(log.timestamp).toLocaleString() %>
-                                            </p>
-                                            <p><strong>IP Address:</strong>
-                                                <%= log.ipAddress || "N/A" %>
-                                            </p>
-                                        </div>
-                                        <% }) %>
-                                            <% } %>
+                            
                         </div>
                     </div>
                     <div class="manage-users">
@@ -265,7 +242,6 @@
     <script src="/js/global/sideNav.js"></script>
     <script src="/js/global/update-footerLayout-for-tablets.js"></script>
     <script src="/js/page-specific/dashboard/change-content.js"></script>
-    <script src="/js/page-specific/dashboard/switch-contents-corp.js"></script>
     <script src="/js/page-specific/dashboard/auditLog.js"></script>
     <script src="/js/page-specific/dashboard/teachingStaff.js"></script>
 

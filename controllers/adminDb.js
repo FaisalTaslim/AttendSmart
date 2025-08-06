@@ -14,15 +14,12 @@ router.get('/', checkRole(['Org']), async (req, res) => {
         const adminEmail = admin[0]?.adminEmail;
         const adminContact = admin[0]?.adminContact;
 
-        const logs = findUser.logs;
-
         res.render('view-dashboards/admin', {
             uniqueId,
             adminName,
             adminId,
             adminContact,
             adminEmail,
-            logs,
             orgType
         });
 

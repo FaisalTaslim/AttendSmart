@@ -6,7 +6,6 @@ const Org = require('../models/Org');
 const Employee = require('../models/Employee');
 const QRCode = require('qrcode');
 const { generateUserCode } = require('./qrRoutesEmployee');
-const SessionLog = require('../models/studentSessionLog');
 
 router.get('/', ensureLoggedIn, async (req, res) => {
     try {

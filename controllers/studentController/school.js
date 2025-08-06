@@ -3,6 +3,7 @@ const { StudentSummary } = require('../../models/attendanceSummary');
 const Org = require('../../models/Org');
 const bcrypt = require('bcrypt');
 const Counter = require('../../models/counter');
+const Logs = require('../../models/logs')
 
 exports.createSchoolStudent = async (req, res) => {
     try {
@@ -19,8 +20,6 @@ exports.createSchoolStudent = async (req, res) => {
             termsCheck
         } = req.body;
 
-        console.log("Received subjectName from form:", subjectName);
-
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -35,6 +34,10 @@ exports.createSchoolStudent = async (req, res) => {
             orgBranch: { $regex: new RegExp(`^${orgBranch}$`, 'i') }
         });
 
+        console.log("✅ Org found:", findOrg);
+        console.log("📛 Org uniqueId:", findOrg.uniqueId);
+
+
         if (!findOrg)
             return res.send(`<h2>❌ Error: Organization not found</h2>`);
         else {
@@ -42,7 +45,7 @@ exports.createSchoolStudent = async (req, res) => {
             const filteredSubjects = subject.filter(subject => subject && subject.trim() !== "");
 
             const newStudent = await schoolStudent.create({
-                orgId: findOrg.uniqueId,
+                org: findOrg.uniqueId,
                 uniqueId: newSchoolStudentNumber,
                 userName,
                 roll,
@@ -52,37 +55,33 @@ exports.createSchoolStudent = async (req, res) => {
                 password: hashedPassword,
                 termsCheck,
                 subjects: filteredSubjects,
-                attendanceSummary: []
             });
 
             for (const subject of filteredSubjects) {
                 const summary = {
+                    org: findOrg.uniqueId,
                     student: newStudent.uniqueId,
                     subjectName: subject,
                     totalLectures: 0,
                     attendedLectures: 0,
-                    percentage: 0
+                    percentage: 0,
+                    monthlySummary: []
                 };
 
                 const createdSummary = await StudentSummary.create(summary);
                 console.log(`✅ Attendance summary created: ${createdSummary.subjectName}`);
-
-                newStudent.attendanceSummary.push(createdSummary._id);
             }
 
-            await newStudent.save();
-
-            const rawIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-            const ip = rawIP?.split(',')[0].trim();
-
-            findOrg.logs.push({
-                logType: "registerLogs",
-                ipAddress: ip,
-                activity: `New college student (${userName}, roll: ${newStudent.roll}, dept: ${newStudent.division}) registered.`,
-                timestamp: Date.now()
-            });
+            const logDoc = await Logs.findOne({ org: findOrg.uniqueId });
+            if (logDoc) {
+                logDoc.registerLogs.push(`Student: ${userName}, division: ${division}, roll: ${roll} joined on ${new Date().toLocaleString()}`);
+                await logDoc.save();
+            } else {
+                console.log("⚠️ No log document found for this organization.");
+            }
 
             findOrg.registeredStudents += 1;
+            await findOrg.save();
 
             res.redirect('/login')
         }

@@ -3,6 +3,8 @@ const { EmployeeSummary } = require('../models/attendanceSummary');
 const Org = require('../models/Org');
 const bcrypt = require('bcrypt');
 const Counter = require('../models/counter');
+const Logs = require('../models/logs');
+const {attendanceHistoryEmployee} = require('../models/attendanceHistory')
 
 exports.createEmployee = async (req, res) => {
     try {
@@ -24,11 +26,9 @@ exports.createEmployee = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         let counterDoc = await Counter.findOne();
-
         const newEmployeeNumber = (Number(counterDoc.newEmployeeValue) + 1).toString();
         counterDoc.newEmployeeValue = newEmployeeNumber;
         await counterDoc.save();
-
 
         const findOrg = await Org.findOne({
             orgName: { $regex: new RegExp(`^${orgName}$`, 'i') },
@@ -38,48 +38,45 @@ exports.createEmployee = async (req, res) => {
         if (!findOrg) {
             return res.send(`<h2>❌ Error: Organization not found</h2>`);
         }
-        else {
-            const newEmployee = await Employee.create({
-                uniqueId: newEmployeeNumber,
-                org: findOrg.uniqueId,
-                userName,
-                employeeId,
-                dept,
-                workType,
-                designation,
-                contact,
-                email,
-                password: hashedPassword,
-                termsCheck
-            });
 
-            const summary = await EmployeeSummary.create({
-                employee: newEmployee.uniqueId,
-                totalDays: 0,
-                attendedDays: 0,
-                percentage: 0,
-            });
+        const newEmployee = await Employee.create({
+            uniqueId: newEmployeeNumber,
+            org: findOrg.uniqueId,
+            userName,
+            employeeId,
+            dept,
+            workType,
+            designation,
+            contact,
+            email,
+            password: hashedPassword,
+            termsCheck
+        });
 
-            newEmployee.attendanceSummary = summary._id;
-            await newEmployee.save();
-            const rawIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-            const ip = rawIP?.split(',')[0].trim();
+        await EmployeeSummary.create({
+            org: findOrg.uniqueId,
+            employee: newEmployee.uniqueId,
+            totalDays: 0,
+            attendedDays: 0,
+            percentage: 0,
+            monthlySummary: [],
+        });
 
-            findOrg.logs.push({
-                logType: "registerLogs",
-                ipAddress: ip,
-                activity: `New employee (${userName}, ID: ${newEmployee.employeeId}, designation: ${newEmployee.designation}) registered.`,
-                timestamp: Date.now()
-            });
-
-            findOrg.registeredEmployees += 1;
-            await findOrg.save();
-
-            res.redirect('/login')
+        const logDoc = await Logs.findOne({ org: findOrg.uniqueId });
+        if (logDoc) {
+            logDoc.registerLogs.push(`Employee ${userName} joined on ${new Date().toLocaleString()}`);
+            await logDoc.save();
+        } else {
+            console.log("⚠️ No log document found for this organization.");
         }
 
+        findOrg.registeredEmployees += 1;
+        await findOrg.save();
+
+        res.redirect('/login');
+
     } catch (err) {
-        console.error(err);
+        console.error("❌ Employee Creation Error:", err);
         res.send(`<h2>❌ Error: ${err.message}</h2>`);
     }
 };

@@ -43,20 +43,6 @@ const orgSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    logs: [
-        {
-            logType: {
-                type: String,
-                enum: ['registerLogs', 'loginLogs', 'editLogs', 'supportLogs'],
-                required: true
-            },
-            activity: {type: String, required: true},
-            timestamp: {type: Date, default: Date.now},
-            ipAddress: {
-                type: String
-            },
-        }
-    ],
     termsCheck: {type: String, default: "not accepted", required: true}
 
 }, { timestamps: true });

@@ -1,30 +1,34 @@
 const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
-const attendanceHistorySchema = mongoose.Schema({
+const attendanceHistoryStudentSchema = mongoose.Schema({
     student: {
-        type: Schema.Types.ObjectId,
-        ref: 'schoolStudent', 
+        type: String,
+        required: true
+    },
+    dept: {
+        type: String,
         required: true
     },
     subjectName: {
         type: String,
         required: true
     },
-    date: {type: Date.now(), required: true},
+    date: {type: Date.now, required: true},
     status: {
         type: String,
         enum: ['Present', 'Absent'],
         required: true
     }
-}, {timestamp: true});
-
-module.exports = mongoose.model('attendanceHistory', attendanceHistorySchema);
+}, {timestamps: true});
 
 const attendanceHistoryEmployeeSchema = new Schema({
     employee: {
-        type: Schema.Types.ObjectId,
-        ref: 'Employee', 
+        type: String,
+        required: true
+    },
+    dept: {
+        type: String,
         required: true
     },
     checkIn: {type: Date, required: true},
@@ -34,6 +38,9 @@ const attendanceHistoryEmployeeSchema = new Schema({
         enum: ['Present', 'Absent'],
         required: true
     }
-}, { timestamps: true });
+}, {timestamps: true});
 
-module.exports = mongoose.model('attendanceHistoryEmployee', attendanceHistoryEmployeeSchema);
+module.exports = {
+    AttendanceHistoryStudent: mongoose.model('attendance_history_student', attendanceHistoryStudentSchema),
+    AttendanceHistoryEmployee: mongoose.model('attendance_history_employee', attendanceHistoryEmployeeSchema)
+};

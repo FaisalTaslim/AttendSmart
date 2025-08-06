@@ -3,7 +3,6 @@ const router = express.Router();
 const ensureLoggedIn = require('../middleware/authMiddleware');
 const Org = require('../models/Org');
 const QRCode = require('qrcode');
-const EmployeeSessionLog = require('../models/employeeSessionLog');
 
 function generateUserCode(length = 6) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -32,7 +31,6 @@ router.get('/', ensureLoggedIn, async (req, res) => {
             employeeCode: code,
             sessionInstigator: instigator,
             department: req.session.user.department || '',
-            orgUniqueId: orgId
         });
 
         await sessionLog.save();
