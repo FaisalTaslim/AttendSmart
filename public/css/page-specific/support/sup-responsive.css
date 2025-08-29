@@ -193,6 +193,7 @@
         width: 77vw;
     }
     .bg-content {width: 100vw;}
+    .support-section {overflow: auto;}
 }
 
 @media screen and (min-width: 950px) and (max-width: 1024px) and 

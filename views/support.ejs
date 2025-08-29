@@ -31,16 +31,21 @@
                 </div>
                 <div class="nav-links">
                     <a href="/" class="nav-links-property hide">Home</a>
-                    <a href="/getStarted" class="nav-links-property hide" id="getting-started">Getting Started</a>
                 </div>
             </div>
             <div class="nav-group2">
                 <div class="nav-links">
                     <a href="/dashboard" class="nav-links-property hide">Dashboard</a>
-                    <a href="/support.html" class="nav-links-property hide">Support</a>
+                    <a href="/support" class="nav-links-property hide">Support</a>
                     <a href="/log" class="nav-links-property hide">Logs</a>
                     <a href="/register" class="nav-links-property hide" id="register">Register</a>
-                    <a href="/login" class="nav-links-property hide">Login</a>
+                    <div class="login-logout">
+                        <% if (!isAuthenticated) { %>
+                            <a href="/login" class="nav-links-property">Login</a>
+                            <% } else { %>
+                                <a href="/logout" class="nav-links-property hide">Logout</a>
+                                <% } %>
+                    </div>
                     <p class="nav-links-property"><i class="fa-solid fa-moon"></i></p>
                     <p class="nav-links-property" id="sun"><i class="fa-regular fa-sun"></i></p>
                     <p class="nav-links-property" id="menu-toggle"><i class="fa-solid fa-bars"></i></p>
@@ -53,7 +58,6 @@
                     <p class="nav-links-property"><i class="fa-solid fa-xmark" id="close-toggle"></i></p>
                 </div>
                 <div class="slide-menu-links">
-                    <a href="/getStarted" class="nav-links-property" id="getting-started">Getting Started</a>
                     <a href="/dashboard" class="nav-links-property">Dashboard</a>
                     <a href="/support" class="nav-links-property">Support</a>
                     <a href="/log" class="nav-links-property">Logs</a>

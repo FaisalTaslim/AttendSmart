@@ -4,7 +4,8 @@ const Org = require('../models/Org');
 const bcrypt = require('bcrypt');
 const Counter = require('../models/counter');
 const Logs = require('../models/logs');
-const {attendanceHistoryEmployee} = require('../models/attendanceHistory')
+const Department = require('../models/departments');
+const moment = require('moment');
 
 exports.createEmployee = async (req, res) => {
     try {
@@ -19,13 +20,12 @@ exports.createEmployee = async (req, res) => {
             password,
             orgName,
             orgBranch,
-            termsCheck,
+            termsCheck
         } = req.body;
 
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-        let counterDoc = await Counter.findOne();
+        const counterDoc = await Counter.findOne();
         const newEmployeeNumber = (Number(counterDoc.newEmployeeValue) + 1).toString();
         counterDoc.newEmployeeValue = newEmployeeNumber;
         await counterDoc.save();
@@ -62,9 +62,17 @@ exports.createEmployee = async (req, res) => {
             monthlySummary: [],
         });
 
+        await Department.findOneAndUpdate(
+            { org: findOrg.uniqueId },
+            { $addToSet: { employeeDepartments: dept } },
+            { upsert: true, new: true }
+        );
+
         const logDoc = await Logs.findOne({ org: findOrg.uniqueId });
         if (logDoc) {
-            logDoc.registerLogs.push(`Employee ${userName} joined on ${new Date().toLocaleString()}`);
+            logDoc.registerLogs.push(
+                `Employee: ${userName}, Dept: ${dept}, EmployeeID: ${employeeId}, joined on ${moment().format("DD-MM-YYYY HH:mm:ss")}`
+            );
             await logDoc.save();
         } else {
             console.log("⚠️ No log document found for this organization.");
@@ -74,7 +82,6 @@ exports.createEmployee = async (req, res) => {
         await findOrg.save();
 
         res.redirect('/login');
-
     } catch (err) {
         console.error("❌ Employee Creation Error:", err);
         res.send(`<h2>❌ Error: ${err.message}</h2>`);

@@ -14,12 +14,19 @@ const logSchema = new Schema({
     loginLogs: [
         {
             userId: {type: String, required: true},
-            role: {type: String, required: true},
-            ip: {
-                type: String,
+            role: {
+                type: String, 
                 required: true
             },
-            at: {type: Date, default: Date.now}
+            ip: { 
+                type: String, 
+                required: true 
+            },
+            createdAt: {
+                type: String, 
+                default: () => moment().format("DD-MM-YYYY HH:mm:ss"),
+                required: true
+            } 
         }
     ],
     supportLogs: [
@@ -30,11 +37,12 @@ const logSchema = new Schema({
                 type: String,
                 required: true
             },
-            thoughts: {
+            thoughts: {type: String, required: true},
+            createdAt: {
                 type: String,
+                default: () => moment().format("DD-MM-YYYY HH:mm:ss"),
                 required: true
-            },
-            createdAt: {type: Date, default: Date.now}
+            } 
         }
     ],
     employeeSessionLogs: [
@@ -44,10 +52,10 @@ const logSchema = new Schema({
                 required: true
             },
             sessionInstigator: {type: String, required: true},
-            department: {type: String, required: true},
             createdAt: {
-                type: Date,
-                default: Date.now,
+                type: String,
+                default: () => moment().format("DD-MM-YYYY HH:mm:ss"),
+                required: true
             }
         }
     ],
@@ -57,12 +65,17 @@ const logSchema = new Schema({
                 type: String,
                 required: true
             },
-            sessionInstigator: {
+            sessionInstigator: {type: String, required: true},
+            subjectName: {
+                type: String, 
+                default: () => moment().format("DD-MM-YYYY HH:mm:ss"),
+                required: true,
+            },
+            expired: {type: Boolean, required: true},
+            createdAt: {
                 type: String,
                 required: true
-            },
-            createdAt: {type: Date, default: Date.now},
-            subjectName: {type: String, required: true},
+            }
         }
     ],
 
@@ -71,11 +84,11 @@ const logSchema = new Schema({
             student: {type: String, required: true},
             studentId: {type: String, required: true},
             dept: {
-                type: String, 
+                type: String,
                 required: true
             },
             subjectName: {
-                type: String, 
+                type: String,
                 required: true
             },
             date: {type: Date, required: true},
@@ -92,11 +105,11 @@ const logSchema = new Schema({
             employee: {type: String, required: true},
             employeeId: {type: String, required: true},
             dept: {
-                type: String, 
+                type: String,
                 required: true
             },
             checkIn: {
-                type: Date, 
+                type: Date,
                 required: true
             },
             checkOut: {type: Date, required: true},

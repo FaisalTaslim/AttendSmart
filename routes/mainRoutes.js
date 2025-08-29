@@ -7,13 +7,17 @@ const viewsPath = path.join(__dirname, '../views');
 const routes = {
     '/': 'index.html',
     '/login': 'login.html',
-    '/support': 'support.html',
+    '/support': 'support.ejs',
     '/log': 'log.html',
 };
 
 Object.entries(routes).forEach(([route, file]) => {
     router.get(route, (req, res) => {
-        res.sendFile(path.join(viewsPath, file));
+        if (file.endsWith('.ejs')) {
+            res.render(file.replace('.ejs', ''));
+        } else {
+            res.sendFile(path.join(viewsPath, file));
+        }
     });
 });
 

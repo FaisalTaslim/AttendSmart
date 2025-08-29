@@ -1,24 +1,24 @@
 const mongoose = require('mongoose');
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 
 const departmentSchema = new Schema({
-    org: {
-        type: String,
-        required: true
-    },
-    schoolStudentStandard: {
+    org: { type: String, required: true },
+    schoolStandards: {
         type: [String],
-        default: []
+        default: [],
+        set: arr => [...new Set(arr.map(s => s.trim().toUpperCase()))]
     },
     collegeDepartments: {
         type: [String],
-        default: []
+        default: [],
+        set: arr => [...new Set(arr.map(s => s.trim().toUpperCase()))]
     },
     employeeDepartments: {
         type: [String],
-        default: []
+        default: [],
+        set: arr => [...new Set(arr.map(s => s.trim().toUpperCase()))]
     }
-}, { timestamps: true });
+}, {timestamps: true });
 
-const Department = mongoose.model('department', departmentSchema);
+const Department = mongoose.model('Department', departmentSchema);
 module.exports = Department;

@@ -3,7 +3,9 @@ const { StudentSummary } = require('../../models/attendanceSummary');
 const Org = require('../../models/Org');
 const bcrypt = require('bcrypt');
 const Counter = require('../../models/counter');
-const Logs = require('../../models/logs')
+const Logs = require('../../models/logs');
+const Department = require('../../models/departments');
+const moment = require('moment');
 
 exports.createCollegeStudent = async (req, res) => {
     try {
@@ -20,70 +22,72 @@ exports.createCollegeStudent = async (req, res) => {
             termsCheck
         } = req.body;
 
-        console.log("Received subjectName from form:", subjectName);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-
-        let counterDoc = await Counter.findOne();
-
+        const counterDoc = await Counter.findOne();
         const newCollegeStudentNumber = (Number(counterDoc.newStudentValue) + 1).toString();
         counterDoc.newStudentValue = newCollegeStudentNumber;
         await counterDoc.save();
 
         const findOrg = await Org.findOne({
-            orgName: { $regex: new RegExp(`^${orgName}$`, 'i') },
-            orgBranch: { $regex: new RegExp(`^${orgBranch}$`, 'i') }
+            orgName: new RegExp(`^${orgName}$`, 'i'),
+            orgBranch: new RegExp(`^${orgBranch}$`, 'i')
         });
 
-        if (!findOrg)
+        if (!findOrg) {
             return res.send(`<h2>❌ Error: Organization not found</h2>`);
-        else {
-            const subject = Array.isArray(subjectName) ? subjectName : [subjectName];
-            const filteredSubjects = subject.filter(subject => subject && subject.trim() !== "");
-
-            const newStudent = await collegeStudent.create({
-                org: findOrg.uniqueId,
-                uniqueId: newCollegeStudentNumber,
-                userName,
-                roll,
-                dept,
-                contact,
-                email,
-                password: hashedPassword,
-                termsCheck,
-                subjects: filteredSubjects,
-            });
-
-            for (const subject of filteredSubjects) {
-                const summary = {
-                    org: findOrg.uniqueId,
-                    student: newStudent.uniqueId,
-                    subjectName: subject,
-                    totalLectures: 0,
-                    attendedLectures: 0,
-                    percentage: 0,
-                    monthlySummary: [],
-                };
-
-                const createdSummary = await StudentSummary.create(summary);
-                console.log(`✅ Attendance summary created: ${createdSummary.subjectName}`);
-            }
-
-            const logDoc = await Logs.findOne({ org: findOrg.uniqueId });
-            if (logDoc) {
-                logDoc.registerLogs.push(`Student: ${userName}, deptartment: ${dept}, roll: ${roll} joined on ${new Date().toLocaleString()}`);
-                await logDoc.save();
-            } else {
-                console.log("⚠️ No log document found for this organization.");
-            }
-
-            findOrg.registeredStudents += 1;
-            await findOrg.save();
-
-            console.log("📝 Log saved to Org.");
-            res.send(`<h2>✅ Student created and attendance summaries saved!</h2>`);
         }
+
+        const subjectArray = Array.isArray(subjectName) ? subjectName : [subjectName];
+        const filteredSubjects = subjectArray.filter(sub => sub && sub.trim() !== "");
+
+        const newStudent = await collegeStudent.create({
+            org: findOrg.uniqueId,
+            uniqueId: newCollegeStudentNumber,
+            userName,
+            roll,
+            dept,
+            contact,
+            email,
+            password: hashedPassword,
+            termsCheck,
+            subjects: filteredSubjects,
+        });
+
+        for (const subject of filteredSubjects) {
+            await StudentSummary.create({
+                org: findOrg.uniqueId,
+                student: newStudent.uniqueId,
+                subjectName: subject,
+                totalLectures: 0,
+                attendedLectures: 0,
+                percentage: 0,
+                monthlySummary: [],
+            });
+            console.log(`✅ Attendance summary created for subject: ${subject}`);
+        }
+
+        await Department.findOneAndUpdate(
+            { org: findOrg.uniqueId },
+            { $addToSet: { collegeDepartments: dept } },
+            { upsert: true, new: true }
+        );
+
+        const logMessage = `Student: ${userName}, department: ${dept}, roll: ${roll} joined on ${moment().format("DD-MM-YYYY HH:mm:ss")}`;
+        const logDoc = await Logs.findOne({ org: findOrg.uniqueId });
+        if (logDoc) {
+            logDoc.registerLogs.push(logMessage);
+            await logDoc.save();
+        } else {
+            console.log("⚠️ No log document found for this organization.");
+        }
+
+        findOrg.registeredStudents += 1;
+        await findOrg.save();
+
+        console.log("📝 Log saved to Org.");
+        res.send(`<h2>✅ Student created and attendance summaries saved!</h2>`);
+
     } catch (err) {
         console.error(err);
         res.send(`<h2>❌ Error: ${err.message}</h2>`);

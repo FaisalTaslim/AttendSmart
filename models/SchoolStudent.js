@@ -17,7 +17,7 @@ const schoolStudentSchema = new Schema({
         type: String,
         required: true
     },
-    division: {type: String, required: true},
+    standard: {type: String, required: true},
     contact: {type: String, required: true},
     email: {
         type: String,

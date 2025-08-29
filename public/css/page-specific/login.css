@@ -30,6 +30,10 @@
     width: 50%;
     height: 100%;
 }
+.right-side {
+    background-image: url(/img/login.jpg);
+    background-size: cover;
+}
 .left-side {
     padding: 25px;
     display: flex;
@@ -96,12 +100,6 @@
 .continue-btn:hover {
     background-color: var(--accent-hover);
 }
-#login-img {
-    height: 100%;
-    width: 100%;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
 .fontSize {
     line-height: 30px;
     font-size: clamp(1.2rem, 1.5vw, 1.0rem);
@@ -139,22 +137,57 @@
     padding: 0.5rem;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 550px) and (max-height: 750px) {
     .bg-content {
-        height: 75vh;
+        height: 84vh !important;
         width: 87vw;
-        border: 1px solid var(--text-primary)
+        border: 1px solid var(--text-primary);
     }
+    .hero-bg {
+        height: 110vh !important;
+        padding: 1.5rem;
+    }
+    .left-side-header > h1 {font-size:  30px;}
+    .fontSize {font-size: 16px;}
+    .left-side {
+        width: 98%;
+        height: 100%;
+        padding: 1.5rem 1.0rem;
+    }
+    .login-form {
+        max-width: unset;
+        width: 90%;
+    }
+    .right-side {display: none !important;}
+    .lower-section > p {
+        line-height: 30px;
+        font-size: 16px;
+        text-align: center;
+    }
+}
+@media screen and (max-width: 480px) {
+    .hero-bg {
+        height: fit-content !important;
+        padding: 1rem;
+    }
+    .bg-content {
+        height: fit-content !important;
+        width: 87vw;
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+    }
+    .login-form {width: 99%;}
+    .right-side {display: none;}
     .font-1 {font-size: 16px;}
     .foot-content {gap: 20px;}
     .foot1 {gap: 15px;}
     .foot2 {gap: 15px;}
     .foot-content > * {font-size: 18px;}
     .foot-links {text-decoration: none;}
-    .right-side {display: none;}
     .left-side {
         width: 90%;
         height: 100%;
+        padding: 1rem;
     }
     .lower-section > p {
         line-height: 30px;
@@ -164,34 +197,22 @@
 }
 @media screen and (min-width: 481px) and (max-width: 1024px) {
     .bg-content {
-        height: 60vh;
         width: 87vw;
-        border: 1px solid var(--text-primary);
+        border: 2px solid var(--border-color);
         max-width: unset !important;
+    }
+    .right-side {
+        display: block;
+        background-image: url(/img/login.jpg);
+        background-size: cover;
+        background-position: center;
+        width: 50%;
+        height: 100%;
     }
     .font-1 {font-size: 16px;}
     .sidemenu-heading {font-size: 2rem;}
     .left-side-header > h1 {font-size: 2em;}
     
-}
-@media screen and (max-width: 550px) and (max-height: 750px) {
-    .bg-content {
-        height: 84vh;
-        width: 87vw;
-        border: 1px solid var(--text-primary);
-    }
-    .left-side-header > h1 {font-size:  30px;}
-    .fontSize {font-size: 16px;}
-    .right-side {display: none;}
-    .left-side {
-        width: 90%;
-        height: 100%;
-    }
-    .lower-section > p {
-        line-height: 30px;
-        font-size: 16px;
-        text-align: center;
-    }
 }
 @media screen and (min-width: 1200px) and (max-width: 1300px) and (min-height: 750px) and (max-height: 850px) {
     .bg-content {

@@ -29,9 +29,7 @@ body {
     padding: 20px;
     border-right: 2px solid var(--border-color);
 }
-#userDashboard-heading>* {
-    text-align: center;
-}
+#userDashboard-heading>* {text-align: center;}
 #userDashboard-heading>h1 {
     font-size: clamp(1.7rem, 6vw, 2.5rem);
 }
@@ -100,75 +98,8 @@ body {
     width: 60%;
     height: 98%;
 }
-.edit-info {
-    width: 98%;
-    height: 98%;
-    overflow: auto;
-    display: none;
-    flex-direction: column;
-    gap: 15px;
-    justify-content: center;
-    align-items: center;
-}
-.attendance-overview, .attendance-history {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    height: 98%;
-    overflow: auto;
-}
-.leave-request {
-    display: flex; 
-    flex-direction: column;
-    gap: 15px;
-    overflow: auto;
-    height: 95%;
-}
-.request-leave {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-.request-leave > h2 {text-align: center;}
-.notices {
-    display: none;
-    flex-direction: column;
-    gap: 15px;
-    height: 100%;
-    width: 98%;
-}
 
-.leave-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 15px;
-    background-color: var(--bg-secondary);
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    font-family: sans-serif;
-}
-.leave-form label {
-    font-weight: 600;
-    font-size: 14px;
-}
-.leave-form input,
-.leave-form textarea {
-    padding: 6px 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    resize: vertical;
-}
-.leave-form textarea {height: 150px;}
 .btn:active {transform: scale(0.97);}
-.display-leave-contents {
-    height: 80%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
 .btn {
     width: 12rem;
     padding: 10px 12px;
@@ -188,26 +119,14 @@ body {
 }
 .warn {color: var(--error);}
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    border-radius: 12px;
-}
-
-th {
-    background-color: var(--accent);
-    color: white;
-}
-th,
-td {
-    text-align: center;
-    padding: 10px;
-    border: 1px solid #ddd;
-}
-tr:nth-child(even) {
-    background-color: var(--bg-primary);
-}
+/*
+    List of Media Queries Used:
+    ---------------------------
+    1. Smartphone
+    2. Tablets, NestHubs and smaller Pcs type, iPad Pro.
+    3. Surface Duo type Tablets.
+    4. Bigger NestHubs
+*/
 
 @media screen and (max-width: 480px) {
     main {padding: 10px;}
@@ -215,45 +134,64 @@ tr:nth-child(even) {
     .hero-bg {
         height: fit-content;
         gap: 10px;
+        border-bottom: unset;
     }
     .bg-content {
         height: 100%;
         flex-direction: column;
         padding: 0px;
         margin: 0px;
+        border: unset;
     }
     #userDashboard-heading {
         width: 98%;
         border: unset;
     }
-    .display-user-details {width: 98%;}
+    .display-user-details {
+        width: 98%;
+        padding: 0.8rem;
+    }
+    .user-basic-details {width: 98%;}
+    .user-basic-details > h1 {
+        text-align: center;
+        margin-bottom: 0.5rem;
+        padding: 0.5rem;
+        border-bottom: 2px solid var(--border-color);
+    }
     .user-pfp {display: none;}
     .other-contents {
         flex-direction: column;
         margin:0; padding:10px;
         height: fit-content;
-        width: 98%;
+        width: 98% !important;
     }
     .dashboard-buttons {
         width: 99%;
         border: unset;
         padding-bottom: 1rem;
         margin-bottom: 1rem;
+        border-bottom: unset;
+    }
+    .dashboard-buttons > h2 {
+        margin-bottom: 0.5rem;
+        padding: 0.5rem;
         border-bottom: 2px solid var(--border-color);
     }
-    .dashboard-contents {
-        width: 98%;
+    .dashboard-buttons > :first-child {
+        flex-basis: 100%;
+        text-align: center;
     }
-    .form-flex {width: 98%;}
-    .form-subFlex {flex-direction: column;}
-    .warn {text-align: center;}
+    .btn {width: fit-content}
+    .dashboard-contents {
+        display: none;
+    }
     .foot-content {gap: 20px}
     .foot1 {gap: 15px}
     .foot2 {gap: 15px}
     .foot-content > * {font-size: 18px;}
 }
 
-@media screen and (min-width: 481px) and (max-width: 1024px) {
+@media screen and (min-width: 481px) and (max-width: 1020px), (min-width: 950px) and (max-width: 1100px) and (max-height: 768px), (width: 1024px) and (height: 1366px) {
     .hero-bg {
         height: fit-content;
         gap: 10px;
@@ -277,19 +215,22 @@ tr:nth-child(even) {
         justify-content: center;
         align-items: center;
     }
-    .other-contents > .dashboard-buttons {display: none;}
     .dashboard-buttons {
         width: 99%;
         border: unset;
         padding-bottom: 1rem;
         margin-bottom: 1rem;
+    }
+    .dashboard-buttons > h2 {
+        margin-bottom: 0.5rem;
+        padding: 0.5rem;
         border-bottom: 2px solid var(--border-color);
     }
-    .dashboard-contents {
-        width: 98%;
+    .dashboard-buttons > :first-child {
+        flex-basis: 100%;
+        text-align: center;
     }
-    .form-flex {width: 98%;}
-    .warn {text-align: center;}
+    .dashboard-contents {display: none;}
     .fontSize, li {
         font-size: 1.2rem;
         padding-bottom: 0.9rem;
@@ -298,28 +239,14 @@ tr:nth-child(even) {
 }
 
 @media screen and (max-width: 550px) and (max-height: 750px) {
+    .display-user-details {width: 94%;}
+    .btn {width: fit-content}
 }
 
-@media screen and (min-width: 1200px) and (max-width: 1300px) and (min-height: 750px) and (max-height: 850px) {
+@media screen and (min-width: 1200px) and (max-width: 1300px) and (min-height: 750px) and (max-height: 850px), (min-width: 1100px) {
     .foot-content {width: 80%}
     .bg-content {height: 43%;}
+    .other-contents {width: 94% !important;}
+    .display-user-details {width: 42%;}
     .student-pfp {display: none;}
-}
-
-@media screen and (min-width: 950px) and (max-width: 1024px) and 
-       (min-height: 580px) and (max-height: 620px) {
-        .slide-menu {overflow-y: auto;}
-        .nav-links > a, .nav-links > p {
-            font-size: 1.2rem;
-        }
-        .bg-content {flex-direction: row;}
-        .attendance-related, .not-attendance {
-            width: 98%;
-            display: flex;
-            flex-direction: row;
-            gap: 15px;
-        }
-        .sidemenu-heading {font-size: 2.0rem;}
-        .slide-menu-links > a {font-size: 1.2rem;}
-        .sidemenu-heading strong {font-size: 1.6rem !important;}
 }

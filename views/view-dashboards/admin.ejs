@@ -33,7 +33,6 @@
                 </div>
                 <div class="nav-links">
                     <a href="/" class="nav-links-property hide">Home</a>
-                    <a href="/getStarted" class="nav-links-property hide" id="getting-started">Getting Started</a>
                 </div>
             </div>
             <div class="nav-group2">
@@ -67,10 +66,6 @@
                     <a href="/log" class="nav-links-property">Logs</a>
                     <a href="/register" class="nav-links-property" id="register">Register</a>
                     <a href="/login" class="nav-links-property">Login</a>
-                </div>
-                <div class="slide-menu-links">
-                    <h3>Dashboard Navigation</h3>
-                    <button class="btn" id="attendance-overview">Attendance Overview</button>
                 </div>
             </div>
         </nav>
@@ -114,15 +109,13 @@
                     </div>
                 </div>
             </div>
-            </div>
             <div class="other-contents">
                 <div class="dashboard-buttons">
                     <h2>Navigate Your Dashboard</h2>
                     <div class="divide-buttons">
                         <div class="left-side">
-                            <button class="btn" onclick="window.open('/get-qr-employee', '_blank')">Generate Employee
-                                QR</button>
-                            <button id="qrBtn" class="btn" onclick="handleGenerateQR()">Generate Student QR</button>
+                            <button class="btn">Generate Employee QR</button>
+                            <button id="qrBtn" class="btn">Generate Student QR</button>
                             <button class="btn">View Records</button>
                             <button class="btn">Edit Attendance</button>
                             <button class="btn">Manage Leave Requests</button>
@@ -137,69 +130,10 @@
                     </div>
                 </div>
                 <div class="dashboard-contents">
-                    <div class="view-logs">
-                        <div class="audit-log-heading">
-                            <h2>Audit Log</h2>
-                            <form method="GET" action="" id="filterForm" style="margin-bottom: 20px;">
-                                <label for="logFilter">Filter By:</label>
-                                <select class='logFilter' id="logFilter" name="logType">
-                                    <option value="all">All Logs</option>
-                                    <option value="registerLogs">Register Logs</option>
-                                    <option value="supportLogs">Support Logs</option>
-                                    <option value="loginLogs">Login Logs</option>
-                                    <option value="editLogs">Edit Logs</option>
-                                </select>
-                            </form>
-                        </div>
-
-                        <div class="log-entries">
-                            
-                        </div>
+                    <div class="generate-employee-qr">
+                        <img src="<%= qrImage %>" alt="Employee QR Code" class="qr">
                     </div>
-                    <div class="manage-users">
-                        <div class="manage-users-heading">
-                            <h2>Manage Users</h2>
-                            <form style="margin-bottom: 20px;">
-                                <label for="logFilter">Filter By:</label>
-                                <select class='logFilter' id="logFilterUsers" name="logType">
-                                    <option value="all">-- Users --</option>
-                                    <option value="registerLogs">Students</option>
-                                    <option value="supportLogs">Employees</option>
-                                </select>
-                                <% if(orgType==='college' ) { %>
-                                    <select class='logFilter' id="logFilterDept" name="department">
-                                        <option value="all">-- Department --</option>
-                                        <option value="CSE">CSE</option>
-                                        <option value="ME">ME</option>
-                                        <option value="ECE">ECE</option>
-                                        <option value="EEE">EEE</option>
-                                        <option value="IT">IT</option>
-                                        <option value="EE">EE</option>
-                                        <option value="CE">CE</option>
-                                    </select>
-                                    <% } else if(orgType==='school' ) { %>
-                                        <select class='logFilter' id="logFilterStandard" name="department">
-                                            <option value="all">-- Department --</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                            <option value="7">7</option>
-                                            <option value="8">8</option>
-                                            <option value="9">9</option>
-                                            <option value="10">10</option>
-                                            <option value="11">11</option>
-                                            <option value="12">12</option>
-                                        </select>
-                                        <% } %>
-                            </form>
-                        </div>
-                        <div class="manage-users-table">
-
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </section>
@@ -241,8 +175,5 @@
     </footer>
     <script src="/js/global/sideNav.js"></script>
     <script src="/js/global/update-footerLayout-for-tablets.js"></script>
-    <script src="/js/page-specific/dashboard/change-content.js"></script>
-    <script src="/js/page-specific/dashboard/auditLog.js"></script>
-    <script src="/js/page-specific/dashboard/teachingStaff.js"></script>
 
 </html>

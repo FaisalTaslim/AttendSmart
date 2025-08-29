@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const Org = require('../models/Org');
 const Logs = require('../models/logs');
 const Department = require('../models/departments');
+const moment = require('moment');
 
 exports.createOrg = async (req, res) => {
     try {
@@ -55,7 +56,7 @@ exports.createOrg = async (req, res) => {
 
         const newLog = {
             org: newAdminNumber,
-            registerLogs: [`Organization created at ${new Date().toLocaleString()}`],
+            registerLogs: [`Organization created at ${moment().format("DD-MM-YYYY HH:mm:ss")}`],
             loginLogs: [],
             supportLogs: [],
             employeeSessionLogs: [],

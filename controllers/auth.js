@@ -7,6 +7,7 @@ const CollegeStudent = require('../models/CollegeStudent');
 const Org = require('../models/Org');
 const Employee = require('../models/Employee');
 const Logs = require('../models/logs')
+const moment = require('moment');
 
 const auth = async (req, res) => {
     try {
@@ -91,13 +92,22 @@ const auth = async (req, res) => {
         if (orgId) {
             const logDoc = await Logs.findOne({ org: orgId });
             if (logDoc) {
+                const ip =
+                    req.headers['x-forwarded-for']?.split(',')[0] ||
+                    req.connection?.remoteAddress ||
+                    req.socket?.remoteAddress ||
+                    req.ip ||
+                    '0.0.0.0';
+
                 logDoc.loginLogs.push({
                     userId: user.uniqueId,
                     role: req.session.user.role,
-                    ip: req.ip
+                    ip,
+                    at: moment().format("DD-MM-YYYY HH:mm:ss"),
                 });
+
                 await logDoc.save();
-                console.log(`📥 Login log saved for ${user.userName} (${role})`);
+                console.log(`📥 Login log saved for ${req.session.user.name} (${role})`);
             } else {
                 console.log("⚠️ No log document found for this organization.");
             }

@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="/css/global/global-layout.css">
-    <link rel="stylesheet" href="/css/global/register.css">
     <link rel="stylesheet" href="/css/global/forms.css">
+    <link rel="stylesheet" href="/css/global/register.css">
     <link rel="stylesheet" href="/css/global/dark-theme.css">
     <link rel="stylesheet" href="/css/global/scrollbar.css">
 
@@ -31,7 +31,6 @@
                 </div>
                 <div class="nav-links">
                     <a href="/" class="nav-links-property hide">Home</a>
-                    <a href="/getStarted" class="nav-links-property hide" id="getting-started">Getting Started</a>
                 </div>
             </div>
             <div class="nav-group2">
@@ -53,12 +52,11 @@
                     <p class="nav-links-property"><i class="fa-solid fa-xmark" id="close-toggle"></i></p>
                 </div>
                 <div class="slide-menu-links">
-                    <a href="/getStarted">Getting Started</a>
-                    <<a href="/dashboard" class="nav-links-property hide">Dashboard</a>
-                        <a href="/support" class="nav-links-property hide">Support</a>
-                        <a href="/log" class="nav-links-property hide">Logs</a>
-                        <a href="/register" class="nav-links-property hide" id="register">Register</a>
-                        <a href="/login" class="nav-links-property hide">Login</a>
+                    <a href="/dashboard" class="nav-links-property">Dashboard</a>
+                    <a href="/support" class="nav-links-property">Support</a>
+                    <a href="/log" class="nav-links-property">Logs</a>
+                    <a href="/register" class="nav-links-property" id="register">Register</a>
+                    <a href="/login" class="nav-links-property">Login</a>
                 </div>
             </div>
         </nav>
@@ -71,14 +69,15 @@
                         <h1 class="reg-title">Welcome to AttendSmart</h1>
                         <h3 class="reg-title">Join us NOW!</h3>
                         <p class="reg-desc">
-                            Please select your registration type below. You will be redirected to the appropriate
+                            Please select your registration type. You will be redirected to the appropriate
                             form.
                         </p>
                     </div>
                 </div>
 
                 <div class="right-side">
-                    <form action ="/api/register-college-student" class="student-form-wrapper" id="student-form" method="POST">
+                    <form action="/api/register-college-student" class="student-form-wrapper" id="student-form"
+                        method="POST">
                         <h2 class="form-title">Student Registration</h2>
                         <div class="form-section" id="college-student-fields">
                             <h3>College Student Details</h3>
@@ -185,8 +184,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group"
-                             id='register-terms' style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0px;">
+                        <div class="form-group" id='register-terms'
+                            style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0px;">
                             <input type="checkbox" id="termsCheck" name="termsCheck" required>
                             <label for="termsCheck" style="font-size: 0.95rem; color: var(--text-secondary);">
                                 I agree to the

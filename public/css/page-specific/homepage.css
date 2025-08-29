@@ -1,3 +1,9 @@
+.hero-bg {
+    background-image: url(/img/bg-attendance.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 .hero-bg::before {
     content: "";
     position: absolute;
@@ -13,11 +19,10 @@
 .bg-content>* {
     position: relative;
     z-index: 2;
-    color: #FFFFFF;
+    color: black;
 }
 .bg-content>h1 {
     font-size: clamp(2.5rem, 6vw, 5rem);
-    color: #FFFFFF;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
     text-align: center;
     font-weight: 500;
@@ -27,6 +32,7 @@
     font-size: clamp(1rem, 2vw, 1.3rem);
     line-height: clamp(1.5rem, 2vw, 2rem);
     text-align: center;
+    font-weight: bold;
 }
 .links-shortcut {
     display: flex;
@@ -112,6 +118,10 @@ summary {padding-bottom: 10px;}
 .dashboard-writing-content > ol {padding-left: 20px;}
 
 @media screen and (max-width: 480px) {
+    .hero-bg {background-image: url(/img/bg-attendance-mobile.jpg);}
+    .hero-bg::before {
+        backdrop-filter: blur(2px);
+    }
     .about {height: fit-content;}
     .about-details {
         flex-direction: column;
@@ -126,6 +136,9 @@ summary {padding-bottom: 10px;}
 }
 
 @media screen and (min-width: 481px) and (max-width: 1024px) {
+    .hero-bg::before {
+        backdrop-filter: blur(2px);
+    }
     .about {height: fit-content;}
     .about-details {
         flex-direction: column;
