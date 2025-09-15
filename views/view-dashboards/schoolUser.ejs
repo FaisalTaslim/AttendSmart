@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/global/global-layout.css">
     <link rel="stylesheet" href="/css/global/forms.css">
     <link rel="stylesheet" href="/css/global/dB-global.css">
-    <link rel="stylesheet" href="/css/page-specific/dashboard/corporate.css">
+    <link rel="stylesheet" href="/css/page-specific/dashboard/schoolUser.css">
     <link rel="stylesheet" href="/css/global/dark-theme.css">
     <link rel="stylesheet" href="/css/global/scrollbar.css">
 
@@ -128,9 +128,147 @@
                     <button class="btn" id="mark">Mark Attendance</button>
                 </div>
                 <div class="dashboard-contents">
-                    
+                    <div class="edit-info">
+                        <form id="editInfoForm" method="POST" action="/update-school-student">
+                            <fieldset>
+                                <legend>Student Information</legend>
+
+                                <div class="form-group">
+                                    <label for="uniqueId">UniqueId</label>
+                                    <input type="text" id="uniqueId" name="uniqueId" value="<%= uniqueId %>" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="userName">Name</label>
+                                    <input type="text" id="userName" name="userName" value="<%=userName %>" required />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="roll">Roll Number</label>
+                                    <input type="text" id="roll" name="roll" required value="<%=roll %>" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="standard">Standard / Class</label>
+                                    <input type="text" id="standard" name="standard" required value="<%=standard %>" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="contact">Contact</label>
+                                    <input type="text" id="contact" name="contact" value="<%=contact %>" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" name="email" value="<%=email %>" />
+                                </div>
+                            </fieldset>
+
+                            <fieldset>
+                                <legend>Subjects</legend>
+                                <div class="subjects-grid">
+                                    <% for (let i=0; i < 12; i++) { %>
+                                        <label>Subject <%= i+1 %>:
+                                                <input type="text" name="subject<%= i+1 %>"
+                                                    value="<%= subjects[i] ? subjects[i] : '' %>"
+                                                    placeholder="Enter subject">
+                                        </label>
+                                        <% } %>
+                                </div>
+                            </fieldset>
+                            <button type="submit" class="btn submit-btn">Update Info</button>
+                        </form>
+                    </div>
+
+                    <div class="notices">
+                        <h2>📢 Notices</h2>
+                        <div id="notice-list" class="notice-list">
+                            <% if (!notices || notices.length===0) { %>
+                                <p>No notices available.</p>
+                                <% } else { %>
+                                    <% notices.forEach(notice=> { %>
+                                        <div class="notice-card">
+                                            <div class="notice-date">
+                                                <%= new Date(notice.dateTime).toLocaleString() %>
+                                            </div>
+                                            <p class="notice-text">
+                                                <%= notice.noticeText %>
+                                            </p>
+                                        </div>
+                                        <% }) %>
+                                            <% } %>
+                        </div>
+                    </div>
+
+                    <div class="request-leave-container">
+                        <div class="request-leave-header">
+                            <h2>📢 Request Leave</h2>
+                            <button class="btn">View Leave Status</button>
+                        </div>
+
+                        <div class="request-leave">
+                            <form id="leaveForm" method="POST" action="/request-leave-schlstudent">
+                                <fieldset>
+                                    <legend>Leave Details</legend>
+
+                                    <label for="userId">Enter your uniqueId</label>
+                                    <input type="text" id="userId" name="uniqueId" required>
+
+                                    <label for="leaveType">Leave Type</label>
+                                    <select id="leaveType" name="leaveType" required>
+                                        <option value="">-- Select Leave Type --</option>
+                                        <option value="sick">Sick Leave</option>
+                                        <option value="casual">Casual Leave</option>
+                                        <option value="earned">Earned Leave</option>
+                                        <option value="other">Other</option>
+                                    </select>
+
+                                    <label for="startDate">Start Date</label>
+                                    <input type="date" id="startDate" name="startDate" required>
+
+                                    <label for="endDate">End Date</label>
+                                    <input type="date" id="endDate" name="endDate" required>
+
+                                    <label for="reason">Reason</label>
+                                    <textarea id="reason" name="reason" rows="4" placeholder="Enter reason for leave..."
+                                        required></textarea>
+                                </fieldset>
+
+                                <div style="text-align:center;">
+                                    <button type="submit">Submit Request</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="leave-requests-section">
+                            <h2>📝 Your Leave Requests</h2>
+                            <div id="leave-request-list" class="leave-request-list">
+
+                                <% if (!leaveRequests || leaveRequests.length===0) { %>
+                                    <p>No leave requests submitted.</p>
+                                    <% } else { %>
+                                        <% leaveRequests.forEach(leave=> { %>
+                                            <div class="leave-card">
+                                                <div class="leave-dates">
+                                                    <%= leave.startDate %> to <%= leave.endDate %> - <%= leave.leaveType
+                                                                %>
+                                                </div>
+                                                <div class="leave-reason">
+                                                    <strong>Reason:</strong>
+                                                    <%= leave.reason %> <br>
+                                                        <strong>Status:</strong>
+                                                        <%= leave.status %>
+                                                </div>
+                                            </div>
+                                            <% }) %>
+                                                <% } %>
+
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
-            </div>
         </section>
     </main>
     <footer>

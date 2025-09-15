@@ -1,51 +1,753 @@
-.other-contents {width: 79%;}
-.left-side, .right-side{
+.other-contents {
+    width: 74%;
+    transition: width .25s ease;
+}
+
+.other-contents.is-wide {
+    width: 94%;
+}
+
+.dashboard-contents {
+    width: 74%;
+    transition: width .25s ease;
+    overflow-y: auto;
+}
+
+.dashboard-contents.is-wide {
+    width: 98%;
+}
+
+.left-side,
+.right-side {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
-.generate-employee-qr {
+
+#generate-employee-qr {
     height: 100%;
     width: 100%;
-    display: flex;           
-    justify-content: center; 
-    align-items: center;    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
 }
 
 .qr {
-    height: 50%;
-    width: 50%;
+    width: 30rem;
+    aspect-ratio: 1 / 1;
 }
-/*
-    List of Media Queries
-    ----------------------
-    1. For smartphones.
-    2. Surface Duo
-    3. Bigger NestHub
-*/
+
+.send-notice-container {
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    gap: 1rem;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.notice-heading {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.notice-heading>p {
+    font-weight: bold;
+    color: black;
+    font-size: 1.1rem;
+    border: 2px solid var(--border-color);
+    padding: 0.3rem;
+    border-radius: 0.8rem;
+}
+
+.notice-heading>p:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: var(--accent);
+}
+
+#sendNoticeForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.send-notice-container h3 {
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #444;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+}
+
+.send-btn {
+    background: #007bff;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.8rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.send-btn:hover {
+    background: #0056b3;
+    cursor: pointer;
+}
+
+.view-notices {
+    display: none;
+    flex-direction: column;
+}
+
+.view-notices-heading {
+    padding: 1rem;
+}
+
+.view-notices-heading>i {
+    padding: 0.8rem;
+    border: 2px solid var(--border-color);
+    color: black;
+    border-radius: 50%;
+}
+
+.notice-logs {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.notice-logs .log-entry {
+    display: flex;
+    gap: 1rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.notice-logs .log-icon {
+    font-size: 1.6rem;
+    /* slightly bigger icon */
+    color: #ff9900;
+    display: flex;
+    align-items: center;
+}
+
+.notice-logs .log-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.notice-logs .log-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.notice-logs .log-details {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.notice-logs .log-text {
+    font-size: 1rem;
+    color: #222;
+}
+
+.notice-logs .log-time {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 9999;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#student-attendance {
+    height: 98%;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.instigator-inputs {
+    height: fit-content;
+    width: 30%;
+    position: absolute;
+    top: 30vh;
+}
+
+.instigator-inputs,
+#subjectForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    background: #fff;
+    border-radius: 0.8rem;
+}
+
+.instigator-inputs>* {
+    color: black;
+}
+
+.instigator-inputs {
+    padding: 1rem;
+}
+
+.instigator-inputs>h2 {
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+#manage-users,
+#browse-logs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.manage-users-header,
+.browse-logs-header {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    height: 3.4rem;
+    padding: 1rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.cross-and-heading-name {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+}
+
+.cross-and-heading-name i:hover {
+    color: var(--accent, #007bff);
+}
+
+.fa-xmark {
+    padding: 0.3rem;
+    border: 2px solid var(--border-color);
+    border-radius: 0.5rem;
+}
+
+.college-students,
+.employees {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    overflow-x: auto;
+}
+
+.college-students table,
+.employees table {
+    width: 100%;
+    background: #fff;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.college-students thead,
+.employees thead {
+    background: var(--accent, #007bff);
+    color: #fff;
+}
+
+.college-students thead th,
+.employees thead th {
+    text-align: left;
+    padding: 1rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+}
+
+.college-students tbody td,
+.employees tbody td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid #eee;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.college-students tbody tr:nth-child(even),
+.employees tbody tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.college-students tbody tr:hover,
+.employees tbody tr:hover {
+    background: #f1f7ff;
+    transition: background 0.2s ease-in-out;
+}
+
+.college-students ul {
+    margin: 0;
+    padding-left: 1rem;
+    list-style-type: disc;
+    color: #555;
+    font-size: 0.85rem;
+}
+
+table,
+th,
+td {
+    border: 1px solid #ccc;
+}
+
+th {
+    border-bottom: 2px solid #333;
+}
+
+tr:nth-child(even) td {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.register-logs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    overflow-y: auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.register-logs>p {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    color: #374151;
+    background: #fff;
+    padding: 0.6rem 0.9rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.register-logs>p:hover {
+    background: #f3f4f6;
+    transform: translateX(3px);
+}
+
+.register-logs i {
+    color: var(--accent);
+    font-size: 1.1rem;
+}
+
+.log-entry {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.8rem 1rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease;
+}
+
+.log-entry:hover {
+    transform: translateY(-3px);
+}
+
+.log-icon i {
+    font-size: 2rem;
+    color: #007bff;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+}
+
+.log-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.log-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 0;
+    color: #333;
+}
+
+.log-details {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.log-time {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.login-logs,
+.support-logs,
+.employee-session-logs,
+.student-session-logs {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.support-logs .log-icon i {
+    font-size: 2rem;
+    color: #10b981;
+}
+
+.employee-session-logs .log-icon i {
+    font-size: 2rem;
+    color: #f59e0b;
+}
+
+.log-badge {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 0.3rem;
+    margin-left: 0.5rem;
+}
+
+.log-badge.expired {
+    background-color: #f87171;
+    color: #fff;
+    font-weight: 600;
+}
+
+.no-logs {
+    padding: 0.5rem;
+    background: #fff;
+    border-radius: 12px;
+    color: black;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Scope everything to #edit-your-info to avoid collisions */
+#edit-your-info {
+    width: 98%;
+    padding: 1.5rem;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    font-family: Arial, sans-serif;
+}
+
+#editOrgForm>fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+#edit-your-info h3 {
+    text-align: center;
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    color: #222;
+}
+
+#edit-your-info form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+#edit-your-info fieldset {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    background: #fff;
+}
+
+#edit-your-info legend {
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 0 0.5rem;
+    color: #007bff;
+}
+
+#edit-your-info .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+#edit-your-info .form-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #444;
+}
+
+#edit-your-info .form-group input,
+#edit-your-info .form-group select,
+#edit-your-info .form-group textarea {
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+#edit-your-info .form-group input:focus,
+#edit-your-info .form-group select:focus,
+#edit-your-info .form-group textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+}
+
+#edit-your-info .send-btn {
+    background: #007bff;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.8rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    align-self: flex-start;
+}
+
+#edit-your-info .send-btn:hover {
+    background: #0056b3;
+}
+
+/* Manage Leave Requests Section */
+.manage-leave-requests {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 1.5rem;
+    background: #fafafa;
+    border-radius: 12px;
+}
+
+.manage-leave-requests h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.5rem;
+    border-left: 4px solid #007bff;
+    padding-left: 0.6rem;
+}
+
+.leave-card {
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.leave-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.leave-card p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #444;
+}
+
+.leave-card strong {
+    color: #222;
+}
+
+/* Status styling */
+.leave-card p strong+span {
+    font-weight: 600;
+}
+
+.leave-card .status {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    text-transform: capitalize;
+}
+
+.status.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status.accepted {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status.rejected {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Buttons */
+.leave-card form {
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+
+.leave-card button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    outline: none;
+    padding: 0.45rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    transition: background 0.2s ease;
+}
+
+.leave-card button:hover {
+    background: #0056b3;
+}
+
+.leave-card form:nth-child(2) button {
+    background: #dc3545;
+}
+
+.leave-card form:nth-child(2) button:hover {
+    background: #a71d2a;
+}
+
+.overlay-head {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+@media (max-width: 600px) {
+    .leave-card {
+        padding: 12px 15px;
+    }
+
+    .leave-card button {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+}
+
 
 @media screen and (max-width: 480px) {
-    .divide-buttons {flex-direction: column;}
-    .left-side, .right-side {
+    .divide-buttons {
+        flex-direction: column;
+    }
+    .dashboard-contents {width: 98%;}
+    .left-side,
+    .right-side {
         flex-direction: row;
         flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
     }
-    .divide-buttons {width: 96%;}
-    .dashboard-buttons {border-bottom: unset;}
-    .dashboard-contents {display: none;}
+    .divide-buttons {
+        width: 96%;
+    }
+    .dashboard-buttons {
+        border-bottom: unset;
+    }
+    .instigator-inputs {width: 93%;}
+    .qr {
+        width: 17rem;
+        border-radius: 0.8rem;
+    }
+    #edit-your-info {padding: 0.5rem;}
 }
 
 @media screen and (max-width: 550px) and (max-height: 750px) {
-    .other-contents {width: 87%;}
-    .divide-buttons {flex-direction: column;}
-    .left-side, .right-side {
+    .other-contents {
+        width: 87%;
+    }
+
+    .divide-buttons {
+        flex-direction: column;
+    }
+
+    .left-side,
+    .right-side {
         flex-direction: row;
         flex-wrap: wrap;
     }
-    .dashboard-buttons {border-bottom: unset;}
-    .dashboard-contents {display: none;}
+
+    .dashboard-buttons {
+        border-bottom: unset;
+    }
 }
 
-@media screen and (min-width: 1200px) and (max-width: 1300px) and (min-height: 750px) and (max-height: 850px), (min-width: 1100px) {
-    .dashboard-buttons {width: 42%;}
+@media screen and (min-width: 1200px) and (max-width: 1300px) and (min-height: 750px) and (max-height: 850px),
+(min-width: 1100px) {
+    .dashboard-buttons {
+        width: 42%;
+    }
 }

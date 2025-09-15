@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const router = express.Router();
 const ensureLoggedIn = require('../middleware/authMiddleware');
-const checkRole = require('../middleware/roleMiddleware');
 const corporateDashboard = require('../controllers/corpDb');
 const schoolDashboard = require('../controllers/schoolDb')
 const collegeDashboard = require('../controllers/collegeDb')
@@ -20,9 +19,5 @@ router.use('/schoolUser', ensureLoggedIn, schoolDashboard);
 router.use('/collegeUser', ensureLoggedIn, collegeDashboard);
 router.use('/teachingStaff', ensureLoggedIn, teacherDashboard);
 router.use('/admin', ensureLoggedIn, adminDashboard);
-
-router.get('/org', ensureLoggedIn, checkRole(['Org']), (req, res) => {
-    res.sendFile(path.join(viewsPath, 'admin.html'));
-});
 
 module.exports = router;

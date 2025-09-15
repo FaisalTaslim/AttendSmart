@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const moment = require('moment')
 
 const logSchema = new Schema({
     org: {
@@ -66,15 +67,20 @@ const logSchema = new Schema({
                 required: true
             },
             sessionInstigator: {type: String, required: true},
+            sessionType: {
+                type: String, 
+                enum: ['fresh-session', 'retake-session'],
+                required: true,
+            },
             subjectName: {
                 type: String, 
-                default: () => moment().format("DD-MM-YYYY HH:mm:ss"),
                 required: true,
             },
             expired: {type: Boolean, required: true},
             createdAt: {
                 type: String,
-                required: true
+                required: true,
+                default: () => moment().format("DD-MM-YYYY HH:mm:ss")
             }
         }
     ],

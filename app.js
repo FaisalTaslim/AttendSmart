@@ -48,7 +48,6 @@ app.use((req, res, next) => {
     next();
 });
 
-
 const mainRoutes = require('./routes/mainRoutes');
 const registerRoutes = require('./routes/registerViews');
 const dashboardRoutes = require('./routes/dashboardRoutes');
@@ -59,17 +58,35 @@ const collegeStudentRoutes = require('./routes/createClgStdn');
 const employeeRoutes = require('./routes/createEmp');
 const loginRoutes = require('./routes/loginRoutes');
 const userLeaveRoute = require('./routes/userLeaveRoute');
+const notice = require('./routes/admin/notice');
+const support = require('./routes/support');
+const student_session = require('./routes/admin/student-session');
+const updateOrg = require('./routes/admin/update-org');
+const acceptLeave = require('./routes/admin/leave-requests');
+const rejectLeave = require('./routes/admin/leave-requests');
+const updateCollegeStudent = require('./routes/college-student/update-student');
+const postLeaveRequestCollege = require('./routes/college-student/post-leave');
+const updateSchoolStudent = require('./routes/school-student/update-school-student');
+const postLeaveRequestSchool = require('./routes/school-student/post-leave')
 
 app.use('/', mainRoutes);
 app.use('/register', registerRoutes);
 app.use('/dashboard', dashboardRoutes);
-
 app.use('/api/org', orgRoutes);
 app.use('/api', schoolStudentRoutes);
 app.use('/api', collegeStudentRoutes);
 app.use('/api', employeeRoutes);
 app.use('/auth', loginRoutes);
-app.use('/api/request-leave', userLeaveRoute);
+app.use('/send-notice', notice);
+app.use('/student-session', student_session);
+app.use('/api/support', support);
+app.use('/update-org', updateOrg);
+app.use('/leave', acceptLeave);
+app.use('/leave', rejectLeave);
+app.use('/update-college-student', updateCollegeStudent);
+app.use('/request-leave-clgstudent', postLeaveRequestCollege);
+app.use('/update-school-student', updateSchoolStudent);
+app.use('/request-leave-schlstudent', postLeaveRequestSchool);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {

@@ -22,14 +22,17 @@ exports.createSchoolStudent = async (req, res) => {
             termsCheck
         } = req.body;
 
+        // hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
+        // increment counter
         let counterDoc = await Counter.findOne();
         const newSchoolStudentNumber = (Number(counterDoc.newStudentValue) + 1).toString();
         counterDoc.newStudentValue = newSchoolStudentNumber;
         await counterDoc.save();
 
+        // find org
         const findOrg = await Org.findOne({
             orgName: { $regex: new RegExp(`^${orgName}$`, 'i') },
             orgBranch: { $regex: new RegExp(`^${orgBranch}$`, 'i') }
@@ -39,9 +42,11 @@ exports.createSchoolStudent = async (req, res) => {
             return res.send(`<h2>❌ Error: Organization not found</h2>`);
         }
 
+        // subjects
         const subjectList = Array.isArray(subjectName) ? subjectName : [subjectName];
         const filteredSubjects = subjectList.filter(s => s && s.trim() !== "");
 
+        // create student
         const newStudent = await schoolStudent.create({
             org: findOrg.uniqueId,
             uniqueId: newSchoolStudentNumber,
@@ -55,17 +60,27 @@ exports.createSchoolStudent = async (req, res) => {
             subjects: filteredSubjects,
         });
 
+        const monthKey = moment().format("YYYY-MM");
+
         for (const subject of filteredSubjects) {
             await StudentSummary.create({
                 org: findOrg.uniqueId,
                 student: newStudent.uniqueId,
+                std_dept: standard, 
                 subjectName: subject,
                 totalLectures: 0,
                 attendedLectures: 0,
                 percentage: 0,
-                monthlySummary: [],
+                monthlySummary: {
+                    [monthKey]: {
+                        totalLectures: 0,
+                        attendedLectures: 0,
+                        percentage: 0
+                    }
+                }
             });
-            console.log(`✅ Attendance summary created for subject: ${subject}`);
+
+            console.log(`✅ Attendance summary created for subject: ${subject} for month ${monthKey}`);
         }
 
         await SchoolClasses.findOneAndUpdate(

@@ -1,6 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const Org = require('../models/Org');
+const Employee = require('../models/Employee');
+const CollegeStudent = require('../models/CollegeStudent');
+const SchoolStudent = require('../models/SchoolStudent');
+const logs = require('../models/logs');
+const Notice = require('../models/notice');
+const leaveRequests = require('../models/userLeave'); // ✅ your model
 const checkRole = require('../middleware/roleMiddleware');
 const generateEmployeeQR = require('../utils/generateEmployeeQr.js');
 
@@ -15,19 +21,102 @@ router.get('/', checkRole(['Org']), async (req, res) => {
         const adminEmail = admin[0]?.adminEmail;
         const adminContact = admin[0]?.adminContact;
 
-        const sessionInstigator = req.session.user.name; 
+        const sessionInstigator = req.session.user.name;
         const { employeeCode, qrImage } = await generateEmployeeQR(sessionInstigator);
 
-        res.render('view-dashboards/admin', {
-            uniqueId,
-            adminName,
-            adminId,
-            adminContact,
-            adminEmail,
-            orgType,
-            employeeCode,
-            qrImage
-        });
+        await logs.findOneAndUpdate(
+            { org: uniqueId },
+            {
+                $push: {
+                    employeeSessionLogs: { employeeCode, sessionInstigator }
+                }
+            },
+            { upsert: true, new: true }
+        );
+
+        const getLogs = await logs.findOne({ org: user });
+        const notices = await Notice.find({ uniqueId: user });
+        const allLeaveRequests = await leaveRequests.find({ org: user });
+
+        let students = [];
+        let employees = [];
+        if (findUser.orgType === "college") {
+            students = await CollegeStudent.find();
+            employees = await Employee.find({ org: user });
+            const { registerLogs, loginLogs, supportLogs, employeeSessionLogs, studentSessionLog } = getLogs;
+
+            res.render('view-dashboards/admin', {
+                org: findUser,
+                uniqueId,
+                admin: findUser.admin[0],
+                adminName,
+                adminId,
+                adminContact,
+                adminEmail,
+                orgType,
+                employeeCode,
+                qrImage,
+                students,
+                employees,
+                registerLogs,
+                loginLogs,
+                supportLogs,
+                employeeSessionLogs,
+                studentSessionLog,
+                notices,
+                leaveRequests: allLeaveRequests
+            });
+        }
+        else if (findUser.orgType == "school") {
+            students = await SchoolStudent.find();
+            employees = await Employee.find({ org: user });
+            const { registerLogs, loginLogs, supportLogs, employeeSessionLogs, studentSessionLog } = getLogs;
+
+            res.render('view-dashboards/admin', {
+                org: findUser,
+                uniqueId,
+                admin: findUser.admin[0],
+                adminName,
+                adminId,
+                adminContact,
+                adminEmail,
+                orgType,
+                employeeCode,
+                qrImage,
+                students,
+                employees,
+                registerLogs,
+                loginLogs,
+                supportLogs,
+                employeeSessionLogs,
+                studentSessionLog,
+                notices,
+                leaveRequests: allLeaveRequests
+            });
+        }
+        else {
+            employees = await Employee.find({ org: user });
+            const { registerLogs, loginLogs, supportLogs, employeeSessionLogs } = getLogs;
+            res.render('view-dashboards/admin', {
+                org: findUser,
+                uniqueId,
+                admin: findUser.admin[0],
+                adminName,
+                adminId,
+                adminContact,
+                adminEmail,
+                orgType,
+                employeeCode,
+                qrImage,
+                employees,
+                registerLogs,
+                loginLogs,
+                supportLogs,
+                employeeSessionLogs,
+                notices,
+                leaveRequests: allLeaveRequests
+            });
+        }
 
     } catch (error) {
         console.error("Error loading admin dashboard:", error);

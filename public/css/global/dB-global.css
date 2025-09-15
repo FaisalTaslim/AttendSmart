@@ -65,7 +65,12 @@ body {
     border-radius: 50%;
     border: 2px solid var(--border-color);
     background-color: var(--accent);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+.profile-image > i {font-size: 3.0rem;}
 .user-basic-details p strong {
     background-color: var(--accent);
     padding: 2px 5px;
@@ -182,9 +187,6 @@ body {
         text-align: center;
     }
     .btn {width: fit-content}
-    .dashboard-contents {
-        display: none;
-    }
     .foot-content {gap: 20px}
     .foot1 {gap: 15px}
     .foot2 {gap: 15px}
@@ -230,7 +232,6 @@ body {
         flex-basis: 100%;
         text-align: center;
     }
-    .dashboard-contents {display: none;}
     .fontSize, li {
         font-size: 1.2rem;
         padding-bottom: 0.9rem;

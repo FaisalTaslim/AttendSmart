@@ -15,6 +15,11 @@
     margin-bottom: 1.5rem;
     text-align: center;
 }
+.issue-form-section > p {
+    color: var(--tip-text);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
 .issue-form {
     display: flex;
     flex-direction: column;

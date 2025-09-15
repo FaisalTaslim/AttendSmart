@@ -7,7 +7,7 @@
     <title>User Dashboard</title>
     <link rel="stylesheet" href="/css/global/global-layout.css">
     <link rel="stylesheet" href="/css/global/dB-global.css">
-    <link rel="stylesheet" href="/css/page-specific/dashboard/corporate.css">
+    <link rel="stylesheet" href="/css/page-specific/dashboard/collegeUser.css">
     <link rel="stylesheet" href="/css/global/dark-theme.css">
     <link rel="stylesheet" href="/css/global/scrollbar.css">
 
@@ -79,30 +79,30 @@
                 <div class="display-user-details">
                     <div class="user-basic-details"">
                         <h1>Student Details</h1>
-                        <p id="userId">
-                            <strong>uniqueID: </strong>
-                            &nbsp;<%= uniqueId %>
-                        </p>
-                        <p id="userName">
-                            <strong>userName: </strong>
-                            &nbsp;<%= userName %>
-                        </p>
-                        <p id="userName">
-                            <strong>Dept: </strong>
-                            &nbsp;<%= dept %>
-                        </p>
-                        <p id="roll">
-                            <strong>roll no: </strong>
-                            &nbsp;<%= roll %>
-                        </p>
-                        <p id="contact">
-                            <strong>Contact: </strong>
-                            &nbsp;<%= contact %>
-                        </p>
-                        <p id="email">
-                            <strong>Email: </strong>
-                            &nbsp;<%= email %>
-                        </p>
+                        <p id=" userId">
+                        <strong>uniqueID: </strong>
+                        &nbsp;<%= uniqueId %>
+                            </p>
+                            <p id="userName">
+                                <strong>userName: </strong>
+                                &nbsp;<%= userName %>
+                            </p>
+                            <p id="userName">
+                                <strong>Dept: </strong>
+                                &nbsp;<%= dept %>
+                            </p>
+                            <p id="roll">
+                                <strong>roll no: </strong>
+                                &nbsp;<%= roll %>
+                            </p>
+                            <p id="contact">
+                                <strong>Contact: </strong>
+                                &nbsp;<%= contact %>
+                            </p>
+                            <p id="email">
+                                <strong>Email: </strong>
+                                &nbsp;<%= email %>
+                            </p>
                     </div>
                     <div class="user-pfp">
                         <div class="profile-image"></div>
@@ -112,15 +112,162 @@
             <div class="other-contents">
                 <div class="dashboard-buttons">
                     <h2>Navigate Your Dashboard</h2>
-                    <button class="btn" id="attendance-overview">Attendance Overview</button>
+                    <button class="btn" id="mark">Mark Attendance</button>
+                    <button class="btn" id="attendance-overview">Attendance Summary</button>
                     <button class="btn" id="history">Attendance History</button>
                     <button class="btn" id="edit">Edit info</button>
                     <button class="btn" id="notice">Notices</button>
                     <button class="btn" id="leave">Request a Leave</button>
-                    <button class="btn" id="mark">Mark Attendance</button>
                 </div>
                 <div class="dashboard-contents">
-                    
+                    <div class="edit-info">
+                        <form method="POST" action="/update-college-student">
+                            <fieldset>
+                                <legend>Personal Information</legend>
+                                <label for="uniqueId">Unique ID</label>
+                                <input type="text" id="uniqueId" name="uniqueId" value="<%= uniqueId %>" readonly>
+
+                                <label for="userName">Full Name</label>
+                                <input type="text" id="userName" name="userName" value="<%= userName %>">
+
+                                <label for="roll">Roll Number</label>
+                                <input type="text" id="roll" name="roll" value="<%= roll %>">
+
+                                <label for="dept">Department</label>
+                                <input type="text" id="dept" name="dept" value="<%= dept %>">
+                            </fieldset>
+
+                            <fieldset>
+                                <legend>Contact Information</legend>
+                                <label for="contact">Contact Number</label>
+                                <input type="tel" id="contact" name="contact" value="<%= contact %>">
+
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" value="<%= email %>">
+                            </fieldset>
+
+                            <fieldset>
+                                <legend>Subjects</legend>
+                                <div class="subjects-grid">
+                                    <% for (let i=0; i < 12; i++) { %>
+                                        <label>Subject <%= i+1 %>:
+                                                <input type="text" name="subject<%= i+1 %>"
+                                                    value="<%= subjects[i] ? subjects[i] : '' %>"
+                                                    placeholder="Enter subject">
+                                        </label>
+                                        <% } %>
+                                </div>
+                            </fieldset>
+
+                            <div style="text-align:center;">
+                                <button type="submit">Save Changes</button>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="notices">
+                        <h2>📢 Notices</h2>
+                        <div id="notice-list" class="notice-list">
+                            <% if (!notices || notices.length===0) { %>
+                                <p>No notices available.</p>
+                                <% } else { %>
+                                    <% notices.forEach(notice=> { %>
+                                        <div class="notice-card">
+                                            <div class="notice-date">
+                                                <%= new Date(notice.dateTime).toLocaleString() %>
+                                            </div>
+                                            <p class="notice-text">
+                                                <%= notice.noticeText %>
+                                            </p>
+                                        </div>
+                                        <% }) %>
+                                            <% } %>
+                        </div>
+                    </div>
+                    <div class="request-leave-container">
+                        <div class="request-leave-header">
+                            <h2>📢 Request Leave</h2>
+                            <button class="btn">View Leave Status</button>
+                        </div>
+
+                        <div class="request-leave">
+                            <form id="leaveForm" method="POST" action="/request-leave-clgstudent">
+                                <fieldset>
+                                    <legend>Leave Details</legend>
+
+                                    <label for="userId">Enter your uniqueId</label>
+                                    <input type="text" id="userId" name="uniqueId" required>
+
+                                    <label for="leaveType">Leave Type</label>
+                                    <select id="leaveType" name="leaveType" required>
+                                        <option value="">-- Select Leave Type --</option>
+                                        <option value="sick">Sick Leave</option>
+                                        <option value="casual">Casual Leave</option>
+                                        <option value="earned">Earned Leave</option>
+                                        <option value="other">Other</option>
+                                    </select>
+
+                                    <label for="startDate">Start Date</label>
+                                    <input type="date" id="startDate" name="startDate" required>
+
+                                    <label for="endDate">End Date</label>
+                                    <input type="date" id="endDate" name="endDate" required>
+
+                                    <label for="reason">Reason</label>
+                                    <textarea id="reason" name="reason" rows="4" placeholder="Enter reason for leave..."
+                                        required></textarea>
+                                </fieldset>
+
+                                <div style="text-align:center;">
+                                    <button type="submit">Submit Request</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="leave-requests-section">
+                            <h2>📝 Your Leave Requests</h2>
+                            <div id="leave-request-list" class="leave-request-list">
+
+                                <% if (!leaveRequests || leaveRequests.length===0) { %>
+                                    <p>No leave requests submitted.</p>
+                                    <% } else { %>
+                                        <% leaveRequests.forEach(leave=> { %>
+                                            <div class="leave-card">
+                                                <div class="leave-dates">
+                                                    <%= leave.startDate %> to <%= leave.endDate %> - <%= leave.leaveType
+                                                                %>
+                                                </div>
+                                                <div class="leave-reason">
+                                                    <strong>Reason:</strong>
+                                                    <%= leave.reason %> <br>
+                                                        <strong>Status:</strong>
+                                                        <%= leave.status %>
+                                                </div>
+                                            </div>
+                                            <% }) %>
+                                                <% } %>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="attendance-container">
+                        <form class="attendance-form" method="POST" action="/mark-attendance-students">
+                            <fieldset>
+                                <legend>Attendance Marking</legend>
+
+                                <label for="uniqueId">Enter your Unique ID</label>
+                                <input type="text" id="uniqueId" name="uniqueId" placeholder="e.g. 12345" required>
+
+                                <label for="code">Enter the Code</label>
+                                <input type="text" id="code" name="code" placeholder="Enter code here" required>
+
+                                <label for="subject">Enter the Subject Name</label>
+                                <input type="text" id="subject" name="subject" placeholder="e.g. Mathematics" required>
+
+                                <button type="submit">Mark Attendance</button>
+                            </fieldset>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>

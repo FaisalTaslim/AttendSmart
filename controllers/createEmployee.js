@@ -53,15 +53,24 @@ exports.createEmployee = async (req, res) => {
             termsCheck
         });
 
+        const monthKey = moment().format("YYYY-MM");
+
         await EmployeeSummary.create({
             org: findOrg.uniqueId,
             employee: newEmployee.uniqueId,
+            emp_dept: dept,
             totalDays: 0,
             attendedDays: 0,
             percentage: 0,
-            monthlySummary: [],
+            monthlySummary: {
+                [monthKey]: {
+                    totalDays: 0,
+                    attendedDays: 0,
+                    percentage: 0
+                }
+            }
         });
-
+        
         await Department.findOneAndUpdate(
             { org: findOrg.uniqueId },
             { $addToSet: { employeeDepartments: dept } },

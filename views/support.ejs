@@ -240,19 +240,17 @@
 
                     <section class="issue-form-section">
                         <h2>Issue Submission Form</h2>
+                        <p>Use our email for any queries or questions if you're not a registered user</p>
                         <form class="issue-form" action="/api/support"" method="POST">
-                            <label for="org-name">Organization Name:</label>
-                            <input type="text" id="org-name" name="orgName" required>
-
-                            <label for="branch-name">Branch Name:</label>
-                            <input type="text" id="branch-name" name="orgBranch" required>
-
-                            <label for="branch-name">Enter UserName:</label>
-                            <input type="text" id="branch-name" name="userName" required>
+                            <label for="org">Enter Your Organization's ID:</label>
+                            <input type="text" id="org" name="org" required>
 
                             <label for="user-id">Enter UserID:</label>
                             <input type="text" id="user-id" name="userId"
                                 placeholder="example: adminId, employeeID, roll number" required>
+                            
+                            <label for="branch-name">Enter UserName:</label>
+                            <input type="text" id="branch-name" name="userName" required>
 
                             <label for="email">Enter Email:</label>
                             <input type="text" id="email" name="email" required>
@@ -261,7 +259,8 @@
                             <select name="supportType" id="supportType" required>
                                 <option value="" disabled selected>-- Select an option --</option>
                                 <option value="feedback">Feedback</option>
-                                <option value="problem">Report a problem</option required>
+                                <option value="problem">Report a problem</option>
+                                <option value="question">Ask a Question</option>
                             </select>
 
                             <label for="issue-description">Describe your thoughts:</label>

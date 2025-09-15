@@ -1,5 +1,5 @@
 const QRCode = require('qrcode');
-const generateCode = require('../public/js/global/generate-code-for-qr');
+const generateCode = require('./generate-code-for-qr');
 
 async function generateEmployeeQR(sessionInstigator) {
     const employeeCode = generateCode(8);

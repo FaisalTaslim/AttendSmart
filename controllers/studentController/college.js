@@ -55,16 +55,26 @@ exports.createCollegeStudent = async (req, res) => {
         });
 
         for (const subject of filteredSubjects) {
+            const monthKey = moment().format("YYYY-MM");
+
             await StudentSummary.create({
                 org: findOrg.uniqueId,
                 student: newStudent.uniqueId,
+                std_dept: dept,
                 subjectName: subject,
                 totalLectures: 0,
                 attendedLectures: 0,
                 percentage: 0,
-                monthlySummary: [],
+                monthlySummary: {
+                    [monthKey]: {
+                        totalLectures: 0,
+                        attendedLectures: 0,
+                        percentage: 0
+                    }
+                }
             });
-            console.log(`✅ Attendance summary created for subject: ${subject}`);
+
+            console.log(`✅ Attendance summary created for subject: ${subject} for month ${monthKey}`);
         }
 
         await Department.findOneAndUpdate(
@@ -75,6 +85,7 @@ exports.createCollegeStudent = async (req, res) => {
 
         const logMessage = `Student: ${userName}, department: ${dept}, roll: ${roll} joined on ${moment().format("DD-MM-YYYY HH:mm:ss")}`;
         const logDoc = await Logs.findOne({ org: findOrg.uniqueId });
+
         if (logDoc) {
             logDoc.registerLogs.push(logMessage);
             await logDoc.save();
