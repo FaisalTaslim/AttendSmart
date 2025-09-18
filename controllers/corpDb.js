@@ -13,7 +13,7 @@ router.get('/', checkRole(['Employee']), async (req, res) => {
         const findUserSummary = await EmployeeSummary.findOne({ employee: user });
 
         if (!findUser) return res.status(404).send("User not found");
-        const { org, uniqueId, employeeId, userName, designation, contact, email } = findUser;
+        const { org, uniqueId, employeeId, userName, designation, dept, contact, email } = findUser;
 
         const allNotices = await Notice.find({ uniqueId: org });
         const notices = allNotices.filter(notice => {
@@ -27,8 +27,9 @@ router.get('/', checkRole(['Employee']), async (req, res) => {
 
         res.render('view-dashboards/corporateUser', {
             uniqueId,
-            employeeId,
             userName,
+            employeeId,
+            dept,
             designation,
             contact,
             email,

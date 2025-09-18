@@ -69,6 +69,7 @@ const postLeaveRequestCollege = require('./routes/college-student/post-leave');
 const postLeaveRequestEmployee = require('./routes/corporate/post-leave');
 const updateSchoolStudent = require('./routes/school-student/update-school-student');
 const postLeaveRequestSchool = require('./routes/school-student/post-leave')
+const updateEmployee = require('./routes/corporate/update-employee')
 
 app.use('/', mainRoutes);
 app.use('/register', registerRoutes);
@@ -89,6 +90,8 @@ app.use('/request-leave-clgstudent', postLeaveRequestCollege);
 app.use('/request-leave-employees', postLeaveRequestEmployee);
 app.use('/update-school-student', updateSchoolStudent);
 app.use('/request-leave-schlstudent', postLeaveRequestSchool);
+app.use('/update-employee', updateEmployee);
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {

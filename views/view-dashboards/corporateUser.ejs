@@ -132,42 +132,37 @@
                 <div class="dashboard-contents">
                     <div class="edit-info">
                         <h1 style="margin-bottom: 1rem; text-align: center;">Edit Account Details</h1>
-                        <form class="form-flex" method="POST">
-                            <div class="form-subFlex">
-                                <div class="form-group">
-                                    <label for="uniqueId">unique ID</label>
-                                    <input type="text" name="uniqueId" id="uniqueId" required>
-                                </div>
+                        <form method="POST" action="/update-employee">
+                            <fieldset>
+                                <legend>Personal Information</legend>
+                                <label for="uniqueId">Unique ID</label>
+                                <input type="text" id="uniqueId" name="uniqueId" value="<%= uniqueId %>" readonly>
 
-                                <div class="form-group">
-                                    <label for="userName">Name</label>
-                                    <input type="text" name="userName" id="userName">
-                                </div>
+                                <label for="userName">Full Name</label>
+                                <input type="text" id="userName" name="userName" value="<%= userName %>">
 
-                                <div class="form-group">
-                                    <label for="employeeId">Employee ID</label>
-                                    <input type="text" name="employeeId" id="employeeId">
-                                </div>
+                                <label for="employeeId">Employee Id</label>
+                                <input type="text" id="employeeId" name="employeeId" value="<%= employeeId %>">
+
+                                <label for="dept">Department</label>
+                                <input type="text" id="dept" name="dept" value="<%= dept %>">
+
+                                <label for="designation">Designation</label>
+                                <input type="text" id="designation" name="designation" value="<%= designation %>">
+                            </fieldset>
+
+                            <fieldset>
+                                <legend>Contact Information</legend>
+                                <label for="contact">Contact Number</label>
+                                <input type="tel" id="contact" name="contact" value="<%= contact %>">
+
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" value="<%= email %>">
+                            </fieldset>
+
+                            <div style="text-align:center;">
+                                <button type="submit">Save Changes</button>
                             </div>
-
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" name="email" id="email">
-                            </div>
-
-                            <div class="form-subFlex">
-                                <div class="form-group">
-                                    <label for="designation">Designation</label>
-                                    <input type="text" name="designation" id="designation">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="contact">Contact</label>
-                                    <input type="tel" name="contact" id="contact">
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn">Submit</button>
                         </form>
                     </div>
                     <div class="request-leave-container">
