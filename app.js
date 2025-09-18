@@ -66,6 +66,7 @@ const acceptLeave = require('./routes/admin/leave-requests');
 const rejectLeave = require('./routes/admin/leave-requests');
 const updateCollegeStudent = require('./routes/college-student/update-student');
 const postLeaveRequestCollege = require('./routes/college-student/post-leave');
+const postLeaveRequestEmployee = require('./routes/corporate/post-leave');
 const updateSchoolStudent = require('./routes/school-student/update-school-student');
 const postLeaveRequestSchool = require('./routes/school-student/post-leave')
 
@@ -85,6 +86,7 @@ app.use('/leave', acceptLeave);
 app.use('/leave', rejectLeave);
 app.use('/update-college-student', updateCollegeStudent);
 app.use('/request-leave-clgstudent', postLeaveRequestCollege);
+app.use('/request-leave-employees', postLeaveRequestEmployee);
 app.use('/update-school-student', updateSchoolStudent);
 app.use('/request-leave-schlstudent', postLeaveRequestSchool);
 

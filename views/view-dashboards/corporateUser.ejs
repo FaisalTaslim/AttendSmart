@@ -32,7 +32,6 @@
                 </div>
                 <div class="nav-links">
                     <a href="/" class="nav-links-property hide">Home</a>
-                    <a href="/getStarted" class="nav-links-property hide" id="getting-started">Getting Started</a>
                 </div>
             </div>
             <div class="nav-group2">
@@ -60,7 +59,6 @@
                     <p class="nav-links-property"><i class="fa-solid fa-xmark" id="close-toggle"></i></p>
                 </div>
                 <div class="slide-menu-links">
-                    <a href="/getStarted" class="nav-links-property" id="getting-started">Getting Started</a>
                     <a href="/dashboard" class="nav-links-property">Dashboard</a>
                     <a href="/support" class="nav-links-property">Support</a>
                     <a href="/log" class="nav-links-property">Logs</a>
@@ -132,47 +130,9 @@
                     <button class="btn" id="mark">Mark Attendance</button>
                 </div>
                 <div class="dashboard-contents">
-                    <div class="attendance-overview">
-                        <h2 style="text-align: center;">Monthly Attendance Summary</h2>
-
-                        <table border="1" cellpadding="10" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Month</th>
-                                    <th>Total Days</th>
-                                    <th>Attended Days</th>
-                                    <th>Percentage</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% if (monthlySummary.length> 0) { %>
-                                    <% monthlySummary.forEach(summary=> { %>
-                                        <tr>
-                                            <td>
-                                                <%= summary.month %>
-                                            </td>
-                                            <td>
-                                                <%= summary.totalDays %>
-                                            </td>
-                                            <td>
-                                                <%= summary.attendedDays %>
-                                            </td>
-                                            <td>
-                                                <%= summary.percentage %> %
-                                            </td>
-                                        </tr>
-                                        <% }) %>
-                                            <% } else { %>
-                                                <tr>
-                                                    <td colspan="5">No summary data available</td>
-                                                </tr>
-                                                <% } %>
-                            </tbody>
-                        </table>
-                    </div>
                     <div class="edit-info">
                         <h1 style="margin-bottom: 1rem; text-align: center;">Edit Account Details</h1>
-                        <form class="form-flex">
+                        <form class="form-flex" method="POST">
                             <div class="form-subFlex">
                                 <div class="form-group">
                                     <label for="uniqueId">unique ID</label>
@@ -210,38 +170,96 @@
                             <button type="submit" class="btn">Submit</button>
                         </form>
                     </div>
-                    <div class="leave-request attendance-status">
+                    <div class="request-leave-container">
+                        <div class="request-leave-header">
+                            <h2>📢 Request Leave</h2>
+                            <button class="btn">View Leave Status</button>
+                        </div>
+
                         <div class="request-leave">
-                            <h2>Request a Leave</h2>
-                            <form class="leave-form form-group" action="/api/request-leave" method="POST">
-                                <label for="leave-date">Select Start Date:</label>
-                                <input type="date" id="leave-date" name="leaveStartDate" required>
+                            <form id="leaveForm" method="POST" action="/request-leave-employees">
+                                <fieldset>
+                                    <legend>Leave Details</legend>
 
-                                <label for="leave-date">Select End Date:</label>
-                                <input type="date" id="leave-date" name="leaveEndDate" required>
+                                    <label for="userId">Enter your uniqueId</label>
+                                    <input type="text" id="userId" name="uniqueId" required>
 
-                                <label for="reason">Reason:</label>
-                                <select name="leaveType">
-                                    <option>-- Select --</option>
-                                    <option value="Sick Leave">Sick Leave</option>
-                                    <option value="Casual Leave">Casual Leave</option>
-                                    <option value="Emergency">Emergency</option>
-                                    <option value="Unpaid Leave">Unpaid Leave</option>
-                                </select>
-                                <textarea id="reason" name="reason" rows="3" placeholder="Write your reason..."
-                                    required></textarea>
+                                    <label for="leaveType">Leave Type</label>
+                                    <select id="leaveType" name="leaveType" required>
+                                        <option value="">-- Select Leave Type --</option>
+                                        <option value="sick">Sick Leave</option>
+                                        <option value="casual">Casual Leave</option>
+                                        <option value="earned">Earned Leave</option>
+                                        <option value="other">Other</option>
+                                    </select>
 
-                                <button type="submit" class="btn">Submit</button>
+                                    <label for="startDate">Start Date</label>
+                                    <input type="date" id="startDate" name="startDate" required>
+
+                                    <label for="endDate">End Date</label>
+                                    <input type="date" id="endDate" name="endDate" required>
+
+                                    <label for="reason">Reason</label>
+                                    <textarea id="reason" name="reason" rows="4" placeholder="Enter reason for leave..."
+                                        required></textarea>
+                                </fieldset>
+
+                                <div style="text-align:center;">
+                                    <button type="submit">Submit Request</button>
+                                </div>
                             </form>
                         </div>
-                    </div>
-                    <div class="notices">
 
-                    </div>
-                    <div class="attendance-history">
+                        <div class="leave-requests-section">
+                            <h2>📝 Your Leave Requests</h2>
+                            <div id="leave-request-list" class="leave-request-list">
 
+                                <% if (!leaveRequests || leaveRequests.length===0) { %>
+                                    <p>No leave requests submitted.</p>
+                                    <% } else { %>
+                                        <% leaveRequests.forEach(leave=> { %>
+                                            <div class="leave-card">
+                                                <div class="leave-dates">
+                                                    <%= leave.startDate %> to <%= leave.endDate %> - <%= leave.leaveType
+                                                                %>
+                                                </div>
+                                                <div class="leave-reason">
+                                                    <strong>Reason:</strong>
+                                                    <%= leave.reason %> <br>
+                                                        <strong>Status:</strong>
+                                                        <%= leave.status %>
+                                                </div>
+                                            </div>
+                                            <% }) %>
+                                                <% } %>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div class="notices">
+                    <h2>📢 Notices</h2>
+                    <div id="notice-list" class="notice-list">
+                        <% if (!notices || notices.length===0) { %>
+                            <p>No notices available.</p>
+                            <% } else { %>
+                                <% notices.forEach(notice=> { %>
+                                    <div class="notice-card">
+                                        <div class="notice-date">
+                                            <%= new Date(notice.dateTime).toLocaleString() %>
+                                        </div>
+                                        <p class="notice-text">
+                                            <%= notice.noticeText %>
+                                        </p>
+                                    </div>
+                                    <% }) %>
+                                        <% } %>
+                    </div>
+                </div>
+                <div class="attendance-history">
+
+                </div>
+            </div>
             </div>
         </section>
     </main>

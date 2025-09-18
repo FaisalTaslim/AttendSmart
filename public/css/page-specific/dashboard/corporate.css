@@ -1,11 +1,6 @@
 .dashboard-contents {
     overflow-y: auto;
 }
-
-.edit-info {
-    display: none;
-}
-
 .other-contents {width: 74% !important;}
 
 form {
@@ -233,7 +228,7 @@ button:hover {
     font-size: 0.9rem;
 }
 
-.edit-info, .notices, .request-leave-container {display: none;}
+.edit-info, .notices {display: none;}
 
 
 @media screen and (max-width: 480px) {
