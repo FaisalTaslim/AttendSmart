@@ -69,6 +69,11 @@ const logSchema = new Schema({
                 type: String,
                 required: true
             },
+            class: {
+                type: [String],
+                required: true,
+                default: []
+            },
             sessionInstigator: {type: String, required: true},
             sessionType: {
                 type: String, 
@@ -83,7 +88,6 @@ const logSchema = new Schema({
             createdAt: {
                 type: String,
                 required: true,
-                default: () => moment().format("DD-MM-YYYY HH:mm:ss")
             }
         }
     ],

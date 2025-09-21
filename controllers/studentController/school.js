@@ -5,7 +5,7 @@ const Org = require('../../models/Org');
 const bcrypt = require('bcrypt');
 const Counter = require('../../models/counter');
 const Logs = require('../../models/logs');
-const SchoolClasses = require('../../models/departments');
+const Departments = require('../../models/departments');
 const moment = require('moment');
 
 exports.createSchoolStudent = async (req, res) => {
@@ -94,7 +94,7 @@ exports.createSchoolStudent = async (req, res) => {
             console.log(`✅ Attendance summary created for subject: ${subject} for month ${monthKey}`);
         }
 
-        await SchoolClasses.findOneAndUpdate(
+        await Departments.findOneAndUpdate(
             { org: findOrg.uniqueId },
             { $addToSet: { schoolStandards: standard } },
             { upsert: true, new: true }

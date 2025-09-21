@@ -11,7 +11,7 @@ const moment = require('moment');
 router.post('/', async (req, res) => {
     console.log("Hitting the student session route.");
     try {
-        const { subjectName, sessionType } = req.body;
+        const { subjectName, sessionType, departments } = req.body;
         const user = req.session.user.uniqueId;
 
         const getOrg = await Org.findOne({ uniqueId: user });
@@ -19,8 +19,16 @@ router.post('/', async (req, res) => {
 
         const sessionInstigator = getOrg.admin[0]?.adminName || "Unknown";
 
+        // Parse departments string into array
+        const departmentArray = departments
+            ? departments.split(',').map(d => d.trim()).filter(Boolean)
+            : [];
+
+        console.log("Departments array:", departmentArray);
+
         const logEntry = {
             studentCode: generateCode(),
+            class: departmentArray,
             sessionInstigator,
             sessionType,
             subjectName,
@@ -28,22 +36,25 @@ router.post('/', async (req, res) => {
             createdAt: moment().format("DD-MM-YYYY HH:mm:ss")
         };
 
-        if (sessionType === "fresh-session") {
+
+        if (sessionType === "fresh-session" && departmentArray.length > 0) {
             const monthKey = moment().format("YYYY-MM");
 
-            await FinalStudentSummary.updateMany(
-                { subjectName },
-                { $inc: { attendedLectures: 1 } }
-            );
+            for (const dept of departmentArray) {
+                await FinalStudentSummary.updateMany(
+                    { subjectName, std_dept: dept },
+                    { $inc: { totalLectures: 1 } }
+                );
 
-            await MonthlyStudentSummary.updateMany(
-                { subjectName, month: monthKey },
-                { $inc: { attendedLectures: 1 } },
-                { upsert: true } 
-            );
+                await MonthlyStudentSummary.updateMany(
+                    { subjectName, std_dept: dept, month: monthKey },
+                    { $inc: { totalLectures: 1 } },
+                    { upsert: true }
+                );
+            }
         }
 
-        const updatedLog = await logs.findOneAndUpdate(
+        await logs.findOneAndUpdate(
             { org: user },
             { $push: { studentSessionLog: logEntry } },
             { upsert: true, new: true }
@@ -58,6 +69,7 @@ router.post('/', async (req, res) => {
         }, 20000);
 
         res.redirect('/dashboard/admin');
+
     } catch (error) {
         console.error("Error creating student session log:", error);
         res.status(500).send("Something went wrong.");
