@@ -4,11 +4,11 @@ const moment = require("moment");
 
 const noticeSchema = new Schema(
     {
-        uniqueId: { type: String, required: true, },
+        uniqueId: {type: String, required: true},
         dateTime: {
             type: String,
-            default: () => moment().format("DD-MM-YYYY HH:mm:ss"),
             required: true,
+            default: () => moment().format("DD-MM-YYYY HH:mm:ss"),
         },
         userIdType: {
             type: String,
@@ -24,6 +24,6 @@ const noticeSchema = new Schema(
     { timestamps: true }
 );
 
-const Notice = mongoose.model("Notice", noticeSchema);
+const Notice = mongoose.model("Notice", noticeSchema, 'Notices');
 
 module.exports = Notice;

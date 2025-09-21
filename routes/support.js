@@ -3,6 +3,7 @@ const router = express.Router();
 const logs = require("../models/logs");
 const devSupport = require("../models/devSupport")
 const ensureLoggedIn = require('../middleware/authMiddleware');
+const moment = require('moment');
 
 router.post("/", ensureLoggedIn, async (req, res) => {
     try {
@@ -20,6 +21,7 @@ router.post("/", ensureLoggedIn, async (req, res) => {
                 $push: {
                     supportLogs: {
                         userId,
+                        userName,
                         role,
                         email,
                         supportType,
@@ -37,6 +39,7 @@ router.post("/", ensureLoggedIn, async (req, res) => {
             email,
             supportType,
             thoughts,
+            createdAt: moment().format("DD-MM-YYYY HH:mm:ss")
         });
 
         await newSupport.save();

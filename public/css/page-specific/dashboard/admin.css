@@ -34,9 +34,21 @@
     gap: 1rem;
 }
 
+.divide-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
 .qr {
     width: 30rem;
     aspect-ratio: 1 / 1;
+}
+
+.qr-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .send-notice-container {

@@ -6,7 +6,7 @@ const CollegeStudent = require('../models/CollegeStudent');
 const SchoolStudent = require('../models/SchoolStudent');
 const logs = require('../models/logs');
 const Notice = require('../models/notice');
-const leaveRequests = require('../models/userLeave'); // ✅ your model
+const leaveRequests = require('../models/userLeave');
 const checkRole = require('../middleware/roleMiddleware');
 const generateEmployeeQR = require('../utils/generateEmployeeQr.js');
 
@@ -97,6 +97,7 @@ router.get('/', checkRole(['Org']), async (req, res) => {
         else {
             employees = await Employee.find({ org: user });
             const { registerLogs, loginLogs, supportLogs, employeeSessionLogs } = getLogs;
+
             res.render('view-dashboards/admin', {
                 org: findUser,
                 uniqueId,

@@ -1,5 +1,6 @@
 const Employee = require('../models/Employee');
-const { EmployeeSummary } = require('../models/attendanceSummary');
+const { FinalEmployeeSummary } = require('../models/overallSummary');
+const { MonthlyEmployeeSummary } = require('../models/monthlySummary');
 const Org = require('../models/Org');
 const bcrypt = require('bcrypt');
 const Counter = require('../models/counter');
@@ -28,7 +29,6 @@ exports.createEmployee = async (req, res) => {
         const counterDoc = await Counter.findOne();
         const newEmployeeNumber = (Number(counterDoc.newEmployeeValue) + 1).toString();
         counterDoc.newEmployeeValue = newEmployeeNumber;
-        await counterDoc.save();
 
         const findOrg = await Org.findOne({
             orgName: { $regex: new RegExp(`^${orgName}$`, 'i') },
@@ -53,24 +53,30 @@ exports.createEmployee = async (req, res) => {
             termsCheck
         });
 
-        const monthKey = moment().format("YYYY-MM");
-
-        await EmployeeSummary.create({
+        await FinalEmployeeSummary.create({
             org: findOrg.uniqueId,
             employee: newEmployee.uniqueId,
+            employeeName: newEmployee.userName,
             emp_dept: dept,
             totalDays: 0,
             attendedDays: 0,
+            leaveDays: 0,
             percentage: 0,
-            monthlySummary: {
-                [monthKey]: {
-                    totalDays: 0,
-                    attendedDays: 0,
-                    percentage: 0
-                }
-            }
         });
-        
+
+        const monthKey = moment().format("YYYY-MM");
+        await MonthlyEmployeeSummary.create({
+            org: findOrg.uniqueId,
+            employee: newEmployee.uniqueId,
+            employeeName: newEmployee.userName,
+            emp_dept: dept,
+            month: monthKey,
+            totalDays: 0,
+            attendedDays: 0,
+            leaveDays: 0,
+            percentage: 0,
+        });
+
         await Department.findOneAndUpdate(
             { org: findOrg.uniqueId },
             { $addToSet: { employeeDepartments: dept } },
@@ -88,6 +94,7 @@ exports.createEmployee = async (req, res) => {
         }
 
         findOrg.registeredEmployees += 1;
+        await counterDoc.save();
         await findOrg.save();
 
         res.redirect('/login');

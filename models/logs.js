@@ -15,6 +15,7 @@ const logSchema = new Schema({
     loginLogs: [
         {
             userId: {type: String, required: true},
+            userName: {type: String, required: true},
             role: {
                 type: String, 
                 required: true
@@ -33,7 +34,9 @@ const logSchema = new Schema({
     supportLogs: [
         {
             userId: {type: String, required: true},
+            userName: {type: String, required: true},
             role: {type: String, required: true},
+            email: {type: String, required: true},
             supportType: {
                 type: String,
                 required: true
@@ -55,8 +58,8 @@ const logSchema = new Schema({
             sessionInstigator: {type: String, required: true},
             createdAt: {
                 type: String,
+                required: true,
                 default: () => moment().format("DD-MM-YYYY HH:mm:ss"),
-                required: true
             }
         }
     ],
@@ -89,6 +92,7 @@ const logSchema = new Schema({
         {
             student: {type: String, required: true},
             studentId: {type: String, required: true},
+            studentName: {type: String, required: true},
             dept: {
                 type: String,
                 required: true
@@ -110,9 +114,11 @@ const logSchema = new Schema({
         {
             employee: {type: String, required: true},
             employeeId: {type: String, required: true},
+            employeeName: {type: String, required: true},
             dept: {
                 type: String,
-                required: true
+                required: true,
+                default: "Unknown Dept"
             },
             checkIn: {
                 type: Date,
@@ -129,5 +135,5 @@ const logSchema = new Schema({
 
 }, { timestamps: true });
 
-const OrgLog = mongoose.model('log', logSchema);
+const OrgLog = mongoose.model('log', logSchema, 'Logs');
 module.exports = OrgLog;

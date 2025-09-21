@@ -17,6 +17,7 @@ router.post('/', async (req, res) => {
         const leaveRequest = new LeaveRequest({
             org,
             uniqueId,
+            userType: req.session.user.role,
             startDate,
             endDate,
             leaveType,

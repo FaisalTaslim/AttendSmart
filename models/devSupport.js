@@ -3,18 +3,9 @@ const { Schema } = mongoose;
 const moment = require('moment');
 
 const devSupportSchema = new Schema({
-    org: {
-        type: String,
-        required: true,
-    },
-    userId: {
-        type: String,
-        required: true,
-    },
-    userName: {
-        type: String,
-        required: true,
-    },
+    org: {type: String, required: true,},
+    userId: {type: String, required: true,},
+    userName: {type: String, required: true,},
     email: {
         type: String,
         required: true,
@@ -26,14 +17,8 @@ const devSupportSchema = new Schema({
         required: true,
         enum: ["feedback", "problem", "question"], 
     },
-    thoughts: {
-        type: String,
-        trim: true,
-    },
-    createdAt: {
-        type: Date,
-        default: () => moment().format("DD-MM-YYYY HH:mm:ss"),
-    },
+    thoughts: {type: String, trim: true,},
+    createdAt: {type: String, required: true},
 });
 
-module.exports = mongoose.model("DevSupport", devSupportSchema);
+module.exports = mongoose.model("DevSupport", devSupportSchema, "devSupport");

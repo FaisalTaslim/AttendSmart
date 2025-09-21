@@ -1,30 +1,54 @@
 const express = require('express');
 const router = express.Router();
-const leaveRequests = require('../../models/userLeave'); 
+const leaveRequests = require('../../models/userLeave');
+const { FinalEmployeeSummary } = require('../../models/overallSummary');
+const { MonthlyEmployeeSummary } = require('../../models/monthlySummary');
+const moment = require('moment');
 
-router.post('/:id/accept', async (req, res) => {
+router.post('/:uniqueId/accept', async (req, res) => {
     try {
-        await leaveRequests.findByIdAndUpdate(
-            req.params.id,
+        const leaveDoc = await leaveRequests.findOneAndUpdate(
+            { uniqueId: req.params.uniqueId },
             { status: 'accepted' },
             { new: true }
         );
-        res.redirect('/'); 
+
+        if (!leaveDoc) {
+            return res.status(404).send("Leave request not found");
+        }
+
+        const userId = req.params.uniqueId;
+        const monthKey = moment().format("YYYY-MM");
+
+        if (leaveDoc.userType === "Employee") {
+            await FinalEmployeeSummary.findOneAndUpdate(
+                { employee: userId },
+                { $inc: { leaveDays: 1 } },
+                { new: true }
+            );
+
+            await MonthlyEmployeeSummary.findOneAndUpdate(
+                { employee: userId, month: monthKey },
+                { $inc: { leaveDays: 1 }, $setOnInsert: { month: monthKey } },
+                { upsert: true, new: true }
+            );
+        }
+
+        res.redirect('/dashboard/admin');
     } catch (err) {
         console.error("Error accepting leave request:", err);
         res.status(500).send("Error accepting request");
     }
 });
 
-// Reject a leave request
-router.post('/:id/reject', async (req, res) => {
+router.post('/:uniqueId/reject', async (req, res) => {
     try {
-        await leaveRequests.findByIdAndUpdate(
-            req.params.id,
+        await leaveRequests.findOneAndUpdate(
+            { uniqueId: req.params.uniqueId },
             { status: 'rejected' },
             { new: true }
         );
-        res.redirect('/'); 
+        res.redirect('/dashboard/admin');
     } catch (err) {
         console.error("Error rejecting leave request:", err);
         res.status(500).send("Error rejecting request");

@@ -3,7 +3,6 @@ const router = express.Router();
 const Employee = require('../models/Employee');
 const Notice = require('../models/notice');
 const LeaveRequest = require('../models/userLeave');
-const { EmployeeSummary } = require('../models/attendanceSummary');
 const checkRole = require('../middleware/roleMiddleware');
 
 router.get('/', checkRole(['Employee']), async (req, res) => {

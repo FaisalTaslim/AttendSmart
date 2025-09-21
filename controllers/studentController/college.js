@@ -1,5 +1,6 @@
 const collegeStudent = require('../../models/CollegeStudent');
-const { StudentSummary } = require('../../models/attendanceSummary');
+const { FinalStudentSummary } = require('../../models/overallSummary');
+const { MonthlyStudentSummary } = require('../../models/monthlySummary');
 const Org = require('../../models/Org');
 const bcrypt = require('bcrypt');
 const Counter = require('../../models/counter');
@@ -40,6 +41,8 @@ exports.createCollegeStudent = async (req, res) => {
 
         const subjectArray = Array.isArray(subjectName) ? subjectName : [subjectName];
         const filteredSubjects = subjectArray.filter(sub => sub && sub.trim() !== "");
+        
+        const monthKey = moment().format("YYYY-MM");
 
         const newStudent = await collegeStudent.create({
             org: findOrg.uniqueId,
@@ -55,27 +58,37 @@ exports.createCollegeStudent = async (req, res) => {
         });
 
         for (const subject of filteredSubjects) {
-            const monthKey = moment().format("YYYY-MM");
-
-            await StudentSummary.create({
+            await FinalStudentSummary.create({
                 org: findOrg.uniqueId,
                 student: newStudent.uniqueId,
+                studentName: newStudent.userName,
                 std_dept: dept,
                 subjectName: subject,
                 totalLectures: 0,
                 attendedLectures: 0,
-                percentage: 0,
-                monthlySummary: {
-                    [monthKey]: {
-                        totalLectures: 0,
-                        attendedLectures: 0,
-                        percentage: 0
-                    }
-                }
+                leaveDays: 0,
+                percentage: 0
+            });
+            console.log(`✅ Attendance summary created for subject: ${subject}`);
+        }
+        
+        for (const subject of filteredSubjects) {
+            await MonthlyStudentSummary.create({
+                org: findOrg.uniqueId,
+                student: newStudent.uniqueId,
+                studentName: newStudent.userName,
+                std_dept: dept,
+                subjectName: subject,
+                month: monthKey,
+                totalLectures: 0,
+                attendedLectures: 0,
+                leaveDays: 0,
+                percentage: 0
             });
 
             console.log(`✅ Attendance summary created for subject: ${subject} for month ${monthKey}`);
         }
+
 
         await Department.findOneAndUpdate(
             { org: findOrg.uniqueId },

@@ -70,6 +70,8 @@ const postLeaveRequestEmployee = require('./routes/corporate/post-leave');
 const updateSchoolStudent = require('./routes/school-student/update-school-student');
 const postLeaveRequestSchool = require('./routes/school-student/post-leave')
 const updateEmployee = require('./routes/corporate/update-employee')
+const adminQrHandler = require('./routes/admin/qr-handler');
+const markEmployee = require('./routes/admin/mark-employee');
 
 app.use('/', mainRoutes);
 app.use('/register', registerRoutes);
@@ -91,9 +93,24 @@ app.use('/request-leave-employees', postLeaveRequestEmployee);
 app.use('/update-school-student', updateSchoolStudent);
 app.use('/request-leave-schlstudent', postLeaveRequestSchool);
 app.use('/update-employee', updateEmployee);
-
+app.use('/admin-qr-handler', adminQrHandler);
+app.use('/mark-employee', markEmployee);
 
 const PORT = process.env.PORT || 3000;
+const os = require('os');
+
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    const networkInterfaces = os.networkInterfaces();
+    const addresses = [];
+    for (let iface of Object.values(networkInterfaces)) {
+        for (let alias of iface) {
+            if (alias.family === 'IPv4' && !alias.internal) {
+                addresses.push(alias.address);
+            }
+        }
+    }
+    console.log(`🚀 Server running locally at: http://localhost:${PORT}`);
+    addresses.forEach(ip => {
+        console.log(`📱 Accessible on your network at: http://${ip}:${PORT}`);
+    });
 });

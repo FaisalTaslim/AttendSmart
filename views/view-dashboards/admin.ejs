@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="/css/global/global-layout.css">
     <link rel="stylesheet" href="/css/global/forms.css">
     <link rel="stylesheet" href="/css/global/dB-global.css">
-    <link rel="stylesheet" href="/css/page-specific/dashboard/teachingStaff.css">
     <link rel="stylesheet" href="/css/page-specific/dashboard/admin.css">
     <link rel="stylesheet" href="/css/global/dark-theme.css">
     <link rel="stylesheet" href="/css/global/scrollbar.css">
@@ -131,8 +130,11 @@
                 </div>
                 <div class="dashboard-contents">
                     <div id="generate-employee-qr">
-                        <h2>Scan the QR code below to mark attendance</h2>
-                        <img src="<%= qrImage %>" alt="Employee QR Code" class="qr">
+                        <form action="/admin-qr-handler" method="POST" class="qr-form">
+                            <h2>Scan the QR code below to mark attendance</h2>
+                            <img src="<%= qrImage %>" alt="Employee QR Code" class="qr">
+                            <button type="submit" class="btn">Submit QR</button>
+                        </form>
                     </div>
                     <div id="send-notice" class="send-notice-container">
                         <div class="notice-heading">
@@ -227,7 +229,7 @@
                                         <label for="uniqueID">Your Unique ID</label>
                                         <input type="text" id="uniqueID" name="uniqueId" required />
                                     </div>
-                                    
+
                                     <div class="form-group">
                                         <label for="sessionType">Session Type</label>
                                         <select id="sessionType" name="sessionType" required>
@@ -628,6 +630,9 @@
                                     <p><strong>User ID:</strong>
                                         <%= req.uniqueId %>
                                     </p>
+                                    <p><strong>User Type:</strong>
+                                        <%= req.userType %>
+                                    </p>
                                     <p><strong>Leave Type:</strong>
                                         <%= req.leaveType %>
                                     </p>
@@ -642,11 +647,11 @@
                                     </p>
 
                                     <% if (req.status==='pending' ) { %>
-                                        <form action="/leave/<%= req._id %>/accept" method="POST"
+                                        <form action="/leave/<%= req.uniqueId %>/accept" method="POST"
                                             style="display:inline;">
                                             <button type="submit">Accept</button>
                                         </form>
-                                        <form action="/leave/<%= req._id %>/reject" method="POST"
+                                        <form action="/leave/<%= req.uniqueId %>/reject" method="POST"
                                             style="display:inline;">
                                             <button type="submit">Reject</button>
                                         </form>

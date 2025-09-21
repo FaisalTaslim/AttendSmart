@@ -3,14 +3,12 @@ const router = express.Router();
 const Employee = require('../models/Employee');
 const Notice = require('../models/notice');
 const LeaveRequest = require('../models/userLeave');
-const { EmployeeSummary } = require('../models/attendanceSummary');
 const checkRole = require('../middleware/roleMiddleware');
 
 router.get('/', checkRole(['Employee']), async (req, res) => {
     try {
         const user = req.session.user.uniqueId;
         const findUser = await Employee.findOne({ uniqueId: user });
-        const findUserSummary = await EmployeeSummary.findOne({ employee: user });
 
         if (!findUser) return res.status(404).send("User not found");
         const { org, uniqueId, employeeId, userName, designation, dept, contact, email } = findUser;

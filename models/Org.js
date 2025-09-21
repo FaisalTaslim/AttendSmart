@@ -47,5 +47,5 @@ const orgSchema = new mongoose.Schema({
 
 }, { timestamps: true });
 
-const Org = mongoose.model('Org', orgSchema);
+const Org = mongoose.model('Org', orgSchema, 'Org');
 module.exports = Org;

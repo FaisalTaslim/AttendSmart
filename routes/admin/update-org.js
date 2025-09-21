@@ -22,7 +22,6 @@ router.post('/', async (req, res) => {
             adminContact
         } = req.body;
 
-        // Update the organization and admin info using $set
         const updatedOrg = await Org.findOneAndUpdate(
             { uniqueId: user },
             {

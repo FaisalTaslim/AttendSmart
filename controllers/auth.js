@@ -101,6 +101,7 @@ const auth = async (req, res) => {
 
                 logDoc.loginLogs.push({
                     userId: user.uniqueId,
+                    userName: req.session.user.name,
                     role: req.session.user.role,
                     ip,
                     at: moment().format("DD-MM-YYYY HH:mm:ss"),
