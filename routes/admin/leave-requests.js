@@ -7,8 +7,9 @@ const moment = require('moment');
 
 router.post('/:uniqueId/accept', async (req, res) => {
     try {
+        console.log("hitting the accept route")
         const leaveDoc = await leaveRequests.findOneAndUpdate(
-            { uniqueId: req.params.uniqueId },
+            { uniqueId: req.params.uniqueId, status: "pending"},
             { status: 'accepted' },
             { new: true }
         );

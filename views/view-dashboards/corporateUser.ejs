@@ -231,30 +231,32 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="notices">
-                    <h2>📢 Notices</h2>
-                    <div id="notice-list" class="notice-list">
-                        <% if (!notices || notices.length===0) { %>
-                            <p>No notices available.</p>
-                            <% } else { %>
-                                <% notices.forEach(notice=> { %>
-                                    <div class="notice-card">
-                                        <div class="notice-date">
-                                            <%= new Date(notice.dateTime).toLocaleString() %>
+                    <div class="notices">
+                        <h2>📢 Notices</h2>
+                        <div id="notice-list" class="notice-list">
+                            <% if (!notices || notices.length===0) { %>
+                                <p>No notices available.</p>
+                                <% } else { %>
+                                    <% notices.forEach(notice=> { %>
+                                        <div class="notice-card">
+                                            <div class="notice-date">
+                                                <%= new Date(notice.dateTime).toLocaleString() %>
+                                            </div>
+                                            <p class="notice-text">
+                                                <%= notice.noticeText %>
+                                            </p>
                                         </div>
-                                        <p class="notice-text">
-                                            <%= notice.noticeText %>
-                                        </p>
-                                    </div>
-                                    <% }) %>
-                                        <% } %>
+                                        <% }) %>
+                                            <% } %>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <h1>Scan QR Codes</h1>
+                        <div class="section">
+                            <div id="my-qr-reader"></div>
+                        </div>
                     </div>
                 </div>
-                <div class="attendance-history">
-
-                </div>
-            </div>
             </div>
         </section>
     </main>
@@ -293,10 +295,11 @@
             </div>
         </div>
     </footer>
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="/js/global/sideNav.js"></script>
     <script src="/js/global/update-footerLayout-for-tablets.js"></script>
-    <script src="/js/page-specific/dashboard/change-content.js"></script>
-    <script src="/js/page-specific/dashboard/switch-contents-corp.js"></script>
+    <script src="/js/page-specific/dashboard/start-scanner.js"></script>
 </body>
 
 </html>

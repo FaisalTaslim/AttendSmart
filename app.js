@@ -71,7 +71,7 @@ const updateSchoolStudent = require('./routes/school-student/update-school-stude
 const postLeaveRequestSchool = require('./routes/school-student/post-leave')
 const updateEmployee = require('./routes/corporate/update-employee')
 const adminQrHandler = require('./routes/admin/qr-handler');
-const markEmployee = require('./routes/admin/mark-employee');
+const markEmployee = require('./routes/corporate/mark-employee');
 
 app.use('/', mainRoutes);
 app.use('/register', registerRoutes);

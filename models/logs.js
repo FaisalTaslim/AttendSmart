@@ -101,7 +101,7 @@ const logSchema = new Schema({
                 type: String,
                 required: true
             },
-            date: {type: Date, required: true},
+            date: {type: String, required: true},
             status: {
                 type: String,
                 enum: ['Present', 'Absent'],
@@ -121,10 +121,10 @@ const logSchema = new Schema({
                 default: "Unknown Dept"
             },
             checkIn: {
-                type: Date,
+                type: String,
                 required: true
             },
-            checkOut: {type: Date, required: true},
+            checkOut: {type: String, required: true},
             status: {
                 type: String,
                 enum: ['Present', 'Absent'],
