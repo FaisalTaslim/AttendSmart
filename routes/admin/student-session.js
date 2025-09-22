@@ -3,6 +3,7 @@ const router = express.Router();
 const Notice = require('../../models/notice');
 const Org = require('../../models/Org');
 const logs = require('../../models/logs');
+const Employee = require('../../models/Employee');
 const { FinalStudentSummary } = require('../../models/overallSummary');
 const { MonthlyStudentSummary } = require('../../models/monthlySummary');
 const generateCode = require('../../utils/generate-code-for-qr');
@@ -13,11 +14,17 @@ router.post('/', async (req, res) => {
     try {
         const { subjectName, sessionType, departments } = req.body;
         const user = req.session.user.uniqueId;
+        let sessionInstigator;
 
-        const getOrg = await Org.findOne({ uniqueId: user });
-        if (!getOrg) return res.status(404).send("Org not found.");
+        if (req.session.user.role == "Org") {
+            const getOrg = await Org.findOne({ uniqueId: user });
+            if (!getOrg) return res.status(404).send("Org not found.");
 
-        const sessionInstigator = getOrg.admin[0]?.adminName || "Unknown";
+            sessionInstigator = getOrg.admin[0]?.adminName || "Unknown";
+        }
+        else {
+            sessionInstigator = (await Employee.findOne({uniqueId: user})).userName;
+        }
 
         // Parse departments string into array
         const departmentArray = departments
@@ -68,7 +75,10 @@ router.post('/', async (req, res) => {
             console.log(`⏱️ Code ${logEntry.studentCode} expired.`);
         }, 20000);
 
-        res.redirect('/dashboard/admin');
+        if(req.session.user.role == "Employee")
+            res.redirect("/dashboard/teachingStaff");
+        else
+            res.redirect("/dashboard/admin");
 
     } catch (error) {
         console.error("Error creating student session log:", error);

@@ -254,6 +254,42 @@ video {
     border-radius: 0.25em;
 }
 
-.edit-info, .notices, .request-leave, .leave-requests-section {
+#student-attendance {
+    height: 98%;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.instigator-inputs {
+    height: fit-content;
+    width: 30%;
+    position: absolute;
+    top: 30vh;
+}
+
+.instigator-inputs,
+#subjectForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    background: #fff;
+    border-radius: 0.8rem;
+}
+
+.instigator-inputs>* {
+    color: black;
+}
+
+.instigator-inputs {
+    padding: 1rem;
+}
+
+.instigator-inputs>h2 {
+    text-align: center;
+}
+
+.edit-info, .notices, .request-leave, .leave-requests-section, .container, #student-attendance {
     display: none;
 }
