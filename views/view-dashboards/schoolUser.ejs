@@ -267,8 +267,30 @@
                         </div>
                     </div>
 
+                    <div class="attendance-container">
+                            <form class="attendance-form" method="POST" action="/mark-attendance-students">
+                                <fieldset>
+                                    <legend>Attendance Marking</legend>
 
-                </div>
+                                    <label for="uniqueId">Enter your Unique ID</label>
+                                    <input type="text" id="uniqueId" name="uniqueId" placeholder="e.g. 12345" required>
+
+                                    <label for="class">Enter class</label>
+                                    <input type="text" id="class" name="class" required>
+
+                                    <label for="code">Enter the Code</label>
+                                    <input type="text" id="code" name="code" placeholder="Enter code here" required>
+
+                                    <label for="subject">Enter the Subject Name</label>
+                                    <input type="text" id="subject" name="subject" placeholder="e.g. Mathematics"
+                                        required>
+
+                                    <button type="submit">Mark Attendance</button>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+
         </section>
     </main>
     <footer>

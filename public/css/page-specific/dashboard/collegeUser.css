@@ -234,7 +234,7 @@ button:hover {
 }
 
 .attendance-container {
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     padding: 2rem;
@@ -305,7 +305,7 @@ button:hover {
     background: linear-gradient(135deg, #34D399, #10B981);
 }
 
-.edit-info, .notices {display: none;}
+.edit-info, .notices, .request-leave-container {display: none;}
 
 @media screen and (max-width: 480px) {
     .dashboard-buttons {

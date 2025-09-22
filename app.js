@@ -72,6 +72,7 @@ const postLeaveRequestSchool = require('./routes/school-student/post-leave')
 const updateEmployee = require('./routes/corporate/update-employee')
 const adminQrHandler = require('./routes/admin/qr-handler');
 const markEmployee = require('./routes/corporate/mark-employee');
+const markStudent = require('./routes/college-student/mark-attendance');
 
 app.use('/', mainRoutes);
 app.use('/register', registerRoutes);
@@ -95,6 +96,7 @@ app.use('/request-leave-schlstudent', postLeaveRequestSchool);
 app.use('/update-employee', updateEmployee);
 app.use('/admin-qr-handler', adminQrHandler);
 app.use('/mark-employee', markEmployee);
+app.use('/mark-attendance-students', markStudent);
 
 const PORT = process.env.PORT || 3000;
 const os = require('os');

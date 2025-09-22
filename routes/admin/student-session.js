@@ -73,7 +73,7 @@ router.post('/', async (req, res) => {
                 { $set: { "studentSessionLog.$.expired": true } }
             );
             console.log(`⏱️ Code ${logEntry.studentCode} expired.`);
-        }, 20000);
+        }, 30000);
 
         if(req.session.user.role == "Employee")
             res.redirect("/dashboard/teachingStaff");

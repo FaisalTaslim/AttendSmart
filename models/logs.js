@@ -94,7 +94,6 @@ const logSchema = new Schema({
 
     studentAttendanceHistory: [
         {
-            student: {type: String, required: true},
             studentId: {type: String, required: true},
             studentName: {type: String, required: true},
             dept: {
@@ -110,7 +109,8 @@ const logSchema = new Schema({
                 type: String,
                 enum: ['Present', 'Absent'],
                 required: true
-            }
+            },
+            reason: {type: String, default: ""}
         }
     ],
 
