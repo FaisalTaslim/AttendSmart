@@ -96,7 +96,7 @@ exports.createCollegeStudent = async (req, res) => {
             { upsert: true, new: true }
         );
 
-        const logMessage = `Student: ${userName}, department: ${dept}, roll: ${roll} joined on ${moment().format("DD-MM-YYYY HH:mm:ss")}`;
+        const logMessage = `Student: ${userName}, Department: ${dept}, Roll: ${roll}, Joined on ${moment().format("DD-MM-YYYY HH:mm:ss")}`;
         const logDoc = await Logs.findOne({ org: findOrg.uniqueId });
 
         if (logDoc) {

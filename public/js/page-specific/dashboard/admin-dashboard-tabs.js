@@ -1,69 +1,73 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const buttonMap = {
-        "Generate Employee QR": "generate-employee-qr",
-        "Student Attendance": "student-attendance",
-        "View Records": "view-records",
-        "Edit Attendance": "edit-attendance",
-        "Manage Leave Requests": "manage-leave-requests",
-        "Send Notice": "send-notice",
-        "Manage Users": "manage-users",
-        "Browse Logs": "browse-logs",
-        "Edit Your Info": "edit-your-info"
+
+    const map_tabs = {
+        ".qr-btn": "#generate-employee-qr",
+        ".session-btn": ".student-attendance",
+        ".records-btn": ".view-records",
+        ".edit-att-btn": ".edit-attendance",
+        ".leave-btn": ".manage-leave-requests",
+        ".notice-btn": ".send-notice-container",
+        ".users-btn": ".manage-users",
+        ".logs-btn": ".browse-logs",
+        ".edit-info-btn": ".edit-your-info"
     };
 
-    const buttons = document.querySelectorAll(".dashboard-buttons .btn");
-    const contents = document.querySelectorAll(".dashboard-contents > div");
-    const dashboardButtons = document.querySelector(".dashboard-buttons");
-    const dashboardContents = document.querySelector(".dashboard-contents");
-    const otherContents = document.querySelector(".other-contents");
+    if (window.innerWidth > 768) {
+        const el = document.querySelector(".edit-your-info");
+        if (el) el.style.display = "flex";
+    }
 
-    const manageUsers = document.getElementById("manage-users");
-    const closeManageUsers = manageUsers.querySelector(".fa-xmark");
+    for (const key in map_tabs) {
+        const btn = document.querySelector(key);
+        const tab = document.querySelector(map_tabs[key]);
 
-    const studentAttendance = document.getElementById("student-attendance");
-    const closeStudentAttendance = studentAttendance.querySelector(".overlay-head > .fa-xmark");
+        if (btn && tab) {
+            btn.addEventListener("click", () => {
+                Object.values(map_tabs).forEach(selector => {
+                    const el = document.querySelector(selector);
+                    if (el) el.style.display = "none";
+                });
+                tab.style.display = "flex";
 
-    buttons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            contents.forEach((c) => (c.style.display = "none"));
+                if (window.innerWidth <= 768) {
+                    const buttons = document.querySelector(".dashboard-buttons");
+                    if (buttons) buttons.style.display = "none";
 
-            const targetId = buttonMap[btn.textContent.trim()];
-            const targetDiv = document.getElementById(targetId);
+                    if (key === ".users-btn") {
+                        tab.style.display = "none";
+                        const msg = document.querySelector(".mobile-nav-btn > .message");
+                        if (msg) msg.style.display = "block";
+                    }
+                }
+            });
+        }
+    }
 
-            if (targetDiv) targetDiv.style.display = "flex";
+    const backBtn = document.querySelector(".mobile-nav-btn > .btn > .fa-arrow-rotate-left");
+    const x_mark = document.querySelector(".overlay-head > .fa-xmark");
+    if (backBtn) {
+        backBtn.addEventListener("click", () => {
+            Object.values(map_tabs).forEach(selector => {
+                const el = document.querySelector(selector);
+                if (el) el.style.display = "none";
+                document.querySelector(".mobile-nav-btn > .message").style.display = "none";
+            });
 
-            if (targetId === "manage-users") {
-                dashboardButtons.style.display = "none";
-                otherContents.classList.add("is-wide");
-                dashboardContents.classList.add("is-wide");
-            } else {
-                dashboardButtons.style.display = "flex";
-                otherContents.classList.remove("is-wide");
-                dashboardContents.classList.remove("is-wide");
-            }
+            const buttons = document.querySelector(".dashboard-buttons");
+            if (buttons) buttons.style.display = "flex";
         });
-    });
+    }
 
-    closeManageUsers.addEventListener("click", () => {
-        manageUsers.style.display = "none";
+    if (x_mark) {
+        x_mark.addEventListener("click", () => {
+            Object.values(map_tabs).forEach(selector => {
+                const el = document.querySelector(selector);
+                if (el) el.style.display = "none";
+            });
 
-        dashboardButtons.style.display = "flex";
-        otherContents.classList.remove("is-wide");
-        dashboardContents.classList.remove("is-wide");
+            const buttons = document.querySelector(".dashboard-buttons");
+            if (buttons) buttons.style.display = "flex";
+        });
+    }
 
-        contents.forEach((c) => (c.style.display = "none"));
-        document.getElementById("send-notice").style.display = "flex";
-    });
-
-    closeStudentAttendance.addEventListener("click", () => {
-        studentAttendance.style.display = "none";
-
-        contents.forEach((c) => (c.style.display = "none"));
-        document.getElementById("send-notice").style.display = "flex";
-    });
-
-    contents.forEach((c) => (c.style.display = "none"));
-    document.getElementById("send-notice").style.display = "flex";
-    otherContents.classList.remove("is-wide");
-    dashboardContents.classList.remove("is-wide");
 });

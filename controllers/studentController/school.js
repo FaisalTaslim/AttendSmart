@@ -103,7 +103,7 @@ exports.createSchoolStudent = async (req, res) => {
         const logDoc = await Logs.findOne({ org: findOrg.uniqueId });
         if (logDoc) {
             logDoc.registerLogs.push(
-                `Student: ${userName}, standard: ${standard}, roll: ${roll} joined on ${moment().format("DD-MM-YYYY HH:mm:ss")}`
+                `Student: ${userName}, Standard: ${standard}, Roll: ${roll}, Joined on ${moment().format("DD-MM-YYYY HH:mm:ss")}`
             );
             await logDoc.save();
         } else {

@@ -1,12 +1,22 @@
-.form-flex {
+form {
     display: flex;
     flex-direction: column;
-    gap: 2rem 2rem;
+    gap: 1.5rem;
 }
-.form-subFlex {
+fieldset {
     display: flex;
-    flex-direction: row;
-    gap: 15px;
+    flex-direction: column;
+    gap: 0.8rem;
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    background: var(--bg-seondary);
+}
+legend {
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 0 0.5rem;
+    color: var(--accent);
 }
 .form-group {
     display: flex;
@@ -14,9 +24,10 @@
     gap: 15px;
 }
 .form-group label {
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     margin-bottom: 0.3rem;
     color: var(--text-primary);
+    font-weight: bold;
 }
 .form-group input,
 .form-group select {
@@ -33,4 +44,9 @@
     border-color: var(--accent);
     outline: none;
     background-color: var(--text-primary);
+}
+.form-group textarea {
+    padding: 0.5rem 1rem;
+    border-radius: 0.8rem;
+    line-height: 2rem;
 }

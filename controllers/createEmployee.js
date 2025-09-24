@@ -86,7 +86,7 @@ exports.createEmployee = async (req, res) => {
         const logDoc = await Logs.findOne({ org: findOrg.uniqueId });
         if (logDoc) {
             logDoc.registerLogs.push(
-                `Employee: ${userName}, Dept: ${dept}, EmployeeID: ${employeeId}, joined on ${moment().format("DD-MM-YYYY HH:mm:ss")}`
+                `Employee: ${userName}, Dept: ${dept}, EmployeeID: ${employeeId}, Joined on ${moment().format("DD-MM-YYYY HH:mm:ss")}`
             );
             await logDoc.save();
         } else {
