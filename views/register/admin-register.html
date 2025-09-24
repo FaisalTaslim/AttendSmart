@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="/css/global/global-layout.css">
-    <link rel="stylesheet" href="/css/global/forms.css">
     <link rel="stylesheet" href="/css/global/register.css">
+    <link rel="stylesheet" href="/css/global/forms.css">
     <link rel="stylesheet" href="/css/global/dark-theme.css">
     <link rel="stylesheet" href="/css/global/scrollbar.css">
 
@@ -89,107 +89,117 @@
 
                     </div>
                 </div>
-
                 <div class=" right-side">
                                 <form action="/api/org/create-org" class="admin-form-wrapper" id="admin-form"
                                     method="POST">
                                     <h2 class="form-title">Admin Registration</h2>
 
-                                    <div class="form-section">
-                                        <h3>Admin Details</h3>
-                                        <div class="form-flex">
-                                            <div class="form-subFlex">
-                                                <div class="form-group">
-                                                    <label for="adminName">Admin Name</label>
-                                                    <input type="text" id="adminName" name="admin[0][adminName]"
-                                                        required />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="adminId">Admin ID</label>
-                                                    <input type="text" id="adminId" name="admin[0][adminId]" required />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="adminContact">Admin Contact</label>
-                                                    <input type="tel" id="adminContact" name="admin[0][adminContact]"
-                                                        required />
-                                                </div>
-                                            </div>
-                                            <div class="form-subFlex">
-                                                <div class="form-group">
-                                                    <label for="adminEmail">Admin Email</label>
-                                                    <input type="email" id="adminEmail" name="admin[0][adminEmail]"
-                                                        required />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="adminPassword">Set Password</label>
-                                                    <input type="text" id="adminPassword" name="admin[0][adminPassword]"
-                                                        requied />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <fieldset class="form-section">
+                                        <legend>Admin Details</legend>
 
-                                    <div class="form-section">
-                                        <h3>Organization Details</h3>
-                                        <div class="form-flex">
-                                            <div class="form-subFlex">
-                                                <div class="form-group">
-                                                    <label for="orgName">Organization Name</label>
-                                                    <input type="text" id="orgName" name="orgName" required />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="orgBranch">Branch</label>
-                                                    <input type="text" id="orgBranch" name="orgBranch" required />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="orgType">Type</label>
-                                                    <select id="orgType" name="orgType" required>
-                                                        <option value="">Select</option>
-                                                        <option value="school">School</option>
-                                                        <option value="college">College</option>
-                                                        <option value="corporate">Corporate</option>
-                                                    </select>
-                                                </div>
+                                        <div class="outer-group">
+                                            <div class="form-group">
+                                                <label for="adminName">Admin Name</label>
+                                                <input type="text" id="adminName" name="admin[0][adminName]" required />
                                             </div>
-                                            <div class="form-group full-width">
-                                                <label for="orgAddress">Organization Address</label>
-                                                <input type="text" id="orgAddress" name="address" required />
+
+                                            <div class="form-group">
+                                                <label for="adminId">Admin ID</label>
+                                                <input type="text" id="adminId" name="admin[0][adminId]" required />
                                             </div>
-                                            <div class="form-subFlex">
-                                                <div class="form-group">
-                                                    <label for="orgContact">Organization Contact</label>
-                                                    <input type="tel" id="orgContact" name="orgContact" required />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="orgEmail">Organization Email</label>
-                                                    <input type="email" id="orgEmail" name="orgEmail" required />
-                                                </div>
-                                            </div>
-                                            <div class="form-subFlex">
-                                                <div class="form-group">
-                                                    <label for="totalEmployee">Total Employees</label>
-                                                    <input type="text" id="totalEmployee" name="expectedEmployees"
-                                                        required />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="totalStudents">Total Students</label>
-                                                    <input type="text" id="totalStudents" name="expectedStudents"
-                                                        placeholder="Write '0' if invalid" required />
-                                                </div>
-                                            </div>
-                                            <div class="form-group full-width">
-                                                <label for="orgWebsite">Organization Website</label>
-                                                <input type="url" id="orgWebsite" name="orgWebsite"
-                                                    placeholder="https://example.com" />
+
+                                            <div class="form-group">
+                                                <label for="adminContact">Admin Contact</label>
+                                                <input type="tel" id="adminContact" name="admin[0][adminContact]"
+                                                    required />
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group"
-                                        style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0px;"
-                                        id="register-terms">
+
+                                        <div class="form-group">
+                                            <label for="adminEmail">Admin Email</label>
+                                            <input type="email" id="adminEmail" name="admin[0][adminEmail]" required />
+                                        </div>
+
+                                        <div class="outer-group">
+                                            <div class="form-group">
+                                                <label for="adminPassword">Set Password</label>
+                                                <input type="text" id="adminPassword" name="admin[0][adminPassword]"
+                                                    required />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="adminConfirmPassword">Confirm Password</label>
+                                                <input type="text" id="adminConfirmPassword" name="confirmPassword"
+                                                    required />
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                    <fieldset class="form-section">
+                                        <legend>Organization Details</legend>
+                                        <div class="outer-group">
+                                            <div class="form-group">
+                                                <label for="orgName">Organization Name</label>
+                                                <input type="text" id="orgName" name="orgName" required />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="orgBranch">Branch</label>
+                                                <input type="text" id="orgBranch" name="orgBranch" required />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="orgType">Type</label>
+                                                <select id="orgType" name="orgType" required>
+                                                    <option value="">Select</option>
+                                                    <option value="school">School</option>
+                                                    <option value="college">College</option>
+                                                    <option value="corporate">Corporate</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="orgAddress">Organization Address</label>
+                                            <input type="text" id="orgAddress" name="address" required />
+                                        </div>
+
+                                        <div class="outer-group">
+                                            <div class="form-group">
+                                                <label for="orgContact">Organization Contact</label>
+                                                <input type="tel" id="orgContact" name="orgContact" required />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="orgEmail">Organization Email</label>
+                                                <input type="email" id="orgEmail" name="orgEmail" required />
+                                            </div>
+                                        </div>
+
+                                        <div class="outer-group">
+                                            <div class="form-group">
+                                                <label for="totalEmployee">Total Employees</label>
+                                                <input type="text" id="totalEmployee" name="expectedEmployees"
+                                                    required />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="totalStudents">Total Students</label>
+                                                <input type="text" id="totalStudents" name="expectedStudents"
+                                                    placeholder="Write '0' if invalid" required />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="orgWebsite">Organization Website</label>
+                                            <input type="url" id="orgWebsite" name="orgWebsite"
+                                                placeholder="https://example.com" />
+                                        </div>
+                                    </fieldset>
+
+                                    <div class="form-group" id="register-terms"
+                                        style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0px;">
                                         <input type="checkbox" id="termsCheck" name="termsCheck" required>
-                                        <label for="termsCheck"
-                                            style="font-size: 0.95rem; color: var(--text-secondary);">
+                                        <label for="termsCheck">
                                             I agree to the
                                             <a href="/terms" target="_blank" style="color:var(--link)">Terms &
                                                 Conditions</a> and
@@ -197,10 +207,11 @@
                                                 Policy</a>
                                         </label>
                                     </div>
+
                                     <button type="submit" class="submit-btn">Register Organization</button>
                                 </form>
+
                         </div>
-                    </div>
         </section>
     </main>
     <footer>
