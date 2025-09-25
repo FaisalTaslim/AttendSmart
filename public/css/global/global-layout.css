@@ -19,11 +19,10 @@ body {
 main {
     height: 100vh;
     width: 100%;
-    flex: 1;
     border-bottom: 2px solid var(--border-color);
     display: flex;
     flex-direction: column;
-    gap: clamp(0.8rem, 2vw, 1.5rem);
+    align-items: center;
 }
 .links {color: var(--link);}
 .hero-bg {
@@ -97,7 +96,6 @@ header {width: 99vw;}
     border-radius: 10px;
     border:2px solid var(--border-color);
 }
-.slide-menu-links > a {border: unset;}
 .nav-links-property:hover {
     cursor: pointer;
     background-color: var(--accent-hover); 
@@ -158,6 +156,7 @@ footer > p {
         flex-direction: column;
         gap: 25px;
         transition: left 0.3s ease-in-out;
+        overflow-y: auto;
     }
     .nav-close-icon {
         display: flex;
@@ -170,13 +169,32 @@ footer > p {
     .slide-menu-links {
         display: flex;
         flex-direction: column;
-        gap: 25px;
+        gap: 0.2rem;
     }
-    .slide-menu-links > a {
-        color: var(--text-primary);
-        text-decoration: none;
+    .slide-menu-links > h2 {
         font-size: 1.2rem;
-        padding-left: 0px;
+        padding-bottom: 1rem;
+        color: var(--accent);
+    }
+    .slide-menu-links-nav {
+        margin-left: 0.5rem;
+        border-left: 2px solid var(--accent);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1rem 0.5rem;
+        background-color: var(--bg-secondary);
+    }
+    .slide-menu-links-nav > a {
+        font-size: 1rem;
+        padding: 0.5rem;
+        text-decoration: none;
+        color: var(--text-primary);
+    }
+    .slide-menu-links-nav > a:hover {cursor: pointer}
+    .slide-menu-links-nav  > a:hover {
+        border: 1px solid var(--accent);
+        border-radius: 0.8rem;
     }
     .sidemenu-heading {font-size: 2rem;}
     .hero-bg {height: 100vh;}
@@ -230,13 +248,32 @@ footer > p {
     .slide-menu-links {
         display: flex;
         flex-direction: column;
-        gap: 25px;
+        gap: 0.2rem;
     }
-    .slide-menu-links > a {
-        color: var(--text-primary);
+    .slide-menu-links > h2 {
+        font-size: 1.2rem;
+        padding-bottom: 1rem;
+        color: var(--accent);
+    }
+    .slide-menu-links-nav {
+        margin-left: 0.5rem;
+        border-left: 2px solid var(--accent);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1rem 0.5rem;
+        background-color: var(--bg-secondary);
+    }
+    .slide-menu-links-nav > a {
+        font-size: 1rem;
+        padding: 0.5rem;
         text-decoration: none;
-        font-size: 1.5rem;
-        padding-left: 0px;
+        color: var(--text-primary);
+    }
+    .slide-menu-links-nav > a:hover {cursor: pointer}
+    .slide-menu-links-nav  > a:hover {
+        border: 1px solid var(--accent);
+        border-radius: 0.8rem;
     }
     .sidemenu-heading {font-size: 2.5rem;}
 
@@ -266,7 +303,7 @@ footer > p {
 @media screen and (max-width: 550px) and (max-height: 750px) {
     .hide {display: none;}
     .sidemenu-heading {font-size: 1.5rem;}
-    .slide-menu-links > a {font-size: 1.2rem;}
+    .slide-menu {overflow-y: auto;}
     .foot-content {
         display: flex;
         flex-direction: column;

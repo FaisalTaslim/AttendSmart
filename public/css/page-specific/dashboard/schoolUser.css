@@ -1,11 +1,46 @@
+
+.fa-xmark {
+    font-size: 1.4rem;
+    padding: 0.3rem;
+    border: 2px solid var(--border-color);
+    border-radius: 0.5rem;
+}
+#orientation-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    font-size: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    text-align: center;
+}
+.other-contents {width: 80%}
+
 .dashboard-contents {
+    height: 90%;
+    width: 70%;
+    overflow-y: auto;
+    display: flex;
+    transition: width .25s ease;
+    align-self: center;
     overflow-y: auto;
 }
-
-.other-contents {width: 74% !important;}
-
+.dashboard-buttons {
+    width: 32%;
+    height: 90%;
+    margin: auto;
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-right: 5px solid var(--accent);
+}
 .edit-info {
-    max-width: 750px;
+    width: 100%;
     margin: 20px auto;
     padding: 25px;
     background-color: #ffffff;
@@ -14,7 +49,6 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Fieldset styling */
 fieldset {
     border: 2px solid #ccc;
     padding: 20px 25px;
@@ -109,6 +143,7 @@ button.submit-btn:hover {
     gap: 1rem;
     margin: 2rem auto;
     max-width: 800px;
+    width: 100%;
 }
 
 .notices h2 {
@@ -155,7 +190,7 @@ button.submit-btn:hover {
 
 /* Container styling */
 .request-leave-container {
-    max-width: 900px;
+    width: 100%;
     margin: 2rem auto;
     padding: 1.5rem 2rem;
     background-color: #f9f9f9;
@@ -291,6 +326,7 @@ button.submit-btn:hover {
 }
 
 .attendance-container {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;

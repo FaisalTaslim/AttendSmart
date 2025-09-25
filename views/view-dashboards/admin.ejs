@@ -6,9 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="/css/global/global-layout.css">
-    <link rel="stylesheet" href="/css/global/global-dbLayout.css">
-    <link rel="stylesheet" href="/css/global/forms.css">
     <link rel="stylesheet" href="/css/page-specific/dashboard/admin.css">
+    <link rel="stylesheet" href="/css/global/forms.css">
     <link rel="stylesheet" href="/css/global/dark-theme.css">
     <link rel="stylesheet" href="/css/global/scrollbar.css">
 
@@ -25,11 +24,10 @@
 </head>
 
 <body>
+    <div id="orientation-overlay" style="display:none;">
+        <p>Rotate your screen and refresh to use the dashboard</p>
+    </div>
     <header>
-        <div id="orientation-overlay" style="display:none;">
-            <p>Rotate your screen and refresh to use the dashboard</p>
-        </div>
-
         <nav id="navbar" class="">
             <div class="nav-group1">
                 <div class="logo">
@@ -62,359 +60,342 @@
                     <p><i class="fa-solid fa-xmark" id="close-toggle"></i></p>
                 </div>
                 <div class="slide-menu-links">
-
-                    <a href="/dashboard" class="nav-links-property">Dashboard</a>
-                    <a href="/support" class="nav-links-property">Support</a>
-                    <a href="/log" class="nav-links-property">Logs</a>
-                    <a href="/register" class="nav-links-property" id="register">Register</a>
-                    <a href="/login" class="nav-links-property">Login</a>
+                    <h2><i class="fa-solid fa-route"></i> | Other pages</h2>
+                    <div class="slide-menu-links-nav">
+                        <a href="/support">Support</a>
+                        <a href="/log">Logs</a>
+                        <a href="/register" id="register">Register</a>
+                        <a href="/logout">Logout</a>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-gear"></i> | General Settings</h2>
+                    <div class="dash-head-nav">
+                        <p class="edit-info-btn">Account info & Edit</p>
+                        <p>Configure Attendance Rules</p>
+                        <p>Download Reports</p>
+                        <p>Toggle Themes</p>
+                        <p>Change Password</p>
+                        <p>Enable Notifications</p>
+                        <p>Delete Your Account</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-square-check"></i> | Attendance Control</h2>
+                    <div class="dash-head-nav">
+                        <p class="qr-btn">Generate QR</p>
+                        <p class="session-btn">Start Session</p>
+                        <p class="edit-att-btn">Edit Attendance</p>
+                        <p>View Attendance Report</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-users"></i> | User & Data Management</h2>
+                    <div class="dash-head-nav">
+                        <p class="users-btn">Manage Users</p>
+                        <p class="leave-btn">Manage Leave Requests</p>
+                        <p class="logs-btn">View Logs</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-envelope"></i> | Communication</h2>
+                    <div class="dash-head-nav">
+                        <p class="notice-btn">Send Notice</p>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
     <main>
-        <section class="hero-bg">
-            <div class="mobile-nav-btn">
-                <button class="btn"><i class="fa-solid fa-arrow-rotate-left"></i></button>
-                <p class="message">Access using your pc or a laptop.</p>
-            </div>
-            <div class="bg-content">
-                <div class="dashboard-heading hidden">
-                    <h1>
-                        Welcome, <%= adminName %>
-                    </h1>
-                    <p>Manage your Organization</p>
-                    <p>Take attendance, send notice, manage users and more...</p>
-                </div>
-                <div class="display-user-details hidden">
-                    <div class="user-basic-details">
-                        <h1>Admin Details</h1>
-                        <p id="userId">
-                            <strong>uniqueID: </strong>
-                            &nbsp;&nbsp;<%= uniqueId %>
-                        </p>
-                        <p id="adminId">
-                            <strong>Admin ID: </strong>
-                            &nbsp;&nbsp;<%= adminId %>
-                        </p>
-                        <p id="userName">
-                            <strong>userName: </strong>
-                            &nbsp;&nbsp;<%= adminName %>
-                        </p>
-                        <p id="contact">
-                            <strong>Contact: </strong>
-                            &nbsp;&nbsp;<%= adminContact %>
-                        </p>
-                        <p id="email">
-                            <strong>Email: </strong>
-                            &nbsp;&nbsp;<%= adminEmail %>
-                        </p>
-                    </div>
-                    <div class="user-pfp hidden">
-                        <div class="profile-image"><i class="fa-solid fa-user"></i></div>
+        <div class="main-section">
+            <div class="dashboard-sidenav">
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-gear"></i> | General Settings</h2>
+                    <div class="dash-head-nav">
+                        <p class="edit-info-btn">Account info & Edit</p>
+                        <p>Configure Attendance Rules</p>
+                        <p>Download Reports</p>
+                        <p>Toggle Themes</p>
+                        <p>Change Password</p>
+                        <p>Enable Notifications</p>
+                        <p>Delete Your Account</p>
                     </div>
                 </div>
-                <div class="users-count hidden">
-                    <h2>Users Count</h2>
-                    <p><strong>Expected Users:</strong> &nbsp;&nbsp;3000</p>
-                    <p><strong>Registered Users:</strong> &nbsp;&nbsp;2500</p>
-                    <p><strong>Percentage:</strong> &nbsp;&nbsp;83.33%</p>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-square-check"></i> | Attendance Control</h2>
+                    <div class="dash-head-nav">
+                        <p class="qr-btn">Generate QR</p>
+                        <p class="session-btn">Start Session</p>
+                        <p class="edit-att-btn">Edit Attendance</p>
+                        <p>View Attendance Report</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-users"></i> | User & Data Management</h2>
+                    <div class="dash-head-nav">
+                        <p class="users-btn">Manage Users</p>
+                        <p class="leave-btn">Manage Leave Requests</p>
+                        <p class="logs-btn">View Logs</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-envelope"></i> | Communication</h2>
+                    <div class="dash-head-nav">
+                        <p class="notice-btn">Send Notice</p>
+                    </div>
                 </div>
             </div>
-            <div class="other-contents">
-                <div class="dashboard-buttons">
-                    <div class="buttons-list">
-                        <span class="button-span qr-btn" class="">
-                            <i class="fa-solid fa-qrcode"></i>
-                            <p>Generate QR</p>
-                        </span>
-                        <span class="button-span session-btn">
-                            <i class="fa-solid fa-graduation-cap"></i>
-                            <p>Student Attendance</p>
-                        </span>
-                        <span class="button-span records-btn">
-                            <i class="fa-solid fa-scroll"></i>
-                            <p>View Records</p>
-                        </span>
-                        <span class="button-span edit-att-btn">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                            <p>Edit Attendance</p>
-                        </span>
-                        <span class="button-span leave-btn">
-                            <i class="fa-solid fa-check-to-slot"></i>
-                            <p>Leave Request</p>
-                        </span>
-                        <span class="button-span notice-btn">
-                            <i class="fa-solid fa-bell"></i>
-                            <p>Send Notice</p>
-                        </span>
-                        <span class="button-span users-btn">
-                            <i class="fa-solid fa-users"></i>
-                            <p>Manage Users</p>
-                        </span>
-                        <span class="button-span logs-btn">
-                            <i class="fa-solid fa-rectangle-list"></i>
-                            <p>browse logs</p>
-                        </span>
-                    </div>
+            <div class="dashboard-contents">
+                <div id="generate-employee-qr">
+                    <form action="/admin-qr-handler" method="POST" class="qr-form">
+                        <h2>Scan the QR code below to mark attendance</h2>
+                        <img src="<%= qrImage %>" alt="Employee QR Code" class="qr">
+                        <button type="submit" class="btn">Submit QR</button>
+                    </form>
                 </div>
-                <div class="dashboard-contents">
-                    <div id="generate-employee-qr">
-                        <form action="/admin-qr-handler" method="POST" class="qr-form">
-                            <h2>Scan the QR code below to mark attendance</h2>
-                            <img src="<%= qrImage %>" alt="Employee QR Code" class="qr">
-                            <button type="submit" class="btn">Submit QR</button>
-                        </form>
+                <div class="send-notice-container">
+                    <div class="notice-heading">
+                        <h3>Send a Notice</h3>
+                        <i class="fa-solid fa-eye"></i>
                     </div>
-                    <div class="send-notice-container">
-                        <div class="notice-heading">
-                            <h3>Send a Notice</h3>
-                            <i class="fa-solid fa-eye"></i>
+                    <form id="sendNoticeForm" method="POST" action="/send-notice">
+                        <div class="form-group">
+                            <label for="uniqueId">Your Unique ID</label>
+                            <input type="text" id="uniqueId" name="uniqueId" required />
                         </div>
-                        <form id="sendNoticeForm" method="POST" action="/send-notice">
-                            <div class="form-group">
-                                <label for="uniqueId">Your Unique ID</label>
-                                <input type="text" id="uniqueId" name="uniqueId" required />
-                            </div>
 
-                            <div class="form-group">
-                                <label for="dateTime">Date & Time</label>
-                                <input type="datetime-local" id="dateTime" name="dateTime" required />
-                            </div>
+                        <div class="form-group">
+                            <label for="dateTime">Date & Time</label>
+                            <input type="datetime-local" id="dateTime" name="dateTime" required />
+                        </div>
 
-                            <div class="form-group">
-                                <label for="userIdType">User ID Type (optional)</label>
-                                <select id="userIdType" name="userIdType">
-                                    <option value="">-- Select Type --</option>
-                                    <option value="employeeId">Employee ID</option>
-                                    <option value="rollNo">Roll No</option>
-                                    <option value="uniqueUserId">Unique User ID</option>
-                                </select>
-                            </div>
+                        <div class="form-group">
+                            <label for="userIdType">User ID Type (optional)</label>
+                            <select id="userIdType" name="userIdType">
+                                <option value="">-- Select Type --</option>
+                                <option value="employeeId">Employee ID</option>
+                                <option value="rollNo">Roll No</option>
+                                <option value="uniqueUserId">Unique User ID</option>
+                            </select>
+                        </div>
 
-                            <div class="form-group">
-                                <label for="userIdValue">User ID Value</label>
-                                <input type="text" id="userIdValue" name="userIdValue"
-                                    placeholder="Leave blank for all users" />
-                            </div>
+                        <div class="form-group">
+                            <label for="userIdValue">User ID Value</label>
+                            <input type="text" id="userIdValue" name="userIdValue"
+                                placeholder="Leave blank for all users" />
+                        </div>
 
-                            <div class="form-group">
-                                <label for="noticeText">Write Notice</label>
-                                <textarea id="noticeText" name="noticeText" rows="5" required></textarea>
-                            </div>
+                        <div class="form-group">
+                            <label for="noticeText">Write Notice</label>
+                            <textarea id="noticeText" name="noticeText" rows="5" required></textarea>
+                        </div>
 
-                            <button type="submit" class="btn send-btn">Send Notice</button>
-                        </form>
-                        <div class="view-notices">
-                            <div class="view-notices-heading">
-                                <i class="fa-solid fa-right-left"></i>
-                            </div>
-                            <div class="notice-logs">
-                                <% if (notices && notices.length> 0) { %>
-                                    <% notices.forEach(log=> { %>
-                                        <div class="log-entry">
-                                            <div class="log-icon">
-                                                <i class="fa-solid fa-bell"></i>
-                                            </div>
-                                            <div class="log-content">
-                                                <p class="log-title">Notice Sent</p>
-                                                <p class="log-details">
-                                                    <strong>From:</strong>
-                                                    <%= log.uniqueId %> |
-                                                        <% if (log.userIdType && log.userIdValue) { %>
-                                                            <strong>To:</strong>
-                                                            <%= log.userIdType %> - <%= log.userIdValue %> |
-                                                                    <% } else { %>
-                                                                        <strong>To:</strong> All Users |
-                                                                        <% } %>
-                                                                            <strong>Scheduled At:</strong>
-                                                                            <%= new Date(log.dateTime).toLocaleString()
-                                                                                %>
-                                                </p>
-                                                <p class="log-text">
-                                                    <%- log.noticeText.replace(/\r\n/g, '<br>' ) %>
-                                                </p>
-                                                <p class="log-time"><b>
-                                                        <%= new Date(log.createdAt).toLocaleString() %>
-                                                    </b></p>
-                                            </div>
+                        <button type="submit" class="btn send-btn">Send Notice</button>
+                    </form>
+                    <div class="view-notices">
+                        <div class="view-notices-heading">
+                            <i class="fa-solid fa-right-left"></i>
+                        </div>
+                        <div class="notice-logs">
+                            <% if (notices && notices.length> 0) { %>
+                                <% notices.forEach(log=> { %>
+                                    <div class="notice-log-entry">
+                                        <div class="notice-log-icon">
+                                            <i class="fa-solid fa-bell"></i>
                                         </div>
-                                        <% }) %>
-                                            <% } else { %>
-                                                <p class="no-logs">No notices sent yet.</p>
-                                                <% } %>
-                            </div>
+                                        <div class="notice-log-content">
+                                            <p class="notice-log-title">Notice Sent</p>
+                                            <p class="notice-log-details">
+                                                <strong>From:</strong>
+                                                <%= log.uniqueId %> |
+                                                    <% if (log.userIdType && log.userIdValue) { %>
+                                                        <strong>To:</strong>
+                                                        <%= log.userIdType %> - <%= log.userIdValue %> |
+                                                                <% } else { %>
+                                                                    <strong>To:</strong> All Users |
+                                                                    <% } %>
+                                                                        <strong>Scheduled At:</strong>
+                                                                        <%= new Date(log.dateTime).toLocaleString() %>
+                                            </p>
+                                            <p class="notice-log-text">
+                                                <%- log.noticeText.replace(/\r\n/g, '<br>' ) %>
+                                            </p>
+                                            <p class="notice-log-time"><b>
+                                                    <%= new Date(log.createdAt).toLocaleString() %>
+                                                </b></p>
+                                        </div>
+                                    </div>
+                                    <% }) %>
+                                        <% } else { %>
+                                            <p class="no-logs">No notices sent yet.</p>
+                                            <% } %>
                         </div>
                     </div>
-
-                    <div class="student-attendance">
-                        <div class="overlay">
-                            <div class="instigator-inputs">
-                                <div class="overlay-head">
-                                    <i class="fa-solid fa-xmark"></i>
-                                    <h2>Session-based Attendance Tracking</h2>
+                </div>
+                <div class="student-attendance">
+                    <div class="overlay">
+                        <div class="instigator-inputs">
+                            <div class="overlay-head">
+                                <i class="fa-solid fa-xmark"></i>
+                                <h2>Session-based Attendance Tracking</h2>
+                            </div>
+                            <form id="subjectForm" method="POST" action="/student-session">
+                                <div class="form-group">
+                                    <label for="uniqueID">Your Unique ID</label>
+                                    <input type="text" id="uniqueID" name="uniqueId" required />
                                 </div>
-                                <form id="subjectForm" method="POST" action="/student-session">
-                                    <div class="form-group">
-                                        <label for="uniqueID">Your Unique ID</label>
-                                        <input type="text" id="uniqueID" name="uniqueId" required />
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label for="departments">Enter Classes (seperated by commas)</label>
-                                        <input type="text" id="departments" name="departments" required />
-                                    </div>
+                                <div class="form-group">
+                                    <label for="departments">Enter Classes (seperated by commas)</label>
+                                    <input type="text" id="departments" name="departments" required />
+                                </div>
 
-                                    <div class="form-group">
-                                        <label for="sessionType">Session Type</label>
-                                        <select id="sessionType" name="sessionType" required>
-                                            <option value="fresh-session">Fresh Session</option>
-                                            <option value="retake-session">Retake Session</option>
-                                        </select>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="sessionType">Session Type</label>
+                                    <select id="sessionType" name="sessionType" required>
+                                        <option value="fresh-session">Fresh Session</option>
+                                        <option value="retake-session">Retake Session</option>
+                                    </select>
+                                </div>
 
-                                    <div class="form-group">
-                                        <label for="subjectName">Subject Name</label>
-                                        <input type="text" id="subjectName" name="subjectName" required />
-                                    </div>
+                                <div class="form-group">
+                                    <label for="subjectName">Subject Name</label>
+                                    <input type="text" id="subjectName" name="subjectName" required />
+                                </div>
 
-                                    <button type="submit" class="btn send-btn">Start Session</button>
-                                </form>
-
-                            </div>
+                                <button type="submit" class="btn send-btn">Start Session</button>
+                            </form>
                         </div>
                     </div>
-                    <div class="manage-users">
-                        <div class="manage-users-header">
-                            <div class="cross-and-heading-name">
-                                <h3>Manage Users</h3>
-                            </div>
+                </div>
+                <div class="manage-users">
+                    <div class="manage-users-header">
+                        <div class="cross-and-heading-name">
+                            <h3>Manage Users</h3>
                         </div>
+                    </div>
 
-                        <div class="manage-users-tables">
-                            <% if (orgType==="college" || orgType==="school" ) { %>
-                                <div class="college-students">
+                    <div class="manage-users-tables">
+                        <% if (orgType==="college" || orgType==="school" ) { %>
+                            <div class="college-students">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Unique ID</th>
+                                            <th>Student Name</th>
+                                            <th>Roll</th>
+                                            <% if (orgType==="college" ) { %>
+                                                <th>Dept</th>
+                                                <% } else { %>
+                                                    <th>Standard</th>
+                                                    <% } %>
+                                                        <th>Contact</th>
+                                                        <th>Email</th>
+                                                        <th>Enrolled Subjects</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% students.forEach(student=> { %>
+                                            <tr>
+                                                <td>
+                                                    <%= student.uniqueId %>
+                                                </td>
+                                                <td>
+                                                    <%= student.userName %>
+                                                </td>
+                                                <td>
+                                                    <%= student.roll %>
+                                                </td>
+                                                <% if (orgType==="college" ) { %>
+                                                    <td>
+                                                        <%= student.dept %>
+                                                    </td>
+                                                    <% } else { %>
+                                                        <td>
+                                                            <%= student.standard %>
+                                                        </td>
+                                                        <% } %>
+                                                            <td>
+                                                                <%= student.contact %>
+                                                            </td>
+                                                            <td>
+                                                                <%= student.email %>
+                                                            </td>
+                                                            <td>
+                                                                <ul>
+                                                                    <% student.subjects.forEach(sub=> { %>
+                                                                        <li>
+                                                                            <%= sub %>
+                                                                        </li>
+                                                                        <% }) %>
+                                                                </ul>
+                                                            </td>
+                                            </tr>
+                                            <% }) %>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <% } %>
+
+                                <div class="employees">
                                     <table>
                                         <thead>
                                             <tr>
                                                 <th>Unique ID</th>
-                                                <th>Student Name</th>
-                                                <th>Roll</th>
-                                                <% if (orgType==="college" ) { %>
-                                                    <th>Dept</th>
-                                                    <% } else { %>
-                                                        <th>Standard</th>
-                                                        <% } %>
-                                                            <th>Contact</th>
-                                                            <th>Email</th>
-                                                            <th>Enrolled Subjects</th>
+                                                <th>Employee Name</th>
+                                                <th>Employee ID</th>
+                                                <th>Dept</th>
+                                                <th>Designation</th>
+                                                <th>Contact</th>
+                                                <th>Email</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <% students.forEach(student=> { %>
+                                            <% employees.forEach(emp=> { %>
                                                 <tr>
                                                     <td>
-                                                        <%= student.uniqueId %>
+                                                        <%= emp.uniqueId %>
                                                     </td>
                                                     <td>
-                                                        <%= student.userName %>
+                                                        <%= emp.userName %>
                                                     </td>
                                                     <td>
-                                                        <%= student.roll %>
+                                                        <%= emp.employeeId %>
                                                     </td>
-                                                    <% if (orgType==="college" ) { %>
-                                                        <td>
-                                                            <%= student.dept %>
-                                                        </td>
-                                                        <% } else { %>
-                                                            <td>
-                                                                <%= student.standard %>
-                                                            </td>
-                                                            <% } %>
-                                                                <td>
-                                                                    <%= student.contact %>
-                                                                </td>
-                                                                <td>
-                                                                    <%= student.email %>
-                                                                </td>
-                                                                <td>
-                                                                    <ul>
-                                                                        <% student.subjects.forEach(sub=> { %>
-                                                                            <li>
-                                                                                <%= sub %>
-                                                                            </li>
-                                                                            <% }) %>
-                                                                    </ul>
-                                                                </td>
+                                                    <td>
+                                                        <%= emp.dept %>
+                                                    </td>
+                                                    <td>
+                                                        <%= emp.designation %>
+                                                    </td>
+                                                    <td>
+                                                        <%= emp.contact %>
+                                                    </td>
+                                                    <td>
+                                                        <%= emp.email %>
+                                                    </td>
                                                 </tr>
                                                 <% }) %>
                                         </tbody>
                                     </table>
                                 </div>
-                                <% } %>
-
-                                    <div class="employees">
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Unique ID</th>
-                                                    <th>Employee Name</th>
-                                                    <th>Employee ID</th>
-                                                    <th>Dept</th>
-                                                    <th>Designation</th>
-                                                    <th>Contact</th>
-                                                    <th>Email</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <% employees.forEach(emp=> { %>
-                                                    <tr>
-                                                        <td>
-                                                            <%= emp.uniqueId %>
-                                                        </td>
-                                                        <td>
-                                                            <%= emp.userName %>
-                                                        </td>
-                                                        <td>
-                                                            <%= emp.employeeId %>
-                                                        </td>
-                                                        <td>
-                                                            <%= emp.dept %>
-                                                        </td>
-                                                        <td>
-                                                            <%= emp.designation %>
-                                                        </td>
-                                                        <td>
-                                                            <%= emp.contact %>
-                                                        </td>
-                                                        <td>
-                                                            <%= emp.email %>
-                                                        </td>
-                                                    </tr>
-                                                    <% }) %>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                    </div>
+                </div>
+                <div class="browse-logs">
+                    <div class="browse-logs-header">
+                        <div class="cross-and-heading-name">
+                            <h3>Audit Log</h3>
                         </div>
                     </div>
-
-                    <div class="view-records"></div>
-                    <div class="edit-attendance"></div>
-                    <div class="browse-logs">
-                        <div class="browse-logs-header">
-                            <div class="cross-and-heading-name">
-                                <h3>Audit Log</h3>
-                            </div>
-                        </div>
-                        <div class="register-logs">
-                            <% registerLogs.forEach(log=> { %>
-                                <div class="log-entry">
-                                    <div class="log-icon">
-                                        <i class="fa-solid fa-registered"></i>
-                                    </div>
-                                    <div class="log-content">
-                                        <p>
-                                            <%= log.split(',').join(' | ') %></p>
+                    <div class="register-logs">
+                        <% registerLogs.forEach(log=> { %>
+                            <div class="log-entry">
+                                <div class="log-icon">
+                                    <i class="fa-solid fa-registered"></i>
+                                </div>
+                                <div class="log-content">
+                                    <p>
+                                        <%= log.split(',').join(' | ') %></p>
                                     </div>
                                 </div>
                             <% }) %>
@@ -519,8 +500,6 @@
                                         <% } %>
                             </div>
                             <% } %>
-
-
                     </div>
                     <div class="edit-your-info">
                         <h3>Edit Your Information</h3>
@@ -646,28 +625,28 @@
                                     </p>
 
                                     <% if (req.status===' pending' ) { %>
-                                                <form action="/leave/<%= req.uniqueId %>/accept" method="POST"
-                                                    style="display:inline;">
-                                                    <button type="submit">Accept</button>
-                                                </form>
-                                                <form action="/leave/<%= req.uniqueId %>/reject" method="POST"
-                                                    style="display:inline;">
-                                                    <button type="submit">Reject</button>
-                                                </form>
-                                                <% } else { %>
-                                                    <p>Already <%= req.status %>
-                                                    </p>
-                                                    <% } %>
-                                    </div>
-                                    <% }) %>
-                                        <% } else { %>
-                                            <p>No leave requests found.</p>
-                                            <% } %>
+                                            <form action="/leave/<%= req.uniqueId %>/accept" method="POST"
+                                                style="display:inline;">
+                                                <button type="submit">Accept</button>
+                                            </form>
+                                            <form action="/leave/<%= req.uniqueId %>/reject" method="POST"
+                                                style="display:inline;">
+                                                <button type="submit">Reject</button>
+                                            </form>
+                                            <% } else { %>
+                                                <p>Already <%= req.status %>
+                                                </p>
+                                                <% } %>
                                 </div>
+                                <% }) %>
+                                    <% } else { %>
+                                        <p>No leave requests found.</p>
+                                        <% } %>
+                            </div>
 
-                        </div>
                     </div>
-        </section>
+                </div>
+            </div>
     </main>
     <footer>
         <div class="foot-content">
@@ -708,4 +687,5 @@
     <script src="/js/global/update-footerLayout-for-tablets.js"></script>
     <script src="/js/page-specific/dashboard/admin-dashboard-tabs.js"></script>
     <script src="/js/global/detectOrientation.js"></script>
+
 </html>

@@ -1,13 +1,44 @@
+
+.fa-xmark {
+    font-size: 1.4rem;
+    padding: 0.3rem;
+    border: 2px solid var(--border-color);
+    border-radius: 0.5rem;
+}
+#orientation-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    font-size: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    text-align: center;
+}
+.other-contents {width: 80%}
+
 .dashboard-contents {
+    height: 90%;
+    width: 70%;
+    overflow-y: auto;
+    display: flex;
+    transition: width .25s ease;
+    align-self: center;
     overflow-y: auto;
 }
-
-.edit-info {
-    display: none;
+.dashboard-buttons {
+    width: 32%;
+    height: 90%;
+    margin: auto;
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-right: 5px solid var(--accent);
 }
-
-.other-contents {width: 74% !important;}
-
 form {
     background: #2A2A3C;
     padding: 2rem;
@@ -93,10 +124,16 @@ button:hover {
     background: #60A5FA;
 }
 
+.edit-info {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
 .notices {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    width: 100%;
     margin: 2rem auto;
     max-width: 800px;
 }
@@ -147,6 +184,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    width: 100%;
     
 }
 
@@ -234,6 +272,7 @@ button:hover {
 }
 
 .attendance-container {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -305,7 +344,7 @@ button:hover {
     background: linear-gradient(135deg, #34D399, #10B981);
 }
 
-.edit-info, .notices, .request-leave-container {display: none;}
+.notices, .request-leave-container, .edit-info {display: none;}
 
 @media screen and (max-width: 480px) {
     .dashboard-buttons {
