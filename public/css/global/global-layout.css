@@ -17,12 +17,10 @@ body {
     color: var(--text-primary);
 }
 main {
-    height: 100vh;
     width: 100%;
     border-bottom: 2px solid var(--border-color);
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 .links {color: var(--link);}
 .hero-bg {
@@ -45,6 +43,13 @@ main {
     display: flex;
     flex-direction: column;
     gap: clamp(1rem, 2vw, 1.5rem);
+    justify-content: center;
+    align-items: center;
+}
+.about {
+    width: 100%;
+    margin-top: 2rem; /* pushes it below */
+    padding: 34px 10px;
 }
 header {width: 99vw;}
 #navbar {
