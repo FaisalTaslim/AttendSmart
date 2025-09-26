@@ -171,17 +171,21 @@ footer > p {
         padding-bottom: 10px;
         border-bottom: 2px solid var(--border-color);
     }
-    .slide-menu-links {
+    
+    .sidemenu-heading {font-size: 2rem;}
+    .hero-bg {height: 100vh;}
+    .bg-content {max-width: 85vw; }
+    .dash-head {
         display: flex;
         flex-direction: column;
         gap: 0.2rem;
     }
-    .slide-menu-links > h2 {
+    .dash-head > h2 {
         font-size: 1.2rem;
         padding-bottom: 1rem;
         color: var(--accent);
     }
-    .slide-menu-links-nav {
+    .dash-head-nav {
         margin-left: 0.5rem;
         border-left: 2px solid var(--accent);
         display: flex;
@@ -190,20 +194,17 @@ footer > p {
         padding: 1rem 0.5rem;
         background-color: var(--bg-secondary);
     }
-    .slide-menu-links-nav > a {
+    .dash-head-nav > a {
         font-size: 1rem;
         padding: 0.5rem;
         text-decoration: none;
         color: var(--text-primary);
     }
-    .slide-menu-links-nav > a:hover {cursor: pointer}
-    .slide-menu-links-nav  > a:hover {
+    .dash-head-nav > a:hover {cursor: pointer}
+    .dash-head-nav > a:hover {
         border: 1px solid var(--accent);
         border-radius: 0.8rem;
     }
-    .sidemenu-heading {font-size: 2rem;}
-    .hero-bg {height: 100vh;}
-    .bg-content {max-width: 85vw; }
     .foot-content {
         display: flex;
         flex-direction: column;
