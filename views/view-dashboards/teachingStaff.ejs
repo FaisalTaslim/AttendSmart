@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/global/global-layout.css">
     <link rel="stylesheet" href="/css/global/global-dbLayout.css">
     <link rel="stylesheet" href="/css/global/forms.css">
-    <link rel="stylesheet" href="/css/page-specific/dashboard/teachingStaff.css">
+    <link rel="stylesheet" href="/css/page-specific/dashboard/teacher.css">
     <link rel="stylesheet" href="/css/global/dark-theme.css">
     <link rel="stylesheet" href="/css/global/scrollbar.css">
 
@@ -25,21 +25,19 @@
 </head>
 
 <body>
+    <div id="orientation-overlay" style="display:none;">
+        <p>Rotate your screen and refresh to use the dashboard</p>
+    </div>
     <header>
-        <div id="orientation-overlay" style="display:none;">
-            <p>Rotate your screen and refresh to use the dashboard</p>
-        </div>
         <nav id="navbar" class="">
             <div class="nav-group1">
                 <div class="logo">
                     <p class="font-1"><strong>AttendSmart</strong></p>
                 </div>
-                <div class="nav-links">
-                    <a href="/" class="nav-links-property hide">Home</a>
-                </div>
             </div>
             <div class="nav-group2">
                 <div class="nav-links">
+                    <a href="/" class="nav-links-property hide">Home</a>
                     <a href="/dashboard" class="nav-links-property hide">Dashboard</a>
                     <a href="/support" class="nav-links-property hide">Support</a>
                     <a href="/log" class="nav-links-property hide">Logs</a>
@@ -63,291 +61,274 @@
                     <p class="nav-links-property"><i class="fa-solid fa-xmark" id="close-toggle"></i></p>
                 </div>
                 <div class="slide-menu-links">
-                    <a href="/dashboard" class="nav-links-property">Dashboard</a>
-                    <a href="/support" class="nav-links-property">Support</a>
-                    <a href="/log" class="nav-links-property">Logs</a>
-                    <a href="/register" class="nav-links-property" id="register">Register</a>
-                    <a href="/login" class="nav-links-property">Login</a>
+                    <h2><i class="fa-solid fa-route"></i> | Other pages</h2>
+                    <div class="slide-menu-links-nav">
+                        <a href="/support">Support</a>
+                        <a href="/log">Logs</a>
+                        <a href="/register" id="register">Register</a>
+                        <a href="/logout">Logout</a>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-gear"></i> | General Settings</h2>
+                    <div class="dash-head-nav">
+                        <p class="edit-info-btn">Account info & Edit</p>
+                        <p>Download Reports</p>
+                        <p>Toggle Themes</p>
+                        <p>Change Password</p>
+                        <p>Enable Notifications</p>
+                        <p>Delete Your Account</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-square-check"></i> | Attendance Control</h2>
+                    <div class="dash-head-nav">
+                        <p class="qr-btn">Scan QR</p>
+                        <p class="session-btn">Start Session</p>
+                        <p class="edit-att-btn">Edit Attendance</p>
+                        <p class="edit-att-btn">Your Attendance Overview</p>
+                        <p>Student's Report</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-users"></i> | User & Data Management</h2>
+                    <div class="dash-head-nav">
+                        <p class="logs-btn">View Logs</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-envelope"></i> | Communication</h2>
+                    <div class="dash-head-nav">
+                        <p class="notice-btn">View Notice</p>
+                        <p class="leave-btn">Request a Leave</p>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
     <main>
-        <section class="hero-bg">
-            <div class="mobile-nav-btn">
-                <button class="btn"><i class="fa-solid fa-arrow-rotate-left"></i></button>
-                <p class="message">Access using your pc or a laptop.</p>
-            </div>
-            <div class="bg-content hidden">
-                <div class="dashboard-heading">
-                    <h1>Welcome, <%= userName %>!</h1>
-                    <p>Mark Attendance!</p>
-                    <p>Apply for leave, and check notices</p>
-                    <p>Get your Reports, History and Summaries</p>
-                </div>
-                <div class="display-user-details">
-                    <div class="user-basic-details">
-                        <h1>Employee Details</h1>
-                        <p id="userId">
-                            <strong>uniqueID: </strong>
-                            &nbsp;<%= uniqueId %>
-                        </p>
-                        <p id="employeeId">
-                            <strong>EmployeeId: </strong>
-                            &nbsp;<%= employeeId %>
-                        </p>
-                        <p id="userName">
-                            <strong>userName: </strong>
-                            &nbsp;<%= userName %>
-                        </p>
-                        <p id="designation">
-                            <strong>Role: </strong>
-                            &nbsp;<%= designation %>
-                        </p>
-                        <p id="contact">
-                            <strong>Contact: </strong>
-                            &nbsp;<%= contact %>
-                        </p>
-                        <p id="email">
-                            <strong>Email: </strong>
-                            &nbsp;<%= email %>
-                        </p>
+        <div class="main-section">
+            <div class="dashboard-sidenav">
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-gear"></i> | General Settings</h2>
+                    <div class="dash-head-nav">
+                        <p class="edit-info-btn">Account info & Edit</p>
+                        <p>Download Reports</p>
+                        <p>Toggle Themes</p>
+                        <p>Change Password</p>
+                        <p>Enable Notifications</p>
+                        <p>Delete Your Account</p>
                     </div>
-                    <div class="user-pfp hidden">
-                        <div class="profile-image"><i class="fa-solid fa-user"></i></div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-square-check"></i> | Attendance Control</h2>
+                    <div class="dash-head-nav">
+                        <p class="qr-btn">Scan QR</p>
+                        <p class="session-btn">Start Session</p>
+                        <p class="edit-att-btn">Edit Attendance</p>
+                        <p class="edit-att-btn">Your Attendance Overview</p>
+                        <p>Student's Report</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-users"></i> | User & Data Management</h2>
+                    <div class="dash-head-nav">
+                        <p class="logs-btn">View Logs</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-envelope"></i> | Communication</h2>
+                    <div class="dash-head-nav">
+                        <p class="notice-btn">View Notice</p>
+                        <p class="leave-btn">Request a Leave</p>
                     </div>
                 </div>
             </div>
-            <div class="other-contents">
-                <div class="dashboard-buttons">
-                    <div class="buttons-list">
-                        <span class="button-span att-overview-btn">
-                            <i class="fa-solid fa-scroll"></i>
-                            <p>Attendance Overview</p>
-                        </span>
-                        <span class="button-span edit-info-btn">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                            <p>Edit Your Info</p>
-                        </span>
-                        <span class="button-span notice-btn">
-                            <i class="fa-solid fa-bell"></i>
-                            <p>View Notices</p>
-                        </span>
-                        <span class="button-span leave-btn">
-                            <i class="fa-solid fa-check-to-slot"></i>
-                            <p>Leave Request</p>
-                        </span>
-                        <span class="button-span qr-btn" class="">
-                            <i class="fa-solid fa-qrcode"></i>
-                            <p>Scan QR</p>
-                        </span>
-                        <span class="button-span session-btn">
-                            <i class="fa-solid fa-graduation-cap"></i>
-                            <p>Start Session</p>
-                        </span>
-                        <span class="button-span edit-att-btn">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                            <p>Edit Attendance</p>
-                        </span>
-                        <span class="button-span records-btn">
-                            <i class="fa-solid fa-scroll"></i>
-                            <p>Student Report</p>
-                        </span>
-                    </div>
-                </div>
-                <div class="dashboard-contents">
-                    <div class="edit-info">
-                        <h1>Edit Account Details</h1>
-                        <form method="POST" action="/update-employee" class="employee-update-form">
-                            <fieldset>
-                                <legend>Personal Information</legend>
-                                <div class="form-group">
-                                    <label for="uniqueId">Unique ID</label>
-                                    <input type="text" id="uniqueId" name="uniqueId" value="<%= uniqueId %>" readonly>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="userName">Full Name</label>
-                                    <input type="text" id="userName" name="userName" value="<%= userName %>">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="employeeId">Employee Id</label>
-                                    <input type="text" id="employeeId" name="employeeId" value="<%= employeeId %>">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="dept">Department</label>
-                                    <input type="text" id="dept" name="dept" value="<%= dept %>">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="designation">Designation</label>
-                                    <input type="text" id="designation" name="designation" value="<%= designation %>">
-                                </div>
-                            </fieldset>
-
-                            <fieldset>
-                                <legend>Contact Information</legend>
-                                <div class="form-group">
-                                    <label for="contact">Contact Number</label>
-                                    <input type="tel" id="contact" name="contact" value="<%= contact %>">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="email">Email Address</label>
-                                    <input type="email" id="email" name="email" value="<%= email %>">
-                                </div>
-                            </fieldset>
-
-                            <div style="text-align:center;">
-                                <button type="submit" class="submit-btn">Save Changes</button>
+            <div class="dashboard-contents">
+                <div class="edit-info">
+                    <h1>Edit Account Details</h1>
+                    <form method="POST" action="/update-employee" class="employee-update-form">
+                        <fieldset>
+                            <legend>Personal Information</legend>
+                            <div class="form-group">
+                                <label for="uniqueId">Unique ID</label>
+                                <input type="text" id="uniqueId" name="uniqueId" value="<%= uniqueId %>" readonly>
                             </div>
-                        </form>
 
+                            <div class="form-group">
+                                <label for="userName">Full Name</label>
+                                <input type="text" id="userName" name="userName" value="<%= userName %>">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="employeeId">Employee Id</label>
+                                <input type="text" id="employeeId" name="employeeId" value="<%= employeeId %>">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="dept">Department</label>
+                                <input type="text" id="dept" name="dept" value="<%= dept %>">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="designation">Designation</label>
+                                <input type="text" id="designation" name="designation" value="<%= designation %>">
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Contact Information</legend>
+                            <div class="form-group">
+                                <label for="contact">Contact Number</label>
+                                <input type="tel" id="contact" name="contact" value="<%= contact %>">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" value="<%= email %>">
+                            </div>
+                        </fieldset>
+
+                        <div style="text-align:center;">
+                            <button type="submit" class="submit-btn">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="notices">
+                    <h2><i class="fa-solid fa-bell"></i> | Notices</h2>
+                    <div id="notice-list" class="notice-list">
+                        <% if (!notices || notices.length===0) { %>
+                            <p>No notices available.</p>
+                            <% } else { %>
+                                <% notices.forEach(notice=> { %>
+                                    <div class="notice-card">
+                                        <div class="notice-date">
+                                            <%= notice.dateTime %>
+                                        </div>
+                                        <p class="notice-text">
+                                            <%= notice.noticeText %>
+                                        </p>
+                                    </div>
+                                    <% }) %>
+                                        <% } %>
                     </div>
+                </div>
+                <div class="request-leave">
+                    <form id="leaveForm" method="POST" action="/request-leave-employees">
+                        <fieldset>
+                            <legend>Leave Details</legend>
 
-                    <div class="notices">
-                        <h2><i class="fa-solid fa-bell"></i> | Notices</h2>
-                        <div id="notice-list" class="notice-list">
-                            <% if (!notices || notices.length===0) { %>
-                                <p>No notices available.</p>
+                            <div class="form-group">
+                                <label for="userId">Enter your uniqueId</label>
+                                <input type="text" id="userId" name="uniqueId" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="leaveType">Leave Type</label>
+                                <select id="leaveType" name="leaveType" required>
+                                    <option value="">-- Select Leave Type --</option>
+                                    <option value="sick">Sick Leave</option>
+                                    <option value="casual">Casual Leave</option>
+                                    <option value="earned">Earned Leave</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="startDate">Start Date</label>
+                                <input type="date" id="startDate" name="startDate" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="endDate">End Date</label>
+                                <input type="date" id="endDate" name="endDate" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="reason">Reason</label>
+                                <textarea id="reason" name="reason" rows="4" placeholder="Enter reason for leave..."
+                                    required></textarea>
+                            </div>
+                        </fieldset>
+
+                        <div style="text-align:center;">
+                            <button type="submit" class="submit-btn">Submit Request</button>
+                        </div>
+                    </form>
+                    <div class="leave-requests-section">
+                        <h2><i class="fa-solid fa-bell"></i> | Your Leave Requests</h2>
+                        <div id="leave-request-list" class="leave-request-list">
+                            <% if (!leaveRequests || leaveRequests.length===0) { %>
+                                <p>No leave requests submitted.</p>
                                 <% } else { %>
-                                    <% notices.forEach(notice=> { %>
-                                        <div class="notice-card">
-                                            <div class="notice-date">
-                                                <%= notice.dateTime %>
-                                            </div>
-                                            <p class="notice-text">
-                                                <%= notice.noticeText %>
+                                    <% leaveRequests.forEach(leave=> { %>
+                                        <div class="leave-card">
+                                            <p><strong>Start Date:</strong>
+                                                <%= leave.startDate %>
+                                            </p>
+                                            <p><strong>End Date:</strong>
+                                                <%= leave.endDate %>
+                                            </p>
+                                            <p><strong>Leave Type:</strong>
+                                                <%= leave.leaveType %>
+                                            </p>
+                                            <p><strong>Reason:</strong>
+                                                <%= leave.reason %>
+                                            </p>
+                                            <p><strong>Status:</strong>
+                                                <%= leave.status %>
                                             </p>
                                         </div>
                                         <% }) %>
                                             <% } %>
                         </div>
                     </div>
-
-                    <div class="request-leave">
-                        <form id="leaveForm" method="POST" action="/request-leave-employees">
-                            <fieldset>
-                                <legend>Leave Details</legend>
-
+                </div>
+                <div class="container">
+                    <h1>Mark Attendance</h1>
+                    <div class="section">
+                        <div id="my-qr-reader"></div>
+                    </div>
+                </div>
+                <div id="student-attendance" class="student-attendance">
+                    <div class="overlay">
+                        <div class="instigator-inputs">
+                            <div class="overlay-head">
+                                <i class="fa-solid fa-xmark"></i>
+                                <h2>Session-based Attendance Tracking</h2>
+                            </div>
+                            <form id="subjectForm" method="POST" action="/student-session">
                                 <div class="form-group">
-                                    <label for="userId">Enter your uniqueId</label>
-                                    <input type="text" id="userId" name="uniqueId" required>
+                                    <label for="uniqueID">Your Unique ID</label>
+                                    <input type="text" id="uniqueID" name="uniqueId" required />
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="leaveType">Leave Type</label>
-                                    <select id="leaveType" name="leaveType" required>
-                                        <option value="">-- Select Leave Type --</option>
-                                        <option value="sick">Sick Leave</option>
-                                        <option value="casual">Casual Leave</option>
-                                        <option value="earned">Earned Leave</option>
-                                        <option value="other">Other</option>
+                                    <label for="departments">Enter Classes (seperated by commas)</label>
+                                    <input type="text" id="departments" name="departments" required />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="sessionType">Session Type</label>
+                                    <select id="sessionType" name="sessionType" required>
+                                        <option value="fresh-session">Fresh Session</option>
+                                        <option value="retake-session">Retake Session</option>
                                     </select>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="startDate">Start Date</label>
-                                    <input type="date" id="startDate" name="startDate" required>
+                                    <label for="subjectName">Subject Name</label>
+                                    <input type="text" id="subjectName" name="subjectName" required />
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="endDate">End Date</label>
-                                    <input type="date" id="endDate" name="endDate" required>
-                                </div>
+                                <button type="submit" class="btn send-btn">Start Session</button>
+                            </form>
 
-                                <div class="form-group">
-                                    <label for="reason">Reason</label>
-                                    <textarea id="reason" name="reason" rows="4" placeholder="Enter reason for leave..."
-                                        required></textarea>
-                                </div>
-                            </fieldset>
-
-                            <div style="text-align:center;">
-                                <button type="submit" class="submit-btn">Submit Request</button>
-                            </div>
-                        </form>
-                        <div class="leave-requests-section">
-                            <h2><i class="fa-solid fa-bell"></i> | Your Leave Requests</h2>
-                            <div id="leave-request-list" class="leave-request-list">
-                                <% if (!leaveRequests || leaveRequests.length===0) { %>
-                                    <p>No leave requests submitted.</p>
-                                    <% } else { %>
-                                        <% leaveRequests.forEach(leave=> { %>
-                                            <div class="leave-card">
-                                                <p><strong>Start Date:</strong>
-                                                    <%= leave.startDate %>
-                                                </p>
-                                                <p><strong>End Date:</strong>
-                                                    <%= leave.endDate %>
-                                                </p>
-                                                <p><strong>Leave Type:</strong>
-                                                    <%= leave.leaveType %>
-                                                </p>
-                                                <p><strong>Reason:</strong>
-                                                    <%= leave.reason %>
-                                                </p>
-                                                <p><strong>Status:</strong>
-                                                    <%= leave.status %>
-                                                </p>
-                                            </div>
-                                            <% }) %>
-                                                <% } %>
-                            </div>
                         </div>
                     </div>
-
-                    <div class="container">
-                        <h1>Mark Attendance</h1>
-                        <div class="section">
-                            <div id="my-qr-reader"></div>
-                        </div>
-                    </div>
-
-                    <div id="student-attendance" class="student-attendance">
-                        <div class="overlay">
-                            <div class="instigator-inputs">
-                                <div class="overlay-head">
-                                    <i class="fa-solid fa-xmark"></i>
-                                    <h2>Session-based Attendance Tracking</h2>
-                                </div>
-                                <form id="subjectForm" method="POST" action="/student-session">
-                                    <div class="form-group">
-                                        <label for="uniqueID">Your Unique ID</label>
-                                        <input type="text" id="uniqueID" name="uniqueId" required />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="departments">Enter Classes (seperated by commas)</label>
-                                        <input type="text" id="departments" name="departments" required />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="sessionType">Session Type</label>
-                                        <select id="sessionType" name="sessionType" required>
-                                            <option value="fresh-session">Fresh Session</option>
-                                            <option value="retake-session">Retake Session</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="subjectName">Subject Name</label>
-                                        <input type="text" id="subjectName" name="subjectName" required />
-                                    </div>
-
-                                    <button type="submit" class="btn send-btn">Start Session</button>
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="att-overview"></div>
-                    <div class="att-edit"></div>
-                    <div class="records"></div>
                 </div>
-        </section>
+            </div>
+        </div>
     </main>
     <footer>
         <div class="foot-content">
@@ -389,6 +370,7 @@
     <script src="/js/global/update-footerLayout-for-tablets.js"></script>
     <script src="/js/page-specific/dashboard/start-scanner.js"></script>
     <script src="/js/page-specific/dashboard/teacher-dashboard-tabs.js"></script>
+    <script src="/js/global/detectOrientation.js"></script>
 </body>
 
 </html>
