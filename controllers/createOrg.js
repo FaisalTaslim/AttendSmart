@@ -22,7 +22,6 @@ exports.createOrg = async (req, res) => {
 
         if (existingOrg) {
             console.log(`⚠️ Duplicate org registration attempt: ${req.body.orgName} - ${req.body.branch}`);
-            return res.send(`<h2>❌ Error: Organization with name "${req.body.orgName}" and branch "${req.body.branch}" already exists!</h2>`);
         }
 
         const salt = await bcrypt.genSalt(10);

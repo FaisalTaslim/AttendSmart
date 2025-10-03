@@ -51,6 +51,7 @@ const auth = async (req, res) => {
             orgId = user.org;
 
             console.log('✅ Logged in School Student!');
+            return res.redirect('/create-student-summary');
         }
 
         else if (role === 'CollegeStudent') {
@@ -69,6 +70,7 @@ const auth = async (req, res) => {
             orgId = user.org;
 
             console.log('✅ Logged in College Student!');
+            return res.redirect('/create-student-summary');
         }
 
         else if (role === 'Employee') {

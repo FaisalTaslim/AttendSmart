@@ -1,0 +1,11 @@
+- Implement Leave days for students.
+
+This is the procedure of implementation:
+So the process goes like
+- A user sends a leave request.
+- A teacher accepts it.
+- The backend stores the date range, and status of the leave.
+- When the teacher takes attendance for his/her subject, other students marks as usual but...
+- for the student who's on leave on that day, a teacher gets an option like "Mark for Leave Students" with the discipline options.
+- The teacher selects that options, fills the subject Name, and the class he/she is taking attendance for and submits.
+- The system scans for the student in the same class, and same subject, and increases their leaveDays to +1

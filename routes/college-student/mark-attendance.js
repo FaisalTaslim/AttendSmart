@@ -42,15 +42,17 @@ router.post('/', async (req, res) => {
             const monthKey = moment().format("YYYY-MM");
             const subjectRegex = new RegExp(`^${subject}$`, "i");
 
-            await MonthlyStudentSummary.findOneAndUpdate(
+            const updatedMonthly = await MonthlyStudentSummary.findOneAndUpdate(
                 { org: getOrg, student: req.session.user.uniqueId, month: monthKey, subjectName: subjectRegex },
                 { $inc: { attendedLectures: 1 } }
             );
+            console.log("Updated monthly record:", updatedMonthly);
 
-            await FinalStudentSummary.findOneAndUpdate(
+            const updatedFinal = await FinalStudentSummary.findOneAndUpdate(
                 { org: getOrg, student: req.session.user.uniqueId, subjectName: subjectRegex },
                 { $inc: { attendedLectures: 1 } }
             );
+            console.log("Updated final record:", updatedFinal);
 
             const logEntry = {
                 studentId: req.session.user.uniqueId,

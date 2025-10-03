@@ -4,6 +4,7 @@ console.log("🔍 Loaded URI:", process.env.MONGODB_URI);
 const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
+const session = require('express-session');
 mongoose.connect(process.env.MONGODB_URI);
 const app = express();
 const livereload = require("livereload");
@@ -30,7 +31,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.set('trust proxy', true);
 
-const session = require('express-session');
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -73,6 +73,7 @@ const updateEmployee = require('./routes/corporate/update-employee')
 const adminQrHandler = require('./routes/admin/qr-handler');
 const markEmployee = require('./routes/corporate/mark-employee');
 const markStudent = require('./routes/college-student/mark-attendance');
+const createStudentSummary = require('./routes/create-summaries');
 
 app.use('/', mainRoutes);
 app.use('/register', registerRoutes);
@@ -97,6 +98,7 @@ app.use('/update-employee', updateEmployee);
 app.use('/admin-qr-handler', adminQrHandler);
 app.use('/mark-employee', markEmployee);
 app.use('/mark-attendance-students', markStudent);
+app.use('/create-student-summary', createStudentSummary);
 
 const PORT = process.env.PORT || 3000;
 const os = require('os');

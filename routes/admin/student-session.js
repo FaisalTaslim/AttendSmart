@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
             sessionInstigator = getOrg.admin[0]?.adminName || "Unknown";
         }
         else {
-            sessionInstigator = (await Employee.findOne({uniqueId: user})).userName;
+            sessionInstigator = (await Employee.findOne({ uniqueId: user })).userName;
         }
 
         // Parse departments string into array
@@ -73,9 +73,10 @@ router.post('/', async (req, res) => {
                 { $set: { "studentSessionLog.$.expired": true } }
             );
             console.log(`⏱️ Code ${logEntry.studentCode} expired.`);
-        }, 30000);
+        }, 600000);
 
-        if(req.session.user.role == "Employee")
+
+        if (req.session.user.role == "Employee")
             res.redirect("/dashboard/teachingStaff");
         else
             res.redirect("/dashboard/admin");

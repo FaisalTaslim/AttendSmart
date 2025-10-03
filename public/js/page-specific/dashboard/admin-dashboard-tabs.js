@@ -17,9 +17,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (el) el.style.display = "flex";
     }
 
-    const sidenav = document.querySelector(".dashboard-sidenav");
-    if (sidenav) {
-        sidenav.addEventListener("click", (e) => {
+    const menus = document.querySelectorAll(".dashboard-sidenav, .slide-menu");
+
+    menus.forEach(menu => {
+        menu.addEventListener("click", (e) => {
             const clicked = e.target;
 
             for (const key in map_tabs) {
@@ -34,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
         });
-    }
+    });
 
     const x_mark = document.querySelector(".overlay-head > .fa-xmark");
     if (x_mark) {

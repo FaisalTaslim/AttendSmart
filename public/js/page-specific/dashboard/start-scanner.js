@@ -35,6 +35,11 @@ domReady(function () {
                 alert("✅ successful Scan: " + JSON.stringify(data));
             })
             .catch(err => alert("⚠️ Error sending to backend: " + err));
+
+        setTimeout(() => {
+            htmlscanner.clear();
+            htmlscanner.render(onScanSuccess);
+        }, 2000);
     }
 
     htmlscanner.render(onScanSuccess);

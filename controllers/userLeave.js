@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-const router = express.Router();
 const userLeave = require('../models/userLeave');
 const Employee = require('../models/Employee');
 

@@ -624,7 +624,7 @@
                                         <%= req.status %>
                                     </p>
 
-                                    <% if (req.status===' pending' ) { %>
+                                    <% if (req.status === 'pending' ) { %>
                                             <form action="/leave/<%= req.uniqueId %>/accept" method="POST"
                                                 style="display:inline;">
                                                 <button type="submit">Accept</button>
