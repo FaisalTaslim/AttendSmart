@@ -7,12 +7,16 @@ exports.monthlyStudentSummary = async (req, res) => {
     try {
         const role = req.session.user.role;
         const userId = req.session.user.uniqueId;
-
         let student;
-        if (role === "CollegeStudent")
+        let studentClass; // ✅ renamed
+
+        if (role === "CollegeStudent") {
             student = await CollegeStudent.findOne({ uniqueId: userId });
-        else
+            studentClass = student.dept;
+        } else {
             student = await SchoolStudent.findOne({ uniqueId: userId });
+            studentClass = student.standard;
+        }
 
         if (!student) {
             return res.status(404).json({ message: "Student not found" });
@@ -34,7 +38,7 @@ exports.monthlyStudentSummary = async (req, res) => {
                     org: student.org,
                     student: student.uniqueId,
                     studentName: student.userName,
-                    std_dept: student.dept,
+                    std_dept: studentClass,
                     subjectName: subject,
                     month: monthKey,
                     totalLectures: 0,
@@ -49,7 +53,7 @@ exports.monthlyStudentSummary = async (req, res) => {
             }
         }
 
-        res.redirect('/dashboard');
+        res.redirect("/dashboard");
     } catch (err) {
         console.error("Error in createMonthlySummary:", err);
         return res.status(500).json({ message: "Internal server error" });
