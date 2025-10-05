@@ -54,12 +54,46 @@
                     <p class="sidemenu-heading"><strong>AttendSmart</strong></p>
                     <p class="nav-links-property"><i class="fa-solid fa-xmark" id="close-toggle"></i></p>
                 </div>
-                <div class="slide-menu-links">
-                    <a href="/dashboard" class="nav-links-property">Dashboard</a>
-                    <a href="/support" class="nav-links-property">Support</a>
-                    <a href="/log" class="nav-links-property">Logs</a>
-                    <a href="/register" class="nav-links-property" id="register">Register</a>
-                    <a href="/login" class="nav-links-property">Login</a>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-route"></i> | Other pages</h2>
+                    <div class="dash-head-nav">
+                        <a href="/dashboard" class="nav-links-property">Dashboard</a>
+                        <a href="/support" class="nav-links-property">Support</a>
+                        <a href="/log" class="nav-links-property">Logs</a>
+                        <a href="/register" class="nav-links-property" id="register">Register</a>
+                        <a href="/login" class="nav-links-property">Login</a>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-gear"></i> | General Settings</h2>
+                    <div class="dash-head-nav">
+                        <p class="edit-info-btn">Account info & Edit</p>
+                        <p>Download Reports</p>
+                        <p>Toggle Themes</p>
+                        <p>Change Password</p>
+                        <p>Enable Notifications</p>
+                        <p>Delete Your Account</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-gear"></i> | System</h2>
+                    <div class="dash-head-nav">
+                        <p>Inbox</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-square-check"></i> | Attendance</h2>
+                    <div class="dash-head-nav">
+                        <p class="mark-att-btn">Mark Attendance</p>
+                        <p>Attendance Overview</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-envelope"></i> | Communication</h2>
+                    <div class="dash-head-nav">
+                        <p class="notice-btn">View Notice</p>
+                        <p class="leave-btn">Request a Leave</p>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -81,14 +115,14 @@
                 <div class="dash-head">
                     <h2><i class="fa-solid fa-gear"></i> | System</h2>
                     <div class="dash-head-nav">
-                        <p class="qr-btn">Inbox</p>
+                        <p>Inbox</p>
                     </div>
                 </div>
                 <div class="dash-head">
                     <h2><i class="fa-solid fa-square-check"></i> | Attendance</h2>
                     <div class="dash-head-nav">
-                        <p class="qr-btn">Mark Attendance</p>
-                        <p class="session-btn">Attendance Overview</p>
+                        <p class="mark-att-btn">Mark Attendance</p>
+                        <p>Attendance Overview</p>
                     </div>
                 </div>
                 <div class="dash-head">
@@ -237,6 +271,10 @@
                 </div>
                 <div class="attendance-container">
                     <div class="overlay">
+                        <div class="overlay-head">
+                            <i class="fa-solid fa-xmark"></i>
+                            <h2>Session-based Attendance Marking</h2>
+                        </div>
                         <form class="attendance-form" method="POST" action="/mark-attendance-students">
                             <fieldset>
                                 <legend>Attendance Marking</legend>
@@ -301,6 +339,7 @@
     </footer>
     <script src="/js/global/sideNav.js"></script>
     <script src="/js/global/update-footerLayout-for-tablets.js"></script>
+    <script src="/js/page-specific/dashboard/student-dashboard-tabs.js"></script>
 </body>
 
 </html>

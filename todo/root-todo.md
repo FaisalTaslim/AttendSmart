@@ -7,6 +7,7 @@
     * There's no border around "Home" tab in header in any of the pages.
     * color change of footer links on hover.
     * Make an error page for everything to be displayed there.
+    * Decide on what buttons will be on header. Fix on what should be displayed when logged-in, and logged-out.
 
 * Themes Changes:
 
