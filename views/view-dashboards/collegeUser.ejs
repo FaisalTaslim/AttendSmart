@@ -206,7 +206,7 @@
                     <div class="request-leave">
                         <div class="request-leave-header">
                             <h2>📢| Request Leave</h2>
-                            <button class="btn">View Leave Status</button>
+                            <button class="status-btn">View Leave Status</button>
                         </div>
                         <form id="leaveForm" method="POST" action="/request-leave-clgstudent">
                             <fieldset>
@@ -244,6 +244,7 @@
                     <div class="display-your-leave">
                         <div class="display-leave-header">
                             <h2>📝| Your Leave Requests</h2>
+                            <button class="leave-go-back">Go back</button>
                         </div>
                         <div id="leave-request-list" class="leave-request-list">
                             <% if (!leaveRequests || leaveRequests.length===0) { %>
@@ -340,6 +341,7 @@
     <script src="/js/global/sideNav.js"></script>
     <script src="/js/global/update-footerLayout-for-tablets.js"></script>
     <script src="/js/page-specific/dashboard/student-dashboard-tabs.js"></script>
+    <script src="/js/page-specific/dashboard/clg-display-leave-status.js"></script>
 </body>
 
 </html>
