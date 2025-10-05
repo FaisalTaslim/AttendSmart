@@ -68,24 +68,6 @@ main {
     z-index: 9999;
     text-align: center;
 }
-
-
-.dashboard-contents {
-    width: 75%;
-    height: 100%;
-    overflow-y: auto;
-    display: flex;
-}
-button {
-    background: var(--accent);
-    color: white;
-    padding: 0.8rem 1.5rem;
-    border: none;
-    border-radius: 0.6rem;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
 .edit-info {
     width: 98%;
     height: fit-content;
