@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
     <link rel="stylesheet" href="/css/global/global-layout.css">
-    <link rel="stylesheet" href="/css/global/forms.css">
     <link rel="stylesheet" href="/css/global/dB-global.css">
     <link rel="stylesheet" href="/css/page-specific/dashboard/corporate.css">
+    <link rel="stylesheet" href="/css/global/forms.css">
     <link rel="stylesheet" href="/css/global/dark-theme.css">
     <link rel="stylesheet" href="/css/global/scrollbar.css">
 
@@ -58,124 +58,164 @@
                     <p class="sidemenu-heading"><strong>AttendSmart</strong></p>
                     <p class="nav-links-property"><i class="fa-solid fa-xmark" id="close-toggle"></i></p>
                 </div>
-                <div class="slide-menu-links">
-                    <a href="/dashboard" class="nav-links-property">Dashboard</a>
-                    <a href="/support" class="nav-links-property">Support</a>
-                    <a href="/log" class="nav-links-property">Logs</a>
-                    <a href="/register" class="nav-links-property" id="register">Register</a>
-                    <a href="/login" class="nav-links-property">Login</a>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-route"></i> | Other pages</h2>
+                    <div class="dash-head-nav">
+                        <a href="/dashboard" class="nav-links-property">Dashboard</a>
+                        <a href="/support" class="nav-links-property">Support</a>
+                        <a href="/log" class="nav-links-property">Logs</a>
+                        <a href="/register" class="nav-links-property" id="register">Register</a>
+                        <a href="/login" class="nav-links-property">Login</a>
+                    </div>
                 </div>
-                <div class="slide-menu-links">
-                    <h3>Dashboard Navigation</h3>
-                    <button class="btn" id="attendance-overview">Attendance Overview</button>
-                    <button class="btn" id="history">Attendance History</button>
-                    <button class="btn" id="edit">Edit info</button>
-                    <button class="btn" id="notice">Notices</button>
-                    <button class="btn" id="leave">Request a Leave</button>
-                    <button class="btn" id="mark">Mark Attendance</button>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-gear"></i> | General Settings</h2>
+                    <div class="dash-head-nav">
+                        <p class="scedit-info-btn">Account info & Edit</p>
+                        <p>Download Reports</p>
+                        <p>Toggle Themes</p>
+                        <p>Change Password</p>
+                        <p>Enable Notifications</p>
+                        <p>Delete Your Account</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-gear"></i> | System</h2>
+                    <div class="dash-head-nav">
+                        <p>Inbox</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-square-check"></i> | Attendance</h2>
+                    <div class="dash-head-nav">
+                        <p class="mark-att-btn">Mark Attendance</p>
+                        <p>Attendance Overview</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-envelope"></i> | Communication</h2>
+                    <div class="dash-head-nav">
+                        <p class="scnotice-btn">View Notice</p>
+                        <p class="scleave-btn">Request a Leave</p>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
     <main>
-        <section class="hero-bg">
-            <div class="bg-content">
-                <div id="userDashboard-heading">
-                    <h1>Welcome, <%= userName %>!</h1>
-                    <p>Mark Attendance!</p>
-                    <p>Apply for leave, and check notices</p>
-                    <p>Get your Reports, History and Summaries</p>
-                </div>
-                <div class="display-user-details">
-                    <div class="user-basic-details">
-                        <h1>Employee Details</h1>
-                        <p id="userId">
-                            <strong>uniqueID: </strong>
-                            &nbsp;<%= uniqueId %>
-                        </p>
-                        <p id="employeeId">
-                            <strong>EmployeeId: </strong>
-                            &nbsp;<%= employeeId %>
-                        </p>
-                        <p id="userName">
-                            <strong>userName: </strong>
-                            &nbsp;<%= userName %>
-                        </p>
-                        <p id="designation">
-                            <strong>Role: </strong>
-                            &nbsp;<%= designation %>
-                        </p>
-                        <p id="contact">
-                            <strong>Contact: </strong>
-                            &nbsp;<%= contact %>
-                        </p>
-                        <p id="email">
-                            <strong>Email: </strong>
-                            &nbsp;<%= email %>
-                        </p>
+        <div class="main-section">
+            <div class="dashboard-sidenav">
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-gear"></i> | General Settings</h2>
+                    <div class="dash-head-nav">
+                        <p class="scedit-info-btn">Account info & Edit</p>
+                        <p>Download Reports</p>
+                        <p>Toggle Themes</p>
+                        <p>Change Password</p>
+                        <p>Enable Notifications</p>
+                        <p>Delete Your Account</p>
                     </div>
-                    <div class="user-pfp">
-                        <div class="profile-image"></div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-gear"></i> | System</h2>
+                    <div class="dash-head-nav">
+                        <p>Inbox</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-square-check"></i> | Attendance</h2>
+                    <div class="dash-head-nav">
+                        <p class="mark-att-btn">Mark Attendance</p>
+                        <p>Attendance Overview</p>
+                    </div>
+                </div>
+                <div class="dash-head">
+                    <h2><i class="fa-solid fa-envelope"></i> | Communication</h2>
+                    <div class="dash-head-nav">
+                        <p class="scnotice-btn">View Notice</p>
+                        <p class="scleave-btn">Request a Leave</p>
                     </div>
                 </div>
             </div>
-            <div class="other-contents">
-                <div class="dashboard-buttons">
-                    <h2>Navigate Your Dashboard</h2>
-                    <button class="btn" id="attendance-overview">Attendance Overview</button>
-                    <button class="btn" id="history">Attendance History</button>
-                    <button class="btn" id="edit">Edit info</button>
-                    <button class="btn" id="notice">Notices</button>
-                    <button class="btn" id="leave">Request a Leave</button>
-                    <button class="btn" id="mark">Mark Attendance</button>
-                </div>
-                <div class="dashboard-contents">
-                    <div class="edit-info">
-                        <h1 style="margin-bottom: 1rem; text-align: center;">Edit Account Details</h1>
-                        <form method="POST" action="/update-employee">
-                            <fieldset>
-                                <legend>Personal Information</legend>
+            <div class="dashboard-contents">
+                <div class="edit-info">
+                    <h1>Edit Account Details</h1>
+                    <form method="POST" action="/update-employee" class="employee-update-form">
+                        <fieldset>
+                            <legend>Personal Information</legend>
+                            <div class="form-group">
                                 <label for="uniqueId">Unique ID</label>
                                 <input type="text" id="uniqueId" name="uniqueId" value="<%= uniqueId %>" readonly>
+                            </div>
 
+                            <div class="form-group">
                                 <label for="userName">Full Name</label>
                                 <input type="text" id="userName" name="userName" value="<%= userName %>">
+                            </div>
 
+                            <div class="form-group">
                                 <label for="employeeId">Employee Id</label>
                                 <input type="text" id="employeeId" name="employeeId" value="<%= employeeId %>">
+                            </div>
 
+                            <div class="form-group">
                                 <label for="dept">Department</label>
                                 <input type="text" id="dept" name="dept" value="<%= dept %>">
+                            </div>
 
+                            <div class="form-group">
                                 <label for="designation">Designation</label>
                                 <input type="text" id="designation" name="designation" value="<%= designation %>">
-                            </fieldset>
+                            </div>
+                        </fieldset>
 
-                            <fieldset>
-                                <legend>Contact Information</legend>
+                        <fieldset>
+                            <legend>Contact Information</legend>
+                            <div class="form-group">
                                 <label for="contact">Contact Number</label>
                                 <input type="tel" id="contact" name="contact" value="<%= contact %>">
+                            </div>
 
+                            <div class="form-group">
                                 <label for="email">Email Address</label>
                                 <input type="email" id="email" name="email" value="<%= email %>">
-                            </fieldset>
-
-                            <div style="text-align:center;">
-                                <button type="submit">Save Changes</button>
                             </div>
-                        </form>
-                    </div>
-                    <div class="request-leave-container">
-                        <div class="request-leave-header">
-                            <h2>📢 Request Leave</h2>
-                            <button class="btn">View Leave Status</button>
+                        </fieldset>
+
+                        <div style="text-align:center;">
+                            <button type="submit" class="submit-btn">Save Changes</button>
                         </div>
-
-                        <div class="request-leave">
-                            <form id="leaveForm" method="POST" action="/request-leave-employees">
-                                <fieldset>
-                                    <legend>Leave Details</legend>
-
+                    </form>
+                </div>
+                <div class="notices">
+                    <h2><i class="fa-solid fa-bell"></i> | Notices</h2>
+                    <div id="notice-list" class="notice-list">
+                        <% if (!notices || notices.length===0) { %>
+                            <p>No notices available.</p>
+                            <% } else { %>
+                                <% notices.forEach(notice=> { %>
+                                    <div class="notice-card">
+                                        <div class="notice-date">
+                                            <%= notice.dateTime %>
+                                        </div>
+                                        <p class="notice-text">
+                                            <%= notice.noticeText %>
+                                        </p>
+                                    </div>
+                                    <% }) %>
+                                        <% } %>
+                    </div>
+                </div>
+                <div class="request-leave-container">
+                    <div class="request-leave">
+                        <div class="request-leave-header">
+                            <h2>📢| Request Leave</h2>
+                            <button class="status-btn">View Leave Status</button>
+                        </div>
+                        <form id="leaveForm" method="POST" action="/request-leave-employees">
+                            <fieldset>
+                                <legend>Leave Details</legend>
+                                <div class="form-group">
                                     <label for="userId">Enter your uniqueId</label>
                                     <input type="text" id="userId" name="uniqueId" required>
 
@@ -197,68 +237,51 @@
                                     <label for="reason">Reason</label>
                                     <textarea id="reason" name="reason" rows="4" placeholder="Enter reason for leave..."
                                         required></textarea>
-                                </fieldset>
-
-                                <div style="text-align:center;">
-                                    <button type="submit">Submit Request</button>
                                 </div>
-                            </form>
-                        </div>
+                            </fieldset>
 
-                        <div class="leave-requests-section">
-                            <h2>📝 Your Leave Requests</h2>
-                            <div id="leave-request-list" class="leave-request-list">
-
-                                <% if (!leaveRequests || leaveRequests.length===0) { %>
-                                    <p>No leave requests submitted.</p>
-                                    <% } else { %>
-                                        <% leaveRequests.forEach(leave=> { %>
-                                            <div class="leave-card">
-                                                <div class="leave-dates">
-                                                    <%= leave.startDate %> to <%= leave.endDate %> - <%= leave.leaveType
-                                                                %>
-                                                </div>
-                                                <div class="leave-reason">
-                                                    <strong>Reason:</strong>
-                                                    <%= leave.reason %> <br>
-                                                        <strong>Status:</strong>
-                                                        <%= leave.status %>
-                                                </div>
-                                            </div>
-                                            <% }) %>
-                                                <% } %>
-
+                            <div style="text-align:center;">
+                                <button type="submit">Submit Request</button>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                    <div class="notices">
-                        <h2>📢 Notices</h2>
-                        <div id="notice-list" class="notice-list">
-                            <% if (!notices || notices.length===0) { %>
-                                <p>No notices available.</p>
+                    <div class="display-your-leave">
+                        <div class="display-leave-header">
+                            <h2>📝| Your Leave Requests</h2>
+                            <button class="leave-go-back">Go back</button>
+                        </div>
+                        <div id="leave-request-list" class="leave-request-list">
+                            <% if (!leaveRequests || leaveRequests.length===0) { %>
+                                <p>No leave requests submitted.</p>
                                 <% } else { %>
-                                    <% notices.forEach(notice=> { %>
-                                        <div class="notice-card">
-                                            <div class="notice-date">
-                                                <%= new Date(notice.dateTime).toLocaleString() %>
-                                            </div>
-                                            <p class="notice-text">
-                                                <%= notice.noticeText %>
+                                    <% leaveRequests.forEach(leave=> { %>
+                                        <div class="leave-card">
+                                            <p class="leave-dates">
+                                                <%= leave.startDate %> to <%= leave.endDate %>
+                                            </p>
+                                            <p class="leave-type"><strong>Leave Type: </strong>
+                                                <%= leave.leaveType %>
+                                            </p>
+                                            <p class="leave-reason">
+                                                <strong>Reason:</strong><br>
+                                                <%= leave.reason %> <br>
+                                                    <strong>Status:</strong>
+                                                    <%= leave.status %>
                                             </p>
                                         </div>
                                         <% }) %>
                                             <% } %>
                         </div>
                     </div>
-                    <div class="container">
-                        <h1>Scan QR Codes</h1>
-                        <div class="section">
-                            <div id="my-qr-reader"></div>
-                        </div>
+                </div>
+                <div class="container attendance-container">
+                    <h1>Mark Attendance</h1>
+                    <div class="section">
+                        <div id="my-qr-reader"></div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
     <footer>
         <div class="foot-content">
@@ -300,6 +323,7 @@
     <script src="/js/global/sideNav.js"></script>
     <script src="/js/global/update-footerLayout-for-tablets.js"></script>
     <script src="/js/page-specific/dashboard/start-scanner.js"></script>
+    <script src="/js/page-specific/dashboard/main-tabs-switching.js"></script>
 </body>
 
 </html>

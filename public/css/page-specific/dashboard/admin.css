@@ -42,6 +42,7 @@ main {
 .dash-head-nav > p {
     font-size: 1rem;
     padding: 0.5rem;
+    cursor: pointer;
 }
 .dash-head-nav > p:hover {cursor: pointer}
 .dash-head-nav > p:hover {
@@ -359,7 +360,7 @@ button {
     border-left: 1px solid var(--accent);
 }
 
-.edit-your-info {
+.edit-info {
     width: 98%;
     height: fit-content;
     padding: 1.5rem;
@@ -371,7 +372,7 @@ button {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     font-family: Arial, sans-serif;
 }
-.edit-your-info > h3 {
+.edit-info > h3 {
     color: var(--accent);
     font-size: 1.3rem;
     font-weight: bold;

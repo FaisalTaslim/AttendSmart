@@ -85,7 +85,7 @@
                     <div class="dash-head-nav">
                         <p class="qr-btn">Generate QR</p>
                         <p class="session-btn">Start Session</p>
-                        <p class="edit-att-btn">Edit Attendance</p>
+                        <p>Edit Attendance</p>
                         <p>View Attendance Report</p>
                     </div>
                 </div>
@@ -126,7 +126,7 @@
                     <div class="dash-head-nav">
                         <p class="qr-btn">Generate QR</p>
                         <p class="session-btn">Start Session</p>
-                        <p class="edit-att-btn">Edit Attendance</p>
+                        <p>Edit Attendance</p>
                         <p>View Attendance Report</p>
                     </div>
                 </div>
@@ -146,7 +146,7 @@
                 </div>
             </div>
             <div class="dashboard-contents">
-                <div id="generate-employee-qr">
+                <div id="generate-employee-qr" class="generate-employee-qr">
                     <form action="/admin-qr-handler" method="POST" class="qr-form">
                         <h2>Scan the QR code below to mark attendance</h2>
                         <img src="<%= qrImage %>" alt="Employee QR Code" class="qr">
@@ -501,7 +501,7 @@
                             </div>
                             <% } %>
                     </div>
-                    <div class="edit-your-info">
+                    <div class="edit-your-info edit-info">
                         <h3>Edit Your Information</h3>
                         <form id="editOrgForm" method="POST" action="/update-org">
                             <fieldset>
@@ -624,7 +624,7 @@
                                         <%= req.status %>
                                     </p>
 
-                                    <% if (req.status === 'pending' ) { %>
+                                    <% if (req.status === ' pending' ) { %>
                                             <form action="/leave/<%= req.uniqueId %>/accept" method="POST"
                                                 style="display:inline;">
                                                 <button type="submit">Accept</button>
@@ -643,7 +643,6 @@
                                         <p>No leave requests found.</p>
                                         <% } %>
                             </div>
-
                     </div>
                 </div>
             </div>
@@ -685,7 +684,7 @@
     </footer>
     <script src="/js/global/sideNav.js"></script>
     <script src="/js/global/update-footerLayout-for-tablets.js"></script>
-    <script src="/js/page-specific/dashboard/admin-dashboard-tabs.js"></script>
+    <script src="/js/page-specific/dashboard/tabs-switching.js"></script>
     <script src="/js/global/detectOrientation.js"></script>
 
 </html>

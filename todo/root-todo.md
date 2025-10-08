@@ -8,6 +8,7 @@
     * color change of footer links on hover.
     * Make an error page for everything to be displayed there.
     * Decide on what buttons will be on header. Fix on what should be displayed when logged-in, and logged-out.
+    * Make sure the sidenav is perfect in all the pages.
 
 * Themes Changes:
 
@@ -32,4 +33,6 @@
 
     * Try to implement this thing.
 
-* Make sure the sidenav is perfect in all the pages.
+* Dashboards:
+
+    * Make sure the selected tabs in dashboards, stay the same while refreshed.

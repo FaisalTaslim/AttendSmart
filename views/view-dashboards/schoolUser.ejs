@@ -96,8 +96,8 @@
                 <div class="dash-head">
                     <h2><i class="fa-solid fa-envelope"></i> | Communication</h2>
                     <div class="dash-head-nav">
-                        <p class="notice-btn">View Notice</p>
-                        <p class="leave-btn">Request a Leave</p>
+                        <p class="notice-btn-sc_clg">View Notice</p>
+                        <p class="leave-btn-sc_clg">Request a Leave</p>
                     </div>
                 </div>
             </div>
@@ -109,7 +109,7 @@
                 <div class="dash-head">
                     <h2><i class="fa-solid fa-gear"></i> | General Settings</h2>
                     <div class="dash-head-nav">
-                        <p class="edit-info-btn">Account info & Edit</p>
+                        <p class="scedit-info-btn">Account info & Edit</p>
                         <p>Download Reports</p>
                         <p>Toggle Themes</p>
                         <p>Change Password</p>
@@ -133,8 +133,8 @@
                 <div class="dash-head">
                     <h2><i class="fa-solid fa-envelope"></i> | Communication</h2>
                     <div class="dash-head-nav">
-                        <p class="notice-btn">View Notice</p>
-                        <p class="leave-btn">Request a Leave</p>
+                        <p class="scnotice-btn">View Notice</p>
+                        <p class="scleave-btn">Request a Leave</p>
                     </div>
                 </div>
             </div>
@@ -171,11 +171,11 @@
                             <legend>Subjects</legend>
                             <div class="form-group outer-group">
                                 <% for (let i=0; i < 12; i++) { %>
-                                    <label>Subject <%= i+1 %>:
-                                            <input type="text" name="subject<%= i+1 %>"
-                                                value="<%= subjects[i] ? subjects[i] : '' %>"
-                                                placeholder="Enter subject">
-                                    </label>
+                                    <div class="form-group">
+                                        <label>Subject <%= i+1 %>:</label>
+                                        <input type="text" name="subject<%= i+1 %>"
+                                            value="<%= subjects[i] ? subjects[i] : '' %>" placeholder="Enter subject">
+                                    </div>
                                     <% } %>
                             </div>
                         </fieldset>
@@ -337,7 +337,7 @@
     </footer>
     <script src="/js/global/sideNav.js"></script>
     <script src="/js/global/update-footerLayout-for-tablets.js"></script>
-    <script src="/js/page-specific/dashboard/student-dashboard-tabs.js"></script>
+    <script src="/js/page-specific/dashboard/main-tabs-switching.js"></script>
     <script src="/js/page-specific/dashboard/clg-display-leave-status.js"></script>
 </body>
 
