@@ -140,16 +140,16 @@ main {
     padding: 1rem;
     border-radius: 1rem;
 }
-.leave-requests-section {
+.display-your-leave {
     background-color: var(--bg-primary);
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 1rem;
     height: 100%;
     padding: 1rem;
     border-radius: 0.8rem;
 }
-.leave-requests-section h2 {
+.display-your-leave h2 {
     font-size: 1.6rem;
     margin-bottom: 1rem;
     color: var(--accent);

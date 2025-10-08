@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teaching Staff</title>
     <link rel="stylesheet" href="/css/global/global-layout.css">
+    <link rel="stylesheet" href="/css/global/global-dbLayout.css">
     <link rel="stylesheet" href="/css/global/forms.css">
-    <link rel="stylesheet" href="/css/page-specific/dashboard/employee.css">
+    <link rel="stylesheet" href="/css/page-specific/dashboard/teacher.css">
     <link rel="stylesheet" href="/css/global/dark-theme.css">
     <link rel="stylesheet" href="/css/global/scrollbar.css">
 
@@ -122,7 +123,7 @@
                 <div class="dash-head">
                     <h2><i class="fa-solid fa-square-check"></i> | Attendance Control</h2>
                     <div class="dash-head-nav">
-                        <p class="mark-attendance-btn">Scan QR</p>
+                        <p class="mark-att-btn">Scan QR</p>
                         <p class="session-btn">Start Session</p>
                         <p>Edit Attendance</p>
                         <p>Your Attendance Overview</p>
@@ -254,7 +255,7 @@
                             <button type="submit" class="submit-btn">Submit Request</button>
                         </div>
                     </form>
-                    <div class="leave-requests-section">
+                    <div class="display-your-leave">
                         <h2><i class="fa-solid fa-bell"></i> | Your Leave Requests</h2>
                         <div id="leave-request-list" class="leave-request-list">
                             <% if (!leaveRequests || leaveRequests.length===0) { %>
