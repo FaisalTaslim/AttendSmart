@@ -293,6 +293,8 @@ video {
     display: none;
 }
 
+#orientation-overlay {display: none;}
+
 @media screen and (max-width: 550px) and (max-height: 750px) {
     .hidden {display: none}
     .dashboard-contents {

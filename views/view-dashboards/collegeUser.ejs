@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
     <link rel="stylesheet" href="/css/global/global-layout.css">
-    <link rel="stylesheet" href="/css/page-specific/dashboard/college.css">
+    <link rel="stylesheet" href="/css/page-specific/dashboard/student.css">
     <link rel="stylesheet" href="/css/global/forms.css">
     <link rel="stylesheet" href="/css/global/dark-theme.css">
     <link rel="stylesheet" href="/css/global/scrollbar.css">
@@ -23,6 +23,9 @@
 </head>
 
 <body>
+    <div id="orientation-overlay" style="display:none;">
+        <p>Rotate your screen and refresh to use the dashboard</p>
+    </div>
     <header>
         <nav id="navbar" class="">
             <div class="nav-group1">
@@ -168,11 +171,11 @@
                             <legend>Subjects</legend>
                             <div class="form-group outer-group">
                                 <% for (let i=0; i < 12; i++) { %>
-                                    <label>Subject <%= i+1 %>:
-                                            <input type="text" name="subject<%= i+1 %>"
-                                                value="<%= subjects[i] ? subjects[i] : '' %>"
-                                                placeholder="Enter subject">
-                                    </label>
+                                    <div class="form-group">
+                                        <label>Subject <%= i+1 %>:</label>
+                                        <input type="text" name="subject<%= i+1 %>"
+                                            value="<%= subjects[i] ? subjects[i] : '' %>" placeholder="Enter subject">
+                                    </div>
                                     <% } %>
                             </div>
                         </fieldset>
@@ -342,6 +345,7 @@
     <script src="/js/global/update-footerLayout-for-tablets.js"></script>
     <script src="/js/page-specific/dashboard/main-tabs-switching.js"></script>
     <script src="/js/page-specific/dashboard/clg-display-leave-status.js"></script>
+    <script src="/js/global/detectOrientation.js"></script>
 </body>
 
 </html>

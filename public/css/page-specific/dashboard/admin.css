@@ -469,6 +469,8 @@ button {
     gap: 1rem;
 }
 
+#orientation-overlay {display: none;}
+
 @media screen and (max-width: 480px) {
     .dashboard-sidenav {display: none}
     .dashboard-contents {width: 100%;}

@@ -8,7 +8,7 @@ function checkDevice() {
     const isLandscapePhone = height < 480;
 
     if (isBigTablet || isLandscapePhone) {
-        overlay.style.display = "flex";
+        overlay.style.display = "flex !important";
     } else {
         overlay.style.display = "none";
     }
