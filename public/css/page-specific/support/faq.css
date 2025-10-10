@@ -89,6 +89,7 @@ main {
     border-radius: 12px;
     max-width: 800px;
     box-shadow: 0 0 10px var(--shadow);
+    overflow-y: auto;
 }
 .support-section h2 {
     font-size: clamp(1.8rem, 4vw, 2.5rem);
