@@ -7,7 +7,6 @@ const SchoolStudent = require('../models/SchoolStudent');
 const logs = require('../models/logs');
 const Notice = require('../models/notice');
 const leaveRequests = require('../models/userLeave');
-const qr = require('../controllers/employeeQr.js');
 const checkRole = require('../middleware/roleMiddleware');
 const generateEmployeeQR = require('../utils/generateEmployeeQr.js');
 
