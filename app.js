@@ -74,6 +74,7 @@ const adminQrHandler = require('./routes/admin/qr-handler');
 const markEmployee = require('./routes/corporate/mark-employee');
 const markStudent = require('./routes/college-student/mark-attendance');
 const createStudentSummary = require('./routes/create-summaries');
+const cleanLogs = require('./routes/clear-logs');
 
 app.use('/', mainRoutes);
 app.use('/register', registerRoutes);
@@ -99,6 +100,7 @@ app.use('/admin-qr-handler', adminQrHandler);
 app.use('/mark-employee', markEmployee);
 app.use('/mark-attendance-students', markStudent);
 app.use('/create-student-summary', createStudentSummary);
+app.use('/cleanlogs', cleanLogs);
 
 const PORT = process.env.PORT || 3000;
 const os = require('os');
