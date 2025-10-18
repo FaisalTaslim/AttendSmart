@@ -20,6 +20,11 @@ const employeeSchema = new Schema({
         enum: ['school_college', 'corporate'],
         required: true
     },
+    shift: {
+        type: String,
+        enum: ['day', 'night'],
+        required: true,
+    },
     designation: { type: String, required: true },
     contact: { type: String, required: true },
     email: {

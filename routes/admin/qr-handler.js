@@ -5,6 +5,7 @@ const { MonthlyEmployeeSummary } = require('../../models/monthlySummary');
 
 router.post('/', async (req, res) => {
     try {
+        
         console.log("Hitting the QR Handler route");
         await FinalEmployeeSummary.updateMany({}, { $inc: { totalDays: 1 } });
         await MonthlyEmployeeSummary.updateMany({}, { $inc: { totalDays: 1 } });

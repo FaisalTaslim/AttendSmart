@@ -22,17 +22,6 @@ router.get('/', checkRole(['Org']), async (req, res) => {
         const adminContact = admin[0]?.adminContact;
 
         const sessionInstigator = req.session.user.name;
-        const { employeeCode, qrImage } = await generateEmployeeQR(sessionInstigator);
-
-        await logs.findOneAndUpdate(
-            { org: uniqueId },
-            {
-                $push: {
-                    employeeSessionLogs: { employeeCode, sessionInstigator }
-                }
-            },
-            { upsert: true, new: true }
-        );
 
         const getLogs = await logs.findOne({ org: user });
         const notices = await Notice.find({ uniqueId: user });

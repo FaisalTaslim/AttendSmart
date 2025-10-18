@@ -56,6 +56,7 @@ const logSchema = new Schema({
                 required: true
             },
             sessionInstigator: {type: String, required: true},
+            entryType: {type: String, required: true},
             createdAt: {
                 type: String,
                 required: true,

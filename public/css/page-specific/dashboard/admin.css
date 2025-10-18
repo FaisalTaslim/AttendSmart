@@ -470,6 +470,7 @@ button {
 }
 
 #orientation-overlay {display: none;}
+.generate-employee-qr {overflow-y: auto}
 
 @media screen and (max-width: 480px) {
     .dashboard-sidenav {display: none}

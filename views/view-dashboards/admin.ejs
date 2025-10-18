@@ -148,11 +148,20 @@
             </div>
             <div class="dashboard-contents">
                 <div id="generate-employee-qr" class="generate-employee-qr">
+                    <h2>Scan the QR code below to mark attendance</h2>
                     <form action="/admin-qr-handler" method="POST" class="qr-form">
-                        <h2>Scan the QR code below to mark attendance</h2>
+                        <label for="attendanceType">Select Attendance Type:</label>
+                        <select id="attendanceType" name="attendanceType" required>
+                            <option value="" disabled selected>Select an option</option>
+                            <option value="check-in">Check-in</option>
+                            <option value="check-out">Check-out</option>
+                        </select>
+
                         <img src="<%= qrImage %>" alt="Employee QR Code" class="qr">
+
                         <button type="submit" class="btn">Submit QR</button>
                     </form>
+
                 </div>
                 <div class="send-notice-container">
                     <div class="notice-heading">
@@ -688,4 +697,5 @@
     <script src="/js/page-specific/dashboard/main-tabs-switching.js"></script>
     <script src="/js/page-specific/dashboard/sidenav-tabs-switching.js"></script>
     <script src="/js/global/detectOrientation.js"></script>
+
 </html>
