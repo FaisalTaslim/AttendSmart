@@ -1,4 +1,4 @@
-const map_tabs = {
+const map_tabs_sidenav = {
     "qr-btn": "generate-employee-qr",
     "session-btn": "student-attendance",
     "records-btn": "view-records",
@@ -15,16 +15,16 @@ const map_tabs = {
     "mark-att-btn": "attendance-container"
 };
 
-for (const key in map_tabs) {
+for (const key in map_tabs_sidenav) {
     const getKey = document.querySelector('.slide-menu .' + key);
-    const getValue = document.querySelector('.' + map_tabs[key]);
+    const getValue = document.querySelector('.' + map_tabs_sidenav[key]);
     const slideMenu = document.querySelector(".slide-menu");
     const logo = document.querySelector(".logo");
 
     if (!getKey || !getValue) continue;
 
     getKey.addEventListener('click', () => {
-        Object.values(map_tabs).forEach(className => {
+        Object.values(map_tabs_sidenav).forEach(className => {
             const section = document.querySelector('.' + className);
             if (section) {
                 section.style.display = 'none';
