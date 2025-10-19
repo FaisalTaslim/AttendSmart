@@ -148,20 +148,20 @@
             </div>
             <div class="dashboard-contents">
                 <div id="generate-employee-qr" class="generate-employee-qr">
-                    <h2>Scan the QR code below to mark attendance</h2>
-                    <form action="/admin-qr-handler" method="POST" class="qr-form">
-                        <label for="attendanceType">Select Attendance Type:</label>
+                    <form action="/employee-qr" method="POST" class="form-group">
+                        <label for="attendanceType">Select the following:</label>
                         <select id="attendanceType" name="attendanceType" required>
                             <option value="" disabled selected>Select an option</option>
                             <option value="check-in">Check-in</option>
                             <option value="check-out">Check-out</option>
                         </select>
-
-                        <img src="<%= qrImage %>" alt="Employee QR Code" class="qr">
-
-                        <button type="submit" class="btn">Submit QR</button>
+                        <select id="shift" name="shift" required>
+                            <option value="" disabled selected>Select a shift</option>
+                            <option value="day">day</option>
+                            <option value="night">night</option>
+                        </select>
+                        <button type="submit" class="btn">Generate Qr</button>
                     </form>
-
                 </div>
                 <div class="send-notice-container">
                     <div class="notice-heading">
@@ -634,7 +634,7 @@
                                         <%= req.status %>
                                     </p>
 
-                                    <% if (req.status === ' pending' ) { %>
+                                    <% if (req.status === 'pending' ) { %>
                                             <form action="/leave/<%= req.uniqueId %>/accept" method="POST"
                                                 style="display:inline;">
                                                 <button type="submit">Accept</button>

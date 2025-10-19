@@ -26,5 +26,5 @@ exports.cleanLogs = async (req, res) => {
     }
 
     await getLogs.save();
-    res.send("Logs cleaned successfully");
+    res.redirect('/dashboard/admin');
 };

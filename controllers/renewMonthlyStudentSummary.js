@@ -8,7 +8,7 @@ exports.monthlyStudentSummary = async (req, res) => {
         const role = req.session.user.role;
         const userId = req.session.user.uniqueId;
         let student;
-        let studentClass; // ✅ renamed
+        let studentClass;
 
         if (role === "CollegeStudent") {
             student = await CollegeStudent.findOne({ uniqueId: userId });

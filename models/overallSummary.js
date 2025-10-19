@@ -32,6 +32,7 @@ const overallSummaryEmployees = new Schema({
         type: String, 
         required: true
     },
+    shift: {type: String, required: true},
     totalDays: { 
         type: Number, 
         default: 0 

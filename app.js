@@ -96,10 +96,10 @@ app.use('/request-leave-employees', postLeaveRequestEmployee);
 app.use('/update-school-student', updateSchoolStudent);
 app.use('/request-leave-schlstudent', postLeaveRequestSchool);
 app.use('/update-employee', updateEmployee);
-app.use('/admin-qr-handler', adminQrHandler);
+app.use('/employee-qr', adminQrHandler);
 app.use('/mark-employee', markEmployee);
 app.use('/mark-attendance-students', markStudent);
-app.use('/create-student-summary', createStudentSummary);
+app.use('/create-summary', createStudentSummary);
 app.use('/cleanlogs', cleanLogs);
 
 const PORT = process.env.PORT || 3000;

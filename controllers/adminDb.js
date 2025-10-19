@@ -21,8 +21,6 @@ router.get('/', checkRole(['Org']), async (req, res) => {
         const adminEmail = admin[0]?.adminEmail;
         const adminContact = admin[0]?.adminContact;
 
-        const sessionInstigator = req.session.user.name;
-
         const getLogs = await logs.findOne({ org: user });
         const notices = await Notice.find({ uniqueId: user });
         const allLeaveRequests = await leaveRequests.find({ org: user });
@@ -43,8 +41,6 @@ router.get('/', checkRole(['Org']), async (req, res) => {
                 adminContact,
                 adminEmail,
                 orgType,
-                employeeCode,
-                qrImage,
                 students,
                 employees,
                 registerLogs,
@@ -70,8 +66,6 @@ router.get('/', checkRole(['Org']), async (req, res) => {
                 adminContact,
                 adminEmail,
                 orgType,
-                employeeCode,
-                qrImage,
                 students,
                 employees,
                 registerLogs,
@@ -96,8 +90,6 @@ router.get('/', checkRole(['Org']), async (req, res) => {
                 adminContact,
                 adminEmail,
                 orgType,
-                employeeCode,
-                qrImage,
                 employees,
                 registerLogs,
                 loginLogs,

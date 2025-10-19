@@ -9,6 +9,7 @@ const routes = {
     '/login': 'login.html',
     '/support': 'support.ejs',
     '/log': 'log.html',
+    '/qr-view': 'qr.ejs',
 };
 
 Object.entries(routes).forEach(([route, file]) => {
