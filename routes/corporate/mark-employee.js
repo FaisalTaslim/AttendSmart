@@ -10,43 +10,64 @@ router.post('/', async (req, res) => {
     try {
         console.log("Hitting the mark-employee route.");
 
-        const qrData = req.body;
+        const { employeeCode, sessionInstigator } = req.body;
         const employeeId = req.session.user.uniqueId;
-        const { employeeCode, sessionInstigator } = qrData;
         const monthKey = moment().format("YYYY-MM");
 
-        const getOrg = (await employee.findOne({ uniqueId: employeeId }))?.org;
-        const getEmployeeSessionLogs = (await logs.findOne({ org: getOrg }))?.employeeSessionLogs;
+        const emp = await employee.findOne({ uniqueId: employeeId });
+        if (!emp) return res.status(404).json({ error: "Employee not found." });
+
+        const { org: getOrg, shift: employeeShift, dept } = emp;
+        const logDoc = await logs.findOne({ org: getOrg });
+        if (!logDoc) return res.status(404).json({ error: "Logs not found for this org." });
+
+        const getEmployeeSessionLogs = logDoc.employeeSessionLogs || [];
 
         for (const logEntry of getEmployeeSessionLogs) {
-            const fetchedEmployeeCode = logEntry.employeeCode;
-            const fetchedSessionInstigator = logEntry.sessionInstigator;
+            const { employeeCode: fetchedEmployeeCode, sessionInstigator: fetchedSessionInstigator, shiftType: fetchedShift, attendanceType: fetchAttendanceType } = logEntry;
 
-            if (fetchedEmployeeCode == employeeCode && fetchedSessionInstigator == sessionInstigator) {
-                const historyEntry = {
-                    employee: req.session.user.name,
-                    employeeId: employeeId,
-                    employeeName: req.session.user.name,
-                    dept:  (await employee.findOne({ uniqueId: employeeId }))?.dept || "Unknown Dept",
-                    checkIn: moment().format("DD-MM-YYYY HH:mm:ss"),
-                    checkOut: moment().format("DD-MM-YYYY HH:mm:ss"),
-                    status: "Present"
-                };
+            if (fetchedEmployeeCode === employeeCode && fetchedSessionInstigator === sessionInstigator && fetchedShift === employeeShift) {
 
-                await logs.findOneAndUpdate(
-                    { org: getOrg },
-                    { $push: { employeeAttendanceHistory: historyEntry } },
-                    { upsert: true, new: true }
-                );
+                if (fetchAttendanceType === "check-in") {
+                    const historyEntry = {
+                        employeeId,
+                        employeeName: req.session.user.name,
+                        dept: dept || "Unknown Dept",
+                        checkIn: moment().format("DD-MM-YYYY HH:mm:ss"),
+                        checkOut: "",
+                        status: "Present"
+                    };
 
+                    await logs.findOneAndUpdate(
+                        { org: getOrg },
+                        { $push: { employeeAttendanceHistory: historyEntry } },
+                        { upsert: true, new: true }
+                    );
+
+                } else if (fetchAttendanceType === "check-out") {
+                    const pendingEntries = (logDoc.employeeAttendanceHistory || [])
+                        .filter(h => h.employeeId === employeeId && (!h.checkOut || h.checkOut.trim() === ""))
+                        .sort((a, b) => b._id.getTimestamp() - a._id.getTimestamp());
+
+                    const lastPending = pendingEntries[0];
+
+                    if (lastPending) {
+                        await logs.updateOne(
+                            { "employeeAttendanceHistory._id": lastPending._id },
+                            { $set: { "employeeAttendanceHistory.$.checkOut": moment().format("DD-MM-YYYY HH:mm:ss") } }
+                        );
+                    }
+                }
                 await MonthlyEmployeeSummary.findOneAndUpdate(
                     { org: getOrg, employee: employeeId, month: monthKey },
-                    { $inc: { attendedDays: 1 } }
+                    { $inc: { attendedDays: 1 } },
+                    { upsert: true }
                 );
 
                 await FinalEmployeeSummary.findOneAndUpdate(
                     { org: getOrg, employee: employeeId },
-                    { $inc: { attendedDays: 1 } }
+                    { $inc: { attendedDays: 1 } },
+                    { upsert: true }
                 );
             }
         }

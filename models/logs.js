@@ -118,7 +118,6 @@ const logSchema = new Schema({
 
     employeeAttendanceHistory: [
         {
-            employee: {type: String, required: true},
             employeeId: {type: String, required: true},
             employeeName: {type: String, required: true},
             dept: {

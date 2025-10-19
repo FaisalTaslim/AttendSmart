@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Employee = require('../../models/Employee');
 const { MonthlyEmployeeSummary } = require("../../models/monthlySummary");
+const { FinalEmployeeSummary } = require("../../models/overallSummary");
 
 router.post("/", async (req, res) => {
     try {
@@ -25,6 +26,11 @@ router.post("/", async (req, res) => {
         if (!updatedEmployee) return res.status(404).send("❌ Employee not found");
 
         await MonthlyEmployeeSummary.findOneAndUpdate(
+            { employee: uniqueId },
+            { $set: { shift: shift } }
+        );
+
+        await FinalEmployeeSummary.findOneAndUpdate(
             { employee: uniqueId },
             { $set: { shift: shift } }
         );
