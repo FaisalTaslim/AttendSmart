@@ -70,7 +70,7 @@
                 <div class="dash-head">
                     <h2><i class="fa-solid fa-gear"></i> | General Settings</h2>
                     <div class="dash-head-nav">
-                        <p class="edit-info-btn">Account info & Edit</p>
+                        <p class="scedit-info-btn">Account info & Edit</p>
                         <p>Download Reports</p>
                         <p>Toggle Themes</p>
                         <p>Change Password</p>
@@ -187,7 +187,7 @@
 
                 </div>
                 <div class="notices">
-                    <h2>📢 | Notices</h2>
+                    <h2>Notices</h2>
                     <div id="notice-list" class="notice-list">
                         <% if (!notices || notices.length===0) { %>
                             <p>No notices available.</p>
@@ -208,7 +208,7 @@
                 <div class="request-leave-container">
                     <div class="request-leave">
                         <div class="request-leave-header">
-                            <h2>📢| Request Leave</h2>
+                            <h2>Request Leave</h2>
                             <button class="status-btn">View Leave Status</button>
                         </div>
                         <form id="leaveForm" method="POST" action="/request-leave-clgstudent">
@@ -344,6 +344,7 @@
     <script src="/js/global/sideNav.js"></script>
     <script src="/js/global/update-footerLayout-for-tablets.js"></script>
     <script src="/js/page-specific/dashboard/main-tabs-switching.js"></script>
+    <script src="/js/page-specific/dashboard/sidenav-tabs-switching.js"></script>
     <script src="/js/page-specific/dashboard/clg-display-leave-status.js"></script>
     <script src="/js/global/detectOrientation.js"></script>
 </body>
