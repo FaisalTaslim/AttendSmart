@@ -3,6 +3,9 @@ const router = express.Router();
 const leaveRequests = require('../../models/userLeave');
 const { FinalEmployeeSummary } = require('../../models/overallSummary');
 const { MonthlyEmployeeSummary } = require('../../models/monthlySummary');
+const Employee = require('../../models/Employee');
+const schoolStudent = require('../../models/SchoolStudent');
+const collegeStudent = require('../../models/CollegeStudent');
 const moment = require('moment');
 
 router.post('/:uniqueId/accept', async (req, res) => {
@@ -40,6 +43,10 @@ router.post('/:uniqueId/accept', async (req, res) => {
                 MonthlyEmployeeSummary.updateOne(
                     { employee: userId, month: monthKey },
                     { $inc: { leaveDays: 1 } }
+                ),
+                Employee.updateOne(
+                    { uniqueId: userId },
+                    { $set: { onLeave: true } }
                 )
             ]);
         }

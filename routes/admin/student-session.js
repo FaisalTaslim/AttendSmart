@@ -4,6 +4,8 @@ const Notice = require('../../models/notice');
 const Org = require('../../models/Org');
 const logs = require('../../models/logs');
 const Employee = require('../../models/Employee');
+const collegeStudent = require('../../models/CollegeStudent');
+const schoolStudent = require('../../models/SchoolStudent');
 const { FinalStudentSummary } = require('../../models/overallSummary');
 const { MonthlyStudentSummary } = require('../../models/monthlySummary');
 const generateCode = require('../../utils/generate-code-for-qr');
@@ -15,6 +17,7 @@ router.post('/', async (req, res) => {
         const { subjectName, sessionType, departments } = req.body;
         const user = req.session.user.uniqueId;
         let sessionInstigator;
+        let orgType;
 
         if (req.session.user.role == "Org") {
             const getOrg = await Org.findOne({ uniqueId: user });
@@ -26,7 +29,6 @@ router.post('/', async (req, res) => {
             sessionInstigator = (await Employee.findOne({ uniqueId: user })).userName;
         }
 
-        // Parse departments string into array
         const departmentArray = departments
             ? departments.split(',').map(d => d.trim()).filter(Boolean)
             : [];
@@ -48,15 +50,14 @@ router.post('/', async (req, res) => {
             const monthKey = moment().format("YYYY-MM");
 
             for (const dept of departmentArray) {
-                await FinalStudentSummary.updateMany(
-                    { subjectName, std_dept: dept },
-                    { $inc: { totalLectures: 1 } }
-                );
-
                 await MonthlyStudentSummary.updateMany(
                     { subjectName, std_dept: dept, month: monthKey },
                     { $inc: { totalLectures: 1 } },
-                    { upsert: true }
+                );
+
+                await FinalStudentSummary.updateMany(
+                    { subjectName, std_dept: dept },
+                    { $inc: { totalLectures: 1 } }
                 );
             }
         }

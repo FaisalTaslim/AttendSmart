@@ -29,6 +29,11 @@ const collegeStudentSchema = new Schema({
         type: [String],
         required: true
     },
+    onLeave: {
+        type: Boolean, 
+        required: true,
+        default: false
+    },
     password: {type: String, required: true, trim: true, unique: true},
     termsCheck: {type: String, required: true, default: "not-accepted"}
 

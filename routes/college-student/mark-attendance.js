@@ -46,13 +46,21 @@ router.post('/', async (req, res) => {
                 { org: getOrg, student: req.session.user.uniqueId, month: monthKey, subjectName: subjectRegex },
                 { $inc: { attendedLectures: 1 } }
             );
+
             console.log("Updated monthly record:", updatedMonthly);
+            if(!updatedMonthly) {
+                return res.send("Attendane failed. Summary doesn't exist for the system to update. Reach out to your organization and raise a complaint")
+            }
 
             const updatedFinal = await FinalStudentSummary.findOneAndUpdate(
                 { org: getOrg, student: req.session.user.uniqueId, subjectName: subjectRegex },
                 { $inc: { attendedLectures: 1 } }
             );
+
             console.log("Updated final record:", updatedFinal);
+            if(!updatedFinal) {
+                return res.send("Attendane failed. Summary doesn't exist for the system to update. Reach out to your organization and raise a complaint")
+            }
 
             const logEntry = {
                 studentId: req.session.user.uniqueId,

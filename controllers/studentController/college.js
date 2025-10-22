@@ -52,6 +52,7 @@ exports.createCollegeStudent = async (req, res) => {
             dept,
             contact,
             email,
+            onLeave: false,
             password: hashedPassword,
             termsCheck,
             subjects: filteredSubjects,

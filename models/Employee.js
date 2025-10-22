@@ -37,6 +37,11 @@ const employeeSchema = new Schema({
         },
         trim: true
     },
+    onLeave: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
     password: { type: String, required: true, trim: true },
     termsCheck: {type: String, required: true}
 

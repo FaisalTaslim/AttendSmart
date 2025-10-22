@@ -55,6 +55,7 @@ exports.createSchoolStudent = async (req, res) => {
             standard,
             contact,
             email,
+            onLeave: false,
             password: hashedPassword,
             termsCheck,
             subjects: filteredSubjects,

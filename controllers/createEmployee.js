@@ -51,6 +51,7 @@ exports.createEmployee = async (req, res) => {
             designation,
             contact,
             email,
+            onLeave: false,
             password: hashedPassword,
             termsCheck
         });
