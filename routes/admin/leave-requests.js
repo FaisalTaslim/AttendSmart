@@ -9,7 +9,7 @@ router.post('/:uniqueId/accept', async (req, res) => {
     try {
         console.log("hitting the accept route")
         const leaveDoc = await leaveRequests.findOneAndUpdate(
-            { uniqueId: req.params.uniqueId, status: "pending"},
+            { uniqueId: req.params.uniqueId, status: "pending" },
             { status: 'accepted' },
             { new: true }
         );
@@ -22,19 +22,27 @@ router.post('/:uniqueId/accept', async (req, res) => {
         const monthKey = moment().format("YYYY-MM");
 
         if (leaveDoc.userType === "Employee") {
-            await FinalEmployeeSummary.findOneAndUpdate(
-                { employee: userId },
-                { $inc: { leaveDays: 1 } },
-                { new: true }
-            );
+            const [finalSummary, monthlySummary] = await Promise.all([
+                FinalEmployeeSummary.findOne({ employee: userId }),
+                MonthlyEmployeeSummary.findOne({ employee: userId, month: monthKey })
+            ]);
 
-            await MonthlyEmployeeSummary.findOneAndUpdate(
-                { employee: userId, month: monthKey },
-                { $inc: { leaveDays: 1 }, $setOnInsert: { month: monthKey } },
-                { upsert: true, new: true }
-            );
+            if (!finalSummary || !monthlySummary) {
+                console.error("Missing summary documents for user:", userId);
+                return res.status(404).send("Error! Cannot proceed forward. Summaries not found.");
+            }
+
+            await Promise.all([
+                FinalEmployeeSummary.updateOne(
+                    { employee: userId },
+                    { $inc: { leaveDays: 1 } }
+                ),
+                MonthlyEmployeeSummary.updateOne(
+                    { employee: userId, month: monthKey },
+                    { $inc: { leaveDays: 1 } }
+                )
+            ]);
         }
-
         res.redirect('/dashboard/admin');
     } catch (err) {
         console.error("Error accepting leave request:", err);

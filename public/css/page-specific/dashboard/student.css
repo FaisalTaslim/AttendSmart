@@ -239,6 +239,32 @@ main {
     .dashboard-contents {width: 100%;}
     .main-section {width: 100%}
     header, main, footer {display: flex !important}
+     main {height: 100vh}
+    .request-leave {padding-right: 0.6rem}
+    .request-leave-header {
+        border-bottom: unset;
+        padding: unset;
+    }
+    .status-btn {
+        padding: unset;
+    }
+    .request-leave-header > h2, .notices > h2, .overlay-head > h2 {
+        font-size: 1.3rem;
+        padding: unset;
+        padding-left: 1rem;
+        border-bottom: unset;
+        border-left: 4px solid var(--accent);
+        justify-self: center;
+    }
+    .attendance-container {background-color: var(--bg-secondary);}
+    .notices {
+        margin: 1rem;
+    }
+    .attendance-form {
+        width: 96%;
+        height: 80%;
+        overflow-y: auto;
+    }
 }
 
 @media screen and (min-width: 481px) and (max-width: 1024px) {

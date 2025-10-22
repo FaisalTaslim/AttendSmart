@@ -8,21 +8,28 @@ exports.monthlyEmployeeSummary = async (req, res) => {
         const employee = await Employee.findOne({ uniqueId: userId });
 
         if (!employee) {
-            return res.status(404).json({ message: "Student not found" });
+            return res.status(404).json({ message: "Employee not found" });
         }
-        const monthKey = moment().format("YYYY-MM");
-        await MonthlyEmployeeSummary.create({
-            org: employee.org,
-            employee: employee.uniqueId,
-            employeeName: employee.userName,
-            emp_dept: employee.dept,
-            shift: employee.shift,
-            month: monthKey,
-            totalLectures: 0,
-            attendedLectures: 0,
-            leaveDays: 0,
-            percentage: 0,
-        });
+        const month = moment().format("YYYY-MM");
+        const findLog = await MonthlyEmployeeSummary.findOne(
+            {employeeName: employee.userName, month: month }
+        )
+        console.log(findLog);
+        if (!findLog) {
+            await MonthlyEmployeeSummary.create({
+                org: employee.org,
+                employee: employee.uniqueId,
+                employeeName: employee.userName,
+                emp_dept: employee.dept,
+                shift: employee.shift,
+                month: month,
+                totalLectures: 0,
+                attendedLectures: 0,
+                leaveDays: 0,
+                percentage: 0,
+            });
+        }
+        else console.log("Monthly Log already exist");
 
         res.redirect("/dashboard");
     } catch (err) {

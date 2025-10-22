@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Systems Comparison</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1200px;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e1e5eb;
+        }
+
+        th {
+            background-color: #4a6ee0;
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #edf2ff;
+        }
+
+        .feature-col {
+            background-color: #f0f4ff;
+            font-weight: 600;
+            width: 200px;
+        }
+
+        .system-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .your-system {
+            background-color: #e8f5e9;
+            font-weight: 600;
+        }
+
+        .your-system td:first-child {
+            background-color: #c8e6c9;
+        }
+
+        .highlight {
+            background-color: #fff9c4;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            th,
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Comparison with Existing Systems</h1>
+            <p class="subtitle">Analysis of various attendance tracking technologies and their features</p>
+        </header>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature / Criteria</th>
+                        <th>RFID / Biometric Systems (Shah et al.)</th>
+                        <th>Multi-Step Hardware (Sarker et al.)</th>
+                        <th>Wi-Fi + Face Recognition (Anand et al.)</th>
+                        <th>QR/Time-based Field (Navin et al.)</th>
+                        <th>Face Recognition (Bhattacharya et al., SAMS)</th>
+                        <th>Face Recognition Deep Learning (Alhanaee et al.)</th>
+                        <th>QR Code Systems (Nuhi et al., Hendry et al.)</th>
+                        <th>Your System: AttendSmart</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="feature-col">Core Technology</td>
+                        <td>RFID tags, fingerprint sensors</td>
+                        <td>RFID + Fingerprint + Password</td>
+                        <td>Smartphone facial recognition + Wi-Fi fingerprinting</td>
+                        <td>QR codes, timed session handshake</td>
+                        <td>Deep learning + CNN + Face Quality Assessment</td>
+                        <td>Deep transfer learning (AlexNet, GoogleNet, SqueezeNet)</td>
+                        <td>QR codes scanned via web / app</td>
+                        <td class="your-system">QR codes + timed session code</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-col">Hardware Dependency</td>
+                        <td>High (readers, sensors)</td>
+                        <td>High (Arduino Mega, RFID, fingerprint, keypad)</td>
+                        <td>Medium (smartphones)</td>
+                        <td>Low (smartphones + web server)</td>
+                        <td>High (camera + portable device)</td>
+                        <td>Medium-High (camera + computing device)</td>
+                        <td>Low (camera / smartphone)</td>
+                        <td class="your-system">Very Low (browser + camera)</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-col">Infrastructure Requirement</td>
+                        <td>RFID readers, local database</td>
+                        <td>Local setup, desktop app</td>
+                        <td>Wi-Fi coverage in classrooms</td>
+                        <td>Internet / web server</td>
+                        <td>Portable device, classroom-bound</td>
+                        <td>Camera, computing device</td>
+                        <td>Minimal, any device with QR reader</td>
+                        <td class="your-system">Minimal, any device with QR reader & web access</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-col">Ease of Integration / Setup</td>
+                        <td>Moderate-Complex (hardware + software)</td>
+                        <td>Complex (3-step auth + hardware setup)</td>
+                        <td>Moderate (smartphones + Wi-Fi calibration)</td>
+                        <td>Easy (mobile apps + portal)</td>
+                        <td>Moderate (setup device & camera)</td>
+                        <td>Moderate (training models + deployment)</td>
+                        <td>Easy (deploy web-based QR system)</td>
+                        <td class="your-system">Very Easy (plug & play web-based system)</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-col">Real-Time Attendance</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                        <td>Yes</td>
+                        <td class="your-system">Yes</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-col">Anti-Proxy Measures</td>
+                        <td>Moderate</td>
+                        <td>Very High</td>
+                        <td>High</td>
+                        <td>High</td>
+                        <td>High</td>
+                        <td>High</td>
+                        <td>Low-Moderate</td>
+                        <td class="your-system">High</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-col">Mobility / Flexibility</td>
+                        <td>Low (fixed readers)</td>
+                        <td>Low-Medium (hardware + network)</td>
+                        <td>Medium (smartphone-based, classroom-bound)</td>
+                        <td>High (field personnel, any location)</td>
+                        <td>Medium (device portable, classroom-bound)</td>
+                        <td>Medium (camera & computing device)</td>
+                        <td>High (web + any device)</td>
+                        <td class="your-system">Very High (any device, any location, web-based)</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-col">Cost-Effectiveness</td>
+                        <td>Moderate</td>
+                        <td>Moderate-High</td>
+                        <td>Low</td>
+                        <td>Very Low</td>
+                        <td>Moderate</td>
+                        <td>Moderate-High</td>
+                        <td>Low</td>
+                        <td class="your-system">Low, institutes will require a bit of investment of buying a tablet</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-col">User Interaction Required</td>
+                        <td>Medium (scan card / fingerprint)</td>
+                        <td>Medium (scan + password + fingerprint)</td>
+                        <td>Medium (take selfie)</td>
+                        <td>Medium (scan QR handshake)</td>
+                        <td>Low (camera captures automatically)</td>
+                        <td>Low-Medium (face detection)</td>
+                        <td>Low (scan QR)</td>
+                        <td class="your-system">Medium (scan QR / enter session code)</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-col">Scalability</td>
+                        <td>Limited by hardware</td>
+                        <td>Limited by hardware & desktop app</td>
+                        <td>Moderate (depends on Wi-Fi coverage)</td>
+                        <td>High (web-based, mobile-friendly)</td>
+                        <td>Moderate (hardware per classroom)</td>
+                        <td>Moderate (model deployment per location)</td>
+                        <td>High (web-based)</td>
+                        <td class="your-system">Very High (web-based, multi-sector)</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-col">Data Logging / Reports</td>
+                        <td>Yes, local & cloud optional</td>
+                        <td>Yes, local desktop app</td>
+                        <td>Yes, logs attendance</td>
+                        <td>Yes, logs + timestamp</td>
+                        <td>Yes, database</td>
+                        <td>Yes, database</td>
+                        <td>Yes, web portal</td>
+                        <td class="your-system">Yes, logs, reports, admin dashboards</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-col">Dependence on Internet</td>
+                        <td>Low</td>
+                        <td>Low-Medium</td>
+                        <td>Low-Medium</td>
+                        <td>High</td>
+                        <td>Low-Medium</td>
+                        <td>Medium</td>
+                        <td>High</td>
+                        <td class="your-system">High (web-based, server required)</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-col">Environmental / Lighting Sensitivity</td>
+                        <td>Low</td>
+                        <td>Low</td>
+                        <td>Medium</td>
+                        <td>Low</td>
+                        <td>Medium</td>
+                        <td>Medium</td>
+                        <td>Low</td>
+                        <td class="your-system">Low</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-col">Scenarios / Use Cases</td>
+                        <td>Educational institutes</td>
+                        <td>Educational institutes / secure access</td>
+                        <td>Classrooms</td>
+                        <td>Field personnel / remote workers</td>
+                        <td>Classrooms</td>
+                        <td>Classrooms / offices</td>
+                        <td>Educational institutes</td>
+                        <td class="your-system">Educational institutes + companies (universal)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <footer>
+            <p>Attendance Systems Comparison Table | Designed for clarity and readability</p>
+        </footer>
+    </div>
+</body>
+
+</html>
