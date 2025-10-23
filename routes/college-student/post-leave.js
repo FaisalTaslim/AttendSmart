@@ -18,6 +18,7 @@ router.post('/', async (req, res) => {
             org,
             uniqueId,
             userType: req.session.user.role,
+            userName: student.userName,
             startDate,
             endDate,
             leaveType,

@@ -10,6 +10,10 @@ const userLeaveSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    userName: {
+        type: String,
+        required: true,
+    },
     userType: {type: String, required: true},
     startDate: {
         type: String,
