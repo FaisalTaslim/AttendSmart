@@ -3,6 +3,7 @@ const router = express.Router();
 const Notice = require('../../models/notice');
 const Org = require('../../models/Org');
 const logs = require('../../models/logs');
+const userOnLeave = require('../../models/userOnLeave');
 const Employee = require('../../models/Employee');
 const collegeStudent = require('../../models/CollegeStudent');
 const schoolStudent = require('../../models/SchoolStudent');
@@ -16,6 +17,7 @@ router.post('/', async (req, res) => {
     try {
         const { subjectName, sessionType, departments } = req.body;
         const user = req.session.user.uniqueId;
+        const monthKey = moment().format("YYYY-MM");
         let sessionInstigator;
         let orgType;
 
@@ -24,13 +26,14 @@ router.post('/', async (req, res) => {
             if (!getOrg) return res.status(404).send("Org not found.");
 
             sessionInstigator = getOrg.admin[0]?.adminName || "Unknown";
+            orgType = getOrg.orgType;
         }
         else {
             sessionInstigator = (await Employee.findOne({ uniqueId: user })).userName;
         }
 
         const departmentArray = departments
-            ? departments.split(',').map(d => d.trim()).filter(Boolean)
+            ? departments.split(',').map(d => d.trim().toUpperCase()).filter(Boolean)
             : [];
 
         console.log("Departments array:", departmentArray);
@@ -47,8 +50,6 @@ router.post('/', async (req, res) => {
 
 
         if (sessionType === "fresh-session" && departmentArray.length > 0) {
-            const monthKey = moment().format("YYYY-MM");
-
             for (const dept of departmentArray) {
                 await MonthlyStudentSummary.updateMany(
                     { subjectName, std_dept: dept, month: monthKey },
@@ -68,6 +69,35 @@ router.post('/', async (req, res) => {
             { upsert: true, new: true }
         );
 
+        if (orgType == "college") {
+            const onLeaveCollege = await collegeStudent.find({
+                onLeave: true,
+                std_dept: { $in: departmentArray }
+            });
+
+            for (const element of onLeaveCollege) {
+                const getId = element.uniqueId;
+                const isVerifiedLeave = await userOnLeave.findOne({ uniqueId: getId });
+
+                if (isVerifiedLeave) {
+                    await MonthlyStudentSummary.findOneAndUpdate({
+                        student: getId,
+                        std_dept: { $in: departmentArray },
+                        month: monthKey
+                    },
+                        { $inc: { leaveDays: 1 } }
+                    )
+
+                    await FinalStudentSummary.findOneAndUpdate({
+                        student: getId,
+                        std_dept: { $in: departmentArray },
+                    },
+                        { $inc: { leaveDays: 1 } }
+                    )
+                }
+            }
+        }
+
         setTimeout(async () => {
             await logs.updateOne(
                 { org: user, "studentSessionLog.studentCode": logEntry.studentCode },
@@ -75,7 +105,6 @@ router.post('/', async (req, res) => {
             );
             console.log(`⏱️ Code ${logEntry.studentCode} expired.`);
         }, 600000);
-
 
         if (req.session.user.role == "Employee")
             res.redirect("/dashboard/teachingStaff");
