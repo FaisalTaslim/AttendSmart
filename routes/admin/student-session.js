@@ -97,6 +97,34 @@ router.post('/', async (req, res) => {
                 }
             }
         }
+        else if (orgType == "school") {
+            const onLeaveSchool = await schoolStudent.find({
+                onLeave: true,
+                std_dept: { $in: departmentArray }
+            });
+
+            for (const element of onLeaveSchool) {
+                const getId = element.uniqueId;
+                const isVerifiedLeave = await userOnLeave.findOne({ uniqueId: getId });
+
+                if (isVerifiedLeave) {
+                    await MonthlyStudentSummary.findOneAndUpdate({
+                        student: getId,
+                        std_dept: { $in: departmentArray },
+                        month: monthKey
+                    },
+                        { $inc: { leaveDays: 1 } }
+                    )
+
+                    await FinalStudentSummary.findOneAndUpdate({
+                        student: getId,
+                        std_dept: { $in: departmentArray },
+                    },
+                        { $inc: { leaveDays: 1 } }
+                    )
+                }
+            }
+        }
 
         setTimeout(async () => {
             await logs.updateOne(
