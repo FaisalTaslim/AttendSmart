@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 
 const userLeaveSchema = mongoose.Schema({
     org: {
-        type: String, 
+        type: String,
         required: true,
     },
     uniqueId: {
@@ -14,12 +14,12 @@ const userLeaveSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    userType: {type: String, required: true},
+    userType: { type: String, required: true },
     startDate: {
-        type: String,
+        type: Date,          
         required: true,
     },
-    endDate: {type: String, required: true},
+    endDate: {type: Date,required: true,},
     leaveType: {type: String, required: true},
     reason: {type: String, required: true},
     status: {

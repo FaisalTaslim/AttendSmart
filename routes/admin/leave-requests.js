@@ -60,7 +60,9 @@ router.post('/:uniqueId/accept', async (req, res) => {
                 userOnLeave.create({
                     uniqueId: userId,
                     userName: leaveDoc.userName,
-                    userType: leaveDoc.userType
+                    userType: leaveDoc.userType,
+                    startDate: leaveDoc.startDate,
+                    endDate: leaveDoc.endDate
                 })
             );
             if (leaveDoc.userType === 'SchoolStudent') {

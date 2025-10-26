@@ -11,6 +11,11 @@ const userOnLeaveLog = new Schema({
         required: true,
     },
     userType: {type: String, required: true},
+    startDate: {
+        type: Date,          
+        required: true,
+    },
+    endDate: {type: Date,required: true,},
 }, {timestamp: true});
 
 module.exports = mongoose.model('userOnLeaveLog', userOnLeaveLog, 'userOnLeaveLog');

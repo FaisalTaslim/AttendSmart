@@ -70,37 +70,62 @@ router.post('/', async (req, res) => {
         );
 
         if (orgType == "college") {
+            console.log("Looking for college student on leave...")
             const onLeaveCollege = await collegeStudent.find({
                 onLeave: true,
-                std_dept: { $in: departmentArray }
+                dept: { $in: departmentArray }
             });
+
+            console.log(`Found students: \n ${onLeaveCollege}`);
 
             for (const element of onLeaveCollege) {
                 const getId = element.uniqueId;
                 const isVerifiedLeave = await userOnLeave.findOne({ uniqueId: getId });
 
-                if (isVerifiedLeave) {
-                    await MonthlyStudentSummary.findOneAndUpdate({
-                        student: getId,
-                        std_dept: { $in: departmentArray },
-                        month: monthKey
-                    },
-                        { $inc: { leaveDays: 1 } }
-                    )
+                console.log(`Found verified student: \n ${isVerifiedLeave}`);
 
-                    await FinalStudentSummary.findOneAndUpdate({
-                        student: getId,
-                        std_dept: { $in: departmentArray },
-                    },
-                        { $inc: { leaveDays: 1 } }
-                    )
+                if (isVerifiedLeave) {
+                    const start = isVerifiedLeave.startDate;
+                    const end = isVerifiedLeave.endDate;
+                    const today = new Date();
+
+                    today.setHours(0, 0, 0, 0);
+                    start.setHours(0, 0, 0, 0);
+                    end.setHours(0, 0, 0, 0);
+
+                    if (today >= start && today <= end) {
+                        console.log(`Month Key: ${monthKey}`);
+                        const newMonthlySummary = await MonthlyStudentSummary.findOneAndUpdate(
+                            {
+                                student: getId,
+                                std_dept: { $in: departmentArray },
+                                month: monthKey,
+                                subjectName
+                            },
+                            { $inc: { leaveDays: 1 } },
+                            { new: true }
+                        );
+
+                        const newFinalSummary = await FinalStudentSummary.findOneAndUpdate(
+                            {
+                                student: getId,
+                                std_dept: { $in: departmentArray },
+                                subjectName
+                            },
+                            { $inc: { leaveDays: 1 } },
+                            { new: true }
+                        );
+
+                        console.log("Updated Monthly Summary:", newMonthlySummary);
+                        console.log("Updated Final Summary:", newFinalSummary);
+                    }
                 }
             }
         }
         else if (orgType == "school") {
             const onLeaveSchool = await schoolStudent.find({
                 onLeave: true,
-                std_dept: { $in: departmentArray }
+                standard: { $in: departmentArray }
             });
 
             for (const element of onLeaveSchool) {
@@ -108,24 +133,44 @@ router.post('/', async (req, res) => {
                 const isVerifiedLeave = await userOnLeave.findOne({ uniqueId: getId });
 
                 if (isVerifiedLeave) {
-                    await MonthlyStudentSummary.findOneAndUpdate({
-                        student: getId,
-                        std_dept: { $in: departmentArray },
-                        month: monthKey
-                    },
-                        { $inc: { leaveDays: 1 } }
-                    )
+                    const start = new Date(isVerifiedLeave.startDate);
+                    const end = new Date(isVerifiedLeave.endDate);
+                    const today = new Date();
 
-                    await FinalStudentSummary.findOneAndUpdate({
-                        student: getId,
-                        std_dept: { $in: departmentArray },
-                    },
-                        { $inc: { leaveDays: 1 } }
-                    )
+                    today.setHours(0, 0, 0, 0);
+                    start.setHours(0, 0, 0, 0);
+                    end.setHours(0, 0, 0, 0);
+
+                    if (today >= start && today <= end) {
+                        console.log(`Month Key: ${monthKey}`);
+                        const newMonthlySummary = await MonthlyStudentSummary.findOneAndUpdate(
+                            {
+                                student: getId,
+                                std_dept: { $in: departmentArray },
+                                month: monthKey,
+                                subjectName
+                            },
+                            { $inc: { leaveDays: 1 } },
+                            { new: true }
+                        );
+
+                        const newFinalSummary = await FinalStudentSummary.findOneAndUpdate(
+                            {
+                                student: getId,
+                                std_dept: { $in: departmentArray },
+                                subjectName
+                            },
+                            { $inc: { leaveDays: 1 } },
+                            { new: true }
+                        );
+
+
+                        console.log("Updated Monthly Summary:", newMonthlySummary);
+                        console.log("Updated Final Summary:", newFinalSummary);
+                    }
                 }
             }
         }
-
         setTimeout(async () => {
             await logs.updateOne(
                 { org: user, "studentSessionLog.studentCode": logEntry.studentCode },

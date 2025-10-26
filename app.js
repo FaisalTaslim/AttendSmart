@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('./config/cronLeaveCleanup');
 console.log("🔍 Loaded URI:", process.env.MONGODB_URI);
 
 const path = require('path');
