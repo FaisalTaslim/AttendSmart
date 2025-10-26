@@ -125,7 +125,7 @@
                         <p class="qr-btn">Generate QR</p>
                         <p class="session-btn">Start Session</p>
                         <p>Edit Attendance</p>
-                        <p>View Attendance Report</p>
+                        <p class="att-records-btn">View Attendance Report</p>
                     </div>
                 </div>
                 <div class="dash-head">
@@ -145,6 +145,258 @@
                 </div>
             </div>
             <div class="dashboard-contents">
+                <div class="attendance-report">
+                    <div class="filter-section">
+                        <div class="filters">
+                            <h3>Attendance Records</h3>
+                            <div class="filters-form">
+                                <div class="outer-group">
+                                    <label for="filterType">Filter By:</label>
+                                    <select id="filterType" onchange="filterByType(this.value)">
+                                        <option value="students" selected>Students</option>
+                                        <option value="employees">Employees</option>
+                                    </select>
+                                </div>
+
+                                <div class="outer-group">
+                                    <select id="summaryType" onchange="filterBySummary(this.value)">
+                                        <option value="monthly" selected>Monthly Summary</option>
+                                        <option value="final">Final Summary</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="students-summary college-students">
+                        <table id="student-monthly-summary">
+                            <thead>
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Student Name</th>
+                                    <th>Department</th>
+                                    <th>Month</th>
+                                    <th>Subject</th>
+                                    <th>Total Lectures</th>
+                                    <th>Attended</th>
+                                    <th>Leave Days</th>
+                                    <th>Attendance (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (getMonthlyStudentSummary && getMonthlyStudentSummary.length> 0) { %>
+                                    <% getMonthlyStudentSummary.forEach((record)=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= record.student %>
+                                            </td>
+                                            <td>
+                                                <%= record.studentName %>
+                                            </td>
+                                            <td>
+                                                <%= record.std_dept %>
+                                            </td>
+                                            <td>
+                                                <% const [year, month]=record.month.split('-'); const monthName=new
+                                                    Date(record.month + '-01' ).toLocaleString('default', {
+                                                    month: 'long' }); %>
+                                                    <%= monthName %>
+                                                        <%= year %>
+                                            </td>
+                                            <td>
+                                                <%= record.subjectName %>
+                                            </td>
+                                            <td>
+                                                <%= record.totalLectures %>
+                                            </td>
+                                            <td>
+                                                <%= record.attendedLectures %>
+                                            </td>
+                                            <td>
+                                                <%= record.leaveDays %>
+                                            </td>
+                                            <td>
+                                                <%= record.percentage %> %
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                            <% } else { %>
+                                                <tr>
+                                                    <td colspan="10" style="text-align: center; color: #888;">
+                                                        No attendance records found for this month.
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                            </tbody>
+                        </table>
+                        <table id="final-student-summary">
+                            <thead>
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Student Name</th>
+                                    <th>Department</th>
+                                    <th>Subject</th>
+                                    <th>Total Lectures</th>
+                                    <th>Attended</th>
+                                    <th>Leave Days</th>
+                                    <th>Attendance (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (getFinalStudentSummary && getFinalStudentSummary.length> 0) { %>
+                                    <% getFinalStudentSummary.forEach((record)=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= record.student %>
+                                            </td>
+                                            <td>
+                                                <%= record.studentName %>
+                                            </td>
+                                            <td>
+                                                <%= record.std_dept %>
+                                            </td>
+                                            <td>
+                                                <%= record.subjectName %>
+                                            </td>
+                                            <td>
+                                                <%= record.totalLectures %>
+                                            </td>
+                                            <td>
+                                                <%= record.attendedLectures %>
+                                            </td>
+                                            <td>
+                                                <%= record.leaveDays %>
+                                            </td>
+                                            <td>
+                                                <%= record.percentage %> %
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                            <% } else { %>
+                                                <tr>
+                                                    <td colspan="9" style="text-align: center; color: #888;">
+                                                        No final summary records found.
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="employees-summary employees">
+                        <table id="monthly-employee-summary">
+                            <thead>
+                                <tr>
+                                    <th>Employee ID</th>
+                                    <th>Employee Name</th>
+                                    <th>Department</th>
+                                    <th>Shift</th>
+                                    <th>Month</th>
+                                    <th>Total Days</th>
+                                    <th>Attended</th>
+                                    <th>Leave Days</th>
+                                    <th>Attendance (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (getMonthlyEmployeeSummary && getMonthlyEmployeeSummary.length> 0) { %>
+                                    <% getMonthlyEmployeeSummary.forEach((record)=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= record.employee %>
+                                            </td>
+                                            <td>
+                                                <%= record.employeeName %>
+                                            </td>
+                                            <td>
+                                                <%= record.emp_dept %>
+                                            </td>
+                                            <td>
+                                                <%= record.shift %>
+                                            </td>
+                                            <td>
+                                                <% const [year, month]=record.month.split('-'); const monthName=new
+                                                    Date(record.month + '-01' ).toLocaleString('default', {
+                                                    month: 'long' }); %>
+                                                    <%= monthName %>
+                                                        <%= year %>
+                                            </td>
+                                            <td>
+                                                <%= record.totalDays %>
+                                            </td>
+                                            <td>
+                                                <%= record.attendedDays %>
+                                            </td>
+                                            <td>
+                                                <%= record.leaveDays %>
+                                            </td>
+                                            <td>
+                                                <%= record.percentage %> %
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                            <% } else { %>
+                                                <tr>
+                                                    <td colspan="10" style="text-align: center; color: #888;">
+                                                        No monthly records found for employees.
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                            </tbody>
+                        </table>
+                        <table id="final-employee-summary">
+                            <thead>
+                                <tr>
+                                    <th>Employee ID</th>
+                                    <th>Employee Name</th>
+                                    <th>Department</th>
+                                    <th>Shift</th>
+                                    <th>Total Days</th>
+                                    <th>Attended</th>
+                                    <th>Leave Days</th>
+                                    <th>Attendance (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (getFinalEmployeeSummary && getFinalEmployeeSummary.length> 0) { %>
+                                    <% getFinalEmployeeSummary.forEach((record)=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= record.employee %>
+                                            </td>
+                                            <td>
+                                                <%= record.employeeName %>
+                                            </td>
+                                            <td>
+                                                <%= record.emp_dept %>
+                                            </td>
+                                            <td>
+                                                <%= record.shift %>
+                                            </td>
+                                            <td>
+                                                <%= record.totalDays %>
+                                            </td>
+                                            <td>
+                                                <%= record.attendedDays %>
+                                            </td>
+                                            <td>
+                                                <%= record.leaveDays %>
+                                            </td>
+                                            <td>
+                                                <%= record.percentage %> %
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                            <% } else { %>
+                                                <tr>
+                                                    <td colspan="9" style="text-align: center; color: #888;">
+                                                        No final records found for employees.
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <div id="generate-employee-qr" class="generate-employee-qr">
                     <form action="/employee-qr" method="POST" class="form-group">
                         <label for="attendanceType">Select the following:</label>
@@ -635,7 +887,7 @@
                                         <%= req.status %>
                                     </p>
 
-                                    <% if (req.status === 'pending' ) { %>
+                                    <% if (req.status === ' pending' ) { %>
                                             <form action="/leave/<%= req.uniqueId %>/accept" method="POST"
                                                 style="display:inline;">
                                                 <button type="submit">Accept</button>
@@ -699,5 +951,6 @@
     <script src="/js/page-specific/dashboard/sidenav-tabs-switching.js"></script>
     <script src="/js/global/detectOrientation.js"></script>
     <script src="/js/global/disable-buttons.js"></script>
+    <script src="/js/page-specific/dashboard/filter-summary.js"></script>
 
 </html>

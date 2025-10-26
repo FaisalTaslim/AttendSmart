@@ -4,6 +4,10 @@ const Org = require('../models/Org');
 const Employee = require('../models/Employee');
 const CollegeStudent = require('../models/CollegeStudent');
 const SchoolStudent = require('../models/SchoolStudent');
+const { MonthlyEmployeeSummary } = require("../models/monthlySummary");
+const { FinalEmployeeSummary } = require('../models/overallSummary');
+const { MonthlyStudentSummary } = require("../models/monthlySummary");
+const { FinalStudentSummary } = require('../models/overallSummary');
 const logs = require('../models/logs');
 const Notice = require('../models/notice');
 const leaveRequests = require('../models/userLeave');
@@ -24,7 +28,10 @@ router.get('/', checkRole(['Org']), async (req, res) => {
         const getLogs = await logs.findOne({ org: user });
         const notices = await Notice.find({ uniqueId: user });
         const allLeaveRequests = await leaveRequests.find({ org: user });
-
+        const getMonthlyStudentSummary = await MonthlyStudentSummary.find({ org: user });
+        const getFinalStudentSummary = await FinalStudentSummary.find({ org: user });
+        const getMonthlyEmployeeSummary = await MonthlyEmployeeSummary.find({org: user});
+        const getFinalEmployeeSummary = await FinalEmployeeSummary.find({org: user});
         let students = [];
         let employees = [];
         if (findUser.orgType === "college") {
@@ -49,7 +56,11 @@ router.get('/', checkRole(['Org']), async (req, res) => {
                 employeeSessionLogs,
                 studentSessionLog,
                 notices,
-                leaveRequests: allLeaveRequests
+                leaveRequests: allLeaveRequests,
+                getMonthlyStudentSummary,
+                getFinalStudentSummary,
+                getMonthlyEmployeeSummary,
+                getFinalEmployeeSummary
             });
         }
         else if (findUser.orgType == "school") {
@@ -74,7 +85,11 @@ router.get('/', checkRole(['Org']), async (req, res) => {
                 employeeSessionLogs,
                 studentSessionLog,
                 notices,
-                leaveRequests: allLeaveRequests
+                leaveRequests: allLeaveRequests,
+                getMonthlyStudentSummary,
+                getFinalStudentSummary,
+                getMonthlyEmployeeSummary,
+                getFinalEmployeeSummary,
             });
         }
         else {
@@ -96,7 +111,9 @@ router.get('/', checkRole(['Org']), async (req, res) => {
                 supportLogs,
                 employeeSessionLogs,
                 notices,
-                leaveRequests: allLeaveRequests
+                leaveRequests: allLeaveRequests,
+                getMonthlyEmployeeSummary,
+                getFinalEmployeeSummary
             });
         }
 

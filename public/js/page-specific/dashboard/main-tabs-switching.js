@@ -8,6 +8,7 @@ const map_tabs = {
     "users-btn": "manage-users",
     "logs-btn": "browse-logs",
     "edit-info-btn": "edit-your-info",
+    "att-records-btn": "attendance-report",
 
     "scedit-info-btn": "edit-info",
     "scnotice-btn": "notices",

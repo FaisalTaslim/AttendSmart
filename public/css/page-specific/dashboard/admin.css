@@ -260,7 +260,8 @@ button {
     border-radius: 0.5rem;
 }
 .college-students,
-.employees {
+.employees,
+.students-summary {
     width: 100%;
     overflow-x: auto;
     margin-bottom: 1rem;
@@ -471,6 +472,59 @@ button {
 
 #orientation-overlay {display: none;}
 .generate-employee-qr {overflow-y: auto}
+.attendance-report {
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+}
+.students-summary, .employees-summary {
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+}
+.employees-summary {
+    display: flex;
+}
+#student-monthly-summary, #student-final-summary {
+    display: none;
+}
+.filters {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.filters > h3 {color: black}
+.filters-form {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+.filters-form .outer-group {
+    align-items: center;
+}
+.filters-form .outer-group label {
+    font-weight: 500;
+    color: #444;
+}
+
+.filters-form .outer-group select {
+    padding: 0.4rem 0.7rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.9rem;
+    transition: 0.2s ease;
+}
+
+.filters-form .outer-group select:hover {
+    border-color: var(--bg-secondary);
+    cursor: pointer;
+}
 
 @media screen and (max-width: 480px) {
     .dashboard-sidenav {display: none}
