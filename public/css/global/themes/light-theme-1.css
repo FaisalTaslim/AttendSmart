@@ -1,0 +1,19 @@
+:root {
+    --bg-primary: #FFFBEA;
+    --bg-secondary: #FFF4CC;
+
+    --text-primary: #3B2F00;
+    --text-secondary: #5A4A00;
+
+    --accent: #FFD500;
+    --accent-hover: #F1C40F;
+
+    --link: #D68910;
+    --link-hover: #AF601A;
+
+    --border-color: #E5C100;
+    --shadow: rgba(255, 213, 0, 0.3);
+
+    --error: #D35400;
+    --tip-text: #7D6608;
+}

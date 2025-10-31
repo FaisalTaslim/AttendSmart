@@ -2,7 +2,7 @@ const map_tabs = {
     "qr-btn": "generate-employee-qr",
     "session-btn": "student-attendance",
     "records-btn": "view-records",
-    "edit-att-btn": "edit-attendance",
+    "edit-att-btn": "terminal-container",
     "leave-btn": "manage-leave-requests",
     "notice-btn": "send-notice-container",
     "users-btn": "manage-users",

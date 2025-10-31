@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/global/global-layout.css">
     <link rel="stylesheet" href="/css/page-specific/dashboard/admin.css">
     <link rel="stylesheet" href="/css/global/forms.css">
-    <link rel="stylesheet" href="/css/global/dark-theme.css">
+    <link rel="stylesheet" href="/css/global/themes/dark-theme-1.css">
     <link rel="stylesheet" href="/css/global/scrollbar.css">
 
     <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
@@ -124,7 +124,7 @@
                     <div class="dash-head-nav">
                         <p class="qr-btn">Generate QR</p>
                         <p class="session-btn">Start Session</p>
-                        <p>Edit Attendance</p>
+                        <p class="edit-att-btn">Edit Attendance</p>
                         <p class="att-records-btn">View Attendance Report</p>
                     </div>
                 </div>
@@ -145,6 +145,14 @@
                 </div>
             </div>
             <div class="dashboard-contents">
+                <div class="terminal-container">
+                    <div class="terminal-header">AttendSmart Terminal</div>
+                    <div class="terminal-body">
+                        <pre id="terminal-output">> Welcome to AttendSmart CLI. Type your command below.</pre>
+                        <input type="text" id="terminal-input" placeholder="Enter command..." autofocus required />
+                    </div>
+                </div>
+
                 <div class="attendance-report">
                     <div class="filter-section">
                         <div class="filters">
@@ -952,5 +960,6 @@
     <script src="/js/global/detectOrientation.js"></script>
     <script src="/js/global/disable-buttons.js"></script>
     <script src="/js/page-specific/dashboard/filter-summary.js"></script>
+    <script src="/js/page-specific/dashboard/edit-attendance.js"></script>
 
 </html>
