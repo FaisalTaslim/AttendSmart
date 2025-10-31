@@ -15,4 +15,7 @@
 
     --border-color: #3E2D5D;
     --icon-primary: #FF2E63;
+    
+    --error: #D35400;
+    --tip-text: #7D6608;
 }

@@ -5,15 +5,15 @@ const router = express.Router();
 const viewsPath = path.join(__dirname, '../views/register');
 
 const routes = {
-    '/': 'admin-register.html',
-    '/school': 'school-register.html',
-    '/college': 'college-register.html',
-    '/employee': 'employee-register.html'
+    '/': 'admin-register',
+    '/school': 'school-register',
+    '/college': 'college-register',
+    '/employee': 'employee-register'
 };
 
 Object.entries(routes).forEach(([route, file]) => {
     router.get(route, (req, res) => {
-        res.sendFile(path.join(viewsPath, file));
+        res.render(`register/${file}`, {error: ""});
     });
 });
 

@@ -6,54 +6,51 @@ const Department = require('../models/departments');
 const moment = require('moment');
 
 exports.createOrg = async (req, res) => {
+    let error_tracker = 0;
+    let newAdminNumber = 0;
     try {
-        const {
-            adminName,
-            adminId,
-            adminContact,
-            adminEmail,
-            adminPassword
-        } = req.body.admin[0];
+        const { adminName, adminId, adminContact, adminEmail, adminPassword } = req.body.admin[0];
+        const { orgName, branch, expectedTeachers, expectedStudents } = req.body;
 
-        const existingOrg = await Org.findOne({
-            orgName: req.body.orgName,
-            branch: req.body.branch
-        });
-
+        const existingOrg = await Org.findOne({ orgName, branch });
         if (existingOrg) {
-            console.log(`⚠️ Duplicate org registration attempt: ${req.body.orgName} - ${req.body.branch}`);
+            error_tracker = 1;
+
+            return res.render('register/admin-register', {
+                error: "Duplicate Registration attempt. Please login with your old account!"
+            });
         }
 
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(adminPassword, salt);
+        const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
-        let counterDoc = await Counter.findOne();
-        const newAdminNumber = (Number(counterDoc.newAdminValue) + 1).toString();
-        counterDoc.newAdminValue = newAdminNumber;
-        await counterDoc.save();
-
-        if (isNaN(req.body.expectedEmployees) && isNaN(req.body.expectedStudents)) {
-            return res.send(`<h2>❌ Error: Number of Employees and Students must be digits</h2>`);
+        const counterDoc = await Counter.findOneAndUpdate({}, { $inc: { newAdminValue: 1 } }, { new: true });
+        if (!counterDoc) {
+            error_tracker = 2;
+            return res.render('register/admin-register', { error: "Fatal Error: Missing counter! Contact developers! Click the 'back' button" });
         }
+
+        newAdminNumber = counterDoc.newAdminValue.toString();
 
         const newOrg = {
             uniqueId: newAdminNumber,
-            expectedTeachers: Number(req.body.expectedTeachers),
-            expectedStudents: Number(req.body.expectedStudents),
+            expectedTeachers: Number(expectedTeachers),
+            expectedStudents: Number(expectedStudents),
             ...req.body,
-            admin: [
-                {
-                    adminName,
-                    adminId,
-                    adminContact,
-                    adminEmail,
-                    adminPassword: hashedPassword,
-                }
-            ]
+            admin: [{
+                adminName,
+                adminId,
+                adminContact,
+                adminEmail,
+                adminPassword: hashedPassword
+            }]
         };
 
         const orgData = await Org.create(newOrg);
-        console.log(`✅ Organization ${orgData.orgName} registered successfully`);
+
+        if (!orgData) {
+            error_tracker = 3;
+            throw new Error("Failed to create Organization. Rolling back! Click the 'back' button, and try again!");
+        }
 
         const departmentDoc = await Department.create({
             org: newAdminNumber,
@@ -61,9 +58,13 @@ exports.createOrg = async (req, res) => {
             collegeDepartments: [],
             employeeDepartments: []
         });
-        console.log(`📁 Department schema initialized for orgId: ${departmentDoc.org}`);
 
-        const newLog = {
+        if (!departmentDoc) {
+            error_tracker = 4;
+            throw new Error("Failed to create department. Rolling back! Click the 'back' button, and try again!");
+        }
+
+        const logData = await Logs.create({
             org: newAdminNumber,
             registerLogs: [`Organization created at ${moment().format("DD-MM-YYYY HH:mm:ss")}`],
             loginLogs: [],
@@ -72,15 +73,36 @@ exports.createOrg = async (req, res) => {
             studentSessionLog: [],
             studentAttendanceHistory: [],
             employeeAttendanceHistory: []
-        };
+        });
 
-        const logData = await Logs.create(newLog);
-        console.log(`📝 Log created successfully for orgId: ${logData.org}`);
+        if (!logData) {
+            error_tracker = 5;
+            throw new Error("Failed to create logs. Rolling back! Click the 'back' button, and try again!");
+        }
 
         return res.redirect('/login');
 
     } catch (err) {
-        console.error("❌ Error while creating org:", err);
-        res.send(`<h2>❌ Error: ${err.message}</h2>`);
+        async function rollbackCounter() {
+            await Counter.updateOne(
+                {},
+                { $inc: { newAdminValue: -1 } }
+            )
+        }
+        const rollbackOrg = async () => { await Org.deleteOne({ uniqueId: newAdminNumber }); }
+        const rollbackDepartment = async () => { await Department.deleteOne({ org: newAdminNumber }); }
+
+        if (error_tracker == 3) rollbackCounter();
+        else if (error_tracker == 4) {
+            rollbackCounter();
+            rollbackOrg();
+        }
+        else if (error_tracker == 5) {
+            rollbackCounter();
+            rollbackOrg();
+            rollbackDepartment();
+        }
+        
+        return res.render('register/admin-register', { error: err.message });
     }
 };
