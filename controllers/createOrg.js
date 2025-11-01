@@ -44,16 +44,12 @@ exports.createOrg = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
+        error_tracker = 2;
         const counterDoc = await counter.findOneAndUpdate(
             {},
             { $inc: { newAdminValue: 1 } },
             { new: true }
         );
-
-        if (!counterDoc) {
-            error_tracker = 2;
-            return res.render('register/admin-register', { error: 'Fatal Error: Missing counter! Contact developers!' });
-        }
 
         newAdminNumber = counterDoc.newAdminValue.toString();
 
@@ -73,26 +69,19 @@ exports.createOrg = async (req, res) => {
             }]
         };
 
-        const orgData = await org.create(newOrg);
+        error_tracker = 3;
+        await org.create(newOrg);
 
-        if (!orgData) {
-            error_tracker = 3;
-            return res.render('register/admin-register', { error: 'Failed to create Organization. Try again!' });
-        }
-
-        const departmentDoc = await department.create({
+        error_tracker = 4;
+        await department.create({
             org: newAdminNumber,
             schoolStudentStandard: [],
             collegeDepartments: [],
             employeeDepartments: []
         });
 
-        if (!departmentDoc) {
-            error_tracker = 4;
-            return res.render('register/admin-register', { error: 'Failed to create department. Try again!' });
-        }
-
-        const logData = await logs.create({
+        error_tracker = 5;
+        await logs.create({
             org: newAdminNumber,
             registerLogs: [`Organization created at ${moment().format("DD-MM-YYYY HH:mm:ss")}`],
             loginLogs: [],
@@ -103,25 +92,38 @@ exports.createOrg = async (req, res) => {
             employeeAttendanceHistory: []
         });
 
-        if (!logData) {
-            error_tracker = 5;
-            return res.render('register/admin-register', { error: 'Failed to create logs. Try again!' });
-        }
-
         return res.redirect('/login');
 
     } catch (err) {
-        if (error_tracker == 3) await rollbackAdminCounter();
-        else if (error_tracker == 4) {
-            await rollbackAdminCounter();
-            await rollbackOrg(newAdminNumber);
-        }
-        else if (error_tracker == 5) {
-            await rollbackAdminCounter();
-            await rollbackOrg(newAdminNumber);
-            await rollbackDepartment(newAdminNumber);
-        }
+        const error_messages = {
+            2: 'Fatal Error: Missing counter. Contact your organization!',
+            3: 'Failed to create Organization. Try again!',
+            4: 'Failed to create department. Try again!',
+            5: 'Failed to create logs. Try again!'
+        };
 
-        return res.render('register/admin-register', { error: err.message });
+        switch (error_tracker) {
+            case 2:
+                return res.render('register/admin-register', { error: error_messages[2] });
+
+            case 3:
+                await rollbackAdminCounter();
+                return res.render('register/admin-register', { error: error_messages[3] });
+
+            case 4:
+                await rollbackAdminCounter();
+                await rollbackOrg(newAdminNumber);
+                return res.render('register/admin-register', { error: error_messages[4] });
+
+            case 5:
+                await rollbackAdminCounter();
+                await rollbackOrg(newAdminNumber);
+                await rollbackDepartment(newAdminNumber);
+                return res.render('register/admin-register', { error: error_messages[5] });
+
+            default:
+                return res.render('register/admin-register', { error: err.message });
+        }
     }
+
 };

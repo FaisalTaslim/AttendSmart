@@ -4,8 +4,8 @@ const Department = require('../models/departments');
 const logs = require('../models/logs');
 const collegeStudent = require('../models/CollegeStudent');
 const schoolStudent = require('../models/SchoolStudent');
-const { FinalStudentSummary } = require('../../models/overallSummary');
-const { MonthlyStudentSummary } = require('../../models/monthlySummary');
+const { FinalStudentSummary } = require('../models/overallSummary');
+const { MonthlyStudentSummary } = require('../models/monthlySummary');
 
 async function rollbackAdminCounter() {
     await Counter.updateOne(

@@ -7,7 +7,7 @@ const counter = require('../../models/counter');
 const logs = require('../../models/logs');
 const department = require('../../models/departments');
 const moment = require('moment');
-const { rollbackStudentCounter, rollbackSummary, rollbackStudent, rollbackRegisterLog } = require('../utils/rollback-functions');
+const { rollbackStudentCounter, rollbackSummary, rollbackStudent, rollbackRegisterLog } = require('../../utils/rollback-functions');
 
 exports.createCollegeStudent = async (req, res) => {
     let error_tracker;
