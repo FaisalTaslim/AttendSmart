@@ -125,5 +125,4 @@ exports.createOrg = async (req, res) => {
                 return res.render('register/admin-register', { error: err.message });
         }
     }
-
 };
