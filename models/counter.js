@@ -3,15 +3,15 @@ const {Schema} = mongoose;
 
 const counterSchema = mongoose.Schema({
     originalCountValue: {
-        type: String,
+        type: Number,
         required: true,
         default: "0"
     },
-    newAdminValue: {type: String, required: true, default: "0"},
-    newStudentValue: {type: String, required: true,
+    newAdminValue: {type: Number, required: true, default: "0"},
+    newStudentValue: {type: Number, required: true,
          default: "0"},
     newEmployeeValue: {
-        type: String,
+        type: Number,
         required: true,
         default: "0"
     }

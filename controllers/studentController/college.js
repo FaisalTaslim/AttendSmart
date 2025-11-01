@@ -77,7 +77,7 @@ exports.createCollegeStudent = async (req, res) => {
         const newStudent = await collegeStudent.create({
             org: findOrgId,
             uniqueId: newCollegeStudentNumber,
-            userName,
+            userName: lowerCaseData.userName,
             roll,
             dept: dept.toUpperCase(),
             contact,
@@ -96,7 +96,7 @@ exports.createCollegeStudent = async (req, res) => {
             await FinalStudentSummary.create({
                 org: findOrgId,
                 student: findStudentId,
-                studentName: newStudent.userName,
+                studentName: lowerCaseData.userName,
                 std_dept: lowerCaseData.dept,
                 subjectName: subject,
                 totalLectures: 0,
@@ -125,7 +125,7 @@ exports.createCollegeStudent = async (req, res) => {
         error_tracker = 8;
         await department.findOneAndUpdate(
             { org: findOrgId },
-            { $push: { collegeDepartments: dept } },
+            { $push: { collegeDepartments: lowerCaseData.dept } },
         );
 
         error_tracker = 9;

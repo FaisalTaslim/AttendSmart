@@ -46,10 +46,12 @@ exports.createSchoolStudent = async (req, res) => {
             return res.render('register/school-register', { error: 'No organization found! Try again!' });
         }
 
+        console.log(`Printing the log document for org \n ${findOrg}`)
         findOrgId = findOrg.uniqueId;
+        console.log(`Printing the ord id: ${findOrgId}`);
         orgType = findOrg.orgType;
 
-        const findStudent = await collegeStudent.findOne({ org: findOrgId, userName, roll, standard: lowerCaseData.standard });
+        const findStudent = await schoolStudent.findOne({ org: findOrgId, userName, roll, standard: lowerCaseData.standard });
         if (findStudent) {
             error_tracker = 2;
             return res.render('register/college-register', { error: 'Duplicate Account Creation Attempt! Login with your existing account!' });
@@ -77,7 +79,7 @@ exports.createSchoolStudent = async (req, res) => {
         const newStudent = await schoolStudent.create({
             org: findOrg.uniqueId,
             uniqueId: newSchoolStudentNumber,
-            userName,
+            userName: lowerCaseData.userName,
             roll,
             standard: standard.toUpperCase(),
             contact,
@@ -96,7 +98,7 @@ exports.createSchoolStudent = async (req, res) => {
             await FinalStudentSummary.create({
                 org: findOrgId,
                 student: findStudentId,
-                studentName: newStudent.userName,
+                studentName: lowerCaseData.userName,
                 std_dept: standard.toUpperCase(),
                 subjectName: subject,
                 totalLectures: 0,
@@ -111,7 +113,7 @@ exports.createSchoolStudent = async (req, res) => {
             await MonthlyStudentSummary.create({
                 org: findOrgId,
                 student: findStudentId,
-                studentName: newStudent.userName,
+                studentName: lowerCaseData.userName,
                 std_dept: standard.toUpperCase(),
                 subjectName: subject,
                 month: monthKey,
@@ -130,9 +132,9 @@ exports.createSchoolStudent = async (req, res) => {
         );
 
         error_tracker = 9;
-        logMessage = `Student: ${userName}, Department: ${dept}, Roll: ${roll}, Joined on ${moment().format("DD-MM-YYYY HH:mm:ss")}`;
+        logMessage = `Student: ${userName}, Standard: ${lowerCaseData.standard}, Roll: ${roll}, Joined on ${moment().format("DD-MM-YYYY HH:mm:ss")}`;
         await logs.findOneAndUpdate(
-            { org: findOrg.uniqueId },
+            { org: findOrgId },
             { $push: { registerLogs: logMessage } },
         );
 

@@ -56,10 +56,10 @@ async function rollbackStudent(orgId, systemId, orgType) {
 }
 
 async function rollbackSummary(orgId, systemId, summaryType) {
-    if (summaryType == "final")
-        await FinalStudentSummary.findOneAndDelete({ org: orgId, student: systemId });
+    if (summaryType === "final")
+        await FinalStudentSummary.deleteMany({ org: orgId, student: systemId });
     else
-        await MonthlyStudentSummary.findOneAndDelete({ org: orgId, student: systemId });
+        await MonthlyStudentSummary.deleteMany({ org: orgId, student: systemId });
 }
 
 
