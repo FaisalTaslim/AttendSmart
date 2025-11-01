@@ -1,43 +1,71 @@
-const Counter = require('../models/counter');
+const counter = require('../models/counter');
 const bcrypt = require('bcrypt');
-const Org = require('../models/Org');
-const Logs = require('../models/logs');
-const Department = require('../models/departments');
+const org = require('../models/Org');
+const logs = require('../models/logs');
+const department = require('../models/departments');
 const moment = require('moment');
+const { rollbackAdminCounter, rollbackOrg, rollbackDepartment } = require('../utils/rollback-functions');
 
 exports.createOrg = async (req, res) => {
     let error_tracker = 0;
     let newAdminNumber = 0;
     try {
-        const { adminName, adminId, adminContact, adminEmail, adminPassword } = req.body.admin[0];
-        const { orgName, branch, expectedTeachers, expectedStudents } = req.body;
+        const {
+            adminName,
+            adminId,
+            adminContact,
+            adminEmail,
+            adminPassword
+        } = req.body.admin[0];
 
-        const existingOrg = await Org.findOne({ orgName, branch });
+        const {
+            orgName,
+            orgBranch,
+            address,
+            expectedEmployees,
+            expectedStudents,
+        } = req.body;
+
+        const lowerCaseData = {
+            orgName: orgName.toLowerCase(),
+            orgBranch: orgBranch.toLowerCase(),
+            address: address.toLowerCase(),
+            adminName: adminName.toLowerCase(),
+        }
+
+        const existingOrg = await org.findOne({ orgName: lowerCaseData.orgName, orgBranch: lowerCaseData.orgBranch });
         if (existingOrg) {
             error_tracker = 1;
 
             return res.render('register/admin-register', {
-                error: "Duplicate Registration attempt. Please login with your old account!"
+                error: "Duplicate Registration attempt. Please login with your existing account!"
             });
         }
 
         const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
-        const counterDoc = await Counter.findOneAndUpdate({}, { $inc: { newAdminValue: 1 } }, { new: true });
+        const counterDoc = await counter.findOneAndUpdate(
+            {},
+            { $inc: { newAdminValue: 1 } },
+            { new: true }
+        );
+
         if (!counterDoc) {
             error_tracker = 2;
-            return res.render('register/admin-register', { error: "Fatal Error: Missing counter! Contact developers! Click the 'back' button" });
+            return res.render('register/admin-register', { error: 'Fatal Error: Missing counter! Contact developers!' });
         }
 
         newAdminNumber = counterDoc.newAdminValue.toString();
 
         const newOrg = {
             uniqueId: newAdminNumber,
-            expectedTeachers: Number(expectedTeachers),
+            orgName: lowerCaseData.orgName,
+            orgBranch: lowerCaseData.orgBranch,
+            expectedEmployees: Number(expectedEmployees),
             expectedStudents: Number(expectedStudents),
             ...req.body,
             admin: [{
-                adminName,
+                adminName: lowerCaseData.adminName,
                 adminId,
                 adminContact,
                 adminEmail,
@@ -45,14 +73,14 @@ exports.createOrg = async (req, res) => {
             }]
         };
 
-        const orgData = await Org.create(newOrg);
+        const orgData = await org.create(newOrg);
 
         if (!orgData) {
             error_tracker = 3;
-            throw new Error("Failed to create Organization. Rolling back! Click the 'back' button, and try again!");
+            return res.render('register/admin-register', { error: 'Failed to create Organization. Try again!' });
         }
 
-        const departmentDoc = await Department.create({
+        const departmentDoc = await department.create({
             org: newAdminNumber,
             schoolStudentStandard: [],
             collegeDepartments: [],
@@ -61,10 +89,10 @@ exports.createOrg = async (req, res) => {
 
         if (!departmentDoc) {
             error_tracker = 4;
-            throw new Error("Failed to create department. Rolling back! Click the 'back' button, and try again!");
+            return res.render('register/admin-register', { error: 'Failed to create department. Try again!' });
         }
 
-        const logData = await Logs.create({
+        const logData = await logs.create({
             org: newAdminNumber,
             registerLogs: [`Organization created at ${moment().format("DD-MM-YYYY HH:mm:ss")}`],
             loginLogs: [],
@@ -77,32 +105,23 @@ exports.createOrg = async (req, res) => {
 
         if (!logData) {
             error_tracker = 5;
-            throw new Error("Failed to create logs. Rolling back! Click the 'back' button, and try again!");
+            return res.render('register/admin-register', { error: 'Failed to create logs. Try again!' });
         }
 
         return res.redirect('/login');
 
     } catch (err) {
-        async function rollbackCounter() {
-            await Counter.updateOne(
-                {},
-                { $inc: { newAdminValue: -1 } }
-            )
-        }
-        const rollbackOrg = async () => { await Org.deleteOne({ uniqueId: newAdminNumber }); }
-        const rollbackDepartment = async () => { await Department.deleteOne({ org: newAdminNumber }); }
-
-        if (error_tracker == 3) rollbackCounter();
+        if (error_tracker == 3) await rollbackAdminCounter();
         else if (error_tracker == 4) {
-            rollbackCounter();
-            rollbackOrg();
+            await rollbackAdminCounter();
+            await rollbackOrg(newAdminNumber);
         }
         else if (error_tracker == 5) {
-            rollbackCounter();
-            rollbackOrg();
-            rollbackDepartment();
+            await rollbackAdminCounter();
+            await rollbackOrg(newAdminNumber);
+            await rollbackDepartment(newAdminNumber);
         }
-        
+
         return res.render('register/admin-register', { error: err.message });
     }
 };

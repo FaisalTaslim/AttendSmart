@@ -3,12 +3,20 @@ const { FinalStudentSummary } = require('../../models/overallSummary');
 const { MonthlyStudentSummary } = require('../../models/monthlySummary');
 const Org = require('../../models/Org');
 const bcrypt = require('bcrypt');
-const Counter = require('../../models/counter');
-const Logs = require('../../models/logs');
-const Department = require('../../models/departments');
+const counter = require('../../models/counter');
+const logs = require('../../models/logs');
+const department = require('../../models/departments');
 const moment = require('moment');
+const { rollbackStudentCounter, rollbackSummary, rollbackStudent, rollbackRegisterLog } = require('../utils/rollback-functions');
 
 exports.createCollegeStudent = async (req, res) => {
+    let error_tracker;
+    let newCollegeStudentNumber;
+    let findStudentId;
+    let findOrgId;
+    let orgType;
+    let logMessage;
+
     try {
         const {
             userName,
@@ -23,29 +31,68 @@ exports.createCollegeStudent = async (req, res) => {
             termsCheck
         } = req.body;
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const lowerCaseData = {
+            userName: userName.toLowerCase(),
+            orgName: orgName.toLowerCase(),
+            orgBranch: orgBranch.toLowerCase(),
+            dept: dept.toLowerCase()
+        }
 
-        const counterDoc = await Counter.findOne();
-        const newCollegeStudentNumber = (Number(counterDoc.newStudentValue) + 1).toString();
-        counterDoc.newStudentValue = newCollegeStudentNumber;
-        await counterDoc.save();
-
-        const findOrg = await Org.findOne({
-            orgName: new RegExp(`^${orgName}$`, 'i'),
-            orgBranch: new RegExp(`^${orgBranch}$`, 'i')
-        });
+        const findOrg = await Org.findOne({ orgName: lowerCaseData.orgName, orgBranch: lowerCaseData.orgBranch });
 
         if (!findOrg) {
-            return res.send(`<h2>❌ Error: Organization not found</h2>`);
+            error_tracker = 1;
+
+            return res.render('register/school-register', {
+                error: 'No organization found! Try again!'
+            });
         }
+
+        findOrgId = findOrg.uniqueId;
+        orgType = findOrg.orgType;
+
+        const findStudent = await collegeStudent.findOne({ org: findOrgId, userName: userName, roll: roll, dept: lowerCaseData.dept });
+        if (findStudent) {
+            error_tracker = 2;
+
+            return res.render('register/college-register', {
+                error: 'Duplicate Account Creation Attempt! Login with your existing account!'
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const counterDoc = await counter.findOneAndUpdate(
+            {},
+            { $inc: { newStudentValue: 1 } },
+            { new: true }
+        )
+
+        if (!counterDoc) {
+            error_tracker = 3;
+
+            return res.render('register/college-register', {
+                error: 'Fatal Error: Missing counter! Contact developers or your organization!'
+            });
+        }
+
+        newCollegeStudentNumber = counterDoc.newStudentValue;
 
         const subjectArray = Array.isArray(subjectName) ? subjectName : [subjectName];
         const filteredSubjects = subjectArray.filter(sub => sub && sub.trim() !== "");
-        
+
+        if (!filteredSubjects) {
+            error_tracker = 4;
+
+            return res.render('register/college-register', {
+                error: "Please enter the subjects, and try again!"
+            });
+        }
+
         const monthKey = moment().format("YYYY-MM");
 
         const newStudent = await collegeStudent.create({
-            org: findOrg.uniqueId,
+            org: findOrgId,
             uniqueId: newCollegeStudentNumber,
             userName,
             roll,
@@ -58,27 +105,44 @@ exports.createCollegeStudent = async (req, res) => {
             subjects: filteredSubjects,
         });
 
+        if (!newStudent) {
+            error_tracker = 5;
+
+            return res.render('register/college-register', {
+                error: "Couldn't create account! Please try again!"
+            });
+        }
+
+        findStudentId = newStudent.uniqueId;
+
         for (const subject of filteredSubjects) {
-            await FinalStudentSummary.create({
-                org: findOrg.uniqueId,
-                student: newStudent.uniqueId,
+            const newFinalSummary = await FinalStudentSummary.create({
+                org: findOrgId,
+                student: findStudentId,
                 studentName: newStudent.userName,
-                std_dept: dept.toUpperCase(),
+                std_dept: lowerCaseData.dept,
                 subjectName: subject,
                 totalLectures: 0,
                 attendedLectures: 0,
                 leaveDays: 0,
                 percentage: 0
             });
-            console.log(`✅ Attendance summary created for subject: ${subject}`);
+
+            if (!newFinalSummary) {
+                error_tracker = 6;
+
+                return res.render('register/college-register', {
+                    error: "Couldn't create summaries! Please try again!"
+                });
+            }
         }
-        
+
         for (const subject of filteredSubjects) {
-            await MonthlyStudentSummary.create({
-                org: findOrg.uniqueId,
-                student: newStudent.uniqueId,
+            const newMonthlySummary = await MonthlyStudentSummary.create({
+                org: findOrgId,
+                student: findStudentId,
                 studentName: newStudent.userName,
-                std_dept: dept.toUpperCase(),
+                std_dept: lowerCaseData.dept,
                 subjectName: subject,
                 month: monthKey,
                 totalLectures: 0,
@@ -87,34 +151,81 @@ exports.createCollegeStudent = async (req, res) => {
                 percentage: 0
             });
 
-            console.log(`✅ Attendance summary created for subject: ${subject} for month ${monthKey}`);
+            if (!newMonthlySummary) {
+                error_tracker = 7;
+
+                return res.render('register/college-register', {
+                    error: "Couldn't create summaries! Please try again!"
+                });
+            }
         }
 
 
-        await Department.findOneAndUpdate(
-            { org: findOrg.uniqueId },
-            { $addToSet: { collegeDepartments: dept } },
-            { upsert: true, new: true }
+        const pushDept = await department.findOneAndUpdate(
+            { org: findOrgId },
+            { $push: { collegeDepartments: dept } },
         );
 
-        const logMessage = `Student: ${userName}, Department: ${dept}, Roll: ${roll}, Joined on ${moment().format("DD-MM-YYYY HH:mm:ss")}`;
-        const logDoc = await Logs.findOne({ org: findOrg.uniqueId });
+        if (!pushDept) {
+            error_tracker = 8;
 
-        if (logDoc) {
-            logDoc.registerLogs.push(logMessage);
-            await logDoc.save();
-        } else {
-            console.log("⚠️ No log document found for this organization.");
+            return res.render('register/college-register', {
+                error: "Failed to create! Try again!"
+            });
         }
 
-        findOrg.registeredStudents += 1;
-        await findOrg.save();
+        logMessage = `Student: ${userName}, Department: ${dept}, Roll: ${roll}, Joined on ${moment().format("DD-MM-YYYY HH:mm:ss")}`;
+        const logDoc = await logs.findOneAndUpdate(
+            { org: findOrg.uniqueId },
+            { $push: { registerLogs: logMessage } },
+        );
 
-        console.log("📝 Log saved to Org.");
-        res.send(`<h2>✅ Student created and attendance summaries saved!</h2>`);
+        if (!logDoc) {
+            error_tracker = 9;
+
+            return res.render('register/college-register', {
+                error: "Fatal error: Failed to create log. Contact your educational institute"
+            });
+        }
+
+        const updatedOrg = await Org.findOneAndUpdate(
+            { org: findOrgId },
+            { $inc: { registeredStudents: 1 } }
+        )
+
+        if (!updatedOrg) {
+            error_tracker = 10;
+
+            return res.render('register/college-register', {
+                error: "Fatal error: Failed to create. Organization details not available. Contact your educational institute"
+            });
+        }
+
+        res.redirect('/login');
 
     } catch (err) {
-        console.error(err);
-        res.send(`<h2>❌ Error: ${err.message}</h2>`);
+        if(error_tracker == 3 || error_tracker == 4 || error_tracker == 5) await rollbackStudentCounter();
+        else if(error_tracker == 6) {
+            await rollbackStudentCounter();
+            await rollbackStudent(findOrgId, findStudentId, orgType);
+        }
+        else if(error_tracker == 7) {
+            await rollbackStudentCounter();
+            await rollbackStudent(findOrgId, findStudentId, orgType);
+            await rollbackSummary(findOrgId, findStudentId, "final");
+        }
+        else if(error_tracker == 8 || error_tracker == 9) {
+            await rollbackStudentCounter();
+            await rollbackStudent(findOrgId, findStudentId, orgType);
+            await rollbackSummary(findOrgId, findStudentId, "final");
+            await rollbackSummary(findOrgId, findStudentId, "monthly");
+        }
+        else if(error_tracker == 10) {
+            await rollbackStudentCounter();
+            await rollbackStudent(findOrgId, findStudentId, orgType);
+            await rollbackSummary(findOrgId, findStudentId, "final");
+            await rollbackSummary(findOrgId, findStudentId, "monthly");
+            await rollbackRegisterLog(findOrgId, logMessage, "System couldn't find your document to update the registered student count!");
+        }
     }
 };
