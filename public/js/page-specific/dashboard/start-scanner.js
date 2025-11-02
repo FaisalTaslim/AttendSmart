@@ -26,7 +26,6 @@ domReady(function () {
 
         alert("QR Scanned: " + decodeText);
 
-        // Send QR data to backend
         fetch("/mark-employee", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -51,10 +50,8 @@ domReady(function () {
     const htmlscanner = new Html5QrcodeScanner("my-qr-reader", {
         fps: 10,
         qrbox: function (viewfinderWidth, viewfinderHeight) {
-            // Dynamically set QR box size to 75% of the smaller edge
             let minEdge = Math.min(viewfinderWidth, viewfinderHeight);
             let qrboxSize = Math.floor(minEdge * 0.75);
-            console.log("📏 QR Box size:", qrboxSize);
             return { width: qrboxSize, height: qrboxSize };
         },
     });

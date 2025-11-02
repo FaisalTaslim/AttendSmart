@@ -4,6 +4,9 @@ const Department = require('../models/departments');
 const logs = require('../models/logs');
 const collegeStudent = require('../models/CollegeStudent');
 const schoolStudent = require('../models/SchoolStudent');
+const employee = require('../models/Employee');
+const { FinalEmployeeSummary } = require('../models/overallSummary');
+const { MonthlyEmployeeSummary } = require('../models/monthlySummary');
 const { FinalStudentSummary } = require('../models/overallSummary');
 const { MonthlyStudentSummary } = require('../models/monthlySummary');
 
@@ -20,6 +23,14 @@ async function rollbackStudentCounter() {
         { $inc: { newStudentValue: -1 } }
     );
 }
+
+async function rollbackEmployeeCounter() {
+    await Counter.updateOne(
+        {},
+        { $inc: { newEmployeeValue: -1 } }
+    );
+}
+
 
 async function rollbackOrg(newAdminNumber) {
     await Org.findOneAndDelete({ uniqueId: newAdminNumber });
@@ -55,6 +66,10 @@ async function rollbackStudent(orgId, systemId, orgType) {
         await collegeStudent.findOneAndDelete({ org: orgId, uniqueId: systemId });
 }
 
+async function rollbackEmployee(orgId, systemId) {
+    await findOneAndDelete({ org: orgId, uniqueId: systemId });
+}
+
 async function rollbackSummary(orgId, systemId, summaryType) {
     if (summaryType === "final")
         await FinalStudentSummary.deleteMany({ org: orgId, student: systemId });
@@ -62,5 +77,23 @@ async function rollbackSummary(orgId, systemId, summaryType) {
         await MonthlyStudentSummary.deleteMany({ org: orgId, student: systemId });
 }
 
+async function rollbackEmployeeSummary(orgId, systemId, summaryType) {
+    if (summaryType == 'final')
+        await FinalEmployeeSummary.deleteMany({ org: orgId, employee: systemId });
+    else
+        await MonthlyStudentSummary.deleteMany({ org: orgId, employee: systemId });
+}
 
-module.exports = { rollbackAdminCounter, rollbackStudentCounter, rollbackSummary, rollbackOrg, rollbackDepartment, rollbackStudent, rollbackRegisterLog };
+
+module.exports = {
+    rollbackAdminCounter,
+    rollbackStudentCounter,
+    rollbackEmployeeCounter,
+    rollbackSummary,
+    rollbackOrg,
+    rollbackDepartment,
+    rollbackStudent,
+    rollbackRegisterLog,
+    rollbackEmployee,
+    rollbackEmployeeSummary,
+};
