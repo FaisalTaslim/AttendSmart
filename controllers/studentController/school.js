@@ -33,10 +33,10 @@ exports.createSchoolStudent = async (req, res) => {
 
         const lowerCaseData = {
             userName: userName.toLowerCase(),
-            standard: standard.toLowerCase(),
             orgName: orgName.toLowerCase(),
             orgBranch: orgBranch.toLowerCase(),
             standard: standard.toLowerCase(),
+            email: email.toLowerCase()
         }
 
         const findOrg = await Org.findOne({ orgName: lowerCaseData.orgName, orgBranch: lowerCaseData.orgBranch });
@@ -81,7 +81,7 @@ exports.createSchoolStudent = async (req, res) => {
             uniqueId: newSchoolStudentNumber,
             userName: lowerCaseData.userName,
             roll,
-            standard: standard.toUpperCase(),
+            standard: lowerCaseData.standard,
             contact,
             email,
             onLeave: false,
@@ -144,6 +144,11 @@ exports.createSchoolStudent = async (req, res) => {
             { $inc: { registeredStudents: 1 } }
         );
 
+        try {
+            await sendRegistrationMail(lowerCaseData.email, userName, findStudentId);
+        } catch (mailError) {
+            console.error('❌ Failed to send registration email:', mailError.message);
+        }
         return res.redirect('/login');
 
     } catch (err) {

@@ -43,7 +43,8 @@ exports.createEmployee = async (req, res) => {
             designation: designation.toLowerCase(),
             dept: dept.toLowerCase(),
             orgName: orgName.toLowerCase(),
-            orgBranch: orgBranch.toLowerCase()
+            orgBranch: orgBranch.toLowerCase(),
+            email: email.toLowerCase()
         };
 
         error_tracker = 1;
@@ -153,6 +154,13 @@ exports.createEmployee = async (req, res) => {
             { uniqueId: findOrgId },
             { $inc: { registeredEmployees: 1 } }
         );
+
+        try {
+            await sendRegistrationMail(lowerCaseData.email, userName, newEmployeeNumber, 'Employee');
+
+        } catch (mailError) {
+            console.error('❌ Failed to send registration email:', mailError.message);
+        }
 
         return res.redirect('/login');
     } catch (err) {

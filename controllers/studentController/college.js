@@ -8,6 +8,7 @@ const logs = require('../../models/logs');
 const department = require('../../models/departments');
 const moment = require('moment');
 const { rollbackStudentCounter, rollbackSummary, rollbackStudent, rollbackRegisterLog } = require('../../utils/rollback-functions');
+const sendRegistrationMail = require('../../utils/sendEmails');
 
 exports.createCollegeStudent = async (req, res) => {
     let error_tracker = 0;
@@ -35,7 +36,8 @@ exports.createCollegeStudent = async (req, res) => {
             userName: userName.toLowerCase(),
             orgName: orgName.toLowerCase(),
             orgBranch: orgBranch.toLowerCase(),
-            dept: dept.toLowerCase()
+            dept: dept.toLowerCase(),
+            email: email.toLowerCase(),
         };
 
         const findOrg = await Org.findOne({ orgName: lowerCaseData.orgName, orgBranch: lowerCaseData.orgBranch });
@@ -58,8 +60,8 @@ exports.createCollegeStudent = async (req, res) => {
 
         error_tracker = 3;
         const counterDoc = await counter.findOneAndUpdate(
-            {}, 
-            { $inc: { newStudentValue: 1 } }, 
+            {},
+            { $inc: { newStudentValue: 1 } },
             { new: true }
         );
 
@@ -79,7 +81,7 @@ exports.createCollegeStudent = async (req, res) => {
             uniqueId: newCollegeStudentNumber,
             userName: lowerCaseData.userName,
             roll,
-            dept: dept.toUpperCase(),
+            dept: lowerCaseData.dept,
             contact,
             email,
             onLeave: false,
@@ -140,6 +142,13 @@ exports.createCollegeStudent = async (req, res) => {
             { org: findOrgId },
             { $inc: { registeredStudents: 1 } }
         );
+
+        try {
+            await sendRegistrationMail(lowerCaseData.email, userName, findStudentId);
+
+        } catch (mailError) {
+            console.error('❌ Failed to send registration email:', mailError.message);
+        }
 
         return res.redirect('/login');
 

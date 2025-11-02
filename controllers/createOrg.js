@@ -5,6 +5,8 @@ const logs = require('../models/logs');
 const department = require('../models/departments');
 const moment = require('moment');
 const { rollbackAdminCounter, rollbackOrg, rollbackDepartment } = require('../utils/rollback-functions');
+const sendRegistrationMail = require('../utils/sendEmails');
+
 
 exports.createOrg = async (req, res) => {
     let error_tracker = 0;
@@ -31,6 +33,7 @@ exports.createOrg = async (req, res) => {
             orgBranch: orgBranch.toLowerCase(),
             address: address.toLowerCase(),
             adminName: adminName.toLowerCase(),
+            adminId: adminId.toLowerCase(),
         }
 
         const existingOrg = await org.findOne({ orgName: lowerCaseData.orgName, orgBranch: lowerCaseData.orgBranch });
@@ -54,20 +57,22 @@ exports.createOrg = async (req, res) => {
         newAdminNumber = counterDoc.newAdminValue.toString();
 
         const newOrg = {
+            ...req.body, 
             uniqueId: newAdminNumber,
             orgName: lowerCaseData.orgName,
             orgBranch: lowerCaseData.orgBranch,
+            address: lowerCaseData.address,
             expectedEmployees: Number(expectedEmployees),
             expectedStudents: Number(expectedStudents),
-            ...req.body,
             admin: [{
                 adminName: lowerCaseData.adminName,
-                adminId,
+                adminId: lowerCaseData.adminId,
                 adminContact,
                 adminEmail,
                 adminPassword: hashedPassword
             }]
         };
+
 
         error_tracker = 3;
         await org.create(newOrg);
@@ -91,6 +96,12 @@ exports.createOrg = async (req, res) => {
             studentAttendanceHistory: [],
             employeeAttendanceHistory: []
         });
+
+        try {
+            await sendRegistrationMail(adminEmail, adminName, newAdminNumber, 'Admin');
+        } catch (mailError) {
+            console.error('❌ Failed to send registration email to admin:', mailError.message);
+        }
 
         return res.redirect('/login');
 
