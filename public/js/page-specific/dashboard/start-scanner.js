@@ -2,44 +2,62 @@ function domReady(fn) {
     if (
         document.readyState === "complete" ||
         document.readyState === "interactive"
-    ) {setTimeout(fn, 1000)} 
-    else {
+    ) {
+        setTimeout(fn, 1000);
+    } else {
         document.addEventListener("DOMContentLoaded", fn);
     }
 }
 
 domReady(function () {
-    const htmlscanner = new Html5QrcodeScanner(
-        "my-qr-reader",
-        { fps: 10, qrbox: { width: 250, height: 250 } }
-    );
+    console.log("✅ DOM Ready, initializing QR scanner...");
 
-    function onScanSuccess(decodedText, decodedResult) {
+    function onScanSuccess(decodeText) {
+        console.log("📸 QR detected:", decodeText);
+
         let qrData;
         try {
-            qrData = JSON.parse(decodedText);
-            alert("Parsed JSON: " + JSON.stringify(qrData));
-        } catch (e) {
-            alert("❌ Invalid QR data! Expected JSON.");
+            qrData = JSON.parse(decodeText);
+        } catch (err) {
+            alert("⚠️ Invalid QR code format!");
+            console.error("Parse error:", err);
             return;
         }
 
+        alert("QR Scanned: " + decodeText);
+
+        // Send QR data to backend
         fetch("/mark-employee", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(qrData)
+            body: JSON.stringify(qrData),
         })
-            .then(res => res.json())
-            .then(data => {
-                alert("✅ successful Scan: " + JSON.stringify(data));
-            })
-            .catch(err => alert("⚠️ Error sending to backend: " + err));
+            .then(async (res) => {
+                const data = await res.json().catch(() => ({}));
+                console.log("📨 Server response:", data);
 
-        setTimeout(() => {
-            htmlscanner.clear();
-            htmlscanner.render(onScanSuccess);
-        }, 2000);
+                if (res.ok) {
+                    alert("✅ Attendance marked successfully!");
+                } else {
+                    alert("❌ Server error: " + (data.message || res.status));
+                }
+            })
+            .catch((err) => {
+                console.error("💥 Fetch failed:", err);
+                alert("⚠️ Could not reach server!");
+            });
     }
+
+    const htmlscanner = new Html5QrcodeScanner("my-qr-reader", {
+        fps: 10,
+        qrbox: function (viewfinderWidth, viewfinderHeight) {
+            // Dynamically set QR box size to 75% of the smaller edge
+            let minEdge = Math.min(viewfinderWidth, viewfinderHeight);
+            let qrboxSize = Math.floor(minEdge * 0.75);
+            console.log("📏 QR Box size:", qrboxSize);
+            return { width: qrboxSize, height: qrboxSize };
+        },
+    });
 
     htmlscanner.render(onScanSuccess);
 });

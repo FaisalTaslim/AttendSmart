@@ -10,6 +10,9 @@ router.post('/', async (req, res) => {
     try {
         const { attendanceType, shift } = req.body;
         const shiftType = shift.trim();
+
+        console.log("Session user:", req.session.user);
+
         const sessionInstigator = req.session.user.name;
         const user = req.session.user.uniqueId;
 
@@ -23,21 +26,27 @@ router.post('/', async (req, res) => {
 
         const monthKey = moment().format("YYYY-MM");
 
-        await Promise.all([
-            logs.findOneAndUpdate(
-                { org: user },
-                { $push: { employeeSessionLogs: entry } }
-            ),
-            FinalEmployeeSummary.updateMany(
-                { org: user, shift: shift },
-                { $inc: { totalDays: 1 } }
-            ),
-            MonthlyEmployeeSummary.updateMany(
-                { org: user, month: monthKey, shift: shift },
-                { $inc: { totalDays: 1 } }
-            )
-        ]);
+        await logs.findOneAndUpdate(
+            { org: user },
+            { $push: { employeeSessionLogs: entry } }
+        );
 
+        const summaryDocsFinal = await FinalEmployeeSummary.updateMany(
+            { org: user, shift: shiftType },
+            { $inc: { totalDays: 1 } },
+            { new: true }
+        );
+
+        const summaryDocsMonthly = await MonthlyEmployeeSummary.updateMany(
+            { org: user, month: monthKey, shift: shiftType },
+            { $inc: { totalDays: 1 } },
+            { new: true }
+        )
+        console.log("Final Summaries:\n", JSON.stringify(summaryDocsFinal, null, 2));
+        console.log("Monthly Summaries:\n", JSON.stringify(summaryDocsMonthly, null, 2));
+
+
+        console.log("QR generated Successfully!");
         return res.render('qr', { qrImage });
 
     } catch (err) {
