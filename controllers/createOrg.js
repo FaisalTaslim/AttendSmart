@@ -29,10 +29,10 @@ exports.createOrg = async (req, res) => {
         } = req.body;
 
         const lowerCaseData = {
-            orgName: orgName.toLowerCase(),
-            orgBranch: orgBranch.toLowerCase(),
-            address: address.toLowerCase(),
-            adminName: adminName.toLowerCase(),
+            orgName: orgName.toLowerCase().trim(),
+            orgBranch: orgBranch.toLowerCase().trim(),
+            address: address.toLowerCase().trim(),
+            adminName: adminName.toLowerCase().trim(),
             adminId: adminId.toLowerCase(),
         }
 

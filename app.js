@@ -28,7 +28,6 @@ app.set('trust proxy', true);
 app.use(sessionMiddleware);
 app.use(setLocals);
 
-// Routes
 app.use('/', require('./routes/mainRoutes'));
 app.use('/register', require('./routes/registerViews'));
 app.use('/dashboard', require('./routes/dashboardRoutes'));

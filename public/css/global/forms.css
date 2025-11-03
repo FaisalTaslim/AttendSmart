@@ -27,7 +27,7 @@ legend {
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 0.5rem;
 }
 .form-group label {
     font-size: 1.1rem;
@@ -41,7 +41,7 @@ legend {
     border: 1px solid var(--border-color);
     border-radius: 10px;
     font-size: 1rem;
-    background-color: var(--text-primary);
+    background-color: var(--bg-secondary);
     color: black;
     transition: border 0.2s ease;
 }
@@ -49,7 +49,8 @@ legend {
 .form-group select:focus {
     border-color: var(--accent);
     outline: none;
-    background-color: var(--text-primary);
+    background-color: var(--bg-secondary);
+    color: black;
 }
 .form-group textarea {
     padding: 0.5rem 1rem;
@@ -67,3 +68,4 @@ button {
     cursor: pointer;
     transition: background 0.3s ease;
 }
+.form-title {text-align: center}

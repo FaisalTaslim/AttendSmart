@@ -38,13 +38,13 @@ exports.createEmployee = async (req, res) => {
         } = req.body;
 
         const lowerCaseData = {
-            userName: userName.toLowerCase(),
-            employeeId: employeeId.toLowerCase(),
-            designation: designation.toLowerCase(),
-            dept: dept.toLowerCase(),
-            orgName: orgName.toLowerCase(),
-            orgBranch: orgBranch.toLowerCase(),
-            email: email.toLowerCase()
+            userName: userName.toLowerCase().trim(),
+            employeeId: employeeId.toLowerCase().trim(),
+            designation: designation.toLowerCase().trim(),
+            dept: dept.toLowerCase().trim(),
+            orgName: orgName.toLowerCase().trim(),
+            orgBranch: orgBranch.toLowerCase().trim(),
+            email: email.toLowerCase().trim()
         };
 
         error_tracker = 1;

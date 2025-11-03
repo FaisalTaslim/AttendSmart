@@ -32,11 +32,11 @@ exports.createSchoolStudent = async (req, res) => {
         } = req.body;
 
         const lowerCaseData = {
-            userName: userName.toLowerCase(),
-            orgName: orgName.toLowerCase(),
-            orgBranch: orgBranch.toLowerCase(),
-            standard: standard.toLowerCase(),
-            email: email.toLowerCase()
+            userName: userName.toLowerCase().trim(),
+            orgName: orgName.toLowerCase().trim(),
+            orgBranch: orgBranch.toLowerCase().trim(),
+            standard: standard.toLowerCase().trim(),
+            email: email.toLowerCase().trim()
         }
 
         const findOrg = await Org.findOne({ orgName: lowerCaseData.orgName, orgBranch: lowerCaseData.orgBranch });

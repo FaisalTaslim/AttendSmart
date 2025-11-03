@@ -33,14 +33,15 @@ exports.createCollegeStudent = async (req, res) => {
         } = req.body;
 
         const lowerCaseData = {
-            userName: userName.toLowerCase(),
-            orgName: orgName.toLowerCase(),
+            userName: userName.toLowerCase().trim(),
+            orgName: orgName.toLowerCase().trim(),
             orgBranch: orgBranch.toLowerCase(),
-            dept: dept.toLowerCase(),
-            email: email.toLowerCase(),
+            dept: dept.toLowerCase().trim(),
+            email: email.toLowerCase().trim(),
         };
 
         const findOrg = await Org.findOne({ orgName: lowerCaseData.orgName, orgBranch: lowerCaseData.orgBranch });
+        console.log("Found Org \n: ", findOrg);
 
         if (!findOrg) {
             error_tracker = 1;
@@ -125,10 +126,20 @@ exports.createCollegeStudent = async (req, res) => {
         }
 
         error_tracker = 8;
-        await department.findOneAndUpdate(
-            { org: findOrgId },
-            { $push: { collegeDepartments: lowerCaseData.dept } },
-        );
+        const findDept = (await department.findOne({org: findOrgId}))?.collegeDepartments;
+        let matchedDept = false;
+        for (const dept of findDept) {
+            if(dept === lowerCaseData.dept) {
+                matchedDept = true;
+                break;
+            }
+        }
+        if(matchedDept == false) {
+            await department.findOneAndUpdate(
+                {org: findOrgId},
+                {$push: {collegeDepartments: lowerCaseData.dept}}
+            )
+        };
 
         error_tracker = 9;
         logMessage = `Student: ${userName}, Department: ${dept}, Roll: ${roll}, Joined on ${moment().format("DD-MM-YYYY HH:mm:ss")}`;
