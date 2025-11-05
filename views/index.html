@@ -5,209 +5,764 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomePage</title>
-    <link rel="stylesheet" href="/css/global/global-layout.css">
-    <link rel="stylesheet" href="/css/page-specific/homepage.css">
-    <link rel="stylesheet" href="/css/global/themes/dark-theme-1.css">
-    <link rel="stylesheet" href="/css/global/scrollbar.css">
-
+    <link rel="stylesheet" href="../public/css/global/font-family.css">
+    <link rel="stylesheet" href="../public/css/global/themes/light-theme-2.css">
+    <link rel="stylesheet" href="../public/css/page-specific/homepage.css">
+    <link rel="stylesheet" href="../public/css/global/forms.css">
     <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Underdog&display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Pacifico&family=Rock+Salt&family=WDXL+Lubrifont+TC&display=swap"
-        rel="stylesheet">
 </head>
 
 <body>
     <header>
-        <nav id="navbar">
-            <div class="nav-group1">
-                <div class="logo">
-                    <p class="font-1"><strong>AttendSmart</strong></p>
-                </div>
-            </div>
-            <div class="nav-group2">
-                <div class="nav-links">
-                    <a href="/support" class="nav-links-property hide">Support</a>
-                    <a href="/log" class="nav-links-property hide">Logs</a>
-                    <a href="/register" class="nav-links-property hide" id="register">Register</a>
-                    <a href="/login" class="nav-links-property hide">Login</a>
-                    <p class="nav-links-property"><i class="fa-solid fa-moon"></i></p>
-                    <p class="nav-links-property" id="sun"><i class="fa-regular fa-sun"></i></p>
-                    <p class="nav-links-property" id="menu-toggle"><i class="fa-solid fa-bars"></i></p>
-                </div>
-            </div>
+        <div class="logo">
+            <h1>AttendSmart - Smart Attendance Solution</h1>
+        </div>
+        <nav class="nav-bar">
+            <a href="" class="nav-links-property">Login</a>
+            <a href="" class="nav-links-property">GuideBook</a>
 
-            <div class="slide-menu">
-                <div class="nav-close-icon">
-                    <p class="sidemenu-heading"><strong>AttendSmart</strong></p>
-                    <p class="nav-links-property"><i class="fa-solid fa-xmark" id="close-toggle"></i></p>
-                </div>
-                <div class="dash-head">
-                    <h2><i class="fa-solid fa-route"></i> | Other pages</h2>
-                    <div class="dash-head-nav">
-                        <a href="/support">Support</a>
-                        <a href="/log">Logs</a>
-                        <a href="/register" id="register">Register</a>
-                        <a href="/login">Login</a>
-                    </div>
-                </div>
-            </div>
+            <select class="mobile-nav" id="mobile-nav">
+                <option value="">Navigate</option>
+                <option value="/login">Login</option>
+                <option value="/guidebook">GuideBook</option>
+            </select>
         </nav>
     </header>
     <main>
-        <section class="hero-bg">
-            <div class="bg-content">
-                <h1>Welcome to AttendSmart</h1>
+        <div class="main-1">
+            <div class="about-attendsmart">
+                <h1>Confused, are you? Read this!</h1>
                 <p>
-                    Attendance? Ugh, we know. Whether you're a student trying not to forget another lecture, or a
-                    teacher tired of roll calls and registers — we’ve got you?
+                    A Universal web-based attendance monitoring solution designed for multiple sectors, including
+                    schools, colleges, and companies.The system automates attendance tracking using multiple methods
+                    like QR code and Timed-session to maintain efficiency.
                 </p>
-                <p>
-                    Smart, simple, and stress-free — just the way it should be. Check your records, track your days, and
-                    stay in sync. No mess. No chaos. Just clean, smart attendance — right at your fingertips.
-                </p>
-                <p>
-                    Oh, and yeah — no paperwork ever again. 😎
-                </p>
-                <p><strong>Stay sharp. Stay present. Stay AttendSmart.</strong></p>
-                <div class="links-shortcut">
-                    <a href="/login" class="nav-links-property">login</a>
-                    <a href="/register" class="nav-links-property">Register</a>
+                <ul class="attendsmart-features">
+                    <li>
+                        This system works for all sectors, whether it is a school, a college, or a company.
+                     </li>
+                    <li>It has QR Code and Timed-session methods for monitoring purposes.</li>
+                    <li>It provides real-time dashboards for quick and efficient data visualization.</li>
+                    <li>This system operates on a role-based access model.</li>
+                </ul>
+                <h2>Say Goodbye to manual registers!!</h2>
+                <h2>Minimal or no cost setup!!</h2>
+                <h2>Proxy Free!!</h2>
+            </div>
+            <div class="register-screen">
+                <div class="register-selector">
+                    <h2>Register Now</h2>
+                    <div class="form-group">
+                        <select id="registerSelect">
+                            <option value="">-- Select a Registration Type --</option>
+                            <option value="admin-form-box">Admin Register</option>
+                            <option value="college-std-form-box">College Student Register</option>
+                            <option value="school-std-form-box">School Student Register</option>
+                            <option value="employee-form-box">Employee Register</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="registration-forms">
+                    <div class="register-forms-header">
+                        <h1>JOIN US NOW!</h1>
+                    </div>
+                    <div class="admin-form-box hidden" id="admin-form-box">
+                        <form action="/api/org/create-org" class="admin-form-wrapper" id="admin-form" method="POST">
+                            <h2 class="form-title">Admin Registration</h2>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="adminName">Name</label>
+                                    <input type="text" id="adminName" name="admin[0][adminName]">
+                                </div>
+                                <div class="form-group">
+                                    <label for="adminId">Admin ID</label>
+                                    <input type="text" id="adminId" name="admin[0][adminId]">
+                                </div>
+                                <div class="form-group">
+                                    <label for="adminContact">Mobile Number</label>
+                                    <input type="tel" id="adminContact" name="admin[0][adminContact]" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="adminEmail">Email</label>
+                                <input type="email" id="adminEmail" name="admin[0][adminEmail]">
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="adminPassword">Set Password</label>
+                                    <input type="text" id="adminPassword" name="admin[0][adminPassword]">
+                                </div>
+                                <div class="form-group">
+                                    <label for="adminConfirmPassword">Confirm Password</label>
+                                    <input type="text" id="adminConfirmPassword" name="confirmPassword">
+                                </div>
+                            </div>
+
+                            <h2 class="form-title">Organization Details</h2>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="orgName">Name</label>
+                                    <input type="text" id="orgName" name="orgName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="orgBranch">Branch</label>
+                                    <input type="text" id="orgBranch" name="orgBranch">
+                                </div>
+                                <div class="form-group">
+                                    <label for="orgType">Type</label>
+                                    <select id="orgType" name="orgType">
+                                        <option value="">Select</option>
+                                        <option value="school">School</option>
+                                        <option value="college">College</option>
+                                        <option value="corporate">Corporate</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="orgAddress">Address</label>
+                                <input type="text" id="orgAddress" name="address">
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="orgContact">Contact</label>
+                                    <input type="tel" id="orgContact" name="orgContact">
+                                </div>
+                                <div class="form-group">
+                                    <label for="orgEmail">Email</label>
+                                    <input type="email" id="orgEmail" name="orgEmail">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="totalEmployee">Total Employees</label>
+                                    <input type="text" id="totalEmployee" name="expectedEmployees">
+                                </div>
+                                <div class="form-group">
+                                    <label for="totalStudents">Total Students</label>
+                                    <input type="text" id="totalStudents" name="expectedStudents"
+                                        placeholder="Write '0' if invalid">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="orgWebsite">Website</label>
+                                <input type="url" id="orgWebsite" name="orgWebsite" placeholder="https://example.com">
+                            </div>
+
+                            <div class="form-group" id="register-terms"
+                                style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0;">
+                                <input type="checkbox" id="termsCheck" name="termsCheck" required>
+                                <label for="termsCheck" class="termsCheck"
+                                    style="font-size: 0.95rem; color: var(--text-secondary);">
+                                    I agree to the <a href="/terms" target="_blank" style="color:var(--link)">Terms &
+                                        Conditions</a> and
+                                    <a href="/privacy" target="_blank" style="color:var(--link)">Privacy Policy</a>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="submit-btn">Register Organization</button>
+                        </form>
+
+                    </div>
+                    <div class="college-std-form-box hidden" id="college-std-form-box">
+                        <form action="/api/register-college-student" class="student-form-wrapper"
+                            id="college-student-form" method="POST">
+                            <h2 class="form-title">College Student Registration</h2>
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="collegeUserName">Full Name</label>
+                                    <input type="text" id="collegeUserName" name="userName">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="collegeRoll">Full Roll Number</label>
+                                    <input type="text" id="collegeRoll" name="roll">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="collegeDept">Department</label>
+                                    <input type="text" id="collegeDept" name="dept">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="collegeContact">Contact Number</label>
+                                    <input type="tel" id="collegeContact" name="contact">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="collegeEmail">Email</label>
+                                    <input type="email" id="collegeEmail" name="email">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="collegeOrg">Organization Name</label>
+                                    <input type="text" id="collegeOrg" name="orgName">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="collegeBranch">Branch</label>
+                                    <input type="text" id="collegeBranch" name="orgBranch">
+                                </div>
+                            </div>
+
+                            <h2 class="form-title">Subject Details</h2>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="collegeSubject1">Subject 1</label>
+                                    <input type="text" id="collegeSubject1" name="subjectName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="collegeSubject2">Subject 2</label>
+                                    <input type="text" id="collegeSubject2" name="subjectName">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="collegeSubject3">Subject 3</label>
+                                    <input type="text" id="collegeSubject3" name="subjectName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="collegeSubject4">Subject 4</label>
+                                    <input type="text" id="collegeSubject4" name="subjectName">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="collegeSubject5">Subject 5</label>
+                                    <input type="text" id="collegeSubject5" name="subjectName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="collegeSubject6">Subject 6</label>
+                                    <input type="text" id="collegeSubject6" name="subjectName">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="collegeSubject7">Subject 7</label>
+                                    <input type="text" id="collegeSubject7" name="subjectName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="collegeSubject8">Subject 8</label>
+                                    <input type="text" id="collegeSubject8" name="subjectName">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="collegeSubject9">Subject 9</label>
+                                    <input type="text" id="collegeSubject9" name="subjectName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="collegeSubject10">Subject 10</label>
+                                    <input type="text" id="collegeSubject10" name="subjectName">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="collegeSubject11">Subject 11</label>
+                                    <input type="text" id="collegeSubject11" name="subjectName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="collegeSubject12">Subject 12</label>
+                                    <input type="text" id="collegeSubject12" name="subjectName">
+                                </div>
+                            </div>
+
+                            <h2 class="form-title">Password Setup</h2>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="Password3">Set Password</label>
+                                    <input type="text" id="Password3" name="password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="collegeConfirmPassword">Confirm Password</label>
+                                    <input type="text" id="collegeConfirmPassword" name="confirmPassword" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="register-terms"
+                                style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0;">
+                                <input type="checkbox" id="termsCheck" name="termsCheck" required>
+                                <label for="termsCheck" style="font-size: 0.95rem; color: var(--text-secondary);">
+                                    I agree to the
+                                    <a href="/terms" target="_blank" style="color:var(--link)">Terms & Conditions</a>
+                                    and
+                                    <a href="/privacy" target="_blank" style="color:var(--link)">Privacy Policy</a>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="submit-btn">Register Student</button>
+                        </form>
+                    </div>
+
+                    <div class="school-std-form-box hidden" id="school-std-form-box">
+                        <form action="/api/register-school-student" class="student-form-wrapper"
+                            id="school-student-form" method="POST">
+                            <h2 class="form-title">School Student Registration</h2>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="schoolUserName">Full Name</label>
+                                    <input type="text" id="schoolUserName" name="userName">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="schoolRoll">Roll Number</label>
+                                    <input type="text" id="schoolRoll" name="roll">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="schoolDivision">Division</label>
+                                    <input type="text" id="schoolDivision" name="standard">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="schoolContact">Contact Number</label>
+                                    <input type="tel" id="schoolContact" name="contact">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="schoolEmail">Email</label>
+                                    <input type="email" id="schoolEmail" name="email">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="schoolOrg">Organization Name</label>
+                                    <input type="text" id="schoolOrg" name="orgName">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="schoolBranch">Branch</label>
+                                    <input type="text" id="schoolBranch" name="orgBranch">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="subject1">Subject 1</label>
+                                    <input type="text" id="subject1" name="subjectName">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="subject2">Subject 2</label>
+                                    <input type="text" id="subject2" name="subjectName">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="subject3">Subject 3</label>
+                                    <input type="text" id="subject3" name="subjectName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="subject4">Subject 4</label>
+                                    <input type="text" id="subject4" name="subjectName">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="subject5">Subject 5</label>
+                                    <input type="text" id="subject5" name="subjectName">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="subject6">Subject 6</label>
+                                    <input type="text" id="subject6" name="subjectName">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="subject7">Subject 7</label>
+                                    <input type="text" id="subject7" name="subjectName">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="subject8">Subject 8</label>
+                                    <input type="text" id="subject8" name="subjectName">
+                                </div>
+
+
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="subject9">Subject 9</label>
+                                    <input type="text" id="subject9" name="subjectName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="subject10">Subject 10</label>
+                                    <input type="text" id="subject10" name="subjectName">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="subject11">Subject 11</label>
+                                    <input type="text" id="subject11" name="subjectName">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="subject12">Subject 12</label>
+                                    <input type="text" id="subject12" name="subjectName">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Password2">Set Password</label>
+                                <input type="text" id="Password2" name="password" required>
+                            </div>
+
+                            <div class="form-group" id="register-terms"
+                                style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0px;">
+                                <input type="checkbox" id="termsCheck" name="termsCheck" required>
+                                <label for="termsCheck" style="font-size: 0.95rem; color: var(--text-secondary);">
+                                    I agree to the
+                                    <a href="/terms" target="_blank" style="color:var(--link)">Terms & Conditions</a>
+                                    and
+                                    <a href="/privacy" target="_blank" style="color:var(--link)">Privacy Policy</a>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="submit-btn">Register Student</button>
+                        </form>
+                    </div>
+                    <div class="employee-form-box hidden" id="employee-form-box">
+                        <form action="/api/register-employee" class="employee-form-wrapper" id="employee-form"
+                            method="POST">
+                            <h2 class="form-title">Employee Registration</h2>
+
+                            <input type="hidden" name="role" value="employee">
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="empName">Full Name</label>
+                                    <input type="text" id="empName" name="userName">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="employeeId">Employee ID</label>
+                                    <input type="text" id="employeeId" name="employeeId">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="designation">Designation or Job Role</label>
+                                    <input type="text" id="designation" name="designation"
+                                        placeholder="e.g. Developer, Teacher etc">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="empDept">Department</label>
+                                    <input type="text" id="empDept" name="dept"
+                                        placeholder="Use abbreviations. Eg: CSE, ECE. Leave Empty if you're an Employee in a school">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="workType">Works in</label>
+                                    <select id="workType" name="workType">
+                                        <option value="">-- Select --</option>
+                                        <option value="school_college">School / College</option>
+                                        <option value="corporate">Corporate</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="shift">Select Shift:</label>
+                                    <select id="shift" name="shift" required>
+                                        <option value="" disabled selected>Select a shift</option>
+                                        <option value="day">Day Shift</option>
+                                        <option value="night">Night Shift</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="empContact">Contact Number</label>
+                                    <input type="tel" id="empContact" name="contact">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="empEmail">Email</label>
+                                    <input type="email" id="empEmail" name="email">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="empOrgName">Organization Name</label>
+                                    <input type="text" id="empOrgName" name="orgName">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="empOrgBranch">Organization Branch</label>
+                                    <input type="text" id="empOrgBranch" name="orgBranch">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Password4">Set Password</label>
+                                <input type="password" id="Password4" name="password">
+                            </div>
+
+                            <div class="form-group" id="register-terms"
+                                style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0px;">
+                                <input type="checkbox" id="termsCheck" name="termsCheck">
+                                <label for="termsCheck" style="font-size: 0.95rem; color: var(--text-secondary);">
+                                    I agree to the
+                                    <a href="/terms" target="_blank" style="color:var(--link)">Terms & Conditions</a>
+                                    and
+                                    <a href="/privacy" target="_blank" style="color:var(--link)">Privacy Policy</a>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="submit-btn">Register Employee</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </section>
-        <section class="about">
-            <div class="about-heading">
-                <h1>Know more about AttendSmart!</h1>
+        </div>
+        <div class="main-2">
+            <div class="about-support">
+                <h1>Need Help?</h1>
+                <p>
+                    At AttendSmart, support isn’t just an afterthought — it’s built right in. Whether you’re facing a
+                    technical glitch, have a suggestion, or simply want to share your thoughts, we’re all ears.
+                </p>
+                <ul class="support-features">
+                    <li>
+                        <strong>Issue Submission Form –</strong> Report bugs, glitches, or anything that’s not working
+                        as expected.
+                    </li>
+                    <li>
+                        <strong>Feedback Form –</strong> Share your ideas, suggestions, or just tell us how we're doing.
+                    </li>
+                    <li>
+                        <strong>Frequently Asked Questions (FAQs) –</strong> Get quick answers to common queries and
+                        how-tos.
+                    </li>
+                    <li>
+                        <strong>Contact Details –</strong> You'll find the contact details in the footer. Remember,
+                        useContact Support only when you're not able to reach out through other methods.
+                    </li>
+                </ul>
+                <h2>Report issues in seconds!!</h2>
+                <h2>Get instant help from our support team!!</h2>
+                <h2>Find answers in our FAQs!!</h2>
             </div>
-            <div class="about-details">
-                <div class="about-box">
-                    <h1><i class="fa-solid fa-1"></i> | What is AttendSmart?</h1>
-                    <p class="fontSize">
-                        A Universal Smart Attendance Tracking System is a web-based attendance monitoring solution
-                        designed for multiple sectors, including schools, colleges, and companies.The system automates
-                        attendance tracking using multiple methods like location-based tracking, wifi-ssid tracking, and
-                        QR-code scan to maintain efficiency.
-                    </p>
-                    <section class="note fontSize">
-                        <h3><strong>Note: Read carefully!</strong></h3>
+            <div class="support-screen">
+                <div class="support-selector">
+                    <h2>How can we help you?</h2>
+                    <div class="form-group">
+                        <select id="supportSelect">
+                            <option value="">-- Select an option --</option>
+                            <option value="faq-section">FAQ</option>
+                            <option value="issue-form-section">Support Form</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="support-forms">
+                    <section class="faq-section hidden" id="faq-section">
+                        <h2>Frequently Asked Questions</h2>
+
+                        <details>
+                            <summary>How do I reset my password?</summary>
+                            <p class="fontSize">Go to the <a href="/login" class="links" target="_blank">Login Page</a>
+                                and click on “Forgot Password.” You’ll receive a
+                                reset link on your
+                                registered email.</p>
+                        </details>
+
+                        <details class="login-credentials-problem">
+                            <summary>I didn’t receive my login credentials. What should I do?</summary>
+                            <ul class="level-1">
+                                <li>Please check your spam, or promotions folder on your <strong>registered
+                                        email</strong>.</li>
+                                <li>
+                                    If you still can't find your credentials:
+                                    <ul class="level-2">
+                                        <li>Go to Issue Submission Form, and submit your problem.</li>
+                                        <li>
+                                            Do not forget to include:
+                                            <ul class="level-3">
+                                                <li><strong>Your Organization Name</strong></li>
+                                                <li><strong>Your Roll No:</strong> For Students</li>
+                                                <li><strong>Your Employee ID:</strong> For Employees</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </details>
+
+                        <details>
+                            <summary>I paid for the premium, but I didn't get the access to the software.</summary>
+                            <p class="fontSize">
+                                We're sorry for the inconvenience! Please reach out to <b
+                                    style="color: var(--tip-text)">support@attendsmart.io</b>. Use your registered email
+                                to send us a mail. Add a subject matching to your problem, i.e., "Didn't receieve the
+                                premium access". Include your Organization name, your Employee ID, and a photo proof of
+                                the amount you paid for the premium. Then wait for the reply from our end!
+                            </p>
+                        </details>
+
+                        <details>
+                            <summary>Can multiple branches or departments use AttendSmart under one organization?
+                            </summary>
+                            <p class="fontSize">Yes! AttendSmart is designed to be universal and scalable. So multiple
+                                branches under the same organization can register and get started with AttendSmart.</p>
+                        </details>
+
+                        <details>
+                            <summary>What platforms does AttendSmart work best on?</summary>
+                            <p class="fontSize">
+                                AttendSmart is currently optimized for desktops and smartphones. While tablets will work
+                                just fine, we still recommend avoiding tablet use for the best experience for now. Full
+                                Tablet compatibility and certain features are still under development. We appreciate
+                                your patience and support. Stay tuned — exciting updates are on the way! Keep your eyes
+                                out on AttendSmart <a href="/log" class="links">LogBook</a> to track
+                                changes made by developers.
+                            </p>
+                        </details>
+
+                        <details>
+                            <summary>How can I report proxy or fake attendance?</summary>
+                            <p class="fontSize">AttendSmart is built with features to <strong>minimize proxy
+                                    attendance</strong> through
+                                secure tracking methods. However, if someone bypasses the system by logging into another
+                                user's account, the responsibility for monitoring and disciplinary action lies with the
+                                respective organization.</p>
+
+                            <p class="fontSize">To help with this, AttendSmart provides advanced tools like:</p>
+                            <ul>
+                                <li class="fontSize"><strong>Dashboard activity logs</strong> to trace user behavior
+                                </li>
+                                <li class="fontSize"><strong>Suspend / Freeze features</strong> to temporarily restrict
+                                    access or halt
+                                    attendance tracking for specific users</li>
+                            </ul>
+
+                            <p class="fontSize">These features are designed to empower admins and maintain transparency
+                                in attendance
+                                records.</p>
+                        </details>
+
+                        <details>
+                            <summary>How can I delete my account?</summary>
+                            <p class="fontSize">
+                                If you're a student or employee, account deletion requests must be handled by your
+                                organization's admin. For security and compliance reasons, only admins have the
+                                authority to manage or remove user accounts. Please contact your respective admin for
+                                assistance.
+                            </p>
+                        </details>
+
+                        <details>
+                            <summary>Can I suggest a feature?</summary>
+                            <p class="fontSize">
+                                Absolutely! We love new ideas. Use the <strong>Feedback Form</strong> on the Support
+                                page
+                                to send us your suggestions.
+                            </p>
+                        </details>
+
+                        <details>
+                            <summary>Is AttendSmart free or paid?</summary>
+                            <p class="fontSize">
+                                AttendSmart is currently a paid software. We’re a small, independent team, and every
+                                contribution goes directly into maintaining the platform and building better features
+                                for our users. Your support helps us grow, improve, and keep things running smoothly.
+                            </p>
+                        </details>
+
+                        <details>
+                            <summary>How secure is my data?</summary>
+                            <p class="fontSize">
+                                Your data security is important to us. We follow industry-standard
+                                practices for encryption and access control. More security layers will be added in
+                                future updates.
+                            </p>
+                        </details>
+                    </section>
+                    <section class="issue-form-section hidden" id="issue-form-section">
+                        <h2 class="form-title">Issue Submission Form</h2>
                         <p>
-                            AttendSmart is currently optimized for desktops and smartphones. While some smaller tablets
-                            may work, we recommend avoiding tablet use for the best experience. Tablet compatibility and
-                            certain features are still under development. We appreciate your patience and support. Stay
-                            tuned — exciting updates are on the way!
+                            Support is only available for registered users. If you're not a registered user, please
+                            reach out through emails
                         </p>
+                        <form class="issue-form" action="/api/support" method=" POST">
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="org">Enter Your Organization's ID:</label>
+                                    <input type="text" id="org" name="org">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="user-id">Enter UserID:</label>
+                                    <input type="text" id="user-id" name="userId"
+                                        placeholder="example: adminId, employeeID, roll number">
+                                </div>
+                            </div>
+
+                            <div class="outer-group">
+                                <div class="form-group">
+                                    <label for="branch-name">Enter UserName:</label>
+                                    <input type="text" id="branch-name" name="userName">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Enter Email:</label>
+                                    <input type="text" id="email" name="email">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="supportType">Choose an option:</label>
+                                <select name="supportType" id="supportType" required>
+                                    <option value="" disabled selected>-- Select an option --</option>
+                                    <option value="feedback">Feedback</option>
+                                    <option value="problem">Report a problem</option>
+                                    <option value="question">Ask a Question</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="issue-description">Describe your thoughts:</label>
+                                <textarea id="issue-description" name="thoughts" rows="5" required></textarea>
+                            </div>
+
+                            <button type="submit">Submit</button>
+                        </form>
                     </section>
                 </div>
-                <div class="about-box">
-                    <h1><i class="fa-solid fa-2"></i> | Features of AttendSmart</h1>
-                    <ol>
-                        <li>
-                            This system works for <b>all sectors</b>, whether it is a school, a college, or a company.
-                        </li>
-                        <li>It has a <b>location-based and Wi-Fi</b> tracking system for monitoring purposes.</li>
-                        <li>It provides <b>real-time dashboards</b> for quick and efficient data visualization.</li>
-                        <li>This system operates on a <b>role-based access</b> model.</li>
-                    </ol>
-                    <h3><i class="fa-solid fa-3"></i> | Why AttendSmart?</h3>
-                    <ol>
-                        <li>No more manual registers – go touchless, go smart.</li>
-                        <li>No need for any external hardwares.</li>
-                        <li>Say Bye to proxy!</li>
-                        <li>Real-time updates, zero confusion.</li>
-                        <li>Access your data anytime, anywhere. No more, "Sir, how much shortage?"</li>
-                    </ol>
-                </div>
-                <div class="about-box">
-                    <h1><i class="fa-solid fa-4"></i> | About different sections</h1>
-                    <details>
-                        <summary>AttendSmart Log</summary>
-                        <div class="log-details">
-                            <p class="fontSize">
-                                <b>AttendSmart Logging</b> feature helps you keep track of the changes made by the
-                                developers into the system. Whether -- there's a new feature added, a feature removed
-                                bug fixes, or update in terms & conditons, everything will be listed down in <a href="#"
-                                    class="links">logging page</a>
-                            </p>
-                        </div>
-                    </details>
-                    <details class="dashboard">
-                        <summary>Dashboard</summary>
-                        <p class="fontSize">
-                            AttendSmart provides users with three dashboard based on the major roles they
-                            hold inthe organization
-                        </p>
-                        <div class="dashboard-writing-content">
-                            <h3><strong>Admin Dashboard</strong></h3>
-                            <ol>
-                                <li>It helps to manage AttendSmart on an organizational level.</li>
-                                <li>Admin can <b>manage users</b> — add, remove, or archive users.</li>
-                                <li>
-                                    Admin can <b>manage roles</b> — create, delete, and add roles to users. Roles make
-                                    it easier to search users based on their job description, and even manage them.
-                                </li>
-                                <li>
-                                    It allows the admin to view <b>leave requests</b> of users, and accept or reject the
-                                    requests.
-                                </li>
-                                <li>
-                                    It allows the admin to <b>view attendance records</b>, graphs, and download them in
-                                    a .pdf format.
-                                </li>
-                            </ol>
-                            <h3><strong>Employee Dashboard</strong></h3>
-                            <ol>
-                                <li>It helps to manage AttendSmart on an employee level.</li>
-                                <li>
-                                    It allows the employees like teachers to <b>view attendance records</b>, graphs, and
-                                    download them in a .pdf format.
-                                </li>
-                                <li>All staff can <b>mark their own attendance</b> from this dashboard.</li>
-                                <li>Teachers can accept or reject a student's <b>leave requests.</b></li>
-                            </ol>
-                            <h3><strong>Student Dashboard</strong></h3>
-                            <ol>
-                                <li>Students can <b>mark their attendance</b> through the Dashboard.</li>
-                                <li>
-                                    They can <b>view their attendance statistics</b>, and even download it in a .pdf
-                                    format.
-                                </li>
-                            </ol>
-                        </div>
-                    </details>
-                </div>
-                <div class="about-box">
-                    <h1><i class="fa-solid fa-5"></i> | Support</h1>
-                    <p class="fontSize">
-                        AttendSmart provides comprehensive support to enhance user experience. The <b>FAQ section</b>
-                        addresses common questions, allowing users to find quick solutions independently. For direct
-                        assistance, users can reach out through the <b>Contact Us</b> page, which includes email support
-                        and links to official social media channels.
-                    </p>
-                    <p class="fontSize">
-                        Users encountering issues can report them via the <b>Report an Issue</b> feature, ensuring a
-                        streamlined way to address technical concerns. Additionally, the <b>Feedback Form</b> allows
-                        users to share suggestions and insights to help improve the system. In the future, a live chat
-                        feature may be integrated for real-time support.
-                    </p>
-                    <p class="fontSize">
-                        This website is maintained by <b>Faisal Taslim</b> (AttendSmart's lead developer). If you'd like
-                        to provide
-                        feedback, please contact me on <a
-                            href="https://www.instagram.com/_faisal_9542?igsh=aDZrdDllbnNjeTNu"
-                            class="insta-link links">Instagram</a>, or <b class="discord-username links">@famaeoxiaa
-                            (discord)</b>. You
-                        can also contact me
-                        through
-                        the feedback form.
-                    </p>
-                </div>
             </div>
-        </section>
+        </div>
     </main>
     <footer>
         <div class="foot-content">
@@ -216,7 +771,7 @@
                     <p><strong>Useful-links</strong></p>
                     <a href="/register" class="links foot-links" target="_blank">Register</a>
                     <a href="/support" class="links foot-links" target="_blank">Support</a>
-                    <a href="/log" class="links foot-links" target="_blank">LogBook</a>
+                    <a href="/logbook" class="links foot-links" target="_blank">LogBook</a>
                     <a href="/dashboard" class="links foot-links" target="_blank">Dashboard</a>
                 </div>
                 <div class="legal">
@@ -239,13 +794,15 @@
                 <div class="contacts">
                     <p><strong>Contacts</strong></p>
                     <p><i class="fa-solid fa-phone"></i> | +91 7449925137 </p>
-                    <p><i class="fa-solid fa-envelope"></i> | mailto: support@attendsmart.io</p>
+                    <p><i class="fa-solid fa-envelope"></i> | mailto: faisaltaslim79@gmail.com</p>
                 </div>
             </div>
         </div>
     </footer>
-    <script src="/js/global/sideNav.js"></script>
-    <script src="js/global/update-footerLayout-for-tablets.js"></script>
+    <script src="../public/js/global/change-brand-headerName.js"></script>
+    <script src="../public/js/global/page-switch.js"></script>
+    <script src="../public/js/page-specific//Homepage/display-dropdown.js"></script>
+    <script src="../public/js/global/update-footerLayout-for-tablets.js"></script>
 </body>
 
 </html>

@@ -7,8 +7,6 @@ const viewsPath = path.join(__dirname, '../views');
 const routes = {
     '/': 'index.html',
     '/login': 'login.html',
-    '/support': 'support.ejs',
-    '/log': 'log.html',
     '/qr-view': 'qr.ejs',
 };
 
