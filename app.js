@@ -29,7 +29,6 @@ app.use(sessionMiddleware);
 app.use(setLocals);
 
 app.use('/', require('./routes/mainRoutes'));
-app.use('/register', require('./routes/registerViews'));
 app.use('/dashboard', require('./routes/dashboardRoutes'));
 app.use('/api/org', require('./routes/createOrg'));
 app.use('/api', require('./routes/createScStdn'));

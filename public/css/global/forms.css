@@ -10,7 +10,7 @@ fieldset {
     border: 1px solid var(--accent);
     border-radius: 10px;
     padding: 1rem 1.2rem;
-    background: var(--bg-seondary);
+    background: var(--bg-secondary);
 }
 legend {
     font-weight: 700;
@@ -42,7 +42,7 @@ legend {
     border-radius: 10px;
     font-size: 1rem;
     background-color: var(--bg-secondary);
-    color: black;
+    color: var(--text-primary);
     transition: border 0.2s ease;
 }
 .form-group input:focus,
@@ -50,7 +50,7 @@ legend {
     border-color: var(--accent);
     outline: none;
     background-color: var(--bg-secondary);
-    color: black;
+    color: var(--text-primary);
 }
 .form-group textarea {
     padding: 0.5rem 1rem;
@@ -68,4 +68,3 @@ button {
     cursor: pointer;
     transition: background 0.3s ease;
 }
-.form-title {text-align: center}

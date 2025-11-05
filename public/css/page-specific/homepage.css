@@ -66,6 +66,10 @@ main {
     border-color: var(--accent, #007bff);
     background: var(--accent-light, #f0f7ff);
 }
+.form-title {
+    text-align: center;
+    color: black;
+}
 .main-1, 
 .main-2 {
     height: 80vh;
@@ -177,7 +181,7 @@ main {
     width: 74%;
     margin: 3rem auto;
     padding: 2.5rem 3rem;
-    background: var(--bg-primary);
+    background: var(--gradiant);
     border-radius: 1.2rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border: 1px solid var(--border-color);
@@ -302,7 +306,7 @@ details[open] {
     width: 74%;
     margin: 3rem auto;
     padding: 2.5rem 3rem;
-    background: var(--bg-primary);
+    background: var(--gradiant);
     border-radius: 1.2rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border: 1px solid var(--border-color);

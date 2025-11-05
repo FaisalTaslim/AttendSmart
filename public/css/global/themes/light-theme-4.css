@@ -1,0 +1,22 @@
+:root {
+    --bg-primary: #FDF7FF;
+    --bg-secondary: #EAF4FF;
+    --bg-card: #FFEAF6;
+    --gradiant: linear-gradient(135deg, #EAF4FF 0%, #FCEFFF 50%, #FDF7FF 100%);
+
+    --text-primary: #3E2C54;
+    --text-secondary: #5C4D73;
+    --text-muted: #8B7A9F;
+
+    --accent: #CBA6F7;
+    --accent-hover: #B48CF2;
+
+    --link: #8EC5FF;
+    --link-hover: #74B8FF;
+
+    --border-color: #E1D7EE;
+    --icon-primary: #CBA6F7;
+
+    --error: #F472B6;
+    --tip-text: #8EC5FF;
+}

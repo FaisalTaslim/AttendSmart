@@ -5,7 +5,7 @@ const router = express.Router();
 const viewsPath = path.join(__dirname, '../views');
 
 const routes = {
-    '/': 'index.html',
+    '/': 'index.ejs',
     '/login': 'login.html',
     '/qr-view': 'qr.ejs',
 };
@@ -13,7 +13,7 @@ const routes = {
 Object.entries(routes).forEach(([route, file]) => {
     router.get(route, (req, res) => {
         if (file.endsWith('.ejs')) {
-            res.render(file.replace('.ejs', ''));
+            res.render(file.replace('.ejs', ''), {error: ''});
         } else {
             res.sendFile(path.join(viewsPath, file));
         }

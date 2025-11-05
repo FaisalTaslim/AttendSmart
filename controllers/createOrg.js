@@ -40,7 +40,7 @@ exports.createOrg = async (req, res) => {
         if (existingOrg) {
             error_tracker = 1;
 
-            return res.render('register/admin-register', {
+            return res.render('index', {
                 error: "Duplicate Registration attempt. Please login with your existing account!"
             });
         }
@@ -115,25 +115,25 @@ exports.createOrg = async (req, res) => {
 
         switch (error_tracker) {
             case 2:
-                return res.render('register/admin-register', { error: error_messages[2] });
+                return res.render('index', { error: error_messages[2] });
 
             case 3:
                 await rollbackAdminCounter();
-                return res.render('register/admin-register', { error: error_messages[3] });
+                return res.render('index', { error: error_messages[3] });
 
             case 4:
                 await rollbackAdminCounter();
                 await rollbackOrg(newAdminNumber);
-                return res.render('register/admin-register', { error: error_messages[4] });
+                return res.render('index', { error: error_messages[4] });
 
             case 5:
                 await rollbackAdminCounter();
                 await rollbackOrg(newAdminNumber);
                 await rollbackDepartment(newAdminNumber);
-                return res.render('register/admin-register', { error: error_messages[5] });
+                return res.render('index', { error: error_messages[5] });
 
             default:
-                return res.render('register/admin-register', { error: err.message });
+                return res.render('index', { error: err.message });
         }
     }
 };

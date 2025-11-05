@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomePage</title>
-    <link rel="stylesheet" href="../public/css/global/font-family.css">
-    <link rel="stylesheet" href="../public/css/global/themes/light-theme-2.css">
-    <link rel="stylesheet" href="../public/css/page-specific/homepage.css">
-    <link rel="stylesheet" href="../public/css/global/forms.css">
+    <link rel="stylesheet" href="/css/global/font-family.css">
+    <link rel="stylesheet" href="/css/global/themes/light-theme-2.css">
+    <link rel="stylesheet" href="/css/page-specific/homepage.css">
+    <link rel="stylesheet" href="/css/global/popup.css">
+    <link rel="stylesheet" href="/css/global/forms.css">
     <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +21,7 @@
             <h1>AttendSmart - Smart Attendance Solution</h1>
         </div>
         <nav class="nav-bar">
-            <a href="" class="nav-links-property">Login</a>
+            <a href="/login" class="nav-links-property">Login</a>
             <a href="" class="nav-links-property">GuideBook</a>
 
             <select class="mobile-nav" id="mobile-nav">
@@ -33,23 +34,30 @@
     <main>
         <div class="main-1">
             <div class="about-attendsmart">
-                <h1>Confused, are you? Read this!</h1>
-                <p>
-                    A Universal web-based attendance monitoring solution designed for multiple sectors, including
-                    schools, colleges, and companies.The system automates attendance tracking using multiple methods
-                    like QR code and Timed-session to maintain efficiency.
-                </p>
-                <ul class="attendsmart-features">
-                    <li>
-                        This system works for all sectors, whether it is a school, a college, or a company.
-                     </li>
-                    <li>It has QR Code and Timed-session methods for monitoring purposes.</li>
-                    <li>It provides real-time dashboards for quick and efficient data visualization.</li>
-                    <li>This system operates on a role-based access model.</li>
-                </ul>
-                <h2>Say Goodbye to manual registers!!</h2>
-                <h2>Minimal or no cost setup!!</h2>
-                <h2>Proxy Free!!</h2>
+                <% if (typeof error !=='undefined' && error) { %>
+                    <div id="error-popup" class="error-popup">
+                        <%= error %>
+                    </div>
+                    <% } %>
+                        <h1>Confused, are you? Read this!</h1>
+                        <p>
+                            A Universal web-based attendance monitoring solution designed for multiple sectors,
+                            including
+                            schools, colleges, and companies.The system automates attendance tracking using multiple
+                            methods
+                            like QR code and Timed-session to maintain efficiency.
+                        </p>
+                        <ul class="attendsmart-features">
+                            <li>
+                                This system works for all sectors, whether it is a school, a college, or a company.
+                            </li>
+                            <li>It has QR Code and Timed-session methods for monitoring purposes.</li>
+                            <li>It provides real-time dashboards for quick and efficient data visualization.</li>
+                            <li>This system operates on a role-based access model.</li>
+                        </ul>
+                        <h2>Say Goodbye to manual registers!!</h2>
+                        <h2>Minimal or no cost setup!!</h2>
+                        <h2>Proxy Free!!</h2>
             </div>
             <div class="register-screen">
                 <div class="register-selector">
@@ -64,7 +72,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="registration-forms">
+                <div class="registration-forms" id="register">
                     <div class="register-forms-header">
                         <h1>JOIN US NOW!</h1>
                     </div>
@@ -165,7 +173,8 @@
                                     style="font-size: 0.95rem; color: var(--text-secondary);">
                                     I agree to the <a href="/terms" target="_blank" style="color:var(--link)">Terms &
                                         Conditions</a> and
-                                    <a href="/privacy" target="_blank" style="color:var(--link)">Privacy Policy</a>
+                                    <a href="/privacy" target="_blank" style="color:var(--link)">Privacy
+                                        Policy</a>
                                 </label>
                             </div>
 
@@ -304,9 +313,11 @@
                                 <input type="checkbox" id="termsCheck" name="termsCheck" required>
                                 <label for="termsCheck" style="font-size: 0.95rem; color: var(--text-secondary);">
                                     I agree to the
-                                    <a href="/terms" target="_blank" style="color:var(--link)">Terms & Conditions</a>
+                                    <a href="/terms" target="_blank" style="color:var(--link)">Terms &
+                                        Conditions</a>
                                     and
-                                    <a href="/privacy" target="_blank" style="color:var(--link)">Privacy Policy</a>
+                                    <a href="/privacy" target="_blank" style="color:var(--link)">Privacy
+                                        Policy</a>
                                 </label>
                             </div>
 
@@ -442,9 +453,11 @@
                                 <input type="checkbox" id="termsCheck" name="termsCheck" required>
                                 <label for="termsCheck" style="font-size: 0.95rem; color: var(--text-secondary);">
                                     I agree to the
-                                    <a href="/terms" target="_blank" style="color:var(--link)">Terms & Conditions</a>
+                                    <a href="/terms" target="_blank" style="color:var(--link)">Terms &
+                                        Conditions</a>
                                     and
-                                    <a href="/privacy" target="_blank" style="color:var(--link)">Privacy Policy</a>
+                                    <a href="/privacy" target="_blank" style="color:var(--link)">Privacy
+                                        Policy</a>
                                 </label>
                             </div>
 
@@ -536,9 +549,11 @@
                                 <input type="checkbox" id="termsCheck" name="termsCheck">
                                 <label for="termsCheck" style="font-size: 0.95rem; color: var(--text-secondary);">
                                     I agree to the
-                                    <a href="/terms" target="_blank" style="color:var(--link)">Terms & Conditions</a>
+                                    <a href="/terms" target="_blank" style="color:var(--link)">Terms &
+                                        Conditions</a>
                                     and
-                                    <a href="/privacy" target="_blank" style="color:var(--link)">Privacy Policy</a>
+                                    <a href="/privacy" target="_blank" style="color:var(--link)">Privacy
+                                        Policy</a>
                                 </label>
                             </div>
 
@@ -587,7 +602,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="support-forms">
+                <div class="support-forms" id="support-forms">
                     <section class="faq-section hidden" id="faq-section">
                         <h2>Frequently Asked Questions</h2>
 
@@ -711,7 +726,7 @@
                         </details>
                     </section>
                     <section class="issue-form-section hidden" id="issue-form-section">
-                        <h2 class="form-title">Issue Submission Form</h2>
+                        <h2 class="form-title">Support Form</h2>
                         <p>
                             Support is only available for registered users. If you're not a registered user, please
                             reach out through emails
@@ -769,16 +784,15 @@
             <div class="foot1">
                 <div class="useful-links">
                     <p><strong>Useful-links</strong></p>
-                    <a href="/register" class="links foot-links" target="_blank">Register</a>
-                    <a href="/support" class="links foot-links" target="_blank">Support</a>
-                    <a href="/logbook" class="links foot-links" target="_blank">LogBook</a>
+                    <a href="#register" class="links foot-links" target="_blank">Register</a>
+                    <a href="#support-forms" class="links foot-links" target="_blank">Support</a>
                     <a href="/dashboard" class="links foot-links" target="_blank">Dashboard</a>
                 </div>
                 <div class="legal">
                     <p><strong>Legal</strong></p>
-                    <a href="/term" class="links foot-links" target="_blank">Terms & conditions</a>
-                    <a href="/policy" class="links foot-links" target="_blank">Privacy Policy</a>
-                    <a href="/refund" class="links foot-links" target="_blank">Refund Policy</a>
+                    <a href="#" class="links foot-links" target="_blank">Terms & conditions</a>
+                    <a href="#" class="links foot-links" target="_blank">Privacy Policy</a>
+                    <a href="#" class="links foot-links" target="_blank">Refund Policy</a>
                 </div>
             </div>
             <div class="foot2">
@@ -799,10 +813,11 @@
             </div>
         </div>
     </footer>
-    <script src="../public/js/global/change-brand-headerName.js"></script>
-    <script src="../public/js/global/page-switch.js"></script>
-    <script src="../public/js/page-specific//Homepage/display-dropdown.js"></script>
-    <script src="../public/js/global/update-footerLayout-for-tablets.js"></script>
+    <script src="/js/global/change-brand-headerName.js"></script>
+    <script src="/js/global/page-switch.js"></script>
+    <script src="/js/page-specific//Homepage/display-dropdown.js"></script>
+    <script src="/js/global/update-footerLayout-for-tablets.js"></script>
+    <script src="/js/global/remove-popup.js"></script>
 </body>
 
 </html>
