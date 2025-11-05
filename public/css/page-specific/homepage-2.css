@@ -52,6 +52,20 @@ main {
     gap: 1rem;
     background-color: var(--bg-primary);
 }
+.mobile-nav {
+    display: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border, #ccc);
+    background: var(--card-bg, #fff);
+    font-size: 0.95rem;
+    color: var(--text, #333);
+    transition: all 0.3s ease;
+}
+.mobile-nav:hover {
+    border-color: var(--accent, #007bff);
+    background: var(--accent-light, #f0f7ff);
+}
 .main-1, 
 .main-2 {
     height: 80vh;
@@ -69,6 +83,7 @@ main {
     border-top-right-radius: 1.2rem;
     border-bottom-right-radius: 1.2rem;
     background-color: var(--bg-secondary);
+    overflow-y: auto;
 }
 .about-attendsmart > h1, 
 .about-support > h1 {
@@ -102,9 +117,25 @@ main {
 .support-screen {
     width: 60%;
     display: flex;
+    flex-direction: column;
+    gap: 1rem;
     justify-content: flex-end;
     align-items: center;
     overflow-y: auto;
+}
+
+.register-selector,
+.support-selector {
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+.register-selector h2,
+.support-selector h2 {
+    font-size: 1.5rem;
+    margin-top: 1rem;
 }
 .registration-forms, 
 .support-forms {
@@ -164,6 +195,8 @@ main {
 }
 
 .faq-section {
+    display: flex;
+    flex-direction: column;
     width: 74%;
     margin: 3rem auto;
     background-color: var(--bg-card);
@@ -177,7 +210,6 @@ main {
     font-size: 2rem;
     text-align: center;
     margin-bottom: 2rem;
-    color: var(--accent);
     text-transform: uppercase;
     letter-spacing: 1.5px;
 }
@@ -257,6 +289,8 @@ details[open] {
 }
 
 .issue-form-section {
+    display: flex;
+    flex-direction: column;
     width: 74%;
     background-color: var(--bg-secondary);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -313,4 +347,184 @@ details[open] {
     text-align: center;
     color: var(--error);
     margin-top: 1rem;
+}
+
+footer {
+    background-color: var(--bg-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin-top: 1rem;
+}
+footer > * {
+    font-size: 1rem;
+}
+.foot-content {
+    display: flex;
+    flex-direction: row;
+    width: 70%;
+    gap: 10vh;
+    justify-content: center;
+}
+.foot1, .foot2 {
+    display: flex;
+    flex-direction: row;
+    gap: 10vh;
+}
+.useful-links, .legal, .socials, .contacts {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+footer > p {
+    margin: 10px;
+}
+
+@media screen and (max-width: 950px) {
+    .nav-bar a {display: none;}
+    .mobile-nav {display: block;}
+
+    main {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        height: auto; 
+        min-height: 100vh;
+    }
+    .main-1,
+    .main-2 {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem 0;
+    }
+    .about-attendsmart,
+    .about-support {
+        width: 84%;
+        border: 2px 2px 2px 0 var(--accent);
+        border-top: 2px solid var(--accent);
+        border-right: 2px solid var(--accent);
+        border-bottom: 2px solid var(--accent);
+    }
+    .about-attendsmart h1, 
+    .about-support h1 {
+        font-size: 2rem;
+    }
+    .about-attendsmart h2,
+    .about-support h2 {
+        font-size: 1.2rem;
+    }
+
+    .register-screen,
+    .support-screen {
+        width: 100%;
+    }
+
+    .register-selector,
+    .support-selector {
+        display: flex;
+    }
+
+    .hidden {display: none;}
+    .active {display: flex;}
+    .registration-forms {display: none;}
+    
+    .registration-forms,
+    .support-forms {
+        width: 100%;
+        height: auto;
+        padding: 1rem;
+    }
+
+    .admin-form-box,
+    .college-std-form-box,
+    .school-std-form-box,
+    .employee-form-box {
+        width: 84%;
+    }
+    #register-terms {text-align: unset;}
+
+    .admin-form-wrapper,
+    .student-form-wrapper,
+    .employee-form-wrapper {
+        width: 83%;
+        margin: 1rem 0;
+        padding: 1.5rem;
+    }
+
+    .faq-section {
+        margin: 1rem auto;
+        padding: 1rem;
+        width: 84%;
+    }
+    .faq-section h2 {font-size: 1.4rem;}
+    .issue-form-section {width: 84%;}
+    .issue-form {
+        padding: 1rem 1rem;
+        width: 84%;
+    }
+
+    .support-forms {display: none;}
+
+    .foot-content {
+        display: flex;
+        flex-direction: column;
+        width: 98%;
+    }
+    .foot1 {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .foot2 {
+        display: flex;
+        flex-direction: column;
+    }
+    .foot-links {text-decoration: none;}
+}
+
+@media screen and (min-width: 950px) and (max-width: 1024px) and (min-height: 580px) and (max-height: 620px) {
+    .about-attendsmart,
+    .about-support {
+        justify-content: unset;
+    }
+
+    .about-attendsmart h1,
+    .about-support h1 {
+        font-size: 2rem;
+    }
+
+    .about-attendsmart h2,
+    .about-support h2 {
+        font-size: 1.2rem;
+    }
+
+    .foot-content {width: 98%};
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1300px) and (min-height: 750px) and (max-height: 850px) {
+    .about-attendsmart,
+    .about-support {
+        justify-content: unset;
+    }
+
+    .about-attendsmart h1,
+    .about-support h1 {
+        font-size: 2rem;
+    }
+
+    .about-attendsmart h2,
+    .about-support h2 {
+        font-size: 1.2rem;
+    }
+
+    .foot-content {width: 98%};
+
+    .admin-form-box,
+    .college-std-form-box,
+    .school-std-form-box,
+    .employee-form-box {
+        width: 84% !important;
+    }
 }

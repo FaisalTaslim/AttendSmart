@@ -22,19 +22,27 @@
         <nav class="nav-bar">
             <a href="" class="nav-links-property">Login</a>
             <a href="" class="nav-links-property">GuideBook</a>
+
+            <select class="mobile-nav" id="mobile-nav">
+                <option value="">Navigate</option>
+                <option value="/login">Login</option>
+                <option value="/guidebook">GuideBook</option>
+            </select>
         </nav>
     </header>
     <main>
         <div class="main-1">
             <div class="about-attendsmart">
-                <h1>Confused? Read this!</h1>
+                <h1>Confused, are you? Read this!</h1>
                 <p>
                     A Universal web-based attendance monitoring solution designed for multiple sectors, including
                     schools, colleges, and companies.The system automates attendance tracking using multiple methods
                     like QR code and Timed-session to maintain efficiency.
                 </p>
                 <ul class="attendsmart-features">
-                    <li>This system works for all sectors, whether it is a school, a college, or a company.</li>
+                    <li>
+                        This system works for all sectors, whether it is a school, a college, or a company.
+                     </li>
                     <li>It has QR Code and Timed-session methods for monitoring purposes.</li>
                     <li>It provides real-time dashboards for quick and efficient data visualization.</li>
                     <li>This system operates on a role-based access model.</li>
@@ -44,11 +52,23 @@
                 <h2>Proxy Free!!</h2>
             </div>
             <div class="register-screen">
+                <div class="register-selector">
+                    <h2>Register Now</h2>
+                    <div class="form-group">
+                        <select id="registerSelect">
+                            <option value="">-- Select a Registration Type --</option>
+                            <option value="admin-form-box">Admin Register</option>
+                            <option value="college-std-form-box">College Student Register</option>
+                            <option value="school-std-form-box">School Student Register</option>
+                            <option value="employee-form-box">Employee Register</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="registration-forms">
                     <div class="register-forms-header">
                         <h1>JOIN US NOW!</h1>
                     </div>
-                    <div class="admin-form-box">
+                    <div class="admin-form-box hidden" id="admin-form-box">
                         <form action="/api/org/create-org" class="admin-form-wrapper" id="admin-form" method="POST">
                             <h2 class="form-title">Admin Registration</h2>
 
@@ -141,7 +161,8 @@
                             <div class="form-group" id="register-terms"
                                 style="flex-direction: row; align-items: center; gap: 0.5rem; margin: 15px 0;">
                                 <input type="checkbox" id="termsCheck" name="termsCheck" required>
-                                <label for="termsCheck" class="termsCheck">
+                                <label for="termsCheck" class="termsCheck"
+                                    style="font-size: 0.95rem; color: var(--text-secondary);">
                                     I agree to the <a href="/terms" target="_blank" style="color:var(--link)">Terms &
                                         Conditions</a> and
                                     <a href="/privacy" target="_blank" style="color:var(--link)">Privacy Policy</a>
@@ -152,9 +173,9 @@
                         </form>
 
                     </div>
-                    <div class="college-std-form-box">
-                        <form action="/api/register-college-student" class="student-form-wrapper" id="student-form"
-                            method="POST">
+                    <div class="college-std-form-box hidden" id="college-std-form-box">
+                        <form action="/api/register-college-student" class="student-form-wrapper"
+                            id="college-student-form" method="POST">
                             <h2 class="form-title">College Student Registration</h2>
                             <div class="outer-group">
                                 <div class="form-group">
@@ -293,9 +314,9 @@
                         </form>
                     </div>
 
-                    <div class="school-std-form-box">
-                        <form action="/api/register-school-student" class="student-form-wrapper" id="student-form"
-                            method="POST">
+                    <div class="school-std-form-box hidden" id="school-std-form-box">
+                        <form action="/api/register-school-student" class="student-form-wrapper"
+                            id="school-student-form" method="POST">
                             <h2 class="form-title">School Student Registration</h2>
 
                             <div class="outer-group">
@@ -430,8 +451,9 @@
                             <button type="submit" class="submit-btn">Register Student</button>
                         </form>
                     </div>
-                    <div class="employee-form-box">
-                        <form action="/api/register-employee" class="employee-form-wrapper" id="employee-form" method="POST">
+                    <div class="employee-form-box hidden" id="employee-form-box">
+                        <form action="/api/register-employee" class="employee-form-wrapper" id="employee-form"
+                            method="POST">
                             <h2 class="form-title">Employee Registration</h2>
 
                             <input type="hidden" name="role" value="employee">
@@ -555,8 +577,18 @@
                 <h2>Find answers in our FAQs!!</h2>
             </div>
             <div class="support-screen">
+                <div class="support-selector">
+                    <h2>How can we help you?</h2>
+                    <div class="form-group">
+                        <select id="supportSelect">
+                            <option value="">-- Select an option --</option>
+                            <option value="faq-section">FAQ</option>
+                            <option value="issue-form-section">Support Form</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="support-forms">
-                    <section class="faq-section">
+                    <section class="faq-section hidden" id="faq-section">
                         <h2>Frequently Asked Questions</h2>
 
                         <details>
@@ -678,7 +710,7 @@
                             </p>
                         </details>
                     </section>
-                    <section class="issue-form-section">
+                    <section class="issue-form-section hidden" id="issue-form-section">
                         <h2 class="form-title">Issue Submission Form</h2>
                         <p>
                             Support is only available for registered users. If you're not a registered user, please
@@ -732,6 +764,45 @@
             </div>
         </div>
     </main>
+    <footer>
+        <div class="foot-content">
+            <div class="foot1">
+                <div class="useful-links">
+                    <p><strong>Useful-links</strong></p>
+                    <a href="/register" class="links foot-links" target="_blank">Register</a>
+                    <a href="/support" class="links foot-links" target="_blank">Support</a>
+                    <a href="/logbook" class="links foot-links" target="_blank">LogBook</a>
+                    <a href="/dashboard" class="links foot-links" target="_blank">Dashboard</a>
+                </div>
+                <div class="legal">
+                    <p><strong>Legal</strong></p>
+                    <a href="/term" class="links foot-links" target="_blank">Terms & conditions</a>
+                    <a href="/policy" class="links foot-links" target="_blank">Privacy Policy</a>
+                    <a href="/refund" class="links foot-links" target="_blank">Refund Policy</a>
+                </div>
+            </div>
+            <div class="foot2">
+                <div class="socials">
+                    <p><strong>Socials</strong></p>
+                    <a href="#" class="links foot-links" target="_blank"><i class="fa-brands fa-instagram"></i> |
+                        @faisal_9542</a>
+                    <a href="#" class="links foot-links" target="_blank"><i class="fa-brands fa-discord"></i> |
+                        @famaeoxiaa</a>
+                    <a href="#" class="links foot-links" target="_blank"><i class="fa-brands fa-github"></i> |
+                        @FaisalTaslim</a>
+                </div>
+                <div class="contacts">
+                    <p><strong>Contacts</strong></p>
+                    <p><i class="fa-solid fa-phone"></i> | +91 7449925137 </p>
+                    <p><i class="fa-solid fa-envelope"></i> | mailto: faisaltaslim79@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="../public/js/global/change-brand-headerName.js"></script>
+    <script src="../public/js/global/dropdown-nav.js"></script>
+    <script src="../public/js/page-specific//Homepage/display-dropdown.js"></script>
+    <script src="../public/js/global/update-footerLayout-for-tablets.js"></script>
 </body>
 
 </html>
