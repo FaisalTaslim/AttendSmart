@@ -60,7 +60,7 @@ legend {
 
 button {
     background: var(--accent);
-    color: white;
+    color: var(--text-primary);
     padding: 0.8rem 1.5rem;
     border: none;
     border-radius: 0.6rem;

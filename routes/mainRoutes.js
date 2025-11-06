@@ -1,12 +1,12 @@
 const express = require('express');
 const path = require('path');
 const router = express.Router();
+const ensureLoggedIn = require('../middleware/authMiddleware');
 
 const viewsPath = path.join(__dirname, '../views');
 
 const routes = {
     '/': 'index.ejs',
-    '/login': 'login.html',
     '/qr-view': 'qr.ejs',
 };
 
@@ -31,7 +31,7 @@ router.get('/logout', (req, res) => {
             return res.redirect('/');
         }
         res.clearCookie('connect.sid');
-        res.redirect('/login');
+        res.redirect('/');
     });
 });
 

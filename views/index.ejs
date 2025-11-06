@@ -21,15 +21,28 @@
             <h1>AttendSmart - Smart Attendance Solution</h1>
         </div>
         <nav class="nav-bar">
-            <a href="/login" class="nav-links-property">Login</a>
-            <a href="" class="nav-links-property">GuideBook</a>
+            <% if (isAuthenticated) { %>
+                <a href="/dashboard" class="nav-links-property">Dashboard</a>
+                <a href="/logout" class="nav-links-property">Logout</a>
+                <a href="/guidebook" class="nav-links-property">GuideBook</a>
+                <% } else { %>
+                    <p class="nav-links-property login-page-btn">Login</p>
+                    <a href="/guidebook" class="nav-links-property">GuideBook</a>
+                    <% } %>
 
-            <select class="mobile-nav" id="mobile-nav">
-                <option value="">Navigate</option>
-                <option value="/login">Login</option>
-                <option value="/guidebook">GuideBook</option>
-            </select>
+                        <select class="mobile-nav" id="mobile-nav">
+                            <option value="">Navigate</option>
+                            <% if (isAuthenticated) { %>
+                                <option value="/dashboard">Dashboard</option>
+                                <option value="/logout">Logout</option>
+                                <option value="/guidebook">GuideBook</option>
+                                <% } else { %>
+                                    <option value="#login">Login</option>
+                                    <option value="/guidebook">GuideBook</option>
+                                    <% } %>
+                        </select>
         </nav>
+
     </header>
     <main>
         <div class="main-1">
@@ -778,6 +791,43 @@
                 </div>
             </div>
         </div>
+        <div class="main-3">
+            <div class="form-overlay">
+                <form class="login-form" action="/auth/login" method="POST">
+                    <p class="login-go-back continue-btn">Go Back</p>
+                    <fieldset>
+                        <legend>Login to Continue</legend>
+
+                        <div class="form-group">
+                            <label for="userid">Unique ID</label>
+                            <input type="text" id="userid" name="uniqueID" placeholder="Enter your Unique ID" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userRole">Select Your Role:</label>
+                            <select name="userRole" id="userRole" required>
+                                <option value="" disabled selected>-- Choose your role --</option>
+                                <option value="Org">Admin</option>
+                                <option value="SchoolStudent">School Student</option>
+                                <option value="CollegeStudent">College Student</option>
+                                <option value="Employee">Employee</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" placeholder="Enter your Password"
+                                required>
+                        </div>
+
+                        <div class="outer-group">
+                            <button type="submit" class="continue-btn">Continue</button>
+                            <button type="button" class="continue-btn">Forgot Password?</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
     </main>
     <footer>
         <div class="foot-content">
@@ -815,9 +865,10 @@
     </footer>
     <script src="/js/global/change-brand-headerName.js"></script>
     <script src="/js/global/page-switch.js"></script>
-    <script src="/js/page-specific//Homepage/display-dropdown.js"></script>
+    <script src="/js/page-specific/display-dropdown.js"></script>
     <script src="/js/global/update-footerLayout-for-tablets.js"></script>
     <script src="/js/global/remove-popup.js"></script>
+    <script src="/js/page-specific/toggle-login.js"></script>
 </body>
 
 </html>
