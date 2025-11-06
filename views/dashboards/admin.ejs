@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="/css/global/font-family.css">
+    <link rel="stylesheet" href="/css/page-specific/homepage.css">
+    <link rel="stylesheet" href="/css/page-specific/dashboard/admin-2.css">
+    <link rel="stylesheet" href="/css/global/themes/light-theme-2.css">
+    <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <h1>AttendSmart - Smart Attendance Solution</h1>
+        </div>
+        <nav class="nav-bar">
+            <a href="/" class="nav-links-property">Home</a>
+            <a href="/logout" class="nav-links-property">Logout</a>
+            <a href="/guidebook" class="nav-links-property">GuideBook</a>
+
+            <select class="mobile-nav" id="mobile-nav">
+                <option value="">Navigate</option>
+                <option value="/">Home</option>
+                <option value="/logout">Logout</option>
+                <option value="/guidebook">GuideBook</option>
+            </select>
+        </nav>
+
+    </header>
+    <main>
+        <div class="main-1">
+            <div class="terminal-container">
+                <div class="terminal-header">AttendSmart Terminal</div>
+                <div class="terminal-body">
+                    <pre id="terminal-output">Welcome to AttendSmart CLI. Type your command below.</pre>
+                    <input type="text" id="terminal-input" placeholder="Enter command..." autofocus required />
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="foot-content">
+            <div class="foot1">
+                <div class="useful-links">
+                    <p><strong>Useful-links</strong></p>
+                    <a href="#register" class="links foot-links" target="_blank">Register</a>
+                    <a href="#support-forms" class="links foot-links" target="_blank">Support</a>
+                    <a href="/dashboard" class="links foot-links" target="_blank">Dashboard</a>
+                </div>
+                <div class="legal">
+                    <p><strong>Legal</strong></p>
+                    <a href="#" class="links foot-links" target="_blank">Terms & conditions</a>
+                    <a href="#" class="links foot-links" target="_blank">Privacy Policy</a>
+                    <a href="#" class="links foot-links" target="_blank">Refund Policy</a>
+                </div>
+            </div>
+            <div class="foot2">
+                <div class="socials">
+                    <p><strong>Socials</strong></p>
+                    <a href="#" class="links foot-links" target="_blank"><i class="fa-brands fa-instagram"></i> |
+                        @faisal_9542</a>
+                    <a href="#" class="links foot-links" target="_blank"><i class="fa-brands fa-discord"></i> |
+                        @famaeoxiaa</a>
+                    <a href="#" class="links foot-links" target="_blank"><i class="fa-brands fa-github"></i> |
+                        @FaisalTaslim</a>
+                </div>
+                <div class="contacts">
+                    <p><strong>Contacts</strong></p>
+                    <p><i class="fa-solid fa-phone"></i> | +91 7449925137 </p>
+                    <p><i class="fa-solid fa-envelope"></i> | mailto: faisaltaslim79@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/page-specific/admin-dashboard/terminal-functions.js"></script>
+    <script src="/js/page-specific/admin-dashboard/admin-terminal.js"></script>
+</body>
+
+</html>

@@ -39,7 +39,7 @@ router.get('/', checkRole(['Org']), async (req, res) => {
             employees = await Employee.find({ org: user });
             const { registerLogs, loginLogs, supportLogs, employeeSessionLogs, studentSessionLog } = getLogs;
 
-            res.render('view-dashboards/admin', {
+            res.render('dashboards/admin', {
                 org: findUser,
                 uniqueId,
                 admin: findUser.admin[0],
@@ -68,7 +68,7 @@ router.get('/', checkRole(['Org']), async (req, res) => {
             employees = await Employee.find({ org: user });
             const { registerLogs, loginLogs, supportLogs, employeeSessionLogs, studentSessionLog } = getLogs;
 
-            res.render('view-dashboards/admin', {
+            res.render('dashboards/admin', {
                 org: findUser,
                 uniqueId,
                 admin: findUser.admin[0],
@@ -96,7 +96,7 @@ router.get('/', checkRole(['Org']), async (req, res) => {
             employees = await Employee.find({ org: user });
             const { registerLogs, loginLogs, supportLogs, employeeSessionLogs } = getLogs;
 
-            res.render('view-dashboards/admin', {
+            res.render('dashboards/admin', {
                 org: findUser,
                 uniqueId,
                 admin: findUser.admin[0],

@@ -52,4 +52,8 @@ app.use('/mark-attendance-students', require('./routes/college-student/mark-atte
 app.use('/create-summary', require('./routes/create-summaries'));
 app.use('/cleanlogs', require('./routes/clear-logs'));
 
+/*For new admin dashboard */
+app.use('/manage-acc', require('./routes/admin/manage-org-acc'));
+
+
 module.exports = app;

@@ -1,0 +1,50 @@
+
+.terminal-container {
+    display: flex;
+    flex-direction: column;
+    height: 76vh;
+    width: 78%;
+    margin: 2rem auto;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Courier New', Courier, monospace;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-color);
+    overflow-y: auto;
+}
+
+.terminal-header {
+    background-color: var(--bg-secondary);
+    padding: 0.5rem 1rem;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    font-weight: bold;
+}
+.terminal-body {
+    padding: 1rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#terminal-output {
+    overflow-y: auto;
+    margin-bottom: 0.5rem;
+    line-height: 1.8rem;
+}
+#terminal-input {
+    width: 100%;
+    padding: 0.5rem;
+    background-color: var(--bg-primary);
+    color: var(--accent-hover);
+    border: none;
+    outline: none;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+}
+#terminal-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
