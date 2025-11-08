@@ -14,7 +14,14 @@ const output = document.getElementById('terminal-output');
 
             switch (command) {
                 case "1":
-                    fetch('/manage-acc/fetch-details');
+                    await fetch('/dashboard/admin', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'text/plain'
+                        },
+                        body: command
+                    });
+        
                     break;
                 default:
                     output.innerHTML += `<p class="failed-execution">Failed to execute</p>`

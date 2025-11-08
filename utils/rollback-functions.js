@@ -67,7 +67,7 @@ async function rollbackStudent(orgId, systemId, orgType) {
 }
 
 async function rollbackEmployee(orgId, systemId) {
-    await findOneAndDelete({ org: orgId, uniqueId: systemId });
+    await employee.findOneAndDelete({ org: orgId, uniqueId: systemId });
 }
 
 async function rollbackSummary(orgId, systemId, summaryType) {
@@ -81,7 +81,7 @@ async function rollbackEmployeeSummary(orgId, systemId, summaryType) {
     if (summaryType == 'final')
         await FinalEmployeeSummary.deleteMany({ org: orgId, employee: systemId });
     else
-        await MonthlyStudentSummary.deleteMany({ org: orgId, employee: systemId });
+        await MonthlyEmployeeSummary.deleteMany({ org: orgId, employee: systemId });
 }
 
 

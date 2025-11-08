@@ -28,12 +28,10 @@ app.set('trust proxy', true);
 app.use(sessionMiddleware);
 app.use(setLocals);
 
+
 app.use('/', require('./routes/mainRoutes'));
 app.use('/dashboard', require('./routes/dashboardRoutes'));
-app.use('/api/org', require('./routes/createOrg'));
-app.use('/api', require('./routes/createScStdn'));
-app.use('/api', require('./routes/createClgStdn'));
-app.use('/api', require('./routes/createEmp'));
+app.use('/register', require('./routes/create-users'));
 app.use('/auth', require('./routes/loginRoutes'));
 app.use('/send-notice', require('./routes/admin/notice'));
 app.use('/student-session', require('./routes/admin/student-session'));
@@ -51,9 +49,6 @@ app.use('/mark-employee', require('./routes/corporate/mark-employee'));
 app.use('/mark-attendance-students', require('./routes/college-student/mark-attendance'));
 app.use('/create-summary', require('./routes/create-summaries'));
 app.use('/cleanlogs', require('./routes/clear-logs'));
-
-/*For new admin dashboard */
-app.use('/manage-acc', require('./routes/admin/manage-org-acc'));
 
 
 module.exports = app;

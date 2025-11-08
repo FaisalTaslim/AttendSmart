@@ -33,6 +33,7 @@ const auth = async (req, res) => {
             orgId = user.uniqueId;
 
             console.log('✅ Logged in Admin user!');
+            return res.redirect('/dashboard/admin');
         }
 
         else if (role === 'SchoolStudent') {
@@ -51,7 +52,7 @@ const auth = async (req, res) => {
             orgId = user.org;
 
             console.log('✅ Logged in School Student!');
-            return res.redirect('/create-summary/student');
+            return res.redirect('/dashboard/school-student');
         }
 
         else if (role === 'CollegeStudent') {
@@ -70,11 +71,13 @@ const auth = async (req, res) => {
             orgId = user.org;
 
             console.log('✅ Logged in College Student!');
-            return res.redirect('/create-summary/student');
+            return res.redirect('/dashboard/college-student');
         }
 
         else if (role === 'Employee') {
             user = await Employee.findOne({ uniqueId: uniqueID });
+            const org = Org.findOne({org: user.org});
+
             if (!user) return res.redirect('/register');
 
             const isMatch = await bcrypt.compare(password, user.password);
@@ -89,7 +92,10 @@ const auth = async (req, res) => {
             orgId = user.org;
 
             console.log('✅ Logged in Employee!');
-            return res.redirect('/create-summary/employee');
+            if(org.orgType == 'school' || org.orgType == 'college')
+                return res.redirect('/dashboard/teacher');
+            else
+                return res.redirect('/dashboard/employee');
         }
 
         if (orgId) {
@@ -117,13 +123,10 @@ const auth = async (req, res) => {
             }
         }
 
-        return res.redirect('/dashboard');
-
     } catch (err) {
         console.error("❌ Login error:", err);
         res.status(500).send("Something went wrong!");
     }
 };
-
 
 module.exports = { auth };
