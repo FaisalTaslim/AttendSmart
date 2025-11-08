@@ -30,25 +30,8 @@ app.use(setLocals);
 
 
 app.use('/', require('./routes/mainRoutes'));
-app.use('/dashboard', require('./routes/dashboardRoutes'));
 app.use('/register', require('./routes/create-users'));
 app.use('/auth', require('./routes/loginRoutes'));
-app.use('/send-notice', require('./routes/admin/notice'));
-app.use('/student-session', require('./routes/admin/student-session'));
 app.use('/api/support', require('./routes/support'));
-app.use('/update-org', require('./routes/admin/update-org'));
-app.use('/leave', require('./routes/admin/leave-requests'));
-app.use('/update-college-student', require('./routes/college-student/update-student'));
-app.use('/request-leave-clgstudent', require('./routes/college-student/post-leave'));
-app.use('/request-leave-employees', require('./routes/corporate/post-leave'));
-app.use('/update-school-student', require('./routes/school-student/update-school-student'));
-app.use('/request-leave-schlstudent', require('./routes/school-student/post-leave'));
-app.use('/update-employee', require('./routes/corporate/update-employee'));
-app.use('/employee-qr', require('./routes/admin/qr-handler'));
-app.use('/mark-employee', require('./routes/corporate/mark-employee'));
-app.use('/mark-attendance-students', require('./routes/college-student/mark-attendance'));
-app.use('/create-summary', require('./routes/create-summaries'));
-app.use('/cleanlogs', require('./routes/clear-logs'));
-
 
 module.exports = app;
