@@ -30,6 +30,9 @@ app.use(setLocals);
 
 
 app.use('/', require('./routes/mainRoutes'));
+app.use('/dashboard', require('./routes/dashboard-routes'));
+app.use('/admin', require('./routes/admin-routes'));
+
 app.use('/register', require('./routes/create-users'));
 app.use('/auth', require('./routes/loginRoutes'));
 app.use('/api/support', require('./routes/support'));

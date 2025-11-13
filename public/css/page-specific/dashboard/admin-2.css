@@ -1,27 +1,51 @@
-
+.main-1 {
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: auto;
+}
 
 .terminal-container {
     display: flex;
-    flex-direction: column;
-    height: 76vh;
-    width: 78%;
-    margin: 2rem auto;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Inconsolata', 'IBM Plex Mono', monospace;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     border: 1px solid var(--border-color);
     overflow-y: auto;
 }
 
-.terminal-header {
+.command-line {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;
+    width: 70%;
+    border-right: 2px solid var(--border-color);
+}
+
+.output-line {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    gap: 1rem;
+    height: 100%;
+    width: 30%;
+}
+
+.terminal-header,
+.output-header {
     background-color: var(--bg-secondary);
     padding: 0.5rem 1rem;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     font-weight: bold;
 }
+
 .terminal-body {
     padding: 1rem;
     height: 100%;
@@ -29,12 +53,14 @@
     flex-direction: column;
     justify-content: space-between;
 }
+
 #terminal-output {
     overflow-y: auto;
     margin-bottom: 0.5rem;
     line-height: 1.8rem;
 }
-#terminal-input {
+#terminal-input,
+.field-inputs {
     width: 100%;
     padding: 0.5rem;
     background-color: var(--bg-primary);
@@ -49,3 +75,14 @@
     flex-direction: column;
     gap: 0.5rem;
 }
+
+.org-details {
+    padding: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-color);
+    margin: 1rem;
+}
+.org-details p {
+    line-height: 1.8rem;
+}
+.org-details h3 {margin: 1rem 0}
