@@ -11,7 +11,7 @@ const adminDashboard = require('../controllers/adminDb');
 const viewsPath = path.join(__dirname, '../views/view-dashboards');
 
 router.get("/", ensureLoggedIn, (req, res) => {
-    res.sendFile(path.join(viewsPath, 'dashboard-home.html'));
+    res.render('view-dashboards/dashboard-home');
 });
 
 router.use('/corporateUser', ensureLoggedIn, corporateDashboard);

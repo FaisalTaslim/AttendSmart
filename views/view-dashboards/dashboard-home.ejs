@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Home</title>
+    <link rel="stylesheet" href="/css/global/font-family.css">
+    <link rel="stylesheet" href="/css/global/themes/light-theme-2.css">
+    <link rel="stylesheet" href="/css/page-specific/homepage.css">
+    <link rel="stylesheet" href="/css/page-specific/dashboard/dashboard-home.css">
+    <link rel="stylesheet" href="/css/global/scrollbar.css">
+
+    <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <h1>AttendSmart - Smart Attendance Solution</h1>
+        </div>
+        <nav class="nav-bar">
+            <% if (isAuthenticated) { %>
+                <a href="/" class="nav-links-property">Home</a>
+                <a href="/logout" class="nav-links-property">Logout</a>
+                <a href="/guidebook" class="nav-links-property">GuideBook</a>
+                <% } else { %>
+                    <p class="nav-links-property login-page-btn">Login</p>
+                    <a href="/guidebook" class="nav-links-property">GuideBook</a>
+                    <% } %>
+
+                        <select class="mobile-nav" id="mobile-nav">
+                            <option value="">Navigate</option>
+                            <% if (isAuthenticated) { %>
+                                <option value="/dashboard">Dashboard</option>
+                                <option value="/logout">Logout</option>
+                                <option value="/guidebook">GuideBook</option>
+                                <% } else { %>
+                                    <option value="#login">Login</option>
+                                    <option value="/guidebook">GuideBook</option>
+                                    <% } %>
+                        </select>
+        </nav>
+    </header>
+    <main>
+        <div class="main-1">
+            <div class="about-dashboard-home">
+                <h1>Role Based Access!</h1>
+                <p>
+                    AttendSmart is strict about security. A user without the designated role cannot access dashboards
+                    outside their domain.
+                </p>
+                <ul class="dashboard-features">
+                    <li><strong>Admin:</strong> Can manage institutions, users, and system-wide settings.</li>
+                    <li><strong>Employee:</strong> Can monitor attendance, generate reports, and handle student data.
+                    </li>
+                    <li><strong>Student:</strong> Can view attendance status, update profiles, and submit leave
+                        requests.</li>
+                    <li><strong>Security First:</strong> Each role has limited access to ensure data privacy and prevent
+                        unauthorized actions.</li>
+                </ul>
+                <h2>Select dashbaord matching your role >></h2>
+            </div>
+
+            <div class="dashboard-buttons-area">
+                <div class="dashboard-form">
+                    <div class="dashboard-selection">
+                        <h2>What's your role?</h2>
+                        <div class="dashboard-buttons">
+                            <button class="dash-btn admin" onclick="location.href='/dashboard/admin'">
+                                Admin
+                            </button>
+                            <button class="dash-btn college" onclick="location.href='/dashboard/collegeUser'">
+                                College Student
+                            </button>
+                            <button class="dash-btn school" onclick="location.href='/dashboard/collegeUser'">
+                                School Student
+                            </button>
+                            <button class="dash-btn staff" onclick="location.href='/dashboard/teachingStaff'">
+                                Teaching Staff
+                            </button>
+                            <button class="dash-btn employee" onclick="location.href='/dashboard/corporateUser'">
+                                Employee
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="foot-content">
+            <div class="foot1">
+                <div class="useful-links">
+                    <p><strong>Useful-links</strong></p>
+                    <a href="/home" class="links foot-links" target="_blank">Home</a>
+                </div>
+                <div class="legal">
+                    <p><strong>Legal</strong></p>
+                    <a href="#" class="links foot-links" target="_blank">Terms & conditions</a>
+                    <a href="#" class="links foot-links" target="_blank">Privacy Policy</a>
+                    <a href="#" class="links foot-links" target="_blank">Refund Policy</a>
+                </div>
+            </div>
+            <div class="foot2">
+                <div class="socials">
+                    <p><strong>Socials</strong></p>
+                    <a href="#" class="links foot-links" target="_blank"><i class="fa-brands fa-instagram"></i> |
+                        @faisal_9542</a>
+                    <a href="#" class="links foot-links" target="_blank"><i class="fa-brands fa-discord"></i> |
+                        @famaeoxiaa</a>
+                    <a href="#" class="links foot-links" target="_blank"><i class="fa-brands fa-github"></i> |
+                        @FaisalTaslim</a>
+                </div>
+                <div class="contacts">
+                    <p><strong>Contacts</strong></p>
+                    <p><i class="fa-solid fa-phone"></i> | +91 7449925137 </p>
+                    <p><i class="fa-solid fa-envelope"></i> | mailto: faisaltaslim79@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/global/change-brand-headerName.js"></script>
+    <script src="/js/global/remove-popup.js"></script>
+    <script src="/js/global/update-footerLayout-for-tablets.js"></script>
+</body>
+
+</html>
