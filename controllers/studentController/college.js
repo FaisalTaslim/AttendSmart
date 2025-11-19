@@ -10,6 +10,7 @@ const moment = require('moment');
 const { rollbackStudentCounter, rollbackSummary, rollbackStudent, rollbackRegisterLog } = require('../../utils/rollback-functions');
 const sendRegistrationMail = require('../../utils/sendEmails');
 
+
 exports.createCollegeStudent = async (req, res) => {
     let error_tracker = 0;
     let newCollegeStudentNumber;
@@ -58,7 +59,7 @@ exports.createCollegeStudent = async (req, res) => {
             roll: lowerCaseData.roll,
             dept: lowerCaseData.dept
         });
-        
+
         console.log(findStudent);
         if (findStudent) {
             error_tracker = 2;
