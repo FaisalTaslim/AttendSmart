@@ -38,6 +38,7 @@ exports.createCollegeStudent = async (req, res) => {
             orgBranch: orgBranch.toLowerCase(),
             dept: dept.toLowerCase().trim(),
             email: email.toLowerCase().trim(),
+            roll: roll.toLowerCase().trim()
         };
 
         const findOrg = await Org.findOne({ orgName: lowerCaseData.orgName, orgBranch: lowerCaseData.orgBranch });
@@ -45,16 +46,23 @@ exports.createCollegeStudent = async (req, res) => {
 
         if (!findOrg) {
             error_tracker = 1;
-            return res.render('register/college-register', { error: 'No organization found! Try again!' });
+            return res.render('index', { error: 'No organization found! Try again!' });
         }
 
         findOrgId = findOrg.uniqueId;
         orgType = findOrg.orgType;
 
-        const findStudent = await collegeStudent.findOne({ org: findOrgId, userName, roll, dept: lowerCaseData.dept });
+        const findStudent = await collegeStudent.findOne({
+            org: findOrgId,
+            userName: lowerCaseData.userName,
+            roll: lowerCaseData.roll,
+            dept: lowerCaseData.dept
+        });
+        
+        console.log(findStudent);
         if (findStudent) {
             error_tracker = 2;
-            return res.render('register/college-register', { error: 'Duplicate Account Creation Attempt! Login with your existing account!' });
+            return res.render('index', { error: 'Duplicate Account Creation Attempt! Login with your existing account!' });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -73,7 +81,7 @@ exports.createCollegeStudent = async (req, res) => {
 
         if (!filteredSubjects.length) {
             error_tracker = 4;
-            return res.render('register/college-register', { error: "Please enter the subjects, and try again!" });
+            return res.render('index', { error: "Please enter the subjects, and try again!" });
         }
 
         error_tracker = 5;
@@ -126,18 +134,18 @@ exports.createCollegeStudent = async (req, res) => {
         }
 
         error_tracker = 8;
-        const findDept = (await department.findOne({org: findOrgId}))?.collegeDepartments;
+        const findDept = (await department.findOne({ org: findOrgId }))?.collegeDepartments;
         let matchedDept = false;
         for (const dept of findDept) {
-            if(dept === lowerCaseData.dept) {
+            if (dept === lowerCaseData.dept) {
                 matchedDept = true;
                 break;
             }
         }
-        if(matchedDept == false) {
+        if (matchedDept == false) {
             await department.findOneAndUpdate(
-                {org: findOrgId},
-                {$push: {collegeDepartments: lowerCaseData.dept}}
+                { org: findOrgId },
+                { $push: { collegeDepartments: lowerCaseData.dept } }
             )
         };
 
@@ -214,6 +222,6 @@ exports.createCollegeStudent = async (req, res) => {
                 break;
         }
 
-        return res.render('register/college-register', { error: error_messages[error_tracker] || err.message });
+        return res.render('index', { error: error_messages[error_tracker] || err.message });
     }
 };

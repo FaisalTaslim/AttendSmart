@@ -10,7 +10,7 @@ const connectLivereload = require('connect-livereload');
 const app = express();
 connectDB();
 
-const liveReloadServer = livereload.createServer({ port: 35730 });
+const liveReloadServer = livereload.createServer({ port: 35729 });
 liveReloadServer.watch(path.join(__dirname, 'public'));
 liveReloadServer.watch(path.join(__dirname, 'views'));
 app.use(connectLivereload());

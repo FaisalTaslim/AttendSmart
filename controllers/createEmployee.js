@@ -13,6 +13,8 @@ const {
     rollbackEmployee,
     rollbackRegisterLog
 } = require('../utils/rollback-functions');
+const sendRegistrationMail = require('../utils/sendEmails');
+
 
 exports.createEmployee = async (req, res) => {
     let error_tracker = 0;
@@ -54,7 +56,7 @@ exports.createEmployee = async (req, res) => {
         });
 
         if (!findOrg) {
-            return res.render('register/employee-register', {
+            return res.render('index', {
                 error: 'No organization found! Try again!'
             });
         }
@@ -70,7 +72,7 @@ exports.createEmployee = async (req, res) => {
         });
 
         if (findExisting) {
-            return res.render('register/employee-register', {
+            return res.render('index', {
                 error: 'Duplicate Account Creation Attempt! Please log in with your existing account!'
             });
         }
@@ -214,7 +216,7 @@ exports.createEmployee = async (req, res) => {
                 break;
         }
 
-        return res.render('register/employee-register', {
+        return res.render('index', {
             error: error_messages[error_tracker] || err.message
         });
     }

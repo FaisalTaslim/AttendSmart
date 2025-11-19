@@ -36,25 +36,31 @@ exports.createSchoolStudent = async (req, res) => {
             orgName: orgName.toLowerCase().trim(),
             orgBranch: orgBranch.toLowerCase().trim(),
             standard: standard.toLowerCase().trim(),
-            email: email.toLowerCase().trim()
-        }
+            email: email.toLowerCase().trim(),
+            roll: roll.toLowerCase().trim()   // ✅ add this
+        };
 
         const findOrg = await Org.findOne({ orgName: lowerCaseData.orgName, orgBranch: lowerCaseData.orgBranch });
 
         if (!findOrg) {
             error_tracker = 1;
-            return res.render('register/school-register', { error: 'No organization found! Try again!' });
+            return res.render('index', { error: 'No organization found! Try again!' });
         }
 
-        console.log(`Printing the log document for org \n ${findOrg}`)
         findOrgId = findOrg.uniqueId;
         console.log(`Printing the ord id: ${findOrgId}`);
         orgType = findOrg.orgType;
 
-        const findStudent = await schoolStudent.findOne({ org: findOrgId, userName, roll, standard: lowerCaseData.standard });
+        const findStudent = await schoolStudent.findOne({
+            org: findOrgId,
+            userName: lowerCaseData.userName,
+            roll: lowerCaseData.roll,
+            standard: lowerCaseData.standard
+        });
+        
         if (findStudent) {
             error_tracker = 2;
-            return res.render('register/college-register', { error: 'Duplicate Account Creation Attempt! Login with your existing account!' });
+            return res.render('index', { error: 'Duplicate Account Creation Attempt! Login with your existing account!' });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -72,7 +78,7 @@ exports.createSchoolStudent = async (req, res) => {
 
         if (!filteredSubjects.length) {
             error_tracker = 4;
-            return res.render('register/college-register', { error: "Please enter the subjects, and try again!" });
+            return res.render('index', { error: "Please enter the subjects, and try again!" });
         }
 
         error_tracker = 5;
@@ -202,7 +208,7 @@ exports.createSchoolStudent = async (req, res) => {
                 break;
         }
 
-        return res.render('register/school-register', {
+        return res.render('index', {
             error: error_messages[error_tracker] || err.message
         });
     }
