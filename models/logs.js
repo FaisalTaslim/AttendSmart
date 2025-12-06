@@ -129,7 +129,7 @@ const logSchema = new Schema({
                 type: String,
                 required: true
             },
-            checkOut: {type: String, required: true},
+            checkOut: {type: String},
             status: {
                 type: String,
                 enum: ['Present', 'Absent'],
