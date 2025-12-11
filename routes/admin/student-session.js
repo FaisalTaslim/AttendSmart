@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
         }
 
         const departmentArray = departments
-            ? departments.split(',').map(d => d.trim().toUpperCase()).filter(Boolean)
+            ? departments.split(',').map(d => d.trim().toLowerCase()).filter(Boolean)
             : [];
 
         console.log("Departments array:", departmentArray);
@@ -51,15 +51,20 @@ router.post('/', async (req, res) => {
 
         if (sessionType === "fresh-session" && departmentArray.length > 0) {
             for (const dept of departmentArray) {
-                await MonthlyStudentSummary.updateMany(
+
+                // Add logging to see the result
+                const monthlyUpdate = await MonthlyStudentSummary.updateMany(
                     { subjectName, std_dept: dept, month: monthKey },
                     { $inc: { totalLectures: 1 } },
                 );
+                console.log(`Monthly Update for ${dept}:`, monthlyUpdate);
+                // If matchedCount is 0, your query (Dept name or Subject) is wrong.
 
-                await FinalStudentSummary.updateMany(
+                const finalUpdate = await FinalStudentSummary.updateMany(
                     { subjectName, std_dept: dept },
                     { $inc: { totalLectures: 1 } }
                 );
+                console.log(`Final Update for ${dept}:`, finalUpdate);
             }
         }
 
@@ -177,7 +182,8 @@ router.post('/', async (req, res) => {
                 { $set: { "studentSessionLog.$.expired": true } }
             );
             console.log(`⏱️ Code ${logEntry.studentCode} expired.`);
-        }, 15000);
+        }, 10 * 60 * 1000);
+
 
         if (req.session.user.role == "Employee")
             res.redirect("/dashboard/teachingStaff");
