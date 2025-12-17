@@ -5,19 +5,8 @@ const path = require('path');
 const connectDB = require('./config/database');
 const sessionMiddleware = require('./config/sessions');
 const setLocals = require('./middleware/locals');
-const livereload = require('livereload');
-const connectLivereload = require('connect-livereload');
 const app = express();
 connectDB();
-
-const liveReloadServer = livereload.createServer({ port: 35729 });
-liveReloadServer.watch(path.join(__dirname, 'public'));
-liveReloadServer.watch(path.join(__dirname, 'views'));
-app.use(connectLivereload());
-
-liveReloadServer.server.once("connection", () => {
-    setTimeout(() => liveReloadServer.refresh("/"), 100);
-});
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));

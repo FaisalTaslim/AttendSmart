@@ -1,0 +1,43 @@
+footer {
+    background-color: var(--bg-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin-top: 1rem;
+}
+footer > * {
+    font-size: 1rem;
+}
+.foot-content {
+    display: flex;
+    flex-direction: row;
+    width: 70%;
+    gap: 10vh;
+    justify-content: center;
+}
+.foot1, .foot2 {
+    display: flex;
+    flex-direction: row;
+    gap: 10vh;
+}
+.useful-links, .legal, .socials, .contacts {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+footer a, footer i {
+    color: var(--link);
+}
+footer a:hover, footer i:hover {
+    color: var(--link-hover);
+}
+footer p {
+    color: var(--link);
+    cursor: pointer;
+}
+footer p:hover {
+    color: var(--link-hover);
+    cursor: pointer;
+}
