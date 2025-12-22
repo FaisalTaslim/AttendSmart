@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Notice = require('../../models/notice');
-const Org = require('../../models/Org');
+const Org = require('../../models/organization');
 const logs = require('../../models/logs');
 const userOnLeave = require('../../models/userOnLeave');
 const Employee = require('../../models/Employee');
@@ -9,7 +9,7 @@ const collegeStudent = require('../../models/CollegeStudent');
 const schoolStudent = require('../../models/SchoolStudent');
 const { FinalStudentSummary } = require('../../models/overallSummary');
 const { MonthlyStudentSummary } = require('../../models/monthlySummary');
-const generateCode = require('../../utils/generate-code-for-qr');
+const generateCode = require('../../utils/codes');
 const moment = require('moment');
 
 router.post('/', async (req, res) => {

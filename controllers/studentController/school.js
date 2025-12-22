@@ -1,13 +1,12 @@
 const schoolStudent = require('../../models/SchoolStudent');
 const { FinalStudentSummary } = require('../../models/overallSummary');
 const { MonthlyStudentSummary } = require('../../models/monthlySummary');
-const Org = require('../../models/Org');
+const Org = require('../../models/organization');
 const bcrypt = require('bcrypt');
-const counter = require('../../models/counter');
+const counter = require('../../models/codes');
 const logs = require('../../models/logs');
 const departments = require('../../models/departments');
 const moment = require('moment');
-const { rollbackStudentCounter, rollbackSummary, rollbackStudent, rollbackRegisterLog } = require('../../utils/rollback-functions');
 
 exports.createSchoolStudent = async (req, res) => {
     let error_tracker = 0;

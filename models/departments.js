@@ -6,17 +6,14 @@ const departmentSchema = new Schema({
     schoolStandards: {
         type: [String],
         default: [],
-        set: arr => [...new Set(arr.map(s => s.trim().toLowerCase()))]
     },
     collegeDepartments: {
         type: [String],
         default: [],
-        set: arr => [...new Set(arr.map(s => s.trim().toLowerCase()))]
     },
     employeeDepartments: {
         type: [String],
         default: [],
-        set: arr => [...new Set(arr.map(s => s.trim().toLowerCase()))]
     }
 }, {timestamps: true });
 

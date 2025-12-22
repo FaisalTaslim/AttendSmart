@@ -49,4 +49,22 @@ async function sendRegistrationMail(to, userName, uniqueId, role = 'Student') {
     }
 }
 
-module.exports = sendRegistrationMail;
+async function sendVerificationEmail(to, token, code, role) {
+    const link = `http://localhost:3000/verify/${token}/${role}/${code}`;
+
+    await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to,
+        subject: "Verify your organization",
+        html: `
+            <p>Click the link below to verify your organization:</p>
+            <a href="${link}">${link}</a>
+        `
+    });
+}
+
+
+module.exports = {
+    sendRegistrationMail,
+    sendVerificationEmail
+};

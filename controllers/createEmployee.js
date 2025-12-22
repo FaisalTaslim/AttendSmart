@@ -1,19 +1,13 @@
 const employee = require('../models/Employee');
 const { FinalEmployeeSummary } = require('../models/overallSummary');
 const { MonthlyEmployeeSummary } = require('../models/monthlySummary');
-const Org = require('../models/Org');
+const Org = require('../models/organization');
 const bcrypt = require('bcrypt');
-const counter = require('../models/counter');
+const counter = require('../models/codes');
 const logs = require('../models/logs');
 const department = require('../models/departments');
 const moment = require('moment');
-const {
-    rollbackEmployeeCounter,
-    rollbackEmployeeSummary,
-    rollbackEmployee,
-    rollbackRegisterLog
-} = require('../utils/rollback-functions');
-const sendRegistrationMail = require('../utils/sendEmails');
+const sendRegistrationMail = require('../utils/send-emails');
 
 
 exports.createEmployee = async (req, res) => {

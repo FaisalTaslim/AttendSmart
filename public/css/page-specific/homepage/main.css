@@ -1,11 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-    color: var(--text-primary)
-}
-body {
-    background-color: var(--bg-primary);
-}
 body {
     display: flex;
     flex-direction: column;
@@ -62,6 +54,7 @@ main {
     border: 2px solid var(--border-color);
     border-radius: 0.8rem;
 }
+.form-box .tip {text-align: center;}
 .form-box h2,
 .faq-section h2 {
     color: var(--accent);
@@ -74,8 +67,9 @@ main {
     color: var(--text-primary);
     text-align: center;
 }
-.student-form-wrapper,
-.employee-form-wrapper {
+#c-form,
+#s-form,
+#e-form {
     display: none;
 }
 .left-side {
@@ -176,3 +170,25 @@ main {
 .left-side * {color: var(--text-primary)}
 .main-3 {display: none;}
 .issue-form-section {display: none;}
+
+.terms-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 15px 0;
+}
+.terms-text {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+.terms-text a {
+    color: var(--link);
+    text-decoration: none;
+}
+.terms-text a:hover {text-decoration: underline;}
+.tip {
+    color: var(--tip-text);
+}

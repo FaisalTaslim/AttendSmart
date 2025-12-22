@@ -3,9 +3,8 @@ const router = express.Router();
 const SchoolStudent = require('../models/SchoolStudent');
 const Notice = require('../models/notice');
 const LeaveRequest = require('../models/userLeave');
-const checkRole = require('../middleware/roleMiddleware');
 
-router.get('/', checkRole(['SchoolStudent']), async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const userUniqueId = req.session.user.uniqueId;
         const student = await SchoolStudent.findOne({ uniqueId: userUniqueId });

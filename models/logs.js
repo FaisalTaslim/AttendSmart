@@ -15,7 +15,7 @@ const logSchema = new Schema({
     loginLogs: [
         {
             userId: {type: String, required: true},
-            userName: {type: String, required: true},
+            name: {type: String, required: true},
             role: {
                 type: String, 
                 required: true
@@ -34,7 +34,7 @@ const logSchema = new Schema({
     supportLogs: [
         {
             userId: {type: String, required: true},
-            userName: {type: String, required: true},
+            name: {type: String, required: true},
             role: {type: String, required: true},
             email: {type: String, required: true},
             supportType: {
@@ -83,7 +83,7 @@ const logSchema = new Schema({
                 required: true,
             },
             subjectName: {
-                type: String, 
+                type: String,
                 required: true,
             },
             expired: {type: Boolean, required: true},
@@ -97,7 +97,7 @@ const logSchema = new Schema({
     studentAttendanceHistory: [
         {
             studentId: {type: String, required: true},
-            studentName: {type: String, required: true},
+            name: {type: String, required: true},
             dept: {
                 type: String,
                 required: true
@@ -119,7 +119,7 @@ const logSchema = new Schema({
     employeeAttendanceHistory: [
         {
             employeeId: {type: String, required: true},
-            employeeName: {type: String, required: true},
+            name: {type: String, required: true},
             dept: {
                 type: String,
                 required: true,

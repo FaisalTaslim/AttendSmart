@@ -1,5 +1,5 @@
 const cron = require('node-cron');
-const Org = require('../models/Org');
+const Org = require('../models/organization');
 const userOnLeave = require('../models/userOnLeave');
 const collegeStudent = require('../models/CollegeStudent');
 const schoolStudent = require('../models/SchoolStudent');

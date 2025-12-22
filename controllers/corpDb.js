@@ -3,9 +3,8 @@ const router = express.Router();
 const Employee = require('../models/Employee');
 const Notice = require('../models/notice');
 const LeaveRequest = require('../models/userLeave');
-const checkRole = require('../middleware/roleMiddleware');
 
-router.get('/', checkRole(['Employee']), async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const user = req.session.user.uniqueId;
         const findUser = await Employee.findOne({ uniqueId: user });

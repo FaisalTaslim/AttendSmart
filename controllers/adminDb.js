@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Org = require('../models/Org');
+const Org = require('../models/organization.js');
 const Employee = require('../models/Employee');
 const CollegeStudent = require('../models/CollegeStudent');
 const SchoolStudent = require('../models/SchoolStudent');
@@ -11,10 +11,9 @@ const { FinalStudentSummary } = require('../models/overallSummary');
 const logs = require('../models/logs');
 const Notice = require('../models/notice');
 const leaveRequests = require('../models/userLeave');
-const checkRole = require('../middleware/roleMiddleware');
 const generateEmployeeQR = require('../utils/generateEmployeeQr.js');
 
-router.get('/', checkRole(['Org']), async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const user = req.session.user.uniqueId;
         const findUser = await Org.findOne({ uniqueId: user });

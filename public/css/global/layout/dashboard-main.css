@@ -1,0 +1,67 @@
+.main-1 {
+    overflow-y: auto;
+    background: var(--bg-secondary);
+    border-radius: 0.8rem;
+}
+.right-side {width: 23%}
+.left-side {width: 77%;}
+
+.dashboard-sidenav {
+    height: 98%;
+    background: var(--bg-primary);
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    border-right: 1px solid var(--border-color);
+    overflow-y: auto;
+}
+.dash-head {
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 0.8rem;
+}
+.dash-head h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.95rem;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+}
+
+.dash-head h2 i {
+    font-size: 1rem;
+}
+.dash-head h2 span {
+    font-weight: 600;
+}
+.dash-head-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+.dash-head-nav p {
+    padding: 0.45rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.dash-head-nav p:hover {
+    background: rgba(212, 175, 55, 0.12);
+    color: var(--accent);
+}
+.dash-head-nav p.active {
+    background: rgba(212, 175, 55, 0.2);
+    color: var(--accent);
+    font-weight: 600;
+}
+.dash-head-nav p.danger {
+    color: var(--error);
+}
+.dash-head-nav p.danger:hover {
+    background: rgba(207, 102, 121, 0.15);
+    color: var(--error);
+}

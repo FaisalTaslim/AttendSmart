@@ -4,9 +4,8 @@ const CollegeStudent = require('../models/CollegeStudent');
 const Notice = require('../models/notice');
 const logs = require('../models/logs')
 const LeaveRequest = require('../models/userLeave');
-const checkRole = require('../middleware/roleMiddleware');
 
-router.get('/', checkRole(['CollegeStudent']), async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const userUniqueId = req.session.user.uniqueId;
         const student = await CollegeStudent.findOne({ uniqueId: userUniqueId });

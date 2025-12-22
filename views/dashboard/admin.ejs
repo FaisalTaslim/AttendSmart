@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="../../public/css/global/theme/dark-theme.css">
+    <link rel="stylesheet" href="../../public/css/global/ui-components/font-family.css">
+    <link rel="stylesheet" href="../../public/css/global/ui-components/scrollbar.css">
+    <link rel="stylesheet" href="../../public/css/global/layout/header.css">
+    <link rel="stylesheet" href="../../public/css/global/layout/footer.css">
+    <link rel="stylesheet" href="../../public/css/global/ui-components/forms.css">
+    <link rel="stylesheet" href="../../public/css/global/ui-componenets/popup.css">
+    <link rel="stylesheet" href="../../public/css/page-specific/homepage/main.css">
+    <link rel="stylesheet" href="../../public/css/global/layout/dashboard-main.css">
+
+    <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <h1 class="pc-header">AttendSmart - Smart Attendance Solution</h1>
+            <h1 class="mobile-header">AttendSmart</h1>
+        </div>
+
+        <nav class="nav-bar">
+            <a href="/" class="nav-links-property">Home</a>
+            <a href="/logout" class="nav-links-property">Logout</a>
+            <a href="/guidebook" class="nav-links-property">GuideBook</a>
+        </nav>
+
+        <nav class="mobile-nav-container">
+            <div class="form-group">
+                <select id="mobile-nav">
+                    <option value="">Navigate</option>
+                    <option value="/">Home</option>
+                    <option value="/logout">Logout</option>
+                    <option value="/guidebook">GuideBook</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="main-1">
+            <div class="right-side">
+                <div class="dashboard-sidenav">
+                    <div class="dash-head">
+                        <h2><span>General Settings</span></h2>
+                        <div class="dash-head-nav">
+                            <p class="edit-info-btn">Account Info & Edit</p>
+                            <p>Download Reports</p>
+                            <p>Toggle Themes</p>
+                            <p>Change Password</p>
+                            <p>Enable Notifications</p>
+                            <p class="danger">Delete Your Account</p>
+                        </div>
+                    </div>
+
+                    <div class="dash-head">
+                        <h2><span>Attendance Control</span></h2>
+                        <div class="dash-head-nav">
+                            <p class="qr-btn">Generate QR</p>
+                            <p class="session-btn">Start Session</p>
+                            <p class="edit-att-btn">Edit Attendance</p>
+                            <p class="att-records-btn">View Attendance Report</p>
+                        </div>
+                    </div>
+
+                    <div class="dash-head">
+                        <h2><span>User & Data Management</span></h2>
+                        <div class="dash-head-nav">
+                            <p class="users-btn">Manage Users</p>
+                            <p class="leave-btn">Manage Leave Requests</p>
+                            <p class="logs-btn">View Logs</p>
+                        </div>
+                    </div>
+
+                    <div class="dash-head">
+                        <h2><span>Communication</span></h2>
+                        <div class="dash-head-nav">
+                            <p class="notice-btn">Send Notice</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="foot-content">
+            <div class="foot1">
+                <div class="useful-links">
+                    <p><strong>Useful-links</strong></p>
+                    <a href="#register" class="links foot-links" target="_blank">Register</a>
+                    <a href="#support-forms" class="links foot-links" target="_blank">Support</a>
+                    <a href="/dashboard" class="links foot-links" target="_blank">Dashboard</a>
+                </div>
+                <div class="legal">
+                    <p><strong>Legal</strong></p>
+                    <a href="#" class="links foot-links" target="_blank">Terms & conditions</a>
+                    <a href="#" class="links foot-links" target="_blank">Privacy Policy</a>
+                    <a href="#" class="links foot-links" target="_blank">Refund Policy</a>
+                </div>
+            </div>
+            <div class="foot2">
+                <div class="socials">
+                    <p><strong>Socials</strong></p>
+                    <a href="#" class="links foot-links" target="_blank">
+                        <i class="fa-brands fa-instagram"></i> | @faisal_9542
+                    </a>
+                    <a href="#" class="links foot-links" target="_blank">
+                        <i class="fa-brands fa-discord"></i> | @famaeoxiaa
+                    </a>
+                    <a href="#" class="links foot-links" target="_blank">
+                        <i class="fa-brands fa-github"></i> | @FaisalTaslim
+                    </a>
+                </div>
+                <div class="contacts">
+                    <p><strong>Contacts</strong></p>
+                    <p><i class="fa-solid fa-phone"></i> | +91 7449925137 </p>
+                    <p><i class="fa-solid fa-envelope"></i> | mailto: faisaltaslim79@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
