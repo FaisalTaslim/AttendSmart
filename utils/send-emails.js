@@ -49,8 +49,8 @@ async function sendRegistrationMail(to, userName, uniqueId, role = 'Student') {
     }
 }
 
-async function sendVerificationEmail(to, token, code, role) {
-    const link = `http://localhost:3000/verify/${token}/${role}/${code}`;
+async function sendVerificationEmail(to, token, code, role, secondary_role=null) {
+    const link = `http://localhost:3000/verify/${token}/${role}/${code}/${secondary_role}`;
 
     await transporter.sendMail({
         from: process.env.EMAIL_USER,

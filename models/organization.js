@@ -33,8 +33,9 @@ const orgSchema = new mongoose.Schema({
                 type: String,
                 required: true
             },
-           password: {type: String, required: true}
-        }
+           password: {type: String, required: true},
+            _id: false
+        },
     ],
     departments: {
         school: {

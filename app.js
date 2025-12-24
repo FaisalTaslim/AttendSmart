@@ -23,8 +23,6 @@ app.use('/', require('./routes/register/verify-email'));
 
 
 
-
 app.use('/', require('./routes/main'));
-
 
 module.exports = app;

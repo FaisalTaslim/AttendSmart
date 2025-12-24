@@ -22,7 +22,7 @@ async function createOrgWithUniqueCode(orgData) {
     }
 }
 
-exports.admin = async (req, res) => {
+exports.register = async (req, res) => {
     let createdOrg = null;
     const verificationToken = crypto.randomBytes(20).toString("hex");
     const tokenExpiry = new Date();
@@ -93,6 +93,7 @@ exports.admin = async (req, res) => {
                 expiresAt: tokenExpiry
             }
         });
+        console.log("Created the organization.");
 
         await OrgLog.create({
             org: createdOrg.code,
@@ -100,7 +101,8 @@ exports.admin = async (req, res) => {
         });
 
         await sendVerificationEmail(email, verificationToken, createdOrg.code, "Admin");
-
+        console.log("Send the verification email.");
+        
         return res.render("index", {
             popupMessage: "Check your email!",
             popupType: "info",

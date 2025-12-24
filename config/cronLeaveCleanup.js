@@ -1,8 +1,8 @@
 const cron = require('node-cron');
 const Org = require('../models/organization');
 const userOnLeave = require('../models/userOnLeave');
-const collegeStudent = require('../models/CollegeStudent');
-const schoolStudent = require('../models/SchoolStudent');
+const collegeStudent = require('../models/college-student');
+const schoolStudent = require('../models/school-student');
 
 cron.schedule('5 0 * * *', async () => {
     console.log("Running Leave cleanup job...");
