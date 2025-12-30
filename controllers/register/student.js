@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
-const Org = require("../../models/organization");
-const collegeStudent = require("../../models/college-student");
+const Org = require("../../models/users/organization");
+const collegeStudent = require("../../models/users/college-student");
+const schoolStudent = require("../../models/users/school-student");
 const summary = require("../../models/student-summary");
 const log = require("../../models/logs");
 const generateCode = require("../../utils/codes");
@@ -168,5 +169,151 @@ exports.register_clg = async (req, res) => {
         }
 
         res.status(500).json({ message: "Server error" });
+    }
+};
+
+exports.register_sch = async (req, res) => {
+    console.log("Running the school-student registration module");
+
+    let createdStudent = null;
+    let tracker = 0;
+
+    const verificationToken = crypto.randomBytes(20).toString("hex");
+    const tokenExpiry = new Date();
+    tokenExpiry.setHours(tokenExpiry.getHours() + 24);
+
+    try {
+        const {
+            name,
+            roll,
+            standard,
+            contact,
+            email,
+            orgName,
+            orgBranch,
+            subjects,
+            password,
+            confirmPassword,
+            faceDescriptor
+        } = req.body;
+
+        if (!faceDescriptor) {
+            return res.status(400).json({ message: "Face data missing" });
+        }
+
+        if (!Array.isArray(faceDescriptor) || faceDescriptor.length !== 128) {
+            return res.status(400).json({ message: "Invalid face descriptor" });
+        }
+        
+        const isExisting = await schoolStudent.findOne({
+            email,
+            isDeleted: false
+        });
+
+        if (isExisting) {
+            return res.render("index", {
+                popupMessage: "Account already exists!",
+                popupType: "error",
+            });
+        }
+
+        if (password !== confirmPassword) {
+            return res.render("index", {
+                popupMessage: "Password mismatch!",
+                popupType: "error",
+            });
+        }
+
+        const getOrg = await Org.findOne({
+            org: orgName.toLowerCase(),
+            branch: orgBranch.toLowerCase()
+        });
+
+        if (!getOrg) {
+            return res.render("index", {
+                popupMessage: "Organization not found!",
+                popupType: "error",
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        createdStudent = await createUserWithUniqueCode({
+            org: getOrg.code,
+            name,
+            roll,
+            standard,
+            contact,
+            email,
+            subjects,
+            faceData: {
+                descriptors: [faceDescriptor],
+                registeredAt: new Date()
+            },
+            verification: {
+                status: "pending",
+                token: verificationToken,
+                expiresAt: tokenExpiry
+            },
+            password: hashedPassword,
+            termsCheck: "accepted"
+        });
+
+        const subjectArray = Array.isArray(subjects) ? subjects : [subjects];
+        const filteredSubjects = subjectArray
+            .filter(s => s && s.trim() !== "")
+            .map(s => s.toLowerCase());
+
+        tracker = 1;
+
+        for (const subject of filteredSubjects) {
+            await summary.create({
+                org: getOrg.code,
+                personType: "student",
+                code: createdStudent.code,
+                name: createdStudent.name,
+                department: createdStudent.standard,
+                subjectName: subject,
+                month: moment().format("YYYY-MM"),
+            });
+        }
+
+        tracker = 2;
+
+        await log.findOneAndUpdate(
+            { org: getOrg.code },
+            {
+                $push: {
+                    registerLogs: `School student ${createdStudent.name}, roll ${createdStudent.roll}, standard ${createdStudent.standard} registered.`
+                }
+            }
+        );
+
+        await Org.findOneAndUpdate(
+            { code: getOrg.code },
+            { $addToSet: { "departments.school": standard.toLowerCase() } }
+        );
+
+        await sendVerificationEmail(
+            email,
+            verificationToken,
+            createdStudent.code,
+            "Student",
+            "schoolStudent"
+        );
+
+        return res.render("index", {
+            popupMessage: "Check your email!",
+            popupType: "info",
+        });
+
+    } catch (err) {
+        console.error(err);
+
+        if (tracker >= 1 && createdStudent) {
+            await schoolStudent.findOneAndDelete({ email });
+        }
+
+        return res.status(500).json({ message: "Server error" });
     }
 };

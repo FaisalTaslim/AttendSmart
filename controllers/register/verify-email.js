@@ -1,6 +1,6 @@
-const Org = require("../../models/organization");
-const collegeStudent = require("../../models/college-student");
-const schoolStudent = require("../../models/school-student");
+const Org = require("../../models/users/organization");
+const collegeStudent = require("../../models/users/college-student");
+const schoolStudent = require("../../models/users/school-student");
 const { sendRegistrationMail } = require("../../utils/send-emails");
 
 exports.verify = async (req, res) => {

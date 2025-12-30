@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomePage</title>
-    <link rel="stylesheet" href="/css/global/theme/dark-theme.css">
+    <link rel="stylesheet" href="/css/global/theme/light-theme.css">
     <link rel="stylesheet" href="/css/global/ui-components/font-family.css">
     <link rel="stylesheet" href="/css/global/ui-components/scrollbar.css">
+    <link rel="stylesheet" href="/css/global/ui-components/selection.css">
     <link rel="stylesheet" href="/css/global/layout/header.css">
     <link rel="stylesheet" href="/css/global/layout/footer.css">
     <link rel="stylesheet" href="/css/global/ui-components/forms.css">
@@ -69,7 +70,7 @@
                             <% } %>
                                 <h1>Confused, aren't you? Read this!</h1>
                                 <p>
-                                    A Universal web-based attendance monitoring solution that automates attendance
+                                    AttendSmart is a Universal web-based attendance monitoring solution that automates attendance
                                     tracking
                                     using methods like QR code, Face Recogniction and Timed-session to maintain
                                     efficiency.
@@ -89,9 +90,9 @@
                     <div class="right-side">
                         <h1>JOIN US NOW!</h1>
                         <div class="forms" id="register">
-                            <div class="form-group">
+                            <div class="outer-group">
                                 <select id="registration-type">
-                                    <option value="">-- Select a Registration Type --</option>
+                                    <option value="" disabled selected>-- Select a Registration Type --</option>
                                     <option value="a-form">Admin Register</option>
                                     <option value="c-form">College Student Register</option>
                                     <option value="s-form">School Student Register</option>
@@ -100,487 +101,310 @@
                             </div>
                             <form action="/registration/admin" class="form-box r-forms hidden-mob" id="a-form"
                                 method="POST">
-                                <h2 class="form-title">Admin Registration</h2>
+                                <fieldset>
+                                    <legend>Admin Details</legend>
 
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="a-name">Name</label>
-                                        <input type="text" id="a-name" name="admin[0][name]" required>
+                                    <div class="outer-group">
+                                        <input type="text" name="admin[0][name]" placeholder="Full Name" required>
+                                        <input type="text" name="admin[0][adminId]" placeholder="Admin ID" required>
+                                        <input type="tel" name="admin[0][contact]" placeholder="Mobile" required>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="a-id">Admin ID</label>
-                                        <input type="text" id="a-id" name="admin[0][adminId]" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="a-contact">Mobile Number</label>
-                                        <input type="tel" id="a-contact" name="admin[0][contact]" required>
-                                    </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <label for="a-email">Email</label>
-                                    <input type="email" id="a-email" name="admin[0][email]" required>
-                                </div>
+                                    <div class="outer-group">
+                                        <input type="email" name="admin[0][email]" placeholder="Email" required>
+                                    </div>
 
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="a-password">Set Password</label>
-                                        <input type="text" class="password" id="a-password" name="admin[0][password]"
-                                            required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="a-confirm">Confirm Password</label>
-                                        <input type="text" class="confirm-password" id="a-confirm"
-                                            name="confirmPassword" required>
-                                    </div>
-                                </div>
+                                    <div class="outer-group">
+                                        <input type="password" class="password" name="admin[0][password]"
+                                            placeholder="Create password" required>
 
-                                <h3 class="form-title">Organization Details</h3>
+                                        <input type="password" class="confirm-password" name="confirmPassword"
+                                            placeholder="Confirm password" required>
+                                    </div>
+                                </fieldset>
 
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="a-org">Name</label>
-                                        <input type="text" id="a-org" name="organization" required>
+                                <fieldset>
+                                    <legend>Organization Details</legend>
+
+                                    <div class="outer-group">
+                                        <input type="text" name="organization" placeholder="Organization name" required>
+                                        <input type="text" name="branch" placeholder="Branch" required>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="a-org-branch">Branch</label>
-                                        <input type="text" id="a-org-branch" name="branch" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="a-org-type">Type</label>
-                                        <select id="a-org-type" name="type">
-                                            <option value="">Select</option>
+
+                                    <div class="outer-group">
+                                        <select name="type" required>
+                                            <option value="">Select organization type</option>
                                             <option value="school">School</option>
                                             <option value="college">College</option>
                                             <option value="corporate">Corporate</option>
-                                        </select required>
+                                        </select>
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <label for="a-address">Address</label>
-                                    <input type="text" id="a-address" name="address" required>
-                                </div>
-
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="total-emp">Total Employees</label>
-                                        <input type="text" id="total-emp" name="expectedEmployees" required>
+                                    <div class="outer-group">
+                                        <input type="text" name="address" placeholder="Organization address" required>
+                                        <input type="number" name="expectedEmployees" placeholder="Expected employees"
+                                            required>
+                                        <input type="number" name="expectedStudents" placeholder="Expected students"
+                                            required>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="total-students">Total Students</label>
-                                        <input type="text" id="total-students" name="expectedStudents"
-                                            placeholder="Write '0' if invalid" required>
+
+                                    <div class="outer-group">
+                                        <input type="url" name="website" placeholder="Website">
                                     </div>
-                                </div>
+                                </fieldset>
 
-                                <div class="form-group">
-                                    <label for="website">Website</label>
-                                    <input type="url" id="website" name="website" placeholder="https://example.com">
-                                </div>
+                                <fieldset>
+                                    <legend>Confirmation</legend>
 
-                                <div class="form-group terms-wrapper">
-                                    <input type="checkbox" class="terms-check" id="a-terms" name="termsCheck" required>
+                                    <div class="terms-wrapper">
+                                        <input type="checkbox" class="terms-check" name="termsCheck" required>
 
-                                    <label for="a-terms" class="terms-text">
-                                        I agree to the
-                                        <a href="/terms" target="_blank">Terms & Conditions</a>
-                                        and
-                                        <a href="/privacy" target="_blank">Privacy Policy</a>
-                                    </label>
-                                </div>
+                                        <label for="a-terms" class="terms-text">
+                                            I agree to the
+                                            <a href="/terms" target="_blank">Terms & Conditions</a>
+                                        </label>
+                                    </div>
+                                </fieldset>
 
-                                <button type="submit" class="form-submit-btn to-disable">Register Organization</button>
+                                <button type="submit" class="form-submit-btn to-disable">
+                                    Register Organization
+                                </button>
                             </form>
+
                             <form class="form-box r-forms hidden-mob" id="c-form" enctype="multipart/form-data">
-                                <h2 class="form-title">College Student Registration</h2>
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="c-name">Full Name</label>
-                                        <input type="text" id="c-name" name="name" required>
+
+                                <fieldset>
+                                    <legend>College Student Registration</legend>
+
+                                    <div class="outer-group">
+                                        <input type="text" name="name" placeholder="Full Name" required>
+                                        <input type="text" name="roll" placeholder="Full Roll Number" required>
+                                        <input type="text" name="dept" placeholder="Department" required>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="c-roll">Full Roll Number</label>
-                                        <input type="text" id="c-roll" name="roll" required>
+                                    <div class="outer-group">
+                                        <input type="tel" name="contact" placeholder="Contact Number" required>
+                                        <input type="email" name="email" placeholder="Email Address" required>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="c-dept">Department</label>
-                                        <input type="text" id="c-dept" name="dept" required>
+                                    <div class="outer-group">
+                                        <input type="text" name="orgName" placeholder="Organization Name" required>
+                                        <input type="text" name="orgBranch" placeholder="Branch" required>
                                     </div>
-                                </div>
+                                </fieldset>
 
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="c-contact">Contact Number</label>
-                                        <input type="tel" id="c-contact" name="contact" required>
-                                    </div>
+                                <fieldset>
+                                    <legend>Subject Details</legend>
+
+                                    <div class="outer-group">
+                                        <input type="text" name="subjects[]" placeholder="Subject 1" required>
+                                        <input type="text" name="subjects[]" placeholder="Subject 2">
+                                        <input type="text" name="subjects[]" placeholder="Subject 3">
+                                        <input type="text" name="subjects[]" placeholder="Subject 4">
+                                        <input type="text" name="subjects[]" placeholder="Subject 5">
+                                        <input type="text" name="subjects[]" placeholder="Subject 6">
+                                        <input type="text" name="subjects[]" placeholder="Subject 7">
+                                        <input type="text" name="subjects[]" placeholder="Subject 8">
+                                        <input type="text" name="subjects[]" placeholder="Subject 9">
+                                        <input type="text" name="subjects[]" placeholder="Subject 10">
+                                        <input type="text" name="subjects[]" placeholder="Subject 11">
+                                        <input type="text" name="subjects[]" placeholder="Subject 12">
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Face Verification</legend>
 
                                     <div class="form-group">
-                                        <label for="c-email">Email</label>
-                                        <input type="email" id="c-email" name="email" required>
+                                        <input type="file" name="faceImage" accept="image/*">
+                                        <img style="display:none;">
                                     </div>
-                                </div>
+                                </fieldset>
 
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="c-org">Organization Name</label>
-                                        <input type="text" id="c-org" name="orgName" required>
-                                    </div>
+                                <fieldset>
+                                    <legend>Password Setup</legend>
 
-                                    <div class="form-group">
-                                        <label for="c-branch">Branch</label>
-                                        <input type="text" id="c-branch" name="orgBranch" required>
+                                    <div class="outer-group">
+                                        <input type="password" class="password" name="password"
+                                            placeholder="Set Password" required>
+                                        <input type="password" class="confirm-password" name="confirmPassword"
+                                            placeholder="Confirm Password" required>
                                     </div>
-                                </div>
+                                </fieldset>
 
-                                <h2 class="form-title">Subject Details</h2>
+                                <fieldset>
+                                    <legend>Terms & Conditions</legend>
 
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="c-subject1">Subject 1</label>
-                                        <input type="text" id="c-subject1" name="subjects" required>
+                                    <div class="form-group terms-wrapper">
+                                        <input type="checkbox" class="terms-check" name="termsCheck" required>
+                                        <span class="terms-text">
+                                            I agree to the
+                                            <a href="/terms" target="_blank">Terms & Conditions</a>
+                                        </span>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="c-subject2">Subject 2</label>
-                                        <input type="text" id="c-subject2" name="subjects">
-                                    </div>
-                                </div>
+                                </fieldset>
 
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="c-subject3">Subject 3</label>
-                                        <input type="text" id="c-subject3" name="subjects">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="c-subject4">Subject 4</label>
-                                        <input type="text" id="c-subject4" name="subjects">
-                                    </div>
-                                </div>
+                                <button type="submit" class="form-submit-btn to-disable">
+                                    Register Student
+                                </button>
 
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="c-subject5">Subject 5</label>
-                                        <input type="text" id="c-subject5" name="subjects">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="c-subject6">Subject 6</label>
-                                        <input type="text" id="c-subject6" name="subjects">
-                                    </div>
-                                </div>
-
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="c-subject7">Subject 7</label>
-                                        <input type="text" id="c-subject7" name="subjects">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="c-subject8">Subject 8</label>
-                                        <input type="text" id="c-subject8" name="subjects">
-                                    </div>
-                                </div>
-
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="c-subject9">Subject 9</label>
-                                        <input type="text" id="c-subject9" name="subjects">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="c-subject10">Subject 10</label>
-                                        <input type="text" id="c-subject10" name="subjects">
-                                    </div>
-                                </div>
-
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="c-subject11">Subject 11</label>
-                                        <input type="text" id="c-subject11" name="subjects">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="c-subject12">Subject 12</label>
-                                        <input type="text" id="c-subject12" name="subjects">
-                                    </div>
-                                </div>
-
-                                <h2 class="form-title">Face Verification</h2>
-
-                                <div class="form-group">
-                                    <label for="faceImage">Upload Face Image</label>
-                                    <input type="file" id="faceImage" name="faceImage" accept="image/*" />
-                                    <img id="preview" style="display:none;" />
-                                </div>
-
-                                <h2 class="form-title">Password Setup</h2>
-
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="c-password">Set Password</label>
-                                        <input type="password" class="password" id="c-password" name="password"
-                                            required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="c-confirm-password">Confirm Password</label>
-                                        <input type="password" class="confirm-password" id="c-confirm-password"
-                                            name="confirmPassword" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group terms-wrapper">
-                                    <input type="checkbox" class="terms-check" id="c-terms" name="termsCheck" required>
-
-                                    <label for="termsCheck" class="terms-text">
-                                        I agree to the
-                                        <a href="/terms" target="_blank">Terms & Conditions</a>
-                                        and
-                                        <a href="/privacy" target="_blank">Privacy Policy</a>
-                                    </label>
-                                </div>
-
-                                <button type="submit" class="form-submit-btn to-disable">Register Student</button>
                             </form>
-                            <form action="/api/register-school-student" class="form-box r-forms hidden-mob" id="s-form"
-                                method="POST">
-                                <h2 class="form-title">School Student Registration</h2>
 
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="s-name">Full Name</label>
-                                        <input type="text" id="s-name" name="userName" required>
+                            <form class="form-box r-forms hidden-mob" id="s-form" enctype="multipart/form-data">
+
+                                <fieldset>
+                                    <legend>School Student Registration</legend>
+
+                                    <div class="outer-group">
+                                        <input type="text" name="userName" placeholder="Name" required>
+                                        <input type="text" name="roll" placeholder="Roll Number" required>
+                                        <input type="text" name="standard"
+                                            placeholder="Class-Division [example: 2A, 3B]" required>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="s-roll">Roll Number</label>
-                                        <input type="text" id="s-roll" name="roll" required>
+                                    <div class="outer-group">
+                                        <input type="tel" name="contact" placeholder="Mobile" required>
+                                        <input type="email" name="email" placeholder="Email" required>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="s-standard">Division</label>
-                                        <input type="text" id="s-standard" name="standard" required>
+                                    <div class="outer-group">
+                                        <input type="text" name="orgName" placeholder="Organization Name" required>
+                                        <input type="text" name="orgBranch" placeholder="Branch" required>
                                     </div>
-                                </div>
+                                </fieldset>
 
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="s-contact">Contact Number</label>
-                                        <input type="tel" id="s-contact" name="contact" required>
-                                    </div>
+                                <fieldset>
+                                    <legend>Subject Details</legend>
 
-                                    <div class="form-group">
-                                        <label for="s-email">Email</label>
-                                        <input type="email" id="s-email" name="email" required>
-                                    </div>
-                                </div>
+                                    <div class="outer-group">
+                                        <input type="text" name="subjectName[]" placeholder="Subject 1">
+                                        <input type="text" name="subjectName[]" placeholder="Subject 2">
+                                        <input type="text" name="subjectName[]" placeholder="Subject 3">
+                                        <input type="text" name="subjectName[]" placeholder="Subject 4">
+                                        <input type="text" name="subjectName[]" placeholder="Subject 5">
+                                        <input type="text" name="subjectName[]" placeholder="Subject 6">
+                                        <input type="text" name="subjectName[]" placeholder="Subject 7">
 
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="s-org">Organization Name</label>
-                                        <input type="text" id="s-org" name="orgName" required>
-                                    </div>
+                                        <input type="text" name="subjectName[]" placeholder="Subject 8">
 
-                                    <div class="form-group">
-                                        <label for="s-branch">Branch</label>
-                                        <input type="text" id="s-branch" name="orgBranch" required>
-                                    </div>
-                                </div>
+                                        <input type="text" name="subjectName[]" placeholder="Subject 9">
+                                        <input type="text" name="subjectName[]" placeholder="Subject 10">
+                                        <input type="text" name="subjectName[]" placeholder="Subject 11">
+                                        <input type="text" name="subjectName[]" placeholder="Subject 12">
+                                </fieldset>
 
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="s-subject1">Subject 1</label>
-                                        <input type="text" id="s-subject1" name="subjectName">
-                                    </div>
+                                <fieldset>
+                                    <legend>Face Verification</legend>
 
                                     <div class="form-group">
-                                        <label for="s-subject2">Subject 2</label>
-                                        <input type="text" id="s-subject2" name="subjectName">
+                                        <input type="file" name="faceImage" accept="image/*">
+                                        <img style="display:none;">
                                     </div>
-                                </div>
+                                </fieldset>
 
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="s-subject3">Subject 3</label>
-                                        <input type="text" id="s-subject3" name="subjectName">
+                                <fieldset>
+                                    <legend>Password Setup</legend>
+
+                                    <div class="outer-group">
+                                        <input type="password" class="password" name="admin[0][password]"
+                                            placeholder="Set Password" required>
+                                        <input type="password" class="confirm-password" name="confirmPassword"
+                                            placeholder="Confirm Password" required>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="s-subject4">Subject 4</label>
-                                        <input type="text" id="s-subject4" name="subjectName">
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Terms & Conditions</legend>
+
+                                    <div class="terms-wrapper">
+                                        <input type="checkbox" class="terms-check" name="termsCheck" required>
+                                        <span class="terms-text">
+                                            I agree to the
+                                            <a href="/terms" target="_blank">Terms & Conditions</a>
+                                        </span>
                                     </div>
-                                </div>
+                                </fieldset>
 
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="s-subject5">Subject 5</label>
-                                        <input type="text" id="s-subject5" name="subjectName">
-                                    </div>
+                                <button type="submit" class="form-submit-btn to-disable">
+                                    Register Student
+                                </button>
 
-                                    <div class="form-group">
-                                        <label for="s-subject6">Subject 6</label>
-                                        <input type="text" id="s-subject6" name="subjectName">
-                                    </div>
-                                </div>
-
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="s-subject7">Subject 7</label>
-                                        <input type="text" id="s-subject7" name="subjectName">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="s-subject8">Subject 8</label>
-                                        <input type="text" id="s-subject8" name="subjectName">
-                                    </div>
-
-
-                                </div>
-
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="s-subject9">Subject 9</label>
-                                        <input type="text" id="s-subject9" name="subjectName">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="s-subject10">Subject 10</label>
-                                        <input type="text" id="s-subject10" name="subjectName">
-                                    </div>
-                                </div>
-
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="s-subject11">Subject 11</label>
-                                        <input type="text" id="s-subject11" name="subjectName">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="s-subject12">Subject 12</label>
-                                        <input type="text" id="s-subject12" name="subjectName">
-                                    </div>
-                                </div>
-
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="s-password">Set Password</label>
-                                        <input type="text" class="password" id="s-password" name="admin[0][password]"
-                                            required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="s-confirm">Confirm Password</label>
-                                        <input type="text" class="confirm-password" id="s-confirm"
-                                            name="confirmPassword" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group terms-wrapper">
-                                    <input type="checkbox" class="terms-check" id="a-terms" name="termsCheck" required>
-
-                                    <label for="termsCheck" class="terms-text">
-                                        I agree to the
-                                        <a href="/terms" target="_blank">Terms & Conditions</a>
-                                        and
-                                        <a href="/privacy" target="_blank">Privacy Policy</a>
-                                    </label>
-                                </div>
-
-                                <button type="submit" class="form-submit-btn to-disable">Register Student</button>
                             </form>
-                            <form action="/api/register-employee" class="form-box r-forms hidden-mob" id="e-form"
-                                method="POST">
-                                <h2 class="form-title">Employee Registration</h2>
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="e-name">Full Name</label>
-                                        <input type="text" id="e-name" name="userName" required>
-                                    </div>
 
-                                    <div class="form-group">
-                                        <label for="e-Id">Employee ID</label>
-                                        <input type="text" id="e-Id" name="employeeId" required>
-                                    </div>
+                            <form class="form-box r-forms hidden-mob" id="e-form" enctype="multipart/form-data">
+                                <fieldset>
+                                    <legend>Employee Registration</legend>
 
-                                    <div class="form-group">
-                                        <label for="e-designation">Designation or Job Role</label>
-                                        <input type="text" id="e-designation" name="designation"
-                                            placeholder="e.g. Developer, Teacher etc" required>
-                                    </div>
-                                </div>
-
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="e-dept">Department</label>
-                                        <input type="text" id="e-dept" name="dept"
-                                            placeholder="Use abbreviations. Eg: CSE, ECE. Leave Empty if you're an Employee in a school"
+                                    <div class="outer-group">
+                                        <input type="text" name="userName" placeholder="Full Name" required>
+                                        <input type="text" name="employeeId" placeholder="Employee ID" required>
+                                        <input type="text" name="designation" placeholder="Designation / Job Role"
                                             required>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="e-work-type">Works in</label>
-                                        <select id="e-work-type" name="workType">
-                                            <option value="">-- Select --</option>
+                                    <div class="outer-group">
+                                        <select name="workType" required>
+                                            <option value="" disabled selected>Works At</option>
                                             <option value="school">School</option>
                                             <option value="college">College</option>
                                             <option value="corporate">Corporate</option>
-                                        </select required>
-                                    </div>
+                                        </select>
 
-                                    <div class="form-group">
-                                        <label for="e-shift">Select Shift:</label>
-                                        <select id="e-shift" name="shift" required>
-                                            <option value="" disabled selected>Select a shift</option>
+                                        <select name="shift" required>
+                                            <option value="" disabled selected>Select Shift</option>
                                             <option value="day">Day</option>
                                             <option value="night">Night</option>
-                                        </select required>
+                                        </select>
                                     </div>
-                                </div>
 
-                                <div class="outer-group">
+                                    <div class="outer-group">
+                                        <input type="text" name="orgName" placeholder="Organization Name" required>
+                                        <input type="text" name="orgBranch" placeholder="Organization Branch" required>
+                                    </div>
+
+                                    <div class="outer-group">
+                                        <input type="tel" name="contact" placeholder="Contact Number" required>
+                                        <input type="email" name="email" placeholder="Email Address" required>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Password Setup</legend>
+
+                                    <div class="outer-group">
+                                        <input type="password" class="password" name="admin[0][password]"
+                                            placeholder="Set Password" required>
+                                        <input type="password" class="confirm-password" name="confirmPassword"
+                                            placeholder="Confirm Password" required>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Face Verification</legend>
+
                                     <div class="form-group">
-                                        <label for="e-contact">Contact Number</label>
-                                        <input type="tel" id="e-contact" name="contact" required>
+                                        <input type="file" name="faceImage" accept="image/*">
+                                        <img style="display:none;">
                                     </div>
+                                </fieldset>
 
-                                    <div class="form-group">
-                                        <label for="e-email">Email</label>
-                                        <input type="email" id="e-email" name="email" required>
+                                <fieldset>
+                                    <legend>Terms & Conditions</legend>
+
+                                    <div class="terms-wrapper">
+                                        <input type="checkbox" class="terms-check" name="termsCheck" required>
+
+                                        <span class="terms-text">
+                                            I agree to the
+                                            <a href="/terms" target="_blank">Terms & Conditions</a>
                                     </div>
-                                </div>
+                                </fieldset>
 
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="e-org">Organization Name</label>
-                                        <input type="text" id="e-org" name="orgName" required>
-                                    </div>
+                                <button type="submit" class="form-submit-btn disable">
+                                    Register Employee
+                                </button>
 
-                                    <div class="form-group">
-                                        <label for="e-branch">Organization Branch</label>
-                                        <input type="text" id="e-branch" name="orgBranch" required>
-                                    </div>
-                                </div>
-
-                                <div class="outer-group">
-                                    <div class="form-group">
-                                        <label for="e-password">Set Password</label>
-                                        <input type="text" class="password" id="e-password" name="admin[0][password]"
-                                            required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="e-confirm">Confirm Password</label>
-                                        <input type="text" class="confirm-password" id="e-confirm"
-                                            name="confirmPassword" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group terms-wrapper">
-                                    <input type="checkbox" class="terms-check" id="a-terms" name="termsCheck" required>
-
-                                    <label for="termsCheck" class="terms-text">
-                                        I agree to the
-                                        <a href="/terms" target="_blank">Terms & Conditions</a>
-                                        and
-                                        <a href="/privacy" target="_blank">Privacy Policy</a>
-                                    </label>
-                                </div>
-
-                                <button type="submit" class="form-submit-btn disable">Register Employee</button>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -619,7 +443,7 @@
                     </div>
                     <div class="right-side">
                         <div class="forms" id="support-forms">
-                            <div class="form-group">
+                            <div class="outer-group">
                                 <select id="support-type">
                                     <option value="" selected disabled>-- Select Support Method --</option>
                                     <option value="faq">FAQ</option>
@@ -769,76 +593,65 @@
                                 </details>
                             </section>
                             <section class="issue-form-section s-forms hidden-mob form-box" id="support-form">
-                                <h2 class="form-title">Support Form</h2>
-                                <p class="tip">
-                                    Support is only available for registered users. If you're not a registered user,
-                                    please
-                                    reach out through emails
-                                </p>
-                                <form class="issue-form" action="/api/support" method=" POST">
-                                    <div class="outer-group">
-                                        <div class="form-group">
-                                            <label for="org">Enter Your Organization's ID:</label>
-                                            <input type="text" id="org" name="org">
-                                        </div>
+                                <form class="issue-form" action="/api/support" method="POST">
+                                    <fieldset>
+                                        <legend>Support Form</legend>
 
-                                        <div class="form-group">
-                                            <label for="user-id">Enter UserID:</label>
-                                            <input type="text" id="user-id" name="userId"
-                                                placeholder="example: adminId, employeeID, roll number">
-                                        </div>
-                                    </div>
 
-                                    <div class="outer-group">
-                                        <div class="form-group">
-                                            <label for="branch-name">Enter UserName:</label>
-                                            <input type="text" id="branch-name" name="userName">
-                                        </div>
+                                        <fieldset>
+                                            <legend>Contact</legend>
 
-                                        <div class="form-group">
-                                            <label for="email">Enter Email:</label>
-                                            <input type="text" id="email" name="email">
-                                        </div>
-                                    </div>
+                                            <div class="outer-group">
+                                                <input type="text" name="userName" placeholder="Username" required>
 
-                                    <div class="form-group">
-                                        <label for="supportType">Choose an option:</label>
-                                        <select name="supportType" id="supportType" required>
-                                            <option value="" disabled selected>-- Select an option --</option>
-                                            <option value="feedback">Feedback</option>
-                                            <option value="problem">Report a problem</option>
-                                            <option value="question">Ask a Question</option>
-                                        </select>
-                                    </div>
+                                                <input type="email" name="email" placeholder="Email address" required>
+                                            </div>
+                                        </fieldset>
 
-                                    <div class="form-group">
-                                        <label for="issue-description">Describe your thoughts:</label>
-                                        <textarea id="issue-description" name="thoughts" rows="5" required></textarea>
-                                    </div>
+                                        <fieldset>
+                                            <legend>Support</legend>
 
-                                    <button type="submit">Submit</button>
+                                            <div class="outer-group">
+                                                <select name="supportType" required>
+                                                    <option value="" disabled selected>Support type</option>
+                                                    <option value="feedback">Feedback</option>
+                                                    <option value="problem">Report a problem</option>
+                                                    <option value="question">Ask a question</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="outer-group">
+                                                <textarea name="thoughts" rows="5" placeholder="Write your message"
+                                                    required></textarea>
+                                            </div>
+                                        </fieldset>
+
+                                        <button type="submit" class="form-submit-btn disable">
+                                            Submit
+                                        </button>
+                                    </fieldset>
                                 </form>
                             </section>
+
                         </div>
                     </div>
                 </div>
                 <div class="main-3">
                     <div class="form-overlay">
                         <form class="login-form" action="/auth/login" method="POST">
-                            <button class="login-go-back continue-btn">Go Back</button>
+
+                            <button type="button" class="login-go-back continue-btn">
+                                Go Back
+                            </button>
+
                             <fieldset>
                                 <legend>Login to Continue</legend>
 
-                                <div class="form-group">
-                                    <label for="userid">Unique ID</label>
-                                    <input type="text" id="userid" name="uniqueID" placeholder="Enter your Unique ID"
-                                        required>
-                                </div>
+                                <div class="outer-group">
+                                    <input type="text" name="uniqueID" placeholder="Unique ID" required>
 
-                                <div class="form-group">
-                                    <label for="userRole">Select Your Role:</label>
-                                    <select name="userRole" id="userRole" required>
-                                        <option value="" disabled selected>-- Choose your role --</option>
+                                    <select name="userRole" required>
+                                        <option value="" disabled selected>Select your role</option>
                                         <option value="Org">Admin</option>
                                         <option value="SchoolStudent">School Student</option>
                                         <option value="CollegeStudent">College Student</option>
@@ -846,18 +659,23 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="password" id="password" name="password"
-                                        placeholder="Enter your Password" required>
+                                <div class="outer-group">
+                                    <input type="password" name="password" placeholder="Password" required>
                                 </div>
 
                                 <div class="outer-group">
-                                    <button type="submit" class="continue-btn">Continue</button>
-                                    <button type="button" class="continue-btn">Forgot Password?</button>
+                                    <button type="submit" class="continue-btn">
+                                        Continue
+                                    </button>
+
+                                    <button type="button" class="continue-btn">
+                                        Forgot Password?
+                                    </button>
                                 </div>
                             </fieldset>
+
                         </form>
+
                     </div>
                 </div>
             </main>

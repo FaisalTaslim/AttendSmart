@@ -3,12 +3,12 @@ const { Schema } = mongoose;
 
 const schoolStudentSchema = new Schema({
     org: {type: String, required: true},
-    uniqueId: {
+    code: {
         type: String,
         required: true,
         unique: true
     },
-    userName: {
+    name: {
         type: String,
         required: true,
         trim: true
@@ -34,6 +34,19 @@ const schoolStudentSchema = new Schema({
             default: []
         },
         registeredAt: {
+            type: Date
+        }
+    },
+    verification: {
+        status: {
+            type: String,
+            enum: ["pending", "verified"],
+            default: "pending"
+        },
+        token: {
+            type: String
+        },
+        expiresAt: {
             type: Date
         }
     },

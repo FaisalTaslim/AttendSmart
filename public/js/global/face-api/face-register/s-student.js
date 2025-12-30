@@ -1,5 +1,5 @@
-const form = document.getElementById("c-form");
-const fileInput = document.getElementById("faceImage");
+const form = document.getElementById("s-form");
+const fileInput = document.getElementById("faceImage-2");
 
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -30,7 +30,7 @@ form.addEventListener("submit", async (e) => {
     data.subjects = subjects;
     data.faceDescriptor = descriptor;
 
-    await fetch("/registration/student", {
+    await fetch("/registration/student/school", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

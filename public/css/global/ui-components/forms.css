@@ -1,70 +1,111 @@
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
 fieldset {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    border: 1px solid var(--accent);
-    border-radius: 10px;
-    padding: 1rem 1.2rem;
-    background: var(--bg-secondary);
-}
-legend {
-    font-weight: 700;
-    font-size: 1.1rem;
-    padding: 0 0.5rem;
-    color: var(--accent);
-}
-.outer-group {
-    display: flex;
-    flex-direction: row !important;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-}
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-.form-group label {
-    font-size: 1.1rem;
-    margin-bottom: 0.3rem;
-    color: var(--text-primary);
-    font-weight: bold;
-}
-.form-group input,
-.form-group select {
-    padding: 0.7rem;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    font-size: 1rem;
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-    transition: border 0.2s ease;
-}
-.form-group input:focus,
-.form-group select:focus {
-    border-color: var(--accent);
-    outline: none;
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-}
-.form-group textarea {
-    padding: 0.5rem 1rem;
-    border-radius: 0.8rem;
-    line-height: 2rem;
-}
-button {
-    background: var(--accent);
-    color: black;
-    font-weight: bold;
-    padding: 0.8rem 1.5rem;
+    min-width: 0;
+    width: 90%;
     border: none;
-    border-radius: 0.6rem;
+    border-radius: 1.2rem;
+    padding: 1rem;
+    background: var(--bg-card);
+    box-shadow:
+        inset 0 0 0 1px var(--border-color),
+        0 10px 25px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+fieldset:hover {
+    transform: translateY(-3px);
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+legend {
+    font-weight: 800;
+    font-size: 1.2rem;
+    padding: 0 0.6rem;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+}
+
+.outer-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2.5rem;
+}
+.outer-group input,
+.outer-group select,
+.outer-group textarea {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--border-color);
+    padding: 0.6rem 0.2rem;
+    color: var(--text-primary);
     font-size: 1rem;
+    width: 100%;
+    transition: border-bottom-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.outer-group select {
+    appearance: none;
     cursor: pointer;
-    transition: background 0.3s ease;
+}
+.outer-group textarea {
+    resize: vertical;
+}
+
+.outer-group input::placeholder,
+.outer-group textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.outer-group input:focus,
+.outer-group select:focus,
+.outer-group textarea:focus {
+    outline: none;
+    border-bottom-color: var(--accent);
+    box-shadow: 0 3px 0 -1px rgba(var(--accent-rgb), 0.5);
+}
+
+
+button {
+    align-self: center;
+    padding: 0.6rem 2.2rem;
+    font-size: 1.05rem;
+    font-weight: 800;
+    border-radius: 0.8rem;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(
+        135deg,
+        var(--accent),
+        #ffffff
+    );
+    color: #000;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.35),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+button:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.45);
+}
+button:active {
+    transform: scale(0.98);
+}
+select option {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+}
+form input,
+form textarea,
+form select {
+    color: var(--accent);
+    font-weight: bold;
 }

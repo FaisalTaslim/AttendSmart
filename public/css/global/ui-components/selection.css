@@ -1,0 +1,9 @@
+::selection {
+    background: rgba(var(--accent-rgb), 0.35);
+    color: var(--text-primary);
+}
+
+::-moz-selection {
+    background: rgba(var(--accent-rgb), 0.35);
+    color: var(--text-primary);
+}

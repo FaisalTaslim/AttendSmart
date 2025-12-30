@@ -1,5 +1,4 @@
 require('dotenv').config();
-require('./config/cronLeaveCleanup');
 const express = require('express');
 const path = require('path');
 const connectDB = require('./config/database');
@@ -23,6 +22,6 @@ app.use('/', require('./routes/register/verify-email'));
 
 
 
-app.use('/', require('./routes/main'));
+app.use('/', require('./routes/main/main'));
 
 module.exports = app;

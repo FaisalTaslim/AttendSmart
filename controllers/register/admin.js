@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const Org = require("../../models/organization");
+const Org = require("../../models/users/organization");
 const OrgLog = require("../../models/logs");
 const generateCode = require("../../utils/codes");
 const crypto = require("crypto");
@@ -82,11 +82,6 @@ exports.register = async (req, res) => {
                     password: hashedPassword,
                 }
             ],
-            departments: {
-                school: [],
-                college: [],
-                employees: []
-            },
             verification: {
                 status: "pending",
                 token: verificationToken,
