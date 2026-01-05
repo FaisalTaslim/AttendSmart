@@ -31,10 +31,10 @@
 
             <header>
                 <div class="logo">
-                    <h1 class="pc-header">AttendSmart - Smart Attendance Solution</h1>
-                    <h1 class="mobile-header">AttendSmart</h1>
+                    <h1 class="pc-hidden">AttendSmart - Smart Attendance Solution</h1>
+                    <h1 class="mobile-hidden">AttendSmart</h1>
                 </div>
-                <nav class="nav-bar">
+                <nav class="nav-bar nav-select">
                     <% if (isAuthenticated) { %>
                         <a href="/dashboard" class="nav-links-property">Dashboard</a>
                         <a href="/logout" class="nav-links-property">Logout</a>
@@ -44,7 +44,7 @@
                             <a href="/guidebook" class="nav-links-property">GuideBook</a>
                             <% } %>
                 </nav>
-                <nav class="mobile-nav-container">
+                <nav class="mobile-nav-container nav-select">
                     <div class="form-group">
                         <select id="mobile-nav">
                             <option value="">Navigate</option>
@@ -613,7 +613,7 @@
 
                                             <div class="outer-group">
                                                 <select name="supportType" required>
-                                                    <option value="" disabled selected>Support type</option>
+                                                    <option value="" disabled selected>-- Select Support Type --</option>
                                                     <option value="feedback">Feedback</option>
                                                     <option value="problem">Report a problem</option>
                                                     <option value="question">Ask a question</option>
@@ -716,9 +716,9 @@
                     </div>
                 </div>
             </footer>
-            <script src="/js/global/rearrange-footer.js"></script>
+            <script src="/js/global/layout/rearrange-footer.js"></script>
             <script src="/js/page-specific/homepage/functions.js"></script>
-            <script src="/js/global/popup.js"></script>
+            <script src="/js/global/UI/popup.js"></script>
             <script src="/js/global/face-api/face-api.min.js"></script>
             <script src="/js/global/face-api/face-init.js"></script>
             <script src="/js/global/face-api/register-student-face.js"></script>

@@ -13,7 +13,6 @@ fieldset {
     flex-direction: column;
     gap: 1.2rem;
 }
-
 fieldset:hover {
     transform: translateY(-3px);
     box-shadow:
@@ -41,13 +40,10 @@ legend {
     border: none;
     border-bottom: 2px solid var(--border-color);
     padding: 0.6rem 0.2rem;
-    color: var(--text-primary);
     font-size: 1rem;
     width: 100%;
     transition: border-bottom-color 0.3s ease, box-shadow 0.3s ease;
 }
-
-
 .outer-group select {
     appearance: none;
     cursor: pointer;
@@ -55,12 +51,10 @@ legend {
 .outer-group textarea {
     resize: vertical;
 }
-
 .outer-group input::placeholder,
 .outer-group textarea::placeholder {
     color: var(--text-muted);
 }
-
 .outer-group input:focus,
 .outer-group select:focus,
 .outer-group textarea:focus {
@@ -68,7 +62,6 @@ legend {
     border-bottom-color: var(--accent);
     box-shadow: 0 3px 0 -1px rgba(var(--accent-rgb), 0.5);
 }
-
 
 button {
     align-self: center;
@@ -99,13 +92,90 @@ button:hover {
 button:active {
     transform: scale(0.98);
 }
+
 select option {
     background-color: var(--bg-card);
     color: var(--text-primary);
 }
+
 form input,
 form textarea,
 form select {
     color: var(--accent);
     font-weight: bold;
+}
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+    -webkit-text-fill-color: var(--accent);
+    caret-color: var(--accent);
+    transition: background-color 9999s ease-in-out 0s;
+}
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--accent);
+    border-radius: 4px;
+    display: inline-grid;
+    place-content: center;
+    cursor: pointer;
+}
+input[type="checkbox"]::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    transform: scale(0);
+    transition: transform 0.15s ease-in-out;
+    background-color: var(--accent);
+}
+input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
+
+.nav-select {
+    position: relative;
+}
+.nav-select select {
+    width: 100%;
+    padding: 0.9rem 3rem 0.9rem 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 0.9rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    transition: 
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.2s ease;
+}
+.nav-select select:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+}
+.nav-select select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 10px 28px rgba(var(--accent-rgb), 0.25);
+}
+.nav-select select option[value=""] {
+    color: var(--text-muted);
+}
+.nav-select::after {
+    content: "▾";
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.3rem;
+    color: var(--accent);
+    pointer-events: none;
 }
