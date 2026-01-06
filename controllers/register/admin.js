@@ -5,6 +5,7 @@ const generateCode = require("../../utils/codes");
 const crypto = require("crypto");
 const { sendVerificationEmail } = require("../../utils/send-emails");
 const verifyEmail = require("../../utils/verify-domains");
+const mongoose = require("mongoose");
 
 async function createOrgWithUniqueCode(orgData) {
     while (true) {
@@ -14,19 +15,18 @@ async function createOrgWithUniqueCode(orgData) {
             await org.save();
             return org;
         } catch (err) {
-            if (err.code === 11000) {
-                continue;
-            }
+            if (err.code === 11000) continue;
             throw err;
         }
     }
 }
 
 exports.register = async (req, res) => {
-    let createdOrg = null;
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     const verificationToken = crypto.randomBytes(20).toString("hex");
-    const tokenExpiry = new Date();
-    tokenExpiry.setHours(tokenExpiry.getHours() + 24);
+    const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
     try {
         const {
@@ -35,8 +35,6 @@ exports.register = async (req, res) => {
             type,
             address,
             website,
-            expectedEmployees,
-            expectedStudents,
             confirmPassword,
         } = req.body;
 
@@ -48,37 +46,29 @@ exports.register = async (req, res) => {
             password,
         } = req.body.admin[0];
 
-        if (!verifyEmail((email.toLowerCase()))) {
-            return res.render("index", {
-                popupMessage: "Please use your organization email address",
-                popupType: "error",
-            });
+        if (!verifyEmail(email.toLowerCase().trim())) {
+            throw new Error("INVALID_EMAIL_DOMAIN");
         }
 
         if (password !== confirmPassword) {
-            return res.render("index", {
-                popupMessage: "Password mismatch!",
-                popupType: "error",
-            });
+            throw new Error("PASSWORD_MISMATCH");
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        createdOrg = await createOrgWithUniqueCode({
+        const createdOrg = await createOrgWithUniqueCode({
             org: organization.toLowerCase().trim(),
             branch: branch.toLowerCase().trim(),
             type,
             address: address.toLowerCase().trim(),
             website: website?.toLowerCase().trim() || "",
-            exp_employee: expectedEmployees,
-            exp_students: expectedStudents || 0,
             agreement: true,
             admin: [
                 {
                     name,
                     adminId,
                     contact,
-                    email,
+                    email: email.toLowerCase().trim(),
                     password: hashedPassword,
                 }
             ],
@@ -87,30 +77,51 @@ exports.register = async (req, res) => {
                 token: verificationToken,
                 expiresAt: tokenExpiry
             }
-        });
-        console.log("Created the organization.");
+        }, session);
 
-        await OrgLog.create({
-            org: createdOrg.code,
-            registerLogs: [`Organization registered by ${name}`]
-        });
+        await OrgLog.create(
+            [
+                {
+                    org: createdOrg.code,
+                    register: [
+                        {
+                            name,
+                            role: "admin",
+                            id: adminId,
+                            email: email.toLowerCase().trim()
+                        }
+                    ]
+                }
+            ],
+            { session }
+        );
+
+        await session.commitTransaction();
+        session.endSession();
 
         await sendVerificationEmail(email, verificationToken, createdOrg.code, "Admin");
-        console.log("Send the verification email.");
-        
+
         return res.render("index", {
             popupMessage: "Check your email!",
             popupType: "info",
         });
 
     } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
+
         console.error(err);
-        if (createdOrg) {
-            await Org.deleteOne({ _id: createdOrg._id });
+
+        let message = "Registration failed. Please try again.";
+
+        if (err.message === "INVALID_EMAIL_DOMAIN") {
+            message = "Please use your organization email address";
+        } else if (err.message === "PASSWORD_MISMATCH") {
+            message = "Password mismatch!";
         }
 
-        return res.status(500).render("index", {
-            popupMessage: "Registration failed. Please try again.",
+        return res.render("index", {
+            popupMessage: message,
             popupType: "error",
         });
     }

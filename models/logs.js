@@ -7,11 +7,18 @@ const logSchema = new Schema({
         type: String,
         required: true
     },
-    registerLogs: {
-        type: [String],
-        required: true,
-        default: []
-    },
+    register: [
+        {
+            name: {type: String, required: true},
+            role: {
+                type: String,
+                enum: ['admin', 'teacher', 'student', 'employee'],
+            },
+            id: {type: String, required: true},
+            email: {type: String, required: true},
+            _id: false,
+        }
+    ],
     loginLogs: [
         {
             userId: {type: String, required: true},
@@ -28,7 +35,8 @@ const logSchema = new Schema({
                 type: String, 
                 default: () => moment().format("DD-MM-YYYY HH:mm:ss"),
                 required: true
-            } 
+            },
+            _id: false,
         }
     ],
     supportLogs: [
@@ -46,7 +54,8 @@ const logSchema = new Schema({
                 type: String,
                 default: () => moment().format("DD-MM-YYYY HH:mm:ss"),
                 required: true
-            } 
+            },
+            _id: false,
         }
     ],
     employeeSessionLogs: [
@@ -62,7 +71,8 @@ const logSchema = new Schema({
                 type: String,
                 required: true,
                 default: () => moment().format("DD-MM-YYYY HH:mm:ss"),
-            }
+            },
+            _id: false,
         }
     ],
     studentSessionLog: [
@@ -90,7 +100,8 @@ const logSchema = new Schema({
             createdAt: {
                 type: String,
                 required: true,
-            }
+            },
+            _id: false,
         }
     ],
 
@@ -112,7 +123,8 @@ const logSchema = new Schema({
                 enum: ['Present', 'Absent'],
                 required: true
             },
-            reason: {type: String, default: ""}
+            reason: {type: String, default: ""},
+            _id: false,
         }
     ],
 
@@ -134,7 +146,8 @@ const logSchema = new Schema({
                 type: String,
                 enum: ['Present', 'Absent'],
                 required: true
-            }
+            },
+            _id: false,
         }
     ]
 

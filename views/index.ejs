@@ -132,20 +132,16 @@
                                     </div>
 
                                     <div class="outer-group">
+                                        <input type="text" name="address" placeholder="Address" required>
+                                    </div>
+
+                                    <div class="outer-group">
                                         <select name="type" required>
                                             <option value="">Select organization type</option>
                                             <option value="school">School</option>
                                             <option value="college">College</option>
                                             <option value="corporate">Corporate</option>
                                         </select>
-                                    </div>
-
-                                    <div class="outer-group">
-                                        <input type="text" name="address" placeholder="Organization address" required>
-                                        <input type="number" name="expectedEmployees" placeholder="Expected employees"
-                                            required>
-                                        <input type="number" name="expectedStudents" placeholder="Expected students"
-                                            required>
                                     </div>
 
                                     <div class="outer-group">
@@ -197,25 +193,25 @@
                                     <legend>Subject Details</legend>
 
                                     <div class="outer-group">
-                                        <input type="text" name="subjects[]" placeholder="Subject 1" required>
-                                        <input type="text" name="subjects[]" placeholder="Subject 2">
-                                        <input type="text" name="subjects[]" placeholder="Subject 3">
-                                        <input type="text" name="subjects[]" placeholder="Subject 4">
-                                        <input type="text" name="subjects[]" placeholder="Subject 5">
-                                        <input type="text" name="subjects[]" placeholder="Subject 6">
-                                        <input type="text" name="subjects[]" placeholder="Subject 7">
-                                        <input type="text" name="subjects[]" placeholder="Subject 8">
-                                        <input type="text" name="subjects[]" placeholder="Subject 9">
-                                        <input type="text" name="subjects[]" placeholder="Subject 10">
-                                        <input type="text" name="subjects[]" placeholder="Subject 11">
-                                        <input type="text" name="subjects[]" placeholder="Subject 12">
+                                        <input type="text" name="subjects" placeholder="Subject 1" required>
+                                        <input type="text" name="subjects" placeholder="Subject 2">
+                                        <input type="text" name="subjects" placeholder="Subject 3">
+                                        <input type="text" name="subjects" placeholder="Subject 4">
+                                        <input type="text" name="subjects" placeholder="Subject 5">
+                                        <input type="text" name="subjects" placeholder="Subject 6">
+                                        <input type="text" name="subjects" placeholder="Subject 7">
+                                        <input type="text" name="subjects" placeholder="Subject 8">
+                                        <input type="text" name="subjects" placeholder="Subject 9">
+                                        <input type="text" name="subjects" placeholder="Subject 10">
+                                        <input type="text" name="subjects" placeholder="Subject 11">
+                                        <input type="text" name="subjects" placeholder="Subject 12">
                                 </fieldset>
 
                                 <fieldset>
                                     <legend>Face Verification</legend>
 
                                     <div class="form-group">
-                                        <input type="file" name="faceImage" accept="image/*">
+                                        <input type="file" id="faceImage" name="faceImage" accept="image/*">
                                         <img style="display:none;">
                                     </div>
                                 </fieldset>
@@ -276,27 +272,27 @@
                                     <legend>Subject Details</legend>
 
                                     <div class="outer-group">
-                                        <input type="text" name="subjectName[]" placeholder="Subject 1">
-                                        <input type="text" name="subjectName[]" placeholder="Subject 2">
-                                        <input type="text" name="subjectName[]" placeholder="Subject 3">
-                                        <input type="text" name="subjectName[]" placeholder="Subject 4">
-                                        <input type="text" name="subjectName[]" placeholder="Subject 5">
-                                        <input type="text" name="subjectName[]" placeholder="Subject 6">
-                                        <input type="text" name="subjectName[]" placeholder="Subject 7">
+                                        <input type="text" name="subjects" placeholder="Subject 1">
+                                        <input type="text" name="subjects" placeholder="Subject 2">
+                                        <input type="text" name="subjects" placeholder="Subject 3">
+                                        <input type="text" name="subjects" placeholder="Subject 4">
+                                        <input type="text" name="subjects" placeholder="Subject 5">
+                                        <input type="text" name="subjects" placeholder="Subject 6">
+                                        <input type="text" name="subjects" placeholder="Subject 7">
 
-                                        <input type="text" name="subjectName[]" placeholder="Subject 8">
+                                        <input type="text" name="subjects" placeholder="Subject 8">
 
-                                        <input type="text" name="subjectName[]" placeholder="Subject 9">
-                                        <input type="text" name="subjectName[]" placeholder="Subject 10">
-                                        <input type="text" name="subjectName[]" placeholder="Subject 11">
-                                        <input type="text" name="subjectName[]" placeholder="Subject 12">
+                                        <input type="text" name="subjects" placeholder="Subject 9">
+                                        <input type="text" name="subjects" placeholder="Subject 10">
+                                        <input type="text" name="subjects" placeholder="Subject 11">
+                                        <input type="text" name="subjects" placeholder="Subject 12">
                                 </fieldset>
 
                                 <fieldset>
                                     <legend>Face Verification</legend>
 
                                     <div class="form-group">
-                                        <input type="file" name="faceImage" accept="image/*">
+                                        <input type="file" id="faceImage2" name="faceImage" accept="image/*">
                                         <img style="display:none;">
                                     </div>
                                 </fieldset>
@@ -305,7 +301,7 @@
                                     <legend>Password Setup</legend>
 
                                     <div class="outer-group">
-                                        <input type="password" class="password" name="admin[0][password]"
+                                        <input type="password" class="password" name="password"
                                             placeholder="Set Password" required>
                                         <input type="password" class="confirm-password" name="confirmPassword"
                                             placeholder="Confirm Password" required>
@@ -371,7 +367,7 @@
                                     <legend>Password Setup</legend>
 
                                     <div class="outer-group">
-                                        <input type="password" class="password" name="admin[0][password]"
+                                        <input type="password" class="password" name="password"
                                             placeholder="Set Password" required>
                                         <input type="password" class="confirm-password" name="confirmPassword"
                                             placeholder="Confirm Password" required>
@@ -382,7 +378,7 @@
                                     <legend>Face Verification</legend>
 
                                     <div class="form-group">
-                                        <input type="file" name="faceImage" accept="image/*">
+                                        <input type="file" name="faceImage" id="faceImage3" accept="image/*">
                                         <img style="display:none;">
                                     </div>
                                 </fieldset>
@@ -721,7 +717,8 @@
             <script src="/js/global/UI/popup.js"></script>
             <script src="/js/global/face-api/face-api.min.js"></script>
             <script src="/js/global/face-api/face-init.js"></script>
-            <script src="/js/global/face-api/register-student-face.js"></script>
+            <script src="/js/global/face-api/face-register/c-student.js"></script>
+            <script src="/js/global/face-api/face-register/s-student.js"></script>
 </body>
 
 </html>

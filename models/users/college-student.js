@@ -45,19 +45,24 @@ const collegeStudentSchema = new Schema({
             type: Date
         }
     },
-    isDeleted: {
+    college_verified: {
         type: Boolean,
-        default: false
+        required: true,
+        default: false,
     },
-    isSuspended: {type: Boolean, default: false},
     onLeave: {
         type: Boolean, 
         required: true,
         default: false
     },
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
+    isSuspended: {type: Boolean, default: false},
     password: {type: String, required: true},
     termsCheck: {type: String, required: true, default: "not-accepted"}
 
 }, { timestamps: true });
 
-module.exports = mongoose.model('collegeStudent', collegeStudentSchema, 'collegeStudent');
+module.exports = mongoose.model('collegeStudent', collegeStudentSchema, 'c_student');

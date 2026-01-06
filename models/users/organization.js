@@ -50,35 +50,6 @@ const orgSchema = new mongoose.Schema({
     },
     address: {type: String, trim: true, required: true},
     website: {type: String},
-    units: [
-        {
-            name: { type: String, required: true, default: null },
-            unitType: {
-                type: String,
-                enum: ["class", "department",],
-                default: null,
-                required: true
-            },
-            level: { type: Number, default: 0 },
-            subjects: [
-                {
-                    type: [String],
-                    default: []
-                }
-            ],
-            _id: false
-        }
-    ],
-    exp_employee: {type: Number, required: true},
-    exp_students: {
-        type: Number, 
-        default: 0
-    },
-    reg_employee: {
-        type: Number,
-        default: 0
-    },
-    reg_students: {type: Number,default: 0},
     agreement: {
         type: Boolean,
         default: false

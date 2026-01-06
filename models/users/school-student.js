@@ -65,4 +65,4 @@ const schoolStudentSchema = new Schema({
 
 }, { timestamps: true });
 
-module.exports = mongoose.model('schoolStudent', schoolStudentSchema, 'schoolStudent');
+module.exports = mongoose.model('schoolStudent', schoolStudentSchema, 's-student');

@@ -24,9 +24,15 @@ form.addEventListener("submit", async (e) => {
 
     const descriptor = Array.from(detection.descriptor);
     const formData = new FormData(form);
-    const subjects = formData.getAll("subjects");
-    const data = Object.fromEntries(formData.entries());
 
+    const subjects = formData
+        .getAll("subjects")
+        .map(s => s.trim())
+        .filter(Boolean);
+
+    formData.delete("subjects");
+
+    const data = Object.fromEntries(formData.entries());
     data.subjects = subjects;
     data.faceDescriptor = descriptor;
 

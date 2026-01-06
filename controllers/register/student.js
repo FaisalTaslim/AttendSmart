@@ -1,21 +1,36 @@
 const bcrypt = require("bcrypt");
+const mongoose = require("mongoose");
 const Org = require("../../models/users/organization");
-const collegeStudent = require("../../models/users/college-student");
-const schoolStudent = require("../../models/users/school-student");
-const summary = require("../../models/student-summary");
-const log = require("../../models/logs");
+const CollegeStudent = require("../../models/users/college-student");
+const SchoolStudent = require("../../models/users/school-student");
+const Summary = require("../../models/student-summary");
+const OrgLog = require("../../models/logs");
 const generateCode = require("../../utils/codes");
 const crypto = require("crypto");
 const { sendVerificationEmail } = require("../../utils/send-emails");
 const verifyEmail = require("../../utils/verify-domains");
 const moment = require("moment");
 
-async function createUserWithUniqueCode(studentData) {
+async function createCollegeStudentWithUniqueCode(data, session) {
     while (true) {
         try {
             const code = generateCode(6, "numeric");
-            const student = new collegeStudent({ ...studentData, code });
-            await student.save();
+            const student = new CollegeStudent({ ...data, code });
+            await student.save({ session });
+            return student;
+        } catch (err) {
+            if (err.code === 11000) continue;
+            throw err;
+        }
+    }
+}
+
+async function createSchoolStudentWithUniqueCode(data, session) {
+    while (true) {
+        try {
+            const code = generateCode(6, "numeric");
+            const student = new SchoolStudent({ ...data, code });
+            await student.save({ session });
             return student;
         } catch (err) {
             if (err.code === 11000) continue;
@@ -25,13 +40,11 @@ async function createUserWithUniqueCode(studentData) {
 }
 
 exports.register_clg = async (req, res) => {
-    console.log("Running the college-student registration module");
-    let createdStudent = null;
-    let tracker = 0;
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
     const verificationToken = crypto.randomBytes(20).toString("hex");
-    const tokenExpiry = new Date();
-    tokenExpiry.setHours(tokenExpiry.getHours() + 24);
+    const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
     try {
         const {
@@ -48,64 +61,58 @@ exports.register_clg = async (req, res) => {
             faceDescriptor
         } = req.body;
 
-        if (!faceDescriptor) {
-            return res.status(400).json({
-                message: "Face data missing"
-            });
+
+        if (!faceDescriptor || !Array.isArray(faceDescriptor) || faceDescriptor.length !== 128) {
+            throw new Error("INVALID_FACE_DATA");
         }
 
-        const parsedDescriptor = faceDescriptor;
-
-        if (!Array.isArray(parsedDescriptor) || parsedDescriptor.length !== 128) {
-            return res.status(400).json({
-                message: "Invalid face descriptor"
-            });
+        if (!Array.isArray(subjects) || subjects.length === 0) {
+            throw new Error("NO_SUBJECTS");
         }
 
-        const isExisting = await collegeStudent.findOne({
-            email,
-            isDeleted: false
-        });
-
-        if (isExisting) {
-            return res.render("index", {
-                popupMessage: "Account already exists!",
-                popupType: "error",
-            });
-        }
 
         if (password !== confirmPassword) {
-            return res.render("index", {
-                popupMessage: "Password mismatch!",
-                popupType: "error",
-            });
+            throw new Error("PASSWORD_MISMATCH");
         }
 
         if (!verifyEmail(email.toLowerCase())) {
-            return res.render("index", {
-                popupMessage: "Please use your organization email address",
-                popupType: "error",
-            });
+            throw new Error("INVALID_EMAIL_DOMAIN");
+        }
+
+        const existing = await CollegeStudent.findOne(
+            { email: email.toLowerCase().trim(), isDeleted: false },
+            null,
+            { session }
+        );
+
+        if (existing) {
+            throw new Error("ACCOUNT_EXISTS");
+        }
+
+        const org = await Org.findOne(
+            {
+                org: orgName.toLowerCase().trim(),
+                branch: orgBranch.toLowerCase().trim()
+            },
+            null,
+            { session }
+        );
+
+        if (!org) {
+            throw new Error("ORG_NOT_FOUND");
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const getOrg = await Org.findOne({
-            org: orgName.toLowerCase(),
-            branch: orgBranch.toLowerCase()
-        });
-
-        createdStudent = await createUserWithUniqueCode({
-            org: getOrg.code,
+        const student = await createCollegeStudentWithUniqueCode({
+            org: org.code,
             name,
             roll,
             dept,
             contact,
-            email,
+            email: email.toLowerCase(),
             subjects,
-            faceData: {
-                descriptors: [parsedDescriptor]
-            },
+            faceData: { descriptors: [faceDescriptor] },
             verification: {
                 status: "pending",
                 token: verificationToken,
@@ -113,45 +120,53 @@ exports.register_clg = async (req, res) => {
             },
             password: hashedPassword,
             termsCheck: "accepted"
-        });
+        }, session);
 
-        const subjectArray = Array.isArray(subjects) ? subjects : [subjects];
-        const filteredSubjects = subjectArray
-            .filter(s => s && s.trim() !== "")
+
+        const subjectList = (Array.isArray(subjects) ? subjects : [subjects])
+            .filter(s => s && s.trim())
             .map(s => s.toLowerCase());
 
-        tracker = 1;
-        for (const subject of filteredSubjects) {
-            await summary.create({
-                org: getOrg.code,
-                personType: "student",
-                code: createdStudent.code,
-                name: createdStudent.name,
-                department: createdStudent.dept,
-                subjectName: subject,
-                month: moment().format("YYYY-MM"),
-            });
-        }
+        const summaries = subjectList.map(subject => ({
+            org: org.code,
+            personType: "student",
+            code: student.code,
+            name: student.name,
+            department: student.dept,
+            subject: subject,
+            month: moment().format("YYYY-MM"),
+        }));
 
-        tracker = 2;
-        await log.findOneAndUpdate(
-            { org: getOrg.code },
+        await Summary.insertMany(summaries, { session });
+
+        await OrgLog.findOneAndUpdate(
+            { org: org.code },
             {
                 $push: {
-                    registerLogs: `Student: ${createdStudent.name}, roll: ${createdStudent.roll} of department: ${createdStudent.dept} registered.`
+                    register: {
+                        name: student.name,
+                        role: "student",
+                        id: roll,
+                        email: student.email
+                    }
                 }
-            }
+            },
+            { upsert: true, session }
         );
 
-        await Org.findOneAndUpdate(
-            { code: getOrg.code },
-            { $addToSet: { "departments.college": dept.toLowerCase() } }
+        await Org.updateOne(
+            { code: org.code },
+            { $addToSet: { "departments.college": dept.toLowerCase() } },
+            { session }
         );
+
+        await session.commitTransaction();
+        session.endSession();
 
         await sendVerificationEmail(
-            email,
+            student.email,
             verificationToken,
-            createdStudent.code,
+            student.code,
             "Student",
             "collegeStudent"
         );
@@ -162,29 +177,37 @@ exports.register_clg = async (req, res) => {
         });
 
     } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
+
         console.error(err);
 
-        if (tracker >= 1) {
-            await collegeStudent.findOneAndDelete({ email });
-        }
+        let message = "Registration failed. Please try again.";
 
-        res.status(500).json({ message: "Server error" });
+        if (err.message === "PASSWORD_MISMATCH") message = "Password mismatch!";
+        if (err.message === "INVALID_EMAIL_DOMAIN") message = "Use organization email only";
+        if (err.message === "ACCOUNT_EXISTS") message = "Account already exists";
+        if (err.message === "ORG_NOT_FOUND") message = "Organization not found";
+        if (err.message === "INVALID_FACE_DATA") message = "Invalid face data";
+        if (err.message === "NO_SUBJECTS") message = "Failed registration. Try again!"
+
+        return res.render("index", {
+            popupMessage: message,
+            popupType: "error",
+        });
     }
 };
 
 exports.register_sch = async (req, res) => {
-    console.log("Running the school-student registration module");
-
-    let createdStudent = null;
-    let tracker = 0;
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
     const verificationToken = crypto.randomBytes(20).toString("hex");
-    const tokenExpiry = new Date();
-    tokenExpiry.setHours(tokenExpiry.getHours() + 24);
+    const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
     try {
         const {
-            name,
+            userName,
             roll,
             standard,
             contact,
@@ -197,59 +220,64 @@ exports.register_sch = async (req, res) => {
             faceDescriptor
         } = req.body;
 
-        if (!faceDescriptor) {
-            return res.status(400).json({ message: "Face data missing" });
+        const normalizedName = userName.trim().toLowerCase();
+        const normalizedStandard = standard.trim().toLowerCase();
+
+        if (!faceDescriptor || !Array.isArray(faceDescriptor) || faceDescriptor.length !== 128) {
+            throw new Error("INVALID_FACE_DATA");
         }
 
-        if (!Array.isArray(faceDescriptor) || faceDescriptor.length !== 128) {
-            return res.status(400).json({ message: "Invalid face descriptor" });
-        }
-        
-        const isExisting = await schoolStudent.findOne({
-            email,
-            isDeleted: false
-        });
-
-        if (isExisting) {
-            return res.render("index", {
-                popupMessage: "Account already exists!",
-                popupType: "error",
-            });
+        if (!Array.isArray(subjects) || subjects.length === 0) {
+            throw new Error("NO_SUBJECTS");
         }
 
         if (password !== confirmPassword) {
-            return res.render("index", {
-                popupMessage: "Password mismatch!",
-                popupType: "error",
-            });
+            throw new Error("PASSWORD_MISMATCH");
         }
 
-        const getOrg = await Org.findOne({
-            org: orgName.toLowerCase(),
-            branch: orgBranch.toLowerCase()
-        });
+        if (!verifyEmail(email.toLowerCase())) {
+            throw new Error("INVALID_EMAIL_DOMAIN");
+        }
 
-        if (!getOrg) {
-            return res.render("index", {
-                popupMessage: "Organization not found!",
-                popupType: "error",
-            });
+        const existing = await SchoolStudent.findOne(
+            {
+                name: normalizedName,
+                roll: roll.trim(),
+                standard: normalizedStandard,
+                isDeleted: false
+            },
+            null,
+            { session }
+        );
+
+        if (existing) {
+            throw new Error("ACCOUNT_EXISTS");
+        }
+
+        const org = await Org.findOne(
+            {
+                org: orgName.toLowerCase().trim(),
+                branch: orgBranch.toLowerCase().trim(),
+            },
+            null,
+            { session }
+        );
+
+        if (!org) {
+            throw new Error("ORG_NOT_FOUND");
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        createdStudent = await createUserWithUniqueCode({
-            org: getOrg.code,
-            name,
-            roll,
-            standard,
+        const student = await createSchoolStudentWithUniqueCode({
+            org: org.code,
+            name: normalizedName,
+            roll: roll.trim(),
+            standard: normalizedStandard,
             contact,
-            email,
+            email: email.toLowerCase().trim(),
             subjects,
-            faceData: {
-                descriptors: [faceDescriptor],
-                registeredAt: new Date()
-            },
+            faceData: { descriptors: [faceDescriptor] },
             verification: {
                 status: "pending",
                 token: verificationToken,
@@ -257,47 +285,53 @@ exports.register_sch = async (req, res) => {
             },
             password: hashedPassword,
             termsCheck: "accepted"
-        });
+        }, session);
 
-        const subjectArray = Array.isArray(subjects) ? subjects : [subjects];
-        const filteredSubjects = subjectArray
-            .filter(s => s && s.trim() !== "")
+
+        const subjectList = subjects
+            .filter(s => s && s.trim())
             .map(s => s.toLowerCase());
 
-        tracker = 1;
+        const summaries = subjectList.map(subject => ({
+            org: org.code,
+            personType: "student",
+            code: student.code,
+            name: student.name,
+            department: student.standard,
+            subject,
+            month: moment().format("YYYY-MM"),
+        }));
 
-        for (const subject of filteredSubjects) {
-            await summary.create({
-                org: getOrg.code,
-                personType: "student",
-                code: createdStudent.code,
-                name: createdStudent.name,
-                department: createdStudent.standard,
-                subjectName: subject,
-                month: moment().format("YYYY-MM"),
-            });
-        }
+        await Summary.insertMany(summaries, { session });
 
-        tracker = 2;
-
-        await log.findOneAndUpdate(
-            { org: getOrg.code },
+        await OrgLog.findOneAndUpdate(
+            { org: org.code },
             {
                 $push: {
-                    registerLogs: `School student ${createdStudent.name}, roll ${createdStudent.roll}, standard ${createdStudent.standard} registered.`
+                    register: {
+                        name: student.name,
+                        role: "student",
+                        id: roll,
+                        email: student.email
+                    }
                 }
-            }
+            },
+            { upsert: true, session }
         );
 
-        await Org.findOneAndUpdate(
-            { code: getOrg.code },
-            { $addToSet: { "departments.school": standard.toLowerCase() } }
+        await Org.updateOne(
+            { code: org.code },
+            { $addToSet: { "departments.school": standard.toLowerCase() } },
+            { session }
         );
+
+        await session.commitTransaction();
+        session.endSession();
 
         await sendVerificationEmail(
-            email,
+            student.email,
             verificationToken,
-            createdStudent.code,
+            student.code,
             "Student",
             "schoolStudent"
         );
@@ -308,12 +342,23 @@ exports.register_sch = async (req, res) => {
         });
 
     } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
+
         console.error(err);
 
-        if (tracker >= 1 && createdStudent) {
-            await schoolStudent.findOneAndDelete({ email });
-        }
+        let message = "Registration failed. Please try again.";
 
-        return res.status(500).json({ message: "Server error" });
+        if (err.message === "PASSWORD_MISMATCH") message = "Password mismatch!";
+        if (err.message === "INVALID_EMAIL_DOMAIN") message = "Use organization email only";
+        if (err.message === "ACCOUNT_EXISTS") message = "Account already exists";
+        if (err.message === "ORG_NOT_FOUND") message = "Organization not found";
+        if (err.message === "INVALID_FACE_DATA") message = "Invalid face data";
+        if (err.message === "NO_SUBJECTS") message = "Please enter at least one subject";
+
+        return res.render("index", {
+            popupMessage: message,
+            popupType: "error",
+        });
     }
 };
