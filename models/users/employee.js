@@ -37,13 +37,36 @@ const employeeSchema = new Schema({
         },
         trim: true
     },
-    onLeave: {
+    verification: {
+        status: {
+            type: String,
+            enum: ["pending", "verified"],
+            default: "pending"
+        },
+        token: {
+            type: String
+        },
+        expiresAt: {
+            type: Date
+        }
+    },
+    org_verified: {
         type: Boolean,
+        required: true,
+        default: false,
+    },
+    onLeave: {
+        type: Boolean, 
         required: true,
         default: false
     },
-    password: { type: String, required: true, trim: true },
-    termsCheck: {type: String, required: true}
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
+    isSuspended: {type: Boolean, default: false},
+    password: {type: String, required: true},
+    termsCheck: {type: String, required: true, default: "not-accepted"}
 
 }, { timestamps: true });
 

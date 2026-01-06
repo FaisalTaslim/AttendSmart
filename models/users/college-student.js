@@ -45,7 +45,7 @@ const collegeStudentSchema = new Schema({
             type: Date
         }
     },
-    college_verified: {
+    org_verified: {
         type: Boolean,
         required: true,
         default: false,

@@ -50,6 +50,11 @@ const schoolStudentSchema = new Schema({
             type: Date
         }
     },
+    org_verified: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
     isDeleted: {
         type: Boolean,
         default: false

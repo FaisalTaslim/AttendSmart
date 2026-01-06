@@ -18,7 +18,7 @@ app.use(setLocals);
 
 /* <----------------------- Register Routes --------------------> */
 app.use('/registration', require('./routes/register/registration'));
-app.use('/', require('./routes/register/verify-email'));
+app.use('/', require('./routes/register/verify-user'));
 
 
 
