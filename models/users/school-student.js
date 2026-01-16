@@ -18,6 +18,11 @@ const schoolStudentSchema = new Schema({
         required: true
     },
     standard: {type: String, required: true},
+    stream: {
+        type: String, 
+        required: true,
+        enum: ['neutral', 'science', 'commerce', 'arts']
+    },
     contact: {type: String, required: true},
     email: {
         type: String,

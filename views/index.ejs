@@ -70,7 +70,8 @@
                             <% } %>
                                 <h1>Confused, aren't you? Read this!</h1>
                                 <p>
-                                    AttendSmart is a Universal web-based attendance monitoring solution that automates attendance
+                                    AttendSmart is a Universal web-based attendance monitoring solution that automates
+                                    attendance
                                     tracking
                                     using methods like QR code, Face Recogniction and Timed-session to maintain
                                     efficiency.
@@ -100,7 +101,7 @@
                                 </select>
                             </div>
                             <form action="/registration/admin" class="form-box r-forms hidden-mob" id="a-form"
-                                method="POST">
+                                method="POST" enctype="multipart/form-data">
                                 <fieldset>
                                     <legend>Admin Details</legend>
 
@@ -146,6 +147,23 @@
 
                                     <div class="outer-group">
                                         <input type="url" name="website" placeholder="Website">
+                                    </div>
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>User Details</legend>
+
+                                    <div class="outer-group">
+                                        <label for="excel-1">For School Students</label>
+                                        <input type="file" id="excel-1" name="excel-1" accept=".xlsx,.xls">
+                                    </div>
+                                    <div class="outer-group">
+                                        <label for="excel-2">For College Students</label>
+                                        <input type="file" id="excel-2" name="excel-2" accept=".xlsx,.xls">
+                                    </div>
+                                    <div class="outer-group">
+                                        <label for="excel-3">For Employees</label>
+                                        <input type="file" id="excel-3" name="excel-3" accept=".xlsx,.xls">
                                     </div>
                                 </fieldset>
 
@@ -609,7 +627,8 @@
 
                                             <div class="outer-group">
                                                 <select name="supportType" required>
-                                                    <option value="" disabled selected>-- Select Support Type --</option>
+                                                    <option value="" disabled selected>-- Select Support Type --
+                                                    </option>
                                                     <option value="feedback">Feedback</option>
                                                     <option value="problem">Report a problem</option>
                                                     <option value="question">Ask a question</option>
