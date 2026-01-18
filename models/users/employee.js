@@ -55,19 +55,16 @@ const employeeSchema = new Schema({
         required: true,
         default: false,
     },
-    onLeave: {
-        type: Boolean, 
-        required: true,
-        default: false
-    },
-    isDeleted: {
-        type: Boolean,
-        default: false
-    },
+    onLeave: {type: Boolean, required: true, default: false},
+    isDeleted: {type: Boolean, default: false},
     isSuspended: {type: Boolean, default: false},
+    theme: {
+        type: String,
+        enum: ['dark', 'light'],
+        default: 'light',
+    },
     password: {type: String, required: true},
     termsCheck: {type: String, required: true, default: "not-accepted"}
-
 }, { timestamps: true });
 
-module.exports = mongoose.model('Employee', employeeSchema, 'Employees');
+module.exports = mongoose.model('Employee', employeeSchema, 'employees');

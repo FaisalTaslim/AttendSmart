@@ -149,9 +149,20 @@ const logSchema = new Schema({
             },
             _id: false,
         }
+    ],
+
+    leave: [
+        {
+            code: {type: String, required: true},
+            name: {type: String, required: true},
+            startDate: {type: Date, required: true},
+            endDate: {type: Date, required: true},
+            reason: {type: String, required: true},
+            _id: false,
+        }
     ]
 
 }, { timestamps: true });
 
-const OrgLog = mongoose.model('log', logSchema, 'Logs');
+const OrgLog = mongoose.model('log', logSchema, 'logs');
 module.exports = OrgLog;

@@ -37,17 +37,18 @@ const orgSchema = new mongoose.Schema({
             _id: false
         },
     ],
-    departments: {
-        school: {
-            type: [String], 
-            default: []
-        },
-        college: {type: [String], default: []},
-        employees: {
-            type: [String], 
-            default: []
+    subjects: [
+        {
+            class: {type: String},
+            semester: {type: String, default: null},
+            majors: {
+                type: [String],
+            },
+            optionals: {type: [String]},
+            minors: {type: [String]},
+            _id: false,
         }
-    },
+    ],
     address: {type: String, trim: true, required: true},
     website: {type: String},
     agreement: {
@@ -62,12 +63,8 @@ const orgSchema = new mongoose.Schema({
             enum: ["pending", "verified"],
             default: "pending"
         },
-        token: {
-            type: String
-        },
-        expiresAt: {
-            type: Date
-        }
+        token: {type: String},
+        expiresAt: {type: Date}
     }
 }, { timestamps: true });
 

@@ -16,9 +16,8 @@ const summary = new Schema({
     },
     total: {type: Number, default: 0},
     attended: {type: Number, default: 0},
-    leave: {type: Number, default: 0},
     percentage: {type: Number, default: 0}
 
 }, { timestamps: true });
 
-module.exports = mongoose.model("summary", summary, "summary");
+module.exports = mongoose.model("summary", summary, "student_summary");

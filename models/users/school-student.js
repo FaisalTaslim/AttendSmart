@@ -60,19 +60,17 @@ const schoolStudentSchema = new Schema({
         required: true,
         default: false,
     },
-    isDeleted: {
-        type: Boolean,
-        default: false
-    },
+    onLeave: {type: Boolean, required: true, default: false},
+    totalLeave: {type: Number, default: 0},
+    isDeleted: {type: Boolean, default: false},
     isSuspended: {type: Boolean, default: false},
-    onLeave: {
-        type: Boolean,
-        required: true,
-        default: false
+    theme: {
+        type: String,
+        enum: ['dark', 'light'],
     },
-    password: {type: String, required: true, trim: true},
-    termsCheck: {type: String, required: true}
+    password: {type: String, required: true},
+    termsCheck: {type: String, required: true, default: "not-accepted"}
 
 }, { timestamps: true });
 
-module.exports = mongoose.model('schoolStudent', schoolStudentSchema, 's-student');
+module.exports = mongoose.model('schoolStudent', schoolStudentSchema, 'school_student');

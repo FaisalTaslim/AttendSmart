@@ -19,4 +19,4 @@ const summary = new Schema({
 
 }, { timestamps: true });
 
-module.exports = mongoose.model("summary", summary, "summary");
+module.exports = mongoose.model("summary", summary, "employee_summary");
