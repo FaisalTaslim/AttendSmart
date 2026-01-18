@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-const moment = require('moment')
 
 const logSchema = new Schema({
     org: {
@@ -31,11 +30,7 @@ const logSchema = new Schema({
                 type: String, 
                 required: true 
             },
-            createdAt: {
-                type: String, 
-                default: () => moment().format("DD-MM-YYYY HH:mm:ss"),
-                required: true
-            },
+            createdAt: { type: Date, default: Date.now },
             _id: false,
         }
     ],
@@ -50,11 +45,7 @@ const logSchema = new Schema({
                 required: true
             },
             thoughts: {type: String, required: true},
-            createdAt: {
-                type: String,
-                default: () => moment().format("DD-MM-YYYY HH:mm:ss"),
-                required: true
-            },
+            createdAt: { type: Date, default: Date.now },
             _id: false,
         }
     ],
@@ -67,20 +58,13 @@ const logSchema = new Schema({
             sessionInstigator: {type: String, required: true},
             shiftType: {type: String, required: true},
             attendanceType: {type: String, required: true},
-            createdAt: {
-                type: String,
-                required: true,
-                default: () => moment().format("DD-MM-YYYY HH:mm:ss"),
-            },
+            createdAt: { type: Date, default: Date.now },
             _id: false,
         }
     ],
     studentSessionLog: [
         {
-            studentCode: {
-                type: String,
-                required: true
-            },
+            code: {type: String, required: true},
             class: {
                 type: [String],
                 required: true,
@@ -92,22 +76,16 @@ const logSchema = new Schema({
                 enum: ['fresh-session', 'retake-session'],
                 required: true,
             },
-            subjectName: {
-                type: String,
-                required: true,
-            },
+            subjectName: {type: String,required: true,},
             expired: {type: Boolean, required: true},
-            createdAt: {
-                type: String,
-                required: true,
-            },
+            createdAt: { type: Date, default: Date.now },
             _id: false,
         }
     ],
 
     studentAttendanceHistory: [
         {
-            studentId: {type: String, required: true},
+            code: {type: String, required: true},
             name: {type: String, required: true},
             dept: {
                 type: String,
@@ -130,7 +108,7 @@ const logSchema = new Schema({
 
     employeeAttendanceHistory: [
         {
-            employeeId: {type: String, required: true},
+            code: {type: String, required: true},
             name: {type: String, required: true},
             dept: {
                 type: String,

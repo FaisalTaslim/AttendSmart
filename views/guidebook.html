@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Book</title>
+    <link rel="stylesheet" href="../../public/css/global/theme/light-theme.css">
+    <link rel="stylesheet" href="../../public/css/global/ui-components/font-family.css">
+    <link rel="stylesheet" href="../../public/css/global/ui-components/scrollbar.css">
+    <link rel="stylesheet" href="../../public/css/global/ui-components/tables.css">
+    <link rel="stylesheet" href="../../public/css/global/layout/header.css">
+    <link rel="stylesheet" href="../../public/css/global/layout/footer.css">
+    <link rel="stylesheet" href="../../public/css/page-specific/homepage/main.css">
+    <link rel="stylesheet" href="../../public/css/global/layout/dashboard-main.css">
+    <link rel="stylesheet" href="../../public/css/page-specific/guidebook.css">
+
+    <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <h1 class="hide-in-mobile">AttendSmart - Smart Attendance Solution</h1>
+            <h2 class="small-heading">AttendSmart</h2>
+        </div>
+
+        <nav class="nav-bar">
+            <a href="/" class="nav-links-property">Home</a>
+            <a href="/logout" class="nav-links-property">Logout</a>
+            <a href="/guidebook" class="nav-links-property">GuideBook</a>
+        </nav>
+
+        <nav class="mobile-nav-container">
+            <div class="nav-select">
+                <select id="mobile-nav">
+                    <option value="" disabled selected>-- Navigate --</option>
+                    <option value="/">Home</option>
+                    <option value="/logout">Logout</option>
+                    <option value="/guidebook">GuideBook</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="main-1">
+            <div class="right-side">
+                <button class="nav-toggle" aria-label="Open menu">
+                    ☰
+                </button>
+                <div class="sidenav-wrapper">
+                    <div class="dashboard-sidenav">
+                        <h1 class="hide-in-pc">AttendSmart</h1>
+                        <div class="dash-head">
+                            <h2><span>Registration</span></h2>
+                            <div class="dash-head-nav">
+                                <p>Admin</p>
+                                <p>Excel Files Upload</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="left-side">
+                <div class="guide">
+                    <div class="adm-register font-styling" id="adm-register">
+                        <h1><i class="fa-solid fa-1"></i> | Admin Registration</h1>
+                        <p>
+                            Fill in all the details to the best of you knowledge. Any discripency or misuse found
+                            regarding your account will result into suspension.
+                        </p>
+                        <p>
+                            <b>Once you have completed the registration~</b>
+                        </p>
+                        <ul>
+                            <li>Log into your account</li>
+                            <li>You'll be redirected to your dashboard</li>
+                            <li>Complete the rest of the setup</li>
+                            <li>
+                                After the upload of CSV files is done, and setup is completed, you're advised to send
+                                the registration link to the users of your organization
+                            </li>
+                        </ul>
+                        <p>
+                            <b class="error">
+                                NOTE: DO NOT send the registration link to the users until the setup is completed
+                                without any errors.
+                            </b>
+                        </p>
+                    </div>
+                    <div class="excel-upload font-styling" id="excel-upload">
+                        <h1><i class="fa-solid fa-2"></i> | Excel Files Upload Guide</h1>
+                        <p>These Excel Files will be used to lock subjects for your students</p>
+                        <p>
+                            <b class="tip">
+                                If this is a non-educational institute, you can safely skip this step, and send the
+                                links to all your employees for the registration.
+                            </b>
+                        </p>
+                        <h2>How to Fill the Excel Sheet (By Institution Type)</h2>
+                        <h2>School Use Case</h2>
+                        <h3>Classes 1-8 (Primary and Middle School)</h3>
+                        <ul>
+                            <li><b>Class:</b> Enter the class number (e.g. 5, 6, 7..etc)</li>
+                            <li><b>Semester:</b> Leave Empty</li>
+                            <li><b>Majors:</b> Enter all subjects taught to the class</li>
+                            <li>
+                                <b>Optionals / Minors:</b> Usually not applicable in most schools; leave empty unless
+                                your school follows a different structure.
+                            </li>
+                        </ul>
+                        <p><b>Example Table:</b></p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Semester</th>
+                                    <th>Majors</th>
+                                    <th>Optionals</th>
+                                    <th>Minors</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>5</td>
+                                    <td></td>
+                                    <td>English, Mathematics, Science, Social Science</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3>Classes 9-12 (Stream-based Structure)</h3>
+                        <ul>
+                            <li><b>Class:</b> Enter the class number (e.g. 9, 10, 11,..etc)</li>
+                            <li><b>Semester:</b> Leave empty</li>
+                            <li><b>Majors:</b> Subjects that are common across all streams</li>
+                            <li><b>Optionals:</b>Subjects that vary by stream</li>
+                            <li>
+                                <b>Minors:</b> Usually not applicable in most schools; leave empty unless your school
+                                follows a different structure.
+                            </li>
+                        </ul>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Semester</th>
+                                    <th>Majors (Common Subjects)</th>
+                                    <th>Optionals (Stream Subjects)</th>
+                                    <th>Minors</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>11</td>
+                                    <td></td>
+                                    <td>English Language, English Literature</td>
+                                    <td>Physics, Chemistry, Mathematics, Biology, Accounts, Economics, History,
+                                        Geography, Hindi</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>
+                            <b class="error">
+                                NOTE: Once again, for classes 9-12, major column only contains those subjects that are
+                                common to all streams.
+                            </b>
+                        </p>
+                        <p>
+                            <b class="tip">
+                                For example, if <em>English Language</em> and <em>English Literature</em> are the only
+                                subjects common across all streams in your school, then enter only these subjects in the
+                                <b>Majors</b> column. All other stream-specific subjects should be entered under the
+                                <b>Optionals</b> column.
+                            </b>
+                        </p>
+                        <p>
+                            <b class="error">
+                                NOTE: Also for any class, If PT or Games periods are conducted and attendance is required, include
+                                them in the <b>Majors</b> column. System won't mark attendance for such periods, if it
+                                isn't mentioned in your excel sheet.
+                            </b>
+                        </p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Semester</th>
+                                    <th>Majors</th>
+                                    <th>Optionals</th>
+                                    <th>Minors</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>10</td>
+                                    <td></td>
+                                    <td>English Language, English Literature, Physical Training, Games</td>
+                                    <td>Physics, Chemistry, Mathematics, Biology, History, Geography, Accounts, Commerce
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h2>“Common Mistakes” callout</h2>
+                        <ul class="font-styling">
+                            <li>
+                                Do not enter stream-specific subjects (Physics, Accounts, History, etc.) in the
+                                <b>Majors</b> column for Classes 9–12.
+                            </li>
+                            <li>
+                                Do not leave the <b>Majors</b> column empty. At least one common subject must be
+                                provided.
+                            </li>
+                            <li>Do not create separate rows for different streams of the same class.</li>
+                            <li>
+                                If PT or Games attendance is required, do not forget to include them in the
+                                <b>Majors</b> column.
+                            </li>
+                        </ul>
+
+                        <h2>College Use Case~</h2>
+                        <p>College structures are usually semester-based and more straightforward.</p>
+                        <ul>
+                            <li>
+                                <b>Class:</b> Enter the department name in short form. (e.g. CSE, EEE, EE, ME...etc)
+                            </li>
+                            <li><b>Semester:</b> Enter semester number (e.g. 1, 2, 3, 4..etc)</li>
+                            <li><b>Majors:</b> Core Subjects</li>
+                            <li><b>Optionals:</b> Electives, if any.</li>
+                            <li>
+                                <b>Minors:</b> If Applicable.
+                            </li>
+                        </ul>
+                        <p><b>Example:</b></p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Semester</th>
+                                    <th>Majors</th>
+                                    <th>Optionals</th>
+                                    <th>Minors</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>CSE</td>
+                                    <td>5</td>
+                                    <td>DBMS, Operating Systems, Computer Networks</td>
+                                    <td>AI, Machine Learning</td>
+                                    <td>Cyber Security</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="foot-content">
+            <div class="foot1">
+                <div class="useful-links">
+                    <p><strong>Useful-links</strong></p>
+                    <a href="#register" class="links foot-links" target="_blank">Register</a>
+                    <a href="#support-forms" class="links foot-links" target="_blank">Support</a>
+                    <a href="/dashboard" class="links foot-links" target="_blank">Dashboard</a>
+                </div>
+                <div class="legal">
+                    <p><strong>Legal</strong></p>
+                    <a href="#" class="links foot-links" target="_blank">Terms & conditions</a>
+                    <a href="#" class="links foot-links" target="_blank">Privacy Policy</a>
+                    <a href="#" class="links foot-links" target="_blank">Refund Policy</a>
+                </div>
+            </div>
+            <div class="foot2">
+                <div class="socials">
+                    <p><strong>Socials</strong></p>
+                    <a href="#" class="links foot-links" target="_blank">
+                        <i class="fa-brands fa-instagram"></i> | @faisal_9542
+                    </a>
+                    <a href="#" class="links foot-links" target="_blank">
+                        <i class="fa-brands fa-discord"></i> | @famaeoxiaa
+                    </a>
+                    <a href="#" class="links foot-links" target="_blank">
+                        <i class="fa-brands fa-github"></i> | @FaisalTaslim
+                    </a>
+                </div>
+                <div class="contacts">
+                    <p><strong>Contacts</strong></p>
+                    <p><i class="fa-solid fa-phone"></i> | +91 7449925137 </p>
+                    <p><i class="fa-solid fa-envelope"></i> | mailto: faisaltaslim79@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="../../public/js/global/layout/side-nav.js"></script>
+    <script src="../../public/js/global/layout/rearrange-footer.js"></script>
+</body>
+
+</html>
