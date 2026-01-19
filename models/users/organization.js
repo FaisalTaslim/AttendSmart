@@ -39,10 +39,10 @@ const orgSchema = new mongoose.Schema({
     ],
     subjects: [
         {
-            class: {type: String},
-            semester: {type: String, default: null},
+            class: {type: String, required: true},
             majors: {
                 type: [String],
+                required: true
             },
             optionals: {type: [String]},
             minors: {type: [String]},

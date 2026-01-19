@@ -4,7 +4,9 @@ const OrgLog = require("../../models/statistics/logs");
 const generateCode = require("../../utils/codes");
 const crypto = require("crypto");
 const { sendVerificationEmail } = require("../../utils/send-emails");
-const verifyEmail = require("../../utils/verify-domains");
+const verifyEmail = require("../../utils/registration/verify-domains");
+const XLSX = require("xlsx");
+const subjectSchema = require("../../utils/registration/validate-subjects");
 const mongoose = require("mongoose");
 
 async function createOrgWithUniqueCode(orgData) {
@@ -21,7 +23,69 @@ async function createOrgWithUniqueCode(orgData) {
     }
 }
 
+function parseSubjectsFromExcel(file) {
+    const workbook = XLSX.read(file.buffer, { type: "buffer" });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+
+    const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
+
+    if (!rows.length) {
+        throw new Error("EMPTY_EXCEL");
+    }
+
+    const subjects = [];
+    const errors = [];
+
+    rows.forEach((row, index) => {
+        try {
+            const parsed = {
+                class: String(row.class).trim(),
+                majors: row.majors
+                    ? String(row.majors).split(",").map(s => s.trim())
+                    : [],
+                optionals: row.optionals
+                    ? String(row.optionals).split(",").map(s => s.trim())
+                    : [],
+                minors: row.minors
+                    ? String(row.minors).split(",").map(s => s.trim())
+                    : [],
+            };
+
+            const { error, value } = subjectSchema.validate(parsed);
+
+            if (error) {
+                throw new Error(error.details[0].message);
+            }
+
+            subjects.push(value);
+        } catch (err) {
+            errors.push({
+                row: index + 2,
+                error: err.message
+            });
+        }
+    });
+
+    if (errors.length) {
+        throw new Error(
+            `EXCEL_VALIDATION_FAILED:${JSON.stringify(errors)}`
+        );
+    }
+
+    return subjects;
+}
+
+const ERROR_MESSAGES = {
+    INVALID_EMAIL_DOMAIN: "Please use your organization email address",
+    PASSWORD_MISMATCH: "Password mismatch!",
+    EXCEL_REQUIRED: "Please upload the subjects Excel file",
+    EMPTY_EXCEL: "Uploaded Excel file is empty",
+};
+
+
 exports.register = async (req, res) => {
+    console.log("REQ.FILE:", req.file);
+    console.log("REQ.BODY:", req.body);
     const session = await mongoose.startSession();
     session.startTransaction();
 
@@ -37,6 +101,12 @@ exports.register = async (req, res) => {
             website,
             confirmPassword,
         } = req.body;
+
+        if (!req.file) {
+            throw new Error("EXCEL_REQUIRED");
+        }
+
+        const subjects = parseSubjectsFromExcel(req.file);
 
         const {
             name,
@@ -63,6 +133,7 @@ exports.register = async (req, res) => {
             address: address.toLowerCase().trim(),
             website: website?.toLowerCase().trim() || "",
             agreement: true,
+            subjects,
             admin: [
                 {
                     name,
@@ -112,13 +183,11 @@ exports.register = async (req, res) => {
 
         console.error(err);
 
-        let message = "Registration failed. Please try again.";
-
-        if (err.message === "INVALID_EMAIL_DOMAIN") {
-            message = "Please use your organization email address";
-        } else if (err.message === "PASSWORD_MISMATCH") {
-            message = "Password mismatch!";
-        }
+        let message =
+            ERROR_MESSAGES[err.message] ||
+            (err.message?.startsWith("EXCEL_VALIDATION_FAILED")
+                ? "Excel format is invalid. Please check the guide."
+                : "Registration failed. Please try again.");
 
         return res.render("index", {
             popupMessage: message,

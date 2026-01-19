@@ -8,7 +8,7 @@ const OrgLog = require("../../models/statistics/logs");
 const generateCode = require("../../utils/codes");
 const crypto = require("crypto");
 const { sendVerificationEmail } = require("../../utils/send-emails");
-const verifyEmail = require("../../utils/verify-domains");
+const verifyEmail = require("../../utils/registration/verify-domains");
 const moment = require("moment");
 
 async function createCollegeStudentWithUniqueCode(data, session) {
