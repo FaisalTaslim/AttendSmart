@@ -4,194 +4,149 @@ const OrgLog = require("../../models/statistics/logs");
 const generateCode = require("../../utils/codes");
 const crypto = require("crypto");
 const { sendVerificationEmail } = require("../../utils/send-emails");
-const verifyEmail = require("../../utils/registration/verify-domains");
-const XLSX = require("xlsx");
-const subjectSchema = require("../../utils/registration/validate-subjects");
+const verifyDomains = require("../../utils/registration/verify-domains");
 const mongoose = require("mongoose");
-
-async function createOrgWithUniqueCode(orgData) {
-    while (true) {
-        try {
-            const code = generateCode(6, "numeric");
-            const org = new Org({ ...orgData, code });
-            await org.save();
-            return org;
-        } catch (err) {
-            if (err.code === 11000) continue;
-            throw err;
-        }
-    }
-}
-
-function parseSubjectsFromExcel(file) {
-    const workbook = XLSX.read(file.buffer, { type: "buffer" });
-    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-
-    const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
-
-    if (!rows.length) {
-        throw new Error("EMPTY_EXCEL");
-    }
-
-    const subjects = [];
-    const errors = [];
-
-    rows.forEach((row, index) => {
-        try {
-            const parsed = {
-                class: String(row.class).trim(),
-                majors: row.majors
-                    ? String(row.majors).split(",").map(s => s.trim())
-                    : [],
-                optionals: row.optionals
-                    ? String(row.optionals).split(",").map(s => s.trim())
-                    : [],
-                minors: row.minors
-                    ? String(row.minors).split(",").map(s => s.trim())
-                    : [],
-            };
-
-            const { error, value } = subjectSchema.validate(parsed);
-
-            if (error) {
-                throw new Error(error.details[0].message);
-            }
-
-            subjects.push(value);
-        } catch (err) {
-            errors.push({
-                row: index + 2,
-                error: err.message
-            });
-        }
-    });
-
-    if (errors.length) {
-        throw new Error(
-            `EXCEL_VALIDATION_FAILED:${JSON.stringify(errors)}`
-        );
-    }
-
-    return subjects;
-}
-
-const ERROR_MESSAGES = {
-    INVALID_EMAIL_DOMAIN: "Please use your organization email address",
-    PASSWORD_MISMATCH: "Password mismatch!",
-    EXCEL_REQUIRED: "Please upload the subjects Excel file",
-    EMPTY_EXCEL: "Uploaded Excel file is empty",
-};
 
 
 exports.register = async (req, res) => {
-    console.log("REQ.FILE:", req.file);
-    console.log("REQ.BODY:", req.body);
     const session = await mongoose.startSession();
     session.startTransaction();
 
-    const verificationToken = crypto.randomBytes(20).toString("hex");
-    const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
-
     try {
         const {
+            admin,
             organization,
             branch,
-            type,
             address,
+            type,
             website,
+            attendanceMethod,
             confirmPassword,
+            termsCheck
         } = req.body;
 
-        if (!req.file) {
-            throw new Error("EXCEL_REQUIRED");
-        }
+        const adminData = admin?.[0];
 
-        const subjects = parseSubjectsFromExcel(req.file);
+        if (!adminData) {
+            throw new Error("Admin details missing");
+        }
 
         const {
             name,
             adminId,
             contact,
             email,
-            password,
-        } = req.body.admin[0];
+            password
+        } = adminData;
 
-        if (!verifyEmail(email.toLowerCase().trim())) {
-            throw new Error("INVALID_EMAIL_DOMAIN");
+        // Basic validations
+        if (!termsCheck) {
+            throw new Error("You must accept the Terms & Conditions");
         }
 
         if (password !== confirmPassword) {
-            throw new Error("PASSWORD_MISMATCH");
+            throw new Error("Passwords do not match");
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        if (!verifyDomains(email)) {
+            throw new Error("Please use your organization email address");
+        }
 
-        const createdOrg = await createOrgWithUniqueCode({
-            org: organization.toLowerCase().trim(),
-            branch: branch.toLowerCase().trim(),
-            type,
-            address: address.toLowerCase().trim(),
-            website: website?.toLowerCase().trim() || "",
-            agreement: true,
-            subjects,
-            admin: [
-                {
-                    name,
-                    adminId,
-                    contact,
-                    email: email.toLowerCase().trim(),
-                    password: hashedPassword,
-                }
-            ],
-            verification: {
-                status: "pending",
-                token: verificationToken,
-                expiresAt: tokenExpiry
-            }
-        }, session);
+        // Check existing organization
+        const existingOrg = await Org.findOne({ org: organization });
+        if (existingOrg) {
+            throw new Error("Organization already registered");
+        }
 
-        await OrgLog.create(
-            [
-                {
-                    org: createdOrg.code,
-                    register: [
-                        {
-                            name,
-                            role: "admin",
-                            id: adminId,
-                            email: email.toLowerCase().trim()
-                        }
-                    ]
+        // Generate unique 6-digit numeric code
+        let code;
+        let codeExists = true;
+
+        while (codeExists) {
+            code = generateCode(6, "numeric"); // assuming numeric-only generation
+            const check = await Org.findOne({ code });
+            if (!check) codeExists = false;
+        }
+
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 12);
+
+        // Verification token
+        const token = crypto.randomBytes(32).toString("hex");
+        const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+        // Create organization
+        const orgDoc = await Org.create(
+            [{
+                code,
+                org: organization,
+                branch,
+                type,
+                address,
+                website,
+                attendanceMethod,
+                agreement: true,
+                admin: [
+                    {
+                        name,
+                        adminId,
+                        contact,
+                        email,
+                        password: hashedPassword
+                    }
+                ],
+                verification: {
+                    status: "pending",
+                    token,
+                    expiresAt
                 }
-            ],
+            }],
             { session }
         );
 
+        // Create logs document
+        const logDoc = await OrgLog.create(
+            [{
+                org: code,
+                register: [
+                    {
+                        name,
+                        role: "admin",
+                        id: adminId,
+                        email
+                    }
+                ]
+            }],
+            { session }
+        );
+
+        // Send verification email
+        await sendVerificationEmail(
+            email,
+            token,
+            code,
+            "admin",
+            null
+        );
+
+        // Commit transaction
         await session.commitTransaction();
         session.endSession();
 
-        await sendVerificationEmail(email, verificationToken, createdOrg.code, "Admin");
-
         return res.render("index", {
-            popupMessage: "Check your email!",
-            popupType: "info",
+            popupMessage: "Registration successful! Please verify your email.",
+            popupType: "success"
         });
 
     } catch (err) {
         await session.abortTransaction();
         session.endSession();
 
-        console.error(err);
-
-        let message =
-            ERROR_MESSAGES[err.message] ||
-            (err.message?.startsWith("EXCEL_VALIDATION_FAILED")
-                ? "Excel format is invalid. Please check the guide."
-                : "Registration failed. Please try again.");
+        console.error("Admin Registration Error:", err);
 
         return res.render("index", {
-            popupMessage: message,
-            popupType: "error",
+            popupMessage: err.message || "Registration failed. Please try again.",
+            popupType: "error"
         });
     }
 };

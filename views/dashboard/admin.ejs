@@ -5,15 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
-    <link rel="stylesheet" href="../../public/css/global/theme/light-theme.css">
-    <link rel="stylesheet" href="../../public/css/global/ui-components/font-family.css">
-    <link rel="stylesheet" href="../../public/css/global/ui-components/scrollbar.css">
-    <link rel="stylesheet" href="../../public/css/global/layout/header.css">
-    <link rel="stylesheet" href="../../public/css/global/layout/footer.css">
-    <link rel="stylesheet" href="../../public/css/global/ui-components/forms.css">
-    <link rel="stylesheet" href="../../public/css/global/ui-componenets/popup.css">
-    <link rel="stylesheet" href="../../public/css/page-specific/homepage/main.css">
-    <link rel="stylesheet" href="../../public/css/global/layout/dashboard-main.css">
+    <link rel="stylesheet" href="/css/global/theme/light-theme.css">
+    <link rel="stylesheet" href="/css/global/ui-components/font-family.css">
+    <link rel="stylesheet" href="/css/global/ui-components/scrollbar.css">
+    <link rel="stylesheet" href="/css/global/layout/header.css">
+    <link rel="stylesheet" href="/css/global/layout/footer.css">
+    <link rel="stylesheet" href="/css/global/ui-components/forms.css">
+    <link rel="stylesheet" href="/css/global/ui-componenets/popup.css">
+    <link rel="stylesheet" href="/css/page-specific/homepage/main.css">
+    <link rel="stylesheet" href="/css/global/layout/dashboard-main.css">
+    <link rel="stylesheet" href="/css/page-specific/dashboard/admin.css">
 
     <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,7 +47,7 @@
     </header>
     <main>
         <div class="main-1">
-            <div class="right-side">
+            <div class="left-side">
                 <button class="nav-toggle" aria-label="Open menu">
                     ☰
                 </button>
@@ -56,6 +57,7 @@
                         <div class="dash-head">
                             <h2><span>General</span></h2>
                             <div class="dash-head-nav">
+                                <p id="finish-setup">Finish setup</p>
                                 <p>Settings</p>
                             </div>
                         </div>
@@ -90,6 +92,23 @@
                     </div>
                 </div>
             </div>
+            <div class="right-side">
+                <div class="upload-card">
+                    <h2>Complete the setup</h2>
+                    <form id="subjectsForm" enctype="multipart/form-data">
+                        <input type="file" id="subjectsCsv" name="subjectsCsv" accept=".csv" hidden>
+
+                        <label for="subjectsCsv" class="upload-label">
+                            <div class="upload-content">
+                                <div class="upload-icon">📄</div>
+                                <p class="upload-title">Upload the subjects CSV file</p>
+                                <p class="upload-subtitle">Only .csv files are supported</p>
+                            </div>
+                        </label>
+                    </form>
+                    <p class="tip"><b>Note:</b> You can later make changes in subject's list through settings</p>
+                </div>
+            </div>
         </div>
     </main>
     <footer>
@@ -99,7 +118,6 @@
                     <p><strong>Useful-links</strong></p>
                     <a href="#register" class="links foot-links" target="_blank">Register</a>
                     <a href="#support-forms" class="links foot-links" target="_blank">Support</a>
-                    <a href="/dashboard" class="links foot-links" target="_blank">Dashboard</a>
                 </div>
                 <div class="legal">
                     <p><strong>Legal</strong></p>
@@ -129,8 +147,9 @@
             </div>
         </div>
     </footer>
-    <script src="../../public/js/global/layout/side-nav.js"></script>
-    <script src="../../public/js/global/layout/rearrange-footer.js"></script>
+    <script src="/js/global/layout/side-nav.js"></script>
+    <script src="/js/global/layout/rearrange-footer.js"></script>
+    <script src="/js/page-specific/dashboard/admin/upload-csv.js"></script>
 </body>
 
 </html>

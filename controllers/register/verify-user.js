@@ -5,9 +5,10 @@ const { sendRegistrationMail } = require("../../utils/send-emails");
 
 exports.verify = async (req, res) => {
     try {
+        console.log("hitting the verify user route.")
         const { token, role, code, secondary_role } = req.params;
 
-        if (role == "Admin") {
+        if (role == "admin") {
             const org = await Org.findOne({
                 code,
                 "verification.token": token,

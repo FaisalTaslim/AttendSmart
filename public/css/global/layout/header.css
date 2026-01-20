@@ -54,6 +54,7 @@ header {
     border-color: var(--accent, #007bff);
     background: var(--accent-light, #f0f7ff);
 }
+.mobile-hidden {display: none}
 
 @media (max-width: 540px) {
     .nav-bar {display: none;}

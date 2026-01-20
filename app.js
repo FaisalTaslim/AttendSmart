@@ -16,12 +16,19 @@ app.set('trust proxy', true);
 app.use(sessionMiddleware);
 app.use(setLocals);
 
-/* <----------------------- Register Routes --------------------> */
+/* <------------- Register Routes ----------> */
 app.use('/registration', require('./routes/register/registration'));
 app.use('/', require('./routes/register/verify-user'));
 
+/* <------------- Uploading Routes ----------> */
+app.use('/upload', require('./routes/parse-files/upload-csv'));
 
-
+/* <------------- MainRoutes ----------> */
 app.use('/', require('./routes/main/main'));
+app.use('/dashboard', require('./routes/main/dashboard'));
+
+/* <------------- Logout Routes ----------> */
+app.use("/auth", require("./routes/auth/login"));
+app.use('/', require('./routes/auth/logout'));
 
 module.exports = app;

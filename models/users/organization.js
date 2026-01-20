@@ -17,7 +17,6 @@ const orgSchema = new mongoose.Schema({
         type: String, 
         required: true,
         trim: true,
-        unique: true
     },
     type: {
         type: String,
@@ -49,6 +48,9 @@ const orgSchema = new mongoose.Schema({
             _id: false,
         }
     ],
+    attendanceMethod: {
+        type: String, required: true,
+    },
     address: {type: String, trim: true, required: true},
     website: {type: String},
     agreement: {

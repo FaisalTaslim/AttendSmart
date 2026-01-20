@@ -7,10 +7,10 @@ const sessionMiddleware = session({
     saveUninitialized: false,
     store: MongoStore.create({
         mongoUrl: process.env.MONGODB_URI,
-        ttl: 60 * 60 * 2
+        ttl: 60 * 60 * 24 * 2
     }),
     cookie: {
-        maxAge: 1000 * 60 * 60 * 2,
+        maxAge: 1000 * 60 * 60 * 24 * 2,
         httpOnly: true
     }
 });

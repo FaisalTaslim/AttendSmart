@@ -1,11 +1,12 @@
+header {gap: 33rem;}
 .main-1 {
     overflow-y: auto;
     background: var(--bg-secondary);
     border-radius: 0.8rem;
     width: 65%;
 }
-.right-side {width: 32%}
-.left-side {width: 77%;}
+.left-side {width: 32%}
+.right-side {width: 77%;}
 .sidenav-wrapper {height: 100%;}
 .nav-toggle {
     display: none;
@@ -115,6 +116,7 @@
     .sidenav-wrapper.active .dashboard-sidenav {
         transform: translateX(0);
     }
+    .left-side {display: none;}
     .right-side {
         width: 100%;
     }

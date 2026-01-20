@@ -28,7 +28,6 @@
         </div>
         <% } %>
 
-
             <header>
                 <div class="logo">
                     <h1 class="pc-hidden">AttendSmart - Smart Attendance Solution</h1>
@@ -101,7 +100,7 @@
                                 </select>
                             </div>
                             <form action="/registration/admin" class="form-box r-forms hidden-mob" id="a-form"
-                                method="POST" enctype="multipart/form-data">
+                                method="POST">
                                 <fieldset>
                                     <legend>Admin Details</legend>
 
@@ -151,13 +150,31 @@
                                 </fieldset>
 
                                 <fieldset>
+                                    <legend>Attendance Method</legend>
+
+                                    <div class="outer-group">
+                                        <label for="attendance-method">Select Attendance Method</label>
+                                        <select name="attendanceMethod" id="attendance-method" required>
+                                            <option value="">Select method</option>
+                                            <option value="two-time" class="for-employees">Two-time attendance (Check-in
+                                                / Check-out)</option>
+                                            <option value="one-time" class="for-schools">One-time attendance (Mark at
+                                                beginning)</option>
+                                            <option value="subject-wise" class="for-college">Subject-wise attendance
+                                            </option>
+                                        </select>
+                                    </div>
+                                </fieldset>
+                                <!-- 
+
+                                <fieldset>
                                     <legend>Create Subjects Database</legend>
 
                                     <div class="outer-group">
                                         <label for="excel-1">Upload the excel sheet</label>
                                         <input type="file" id="excel-1" name="excel-1" accept=".xlsx,.xls, .csv">
                                     </div>
-                                </fieldset>
+                                </fieldset> -->
 
                                 <fieldset>
                                     <legend>Confirmation</legend>
@@ -655,7 +672,7 @@
                                 <legend>Login to Continue</legend>
 
                                 <div class="outer-group">
-                                    <input type="text" name="uniqueID" placeholder="Unique ID" required>
+                                    <input type="text" name="code" placeholder="Unique ID" required>
 
                                     <select name="userRole" required>
                                         <option value="" disabled selected>Select your role</option>
@@ -682,7 +699,6 @@
                             </fieldset>
 
                         </form>
-
                     </div>
                 </div>
             </main>
