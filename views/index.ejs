@@ -197,22 +197,26 @@
                             <form class="form-box r-forms hidden-mob" id="c-form" enctype="multipart/form-data">
 
                                 <fieldset>
+                                    <legend>Organization details</legend>
+
+                                    <div class="outer-group">
+                                        <select name="org" id="orgSelect" required></select>
+                                    </div>
+                                </fieldset>
+
+
+                                <fieldset>
                                     <legend>College Student Registration</legend>
 
                                     <div class="outer-group">
                                         <input type="text" name="name" placeholder="Full Name" required>
-                                        <input type="text" name="roll" placeholder="Full Roll Number" required>
-                                        <input type="text" name="dept" placeholder="Department" required>
+                                        <input type="text" name="roll" placeholder="Roll Number" required>
+                                        <select name="dept" id="flood-department" required></select>
                                     </div>
 
                                     <div class="outer-group">
                                         <input type="tel" name="contact" placeholder="Contact Number" required>
                                         <input type="email" name="email" placeholder="Email Address" required>
-                                    </div>
-
-                                    <div class="outer-group">
-                                        <input type="text" name="orgName" placeholder="Organization Name" required>
-                                        <input type="text" name="orgBranch" placeholder="Branch" required>
                                     </div>
                                 </fieldset>
 
@@ -220,18 +224,9 @@
                                     <legend>Subject Details</legend>
 
                                     <div class="outer-group">
-                                        <input type="text" name="subjects" placeholder="Subject 1" required>
-                                        <input type="text" name="subjects" placeholder="Subject 2">
-                                        <input type="text" name="subjects" placeholder="Subject 3">
-                                        <input type="text" name="subjects" placeholder="Subject 4">
-                                        <input type="text" name="subjects" placeholder="Subject 5">
-                                        <input type="text" name="subjects" placeholder="Subject 6">
-                                        <input type="text" name="subjects" placeholder="Subject 7">
-                                        <input type="text" name="subjects" placeholder="Subject 8">
-                                        <input type="text" name="subjects" placeholder="Subject 9">
-                                        <input type="text" name="subjects" placeholder="Subject 10">
-                                        <input type="text" name="subjects" placeholder="Subject 11">
-                                        <input type="text" name="subjects" placeholder="Subject 12">
+                                        <select id="majorSelect1" multiple size="5"></select>
+                                        <select id="minorSelect1" multiple size="5"></select>
+                                        <select id="optionalSelect1" multiple size="5"></select>
                                 </fieldset>
 
                                 <fieldset>
@@ -273,6 +268,13 @@
                             </form>
 
                             <form class="form-box r-forms hidden-mob" id="s-form" enctype="multipart/form-data">
+                                <fieldset>
+                                    <legend>Organization details</legend>
+
+                                    <div class="outer-group">
+                                        <select name="org" id="orgSelect2" required></select>
+                                    </div>
+                                </fieldset>
 
                                 <fieldset>
                                     <legend>School Student Registration</legend>
@@ -280,18 +282,12 @@
                                     <div class="outer-group">
                                         <input type="text" name="userName" placeholder="Name" required>
                                         <input type="text" name="roll" placeholder="Roll Number" required>
-                                        <input type="text" name="standard"
-                                            placeholder="Class-Division [example: 2A, 3B]" required>
+                                        <select id="flood-class" required></select>
                                     </div>
 
                                     <div class="outer-group">
                                         <input type="tel" name="contact" placeholder="Mobile" required>
                                         <input type="email" name="email" placeholder="Email" required>
-                                    </div>
-
-                                    <div class="outer-group">
-                                        <input type="text" name="orgName" placeholder="Organization Name" required>
-                                        <input type="text" name="orgBranch" placeholder="Branch" required>
                                     </div>
                                 </fieldset>
 
@@ -299,21 +295,12 @@
                                     <legend>Subject Details</legend>
 
                                     <div class="outer-group">
-                                        <input type="text" name="subjects" placeholder="Subject 1">
-                                        <input type="text" name="subjects" placeholder="Subject 2">
-                                        <input type="text" name="subjects" placeholder="Subject 3">
-                                        <input type="text" name="subjects" placeholder="Subject 4">
-                                        <input type="text" name="subjects" placeholder="Subject 5">
-                                        <input type="text" name="subjects" placeholder="Subject 6">
-                                        <input type="text" name="subjects" placeholder="Subject 7">
-
-                                        <input type="text" name="subjects" placeholder="Subject 8">
-
-                                        <input type="text" name="subjects" placeholder="Subject 9">
-                                        <input type="text" name="subjects" placeholder="Subject 10">
-                                        <input type="text" name="subjects" placeholder="Subject 11">
-                                        <input type="text" name="subjects" placeholder="Subject 12">
+                                        <select id="MajorSelect2" multiple size="5"></select>
+                                        <select id="MinorSelect2" multiple size="5"></select>
+                                        <select id="OptionalSelect2" multiple size="5"></select>
+                                    </div>
                                 </fieldset>
+
 
                                 <fieldset>
                                     <legend>Face Verification</legend>
@@ -746,6 +733,8 @@
             <script src="/js/global/face-api/face-init.js"></script>
             <script src="/js/global/face-api/face-register/c-student.js"></script>
             <script src="/js/global/face-api/face-register/s-student.js"></script>
+            <script type="module" src="/js/page-specific/homepage/college-forms-ui.js"></script>
+            <script type="module" src="/js/page-specific/homepage/school-forms-ui.js"></script>
 </body>
 
 </html>
