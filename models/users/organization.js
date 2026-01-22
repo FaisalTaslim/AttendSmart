@@ -67,6 +67,10 @@ const orgSchema = new mongoose.Schema({
         },
         token: {type: String},
         expiresAt: {type: Date}
+    },
+    setup_done: {
+        type: Boolean,
+        default: false,
     }
 }, { timestamps: true });
 

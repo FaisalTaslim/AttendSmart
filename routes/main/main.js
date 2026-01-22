@@ -1,17 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const controller = require('../../controllers/main/main');
 
-const routes = {
-    '/': 'index',
-};
-
-Object.entries(routes).forEach(([route, view]) => {
-    router.get(route, (req, res) => {
-        res.render(view, {
-            popupMessage: null,
-            popupType: null
-        });
-    });
-});
+router.get('/', controller.homepage);
+router.get('/guidebook', controller.guidebook);
 
 module.exports = router;

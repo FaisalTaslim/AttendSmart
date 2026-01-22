@@ -10,6 +10,7 @@ const mongoose = require("mongoose");
 
 exports.register = async (req, res) => {
     const session = await mongoose.startSession();
+    let setup;
     session.startTransaction();
 
     try {
@@ -39,7 +40,6 @@ exports.register = async (req, res) => {
             password
         } = adminData;
 
-        // Basic validations
         if (!termsCheck) {
             throw new Error("You must accept the Terms & Conditions");
         }
@@ -52,30 +52,30 @@ exports.register = async (req, res) => {
             throw new Error("Please use your organization email address");
         }
 
-        // Check existing organization
         const existingOrg = await Org.findOne({ org: organization });
         if (existingOrg) {
             throw new Error("Organization already registered");
         }
 
-        // Generate unique 6-digit numeric code
         let code;
         let codeExists = true;
 
         while (codeExists) {
-            code = generateCode(6, "numeric"); // assuming numeric-only generation
+            code = generateCode(6, "numeric");
             const check = await Org.findOne({ code });
             if (!check) codeExists = false;
         }
 
-        // Hash password
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        // Verification token
         const token = crypto.randomBytes(32).toString("hex");
         const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-        // Create organization
+        if(type === "corporate") {
+            setup = true;
+        }
+        else setup = false;
+
         const orgDoc = await Org.create(
             [{
                 code,
@@ -99,12 +99,12 @@ exports.register = async (req, res) => {
                     status: "pending",
                     token,
                     expiresAt
-                }
+                },
+                setup_done: setup
             }],
             { session }
         );
 
-        // Create logs document
         const logDoc = await OrgLog.create(
             [{
                 org: code,
@@ -120,7 +120,6 @@ exports.register = async (req, res) => {
             { session }
         );
 
-        // Send verification email
         await sendVerificationEmail(
             email,
             token,
@@ -129,7 +128,6 @@ exports.register = async (req, res) => {
             null
         );
 
-        // Commit transaction
         await session.commitTransaction();
         session.endSession();
 

@@ -62,9 +62,14 @@ exports.uploadSubjects = async (req, res) => {
                 .on("error", reject);
         });
 
-        // Replace existing subjects during setup
         org.subjects = subjects;
         await org.save({ session });
+
+        await Org.findOneAndUpdate(
+            { code: orgCode },
+            { setup_done: true },
+            { session }
+        );
 
         await session.commitTransaction();
         session.endSession();
