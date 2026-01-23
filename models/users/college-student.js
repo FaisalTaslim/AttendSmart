@@ -45,11 +45,6 @@ const collegeStudentSchema = new Schema({
             type: Date
         }
     },
-    org_verified: {
-        type: Boolean,
-        required: true,
-        default: false,
-    },
     onLeave: {type: Boolean, required: true, default: false},
     totalLeave: {type: Number, default: 0},
     isDeleted: {type: Boolean, default: false},
@@ -57,6 +52,7 @@ const collegeStudentSchema = new Schema({
     theme: {
         type: String,
         enum: ['dark', 'light'],
+        default: 'light',
     },
     password: {type: String, required: true},
     termsCheck: {type: String, required: true, default: "not-accepted"}

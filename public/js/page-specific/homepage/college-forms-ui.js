@@ -65,23 +65,6 @@ function resetSelect(select, placeholderText) {
     select.appendChild(opt);
 }
 
-function floodSchoolClasses(orgCode) {
-    resetSelect(schoolClassSelect, "-- Select Class --");
-    resetSelect(schoolMajorSelect1, "-- Select Major --");
-    resetSelect(schoolMinorSelect1, "-- Select Minor --");
-    resetSelect(schoolOptionalSelect1, "-- Select Optional --");
-
-    const org = organizations.find(o => o.code === orgCode);
-    if (!org || !org.subjects) return;
-
-    org.subjects.forEach(subject => {
-        const option = document.createElement("option");
-        option.value = subject.class;   // e.g. "5A", "7B"
-        option.textContent = subject.class;
-        schoolClassSelect.appendChild(option);
-    });
-}
-
 function floodCollegeSubjects(selectedClass) {
     resetSelect(majorSelect1, "-- Select Major --");
     resetSelect(minorSelect1, "-- Select Minor --");
@@ -102,8 +85,6 @@ function floodCollegeSubjects(selectedClass) {
         const option = document.createElement("option");
         option.value = major;
         option.textContent = major;
-        option.disabled = true;
-        option.selected = true;
         majorSelect1.appendChild(option);
     });
 

@@ -11,33 +11,6 @@ const { sendVerificationEmail } = require("../../utils/send-emails");
 const verifyEmail = require("../../utils/registration/verify-domains");
 const moment = require("moment");
 
-async function createCollegeStudentWithUniqueCode(data, session) {
-    while (true) {
-        try {
-            const code = generateCode(6, "numeric");
-            const student = new CollegeStudent({ ...data, code });
-            await student.save({ session });
-            return student;
-        } catch (err) {
-            if (err.code === 11000) continue;
-            throw err;
-        }
-    }
-}
-
-async function createSchoolStudentWithUniqueCode(data, session) {
-    while (true) {
-        try {
-            const code = generateCode(6, "numeric");
-            const student = new SchoolStudent({ ...data, code });
-            await student.save({ session });
-            return student;
-        } catch (err) {
-            if (err.code === 11000) continue;
-            throw err;
-        }
-    }
-}
 
 exports.register_clg = async (req, res) => {
     const session = await mongoose.startSession();
@@ -53,31 +26,24 @@ exports.register_clg = async (req, res) => {
             dept,
             contact,
             email,
-            orgName,
-            orgBranch,
-            subjects,
+            org,
             password,
             confirmPassword,
-            faceDescriptor
         } = req.body;
 
+        const {
+            majors = [],
+            minors = [],
+            optionals = []
+        } = req.body;
 
-        if (!faceDescriptor || !Array.isArray(faceDescriptor) || faceDescriptor.length !== 128) {
-            throw new Error("INVALID_FACE_DATA");
-        }
-
-        if (!Array.isArray(subjects) || subjects.length === 0) {
-            throw new Error("NO_SUBJECTS");
-        }
+        let code;
+        let subjects = [];
+        let codeExists = true;
 
 
-        if (password !== confirmPassword) {
-            throw new Error("PASSWORD_MISMATCH");
-        }
-
-        if (!verifyEmail(email.toLowerCase())) {
-            throw new Error("INVALID_EMAIL_DOMAIN");
-        }
+        if (password !== confirmPassword) throw new Error("PASSWORD_MISMATCH");
+        if (!verifyEmail(email.toLowerCase())) throw new Error("INVALID_EMAIL_DOMAIN");
 
         const existing = await CollegeStudent.findOne(
             { email: email.toLowerCase().trim(), isDeleted: false },
@@ -85,51 +51,47 @@ exports.register_clg = async (req, res) => {
             { session }
         );
 
-        if (existing) {
-            throw new Error("ACCOUNT_EXISTS");
-        }
+        if (existing) throw new Error("ACCOUNT_EXISTS");
 
-        const org = await Org.findOne(
-            {
-                org: orgName.toLowerCase().trim(),
-                branch: orgBranch.toLowerCase().trim()
-            },
-            null,
-            { session }
-        );
+        subjects = [...majors, ...minors, ...optionals]
+            .map(s => s.trim())
+            .filter(Boolean);
 
-        if (!org) {
-            throw new Error("ORG_NOT_FOUND");
-        }
+        if (subjects.length === 0) throw new Error("NO_SUBJECTS");
+
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const student = await createCollegeStudentWithUniqueCode({
-            org: org.code,
-            name,
-            roll,
-            dept,
-            contact,
-            email: email.toLowerCase(),
-            subjects,
-            faceData: { descriptors: [faceDescriptor] },
-            verification: {
-                status: "pending",
-                token: verificationToken,
-                expiresAt: tokenExpiry
-            },
-            password: hashedPassword,
-            termsCheck: "accepted"
-        }, session);
+        while (codeExists) {
+            code = generateCode(6, "numeric");
+            const check = await CollegeStudent.findOne({ code });
+            if (!check) codeExists = false;
+        }
+
+        const [student] = await CollegeStudent.create(
+            [{
+                org,
+                code,
+                name,
+                roll,
+                dept,
+                contact,
+                email: email.toLowerCase().trim(),
+                subjects,
+                verification: {
+                    status: "pending",
+                    token: verificationToken,
+                    expiresAt: tokenExpiry
+                },
+                password: hashedPassword,
+                termsCheck: "accepted"
+            }],
+            { session }
+        );
 
 
-        const subjectList = (Array.isArray(subjects) ? subjects : [subjects])
-            .filter(s => s && s.trim())
-            .map(s => s.toLowerCase());
-
-        const summaries = subjectList.map(subject => ({
-            org: org.code,
-            personType: "student",
+        const summaries = subjects.map(subject => ({
+            org: org,
             code: student.code,
             name: student.name,
             department: student.dept,
@@ -140,24 +102,18 @@ exports.register_clg = async (req, res) => {
         await Summary.insertMany(summaries, { session });
 
         await OrgLog.findOneAndUpdate(
-            { org: org.code },
+            { org: org },
             {
                 $push: {
                     register: {
                         name: student.name,
                         role: "student",
                         id: roll,
-                        email: student.email
+                        email: student.email.toLowerCase().trim()
                     }
                 }
             },
             { upsert: true, session }
-        );
-
-        await Org.updateOne(
-            { code: org.code },
-            { $addToSet: { "departments.college": dept.toLowerCase() } },
-            { session }
         );
 
         await session.commitTransaction();
@@ -188,7 +144,6 @@ exports.register_clg = async (req, res) => {
         if (err.message === "INVALID_EMAIL_DOMAIN") message = "Use organization email only";
         if (err.message === "ACCOUNT_EXISTS") message = "Account already exists";
         if (err.message === "ORG_NOT_FOUND") message = "Organization not found";
-        if (err.message === "INVALID_FACE_DATA") message = "Invalid face data";
         if (err.message === "NO_SUBJECTS") message = "Failed registration. Try again!"
 
         return res.render("index", {
@@ -207,37 +162,31 @@ exports.register_sch = async (req, res) => {
 
     try {
         const {
-            userName,
+            org,
+            name,
             roll,
             standard,
+            stream,
             contact,
             email,
-            orgName,
-            orgBranch,
-            subjects,
             password,
             confirmPassword,
-            faceDescriptor
         } = req.body;
 
-        const normalizedName = userName.trim().toLowerCase();
+        const {
+            majors = [],
+            minors = [],
+            optionals = []
+        } = req.body;
+
+        const normalizedName = name.trim().toLowerCase();
         const normalizedStandard = standard.trim().toLowerCase();
+        let subjects = [];
+        let code;
+        let codeExists = true;
 
-        if (!faceDescriptor || !Array.isArray(faceDescriptor) || faceDescriptor.length !== 128) {
-            throw new Error("INVALID_FACE_DATA");
-        }
-
-        if (!Array.isArray(subjects) || subjects.length === 0) {
-            throw new Error("NO_SUBJECTS");
-        }
-
-        if (password !== confirmPassword) {
-            throw new Error("PASSWORD_MISMATCH");
-        }
-
-        if (!verifyEmail(email.toLowerCase())) {
-            throw new Error("INVALID_EMAIL_DOMAIN");
-        }
+        if (password !== confirmPassword) throw new Error("PASSWORD_MISMATCH");
+        if (!verifyEmail(email.toLowerCase())) throw new Error("INVALID_EMAIL_DOMAIN");
 
         const existing = await SchoolStudent.findOne(
             {
@@ -250,51 +199,50 @@ exports.register_sch = async (req, res) => {
             { session }
         );
 
-        if (existing) {
-            throw new Error("ACCOUNT_EXISTS");
-        }
-
-        const org = await Org.findOne(
-            {
-                org: orgName.toLowerCase().trim(),
-                branch: orgBranch.toLowerCase().trim(),
-            },
-            null,
-            { session }
-        );
-
-        if (!org) {
-            throw new Error("ORG_NOT_FOUND");
-        }
+        if (existing) throw new Error("ACCOUNT_EXISTS");
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const student = await createSchoolStudentWithUniqueCode({
-            org: org.code,
-            name: normalizedName,
-            roll: roll.trim(),
-            standard: normalizedStandard,
-            contact,
-            email: email.toLowerCase().trim(),
-            subjects,
-            faceData: { descriptors: [faceDescriptor] },
-            verification: {
-                status: "pending",
-                token: verificationToken,
-                expiresAt: tokenExpiry
-            },
-            password: hashedPassword,
-            termsCheck: "accepted"
-        }, session);
+        subjects = [...majors, ...minors, ...optionals]
+            .map(s => s.trim())
+            .filter(Boolean);
 
+        if (subjects.length === 0) throw new Error("NO_SUBJECTS");
+
+        while (codeExists) {
+            code = generateCode(6, "numeric");
+            const check = await SchoolStudent.findOne({ code });
+            if (!check) codeExists = false;
+        }
+
+        const [student] = await SchoolStudent.create(
+            [{
+                org,
+                code,
+                name: normalizedName,
+                roll: roll.trim().toLowerCase(),
+                standard: normalizedStandard,
+                stream,
+                contact,
+                email: email.toLowerCase().trim(),
+                subjects,
+                verification: {
+                    status: "pending",
+                    token: verificationToken,
+                    expiresAt: tokenExpiry
+                },
+                password: hashedPassword,
+                termsCheck: "accepted"
+            }],
+            { session }
+        );
 
         const subjectList = subjects
             .filter(s => s && s.trim())
             .map(s => s.toLowerCase());
 
         const summaries = subjectList.map(subject => ({
-            org: org.code,
-            personType: "student",
+            org: org,
             code: student.code,
             name: student.name,
             department: student.standard,
@@ -305,7 +253,7 @@ exports.register_sch = async (req, res) => {
         await Summary.insertMany(summaries, { session });
 
         await OrgLog.findOneAndUpdate(
-            { org: org.code },
+            { org },
             {
                 $push: {
                     register: {
@@ -317,12 +265,6 @@ exports.register_sch = async (req, res) => {
                 }
             },
             { upsert: true, session }
-        );
-
-        await Org.updateOne(
-            { code: org.code },
-            { $addToSet: { "departments.school": standard.toLowerCase() } },
-            { session }
         );
 
         await session.commitTransaction();
@@ -353,8 +295,6 @@ exports.register_sch = async (req, res) => {
         if (err.message === "INVALID_EMAIL_DOMAIN") message = "Use organization email only";
         if (err.message === "ACCOUNT_EXISTS") message = "Account already exists";
         if (err.message === "ORG_NOT_FOUND") message = "Organization not found";
-        if (err.message === "INVALID_FACE_DATA") message = "Invalid face data";
-        if (err.message === "NO_SUBJECTS") message = "Please enter at least one subject";
 
         return res.render("index", {
             popupMessage: message,

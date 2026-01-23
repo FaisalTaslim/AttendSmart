@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Invalid Link</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        :root {
+            --accent: #DE3163;
+            --accent-hover: #C62856;
+            --accent-rgb: 222, 49, 99;
+
+            --bg-main: #0f0f14;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(var(--accent-rgb), 0.35);
+
+            --text-primary: #ffffff;
+            --text-secondary: #e2dbe2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top,
+                    rgba(var(--accent-rgb), 0.18),
+                    transparent 60%),
+                linear-gradient(180deg, #0c0c11, #141420);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+        }
+
+        .error-card {
+            width: 100%;
+            max-width: 560px;
+            padding: 2.8rem 2.5rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(18px);
+            border-radius: 20px;
+            border: 1px solid var(--border-glow);
+            box-shadow:
+                0 0 40px rgba(var(--accent-rgb), 0.22),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        .icon {
+            width: 78px;
+            height: 78px;
+            margin: 0 auto 1.4rem;
+            border-radius: 50%;
+            background: rgba(var(--accent-rgb), 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            color: var(--accent);
+            box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.6);
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.9rem;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.65;
+            color: var(--text-secondary);
+            margin-bottom: 2.1rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.9rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.7rem 1.7rem;
+            border-radius: 999px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(var(--accent-rgb), 0.45);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 12px 36px rgba(var(--accent-rgb), 0.65);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            border: 1px solid rgba(var(--accent-rgb), 0.6);
+            color: var(--accent);
+            background: transparent;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(var(--accent-rgb), 0.15);
+        }
+
+        .footer-note {
+            margin-top: 1.6rem;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="error-card">
+        <div class="icon">✕</div>
+
+        <h1>Invalid or Expired Link</h1>
+
+        <p>
+            Oops, it seems like you clicked on an invalid link or refreshed the page
+            after a successful registration.<br><br>
+
+            If that’s the case, you can log in using the credentials sent to your email.
+            If you didn’t receive any email, please reach out to our support team.
+        </p>
+
+        <div class="actions">
+            <a href="/" class="btn btn-primary">Go to Login</a>
+            <a href="/" class="btn btn-secondary">Contact Support</a>
+        </div>
+
+        <div class="footer-note">
+            AttendSmart · Secure Access Control
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -17,7 +17,7 @@ exports.verify = async (req, res) => {
             });
 
             if (!org) {
-                return res.send("Invalid or expired link!");
+                return res.render('confirmation-pages/register_link_error')
             }
 
             if (org.verification.status === "verified") {
@@ -56,7 +56,7 @@ exports.verify = async (req, res) => {
             }
 
             if (!student) {
-                return res.send("Invalid or expired link!");
+                return res.render('confirmation-pages/register_link_error')
             }
 
             if (student.verification.status === "verified") {
@@ -73,11 +73,11 @@ exports.verify = async (req, res) => {
             student.verification.expiresAt = null;
 
             await student.save();
+
+            res.render('confirmation-pages/register');
         }
     }
     catch (err) {
         console.log(err);
     }
-
-    res.send("Registration Successful! Check your registered email for login credentials");
 };

@@ -194,8 +194,7 @@
                                 </button>
                             </form>
 
-                            <form class="form-box r-forms hidden-mob" id="c-form" enctype="multipart/form-data">
-
+                            <form action="/registration/student/college" method="POST" class="form-box r-forms hidden-mob" id="c-form">
                                 <fieldset>
                                     <legend>Organization details</legend>
 
@@ -203,7 +202,6 @@
                                         <select name="org" id="orgSelect" required></select>
                                     </div>
                                 </fieldset>
-
 
                                 <fieldset>
                                     <legend>College Student Registration</legend>
@@ -224,18 +222,9 @@
                                     <legend>Subject Details</legend>
 
                                     <div class="outer-group">
-                                        <select id="majorSelect1" multiple size="5"></select>
-                                        <select id="minorSelect1" multiple size="5"></select>
-                                        <select id="optionalSelect1" multiple size="5"></select>
-                                </fieldset>
-
-                                <fieldset>
-                                    <legend>Face Verification</legend>
-
-                                    <div class="form-group">
-                                        <input type="file" id="faceImage" name="faceImage" accept="image/*">
-                                        <img style="display:none;">
-                                    </div>
+                                        <select name="majors[]" id="majorSelect1" multiple size="5"></select>
+                                        <select name="minors[]" id="minorSelect1" multiple size="5"></select>
+                                        <select name="optionals[]" id="optionalSelect1" multiple size="5"></select>
                                 </fieldset>
 
                                 <fieldset>
@@ -267,7 +256,7 @@
 
                             </form>
 
-                            <form class="form-box r-forms hidden-mob" id="s-form" enctype="multipart/form-data">
+                            <form action="/registration/student/school" method="POST" class="form-box r-forms hidden-mob" id="s-form">
                                 <fieldset>
                                     <legend>Organization details</legend>
 
@@ -280,9 +269,9 @@
                                     <legend>School Student Registration</legend>
 
                                     <div class="outer-group">
-                                        <input type="text" name="userName" placeholder="Name" required>
+                                        <input type="text" name="name" placeholder="Name" required>
                                         <input type="text" name="roll" placeholder="Roll Number" required>
-                                        <select id="flood-class" required></select>
+                                        <select name="standard" id="flood-class" required></select>
                                     </div>
 
                                     <div class="outer-group">
@@ -295,19 +284,16 @@
                                     <legend>Subject Details</legend>
 
                                     <div class="outer-group">
-                                        <select id="MajorSelect2" multiple size="5"></select>
-                                        <select id="MinorSelect2" multiple size="5"></select>
-                                        <select id="OptionalSelect2" multiple size="5"></select>
-                                    </div>
-                                </fieldset>
+                                        <select name="stream" required>
+                                            <option value="neutral">Neutral</option>
+                                            <option value="science">Science</option>
+                                            <option value="commerce">Commerce</option>
+                                            <option value="arts">Arts</option>
+                                        </select>
 
-
-                                <fieldset>
-                                    <legend>Face Verification</legend>
-
-                                    <div class="form-group">
-                                        <input type="file" id="faceImage2" name="faceImage" accept="image/*">
-                                        <img style="display:none;">
+                                        <select name="majors[]" id="MajorSelect2" multiple size="5"></select>
+                                        <select name="minors[]" id="MinorSelect2" multiple size="5"></select>
+                                        <select name="optionals[]" id="OptionalSelect2" multiple size="5"></select>
                                     </div>
                                 </fieldset>
 
@@ -731,8 +717,8 @@
             <script src="/js/global/UI/popup.js"></script>
             <script src="/js/global/face-api/face-api.min.js"></script>
             <script src="/js/global/face-api/face-init.js"></script>
-            <script src="/js/global/face-api/face-register/c-student.js"></script>
-            <script src="/js/global/face-api/face-register/s-student.js"></script>
+            <!-- <script src="/js/global/face-api/face-register/c-student.js"></script>
+            <script src="/js/global/face-api/face-register/s-student.js"></script> -->
             <script type="module" src="/js/page-specific/homepage/college-forms-ui.js"></script>
             <script type="module" src="/js/page-specific/homepage/school-forms-ui.js"></script>
 </body>

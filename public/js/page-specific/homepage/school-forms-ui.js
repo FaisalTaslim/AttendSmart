@@ -86,10 +86,12 @@ function floodSchoolSubjects(selectedClass) {
             const opt = document.createElement("option");
             opt.value = m;
             opt.textContent = m;
-            opt.disabled = true;
             opt.selected = true;
             MajorSelect2.appendChild(opt);
         });
+
+        MajorSelect2.addEventListener("mousedown", e => e.preventDefault());
+        MajorSelect2.addEventListener("keydown", e => e.preventDefault());
     } else {
         addPlaceholder(MajorSelect2, "No majors available");
     }
