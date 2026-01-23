@@ -32,5 +32,6 @@ app.use("/public/org", require("./routes/main/main"));
 /* <------------- Logout Routes ----------> */
 app.use("/auth", require("./routes/auth/login"));
 app.use('/', require('./routes/auth/logout'));
+app.use('/test-emails', require('./routes/test/send-email'));
 
 module.exports = app;

@@ -2,52 +2,100 @@ const transporter = require('../config/mailer');
 
 async function sendRegistrationMail(to, userName, uniqueId, role = 'Student') {
     const htmlContent = `
-        <div style="font-family: Arial, sans-serif; background-color: #f4f6f8; padding: 20px;">
-            <div style="max-width: 600px; background: #fff; margin: auto; border-radius: 10px; overflow: hidden; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
-                <div style="background-color: #4a90e2; color: white; padding: 20px; text-align: center;">
-                    <h2>${role === 'Admin' ? 'Organization Registered!' :
-                        role === 'Employee' ? 'Welcome to AttendSmart, Employee!' :
-                        'Welcome to AttendSmart!'
-                    }</h2>
+    <div style="background:#f4f6f8;padding:40px 0;font-family:Arial,Helvetica,sans-serif;">
+        <div style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:10px;
+                    overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.08);">
 
+            <!-- Header -->
+            <div style="background:#1f2937;color:#ffffff;padding:22px 30px;text-align:left;">
+                <h1 style="margin:0;font-size:22px;">AttendSmart</h1>
+                <p style="margin:4px 0 0;font-size:14px;color:#d1d5db;">
+                    Smart attendance, simplified
+                </p>
+            </div>
+
+            <!-- Body -->
+            <div style="padding:30px;color:#374151;">
+                <h2 style="margin-top:0;font-size:20px;">
+                    ${role === 'Admin'
+            ? 'Organization Registered Successfully'
+            : role === 'Employee'
+                ? 'Welcome to AttendSmart'
+                : 'Registration Successful'
+        }
+                </h2>
+
+                <p style="font-size:15px;line-height:1.6;">
+                    Hi <strong>${userName}</strong>,
+                </p>
+
+                <p style="font-size:15px;line-height:1.6;">
+                    ${role === 'Admin'
+            ? 'Your organization has been successfully registered on AttendSmart.'
+            : 'Your account has been successfully created in our system.'
+        }
+                </p>
+
+                <!-- Details -->
+                <div style="margin:20px 0;padding:16px;border-radius:8px;background:#f9fafb;">
+                    <p style="margin:6px 0;font-size:14px;">
+                        <strong>👤 Name:</strong> ${userName}
+                    </p>
+                    <p style="margin:6px 0;font-size:14px;">
+                        <strong>📧 Email:</strong> ${to}
+                    </p>
+                    <p style="margin:6px 0;font-size:14px;">
+                        <strong>🆔 Unique ID:</strong> ${uniqueId}
+                    </p>
                 </div>
-                <div style="padding: 20px; color: #333;">
-                    <p>Hi <strong>${userName}</strong>,</p>
-                    <p>${role === 'Admin'
-            ? 'Your organization has been successfully registered on AttendSmart!'
-            : 'Your account has been successfully registered in our system!'}</p>
-                    <ul style="list-style: none; padding: 0;">
-                        <li><strong>👤| Name:</strong> ${userName}</li>
-                        <li><strong>📧| Email:</strong> ${to}</li>
-                        <li><strong>🆔| Unique ID:</strong> ${uniqueId}</li>
-                    </ul>
-                    <p style="margin-top: 20px;">You can now log in and start managing your dashboard. Use this Unique Id to register into your account</p><br>
-                    <p style="margin-top: 20px;">This is an auto-generate email. Please do not reply back!</p>
-                    <div style="text-align: center; margin-top: 20px;">
-                        <a href="" style="background-color: #4a90e2; color: white; text-decoration: none; padding: 10px 20px; border-radius: 5px;">Login Now</a>
-                    </div>
-                </div>
-                <div style="background-color: #f0f0f0; text-align: center; padding: 10px; color: #555;">
-                    <small>© ${new Date().getFullYear()} AttendSmart. All rights reserved.</small>
+
+                <p style="font-size:14px;line-height:1.6;">
+                    You can now log in to your dashboard using this <strong>Unique ID</strong>.
+                    Please keep it safe for future access.
+                </p>
+
+                <p style="font-size:13px;color:#6b7280;margin-top:16px;">
+                    This is an auto-generated email. Please do not reply.
+                </p>
+
+                <!-- CTA -->
+                <div style="text-align:center;margin:30px 0;">
+                    <a href=""
+                       style="background:#1f2937;color:#ffffff;text-decoration:none;
+                              padding:14px 28px;border-radius:6px;
+                              font-size:15px;font-weight:600;display:inline-block;">
+                        Login to Dashboard
+                    </a>
                 </div>
             </div>
+
+            <!-- Footer -->
+            <div style="background:#f9fafb;text-align:center;padding:15px;
+                        font-size:12px;color:#9ca3af;">
+                © ${new Date().getFullYear()} AttendSmart. All rights reserved.
+            </div>
+
         </div>
+    </div>
     `;
 
     try {
         await transporter.sendMail({
-            from: `"AttendSmart Admin" <${process.env.EMAIL_USER}>`,
+            from: `"AttendSmart" <${process.env.EMAIL_USER}>`,
             to,
-            subject: role === 'Admin'
-                ? 'Your Organization is Registered - Welcome to AttendSmart!'
-                : 'Registration Successful - Welcome to AttendSmart!',
+            subject:
+                role === 'Admin'
+                    ? 'Organization Registered | AttendSmart'
+                    : 'Registration Successful | AttendSmart',
             html: htmlContent
         });
+
         console.log(`✅ ${role} registration email sent to ${to}`);
     } catch (error) {
         console.error('❌ Failed to send registration email:', error);
     }
 }
+
 
 async function sendVerificationEmail(to, token, code, role, secondary_role = null) {
     const link = `http://localhost:3000/verify/${token}/${role}/${code}/${secondary_role}`;
