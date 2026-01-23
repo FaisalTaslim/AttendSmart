@@ -86,6 +86,8 @@ function floodSchoolSubjects(selectedClass) {
             const opt = document.createElement("option");
             opt.value = m;
             opt.textContent = m;
+            opt.disabled = true;
+            opt.selected = true;
             MajorSelect2.appendChild(opt);
         });
     } else {

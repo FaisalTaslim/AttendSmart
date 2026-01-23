@@ -102,6 +102,8 @@ function floodCollegeSubjects(selectedClass) {
         const option = document.createElement("option");
         option.value = major;
         option.textContent = major;
+        option.disabled = true;
+        option.selected = true;
         majorSelect1.appendChild(option);
     });
 
