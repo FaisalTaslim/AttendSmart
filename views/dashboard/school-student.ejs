@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Student</title>
+    <link rel="stylesheet" href="/css/global/theme/light-theme.css">
+    <link rel="stylesheet" href="/css/global/ui-components/font-family.css">
+    <link rel="stylesheet" href="/css/global/ui-components/scrollbar.css">
+    <link rel="stylesheet" href="/css/global/layout/header.css">
+    <link rel="stylesheet" href="/css/global/layout/footer.css">
+    <link rel="stylesheet" href="/css/global/ui-components/forms.css">
+    <link rel="stylesheet" href="/css/global/ui-componenets/popup.css">
+    <link rel="stylesheet" href="/css/page-specific/homepage/main.css">
+    <link rel="stylesheet" href="/css/global/layout/dashboard-main.css">
+    <link rel="stylesheet" href="/css/page-specific/dashboard/admin.css">
+
+    <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <h1 class="hide-in-mobile">AttendSmart - Smart Attendance Solution</h1>
+            <h2 class="small-heading">AttendSmart</h2>
+        </div>
+
+        <nav class="nav-bar">
+            <a href="/" class="nav-links-property">Home</a>
+            <a href="/logout" class="nav-links-property">Logout</a>
+            <a href="/guidebook" class="nav-links-property">GuideBook</a>
+        </nav>
+
+        <nav class="mobile-nav-container">
+            <div class="nav-select">
+                <select id="mobile-nav">
+                    <option value="" disabled selected>-- Navigate --</option>
+                    <option value="/">Home</option>
+                    <option value="/logout">Logout</option>
+                    <option value="/guidebook">GuideBook</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="main-1">
+            <div class="left-side">
+                <button class="nav-toggle" aria-label="Open menu">
+                    ☰
+                </button>
+                <div class="sidenav-wrapper">
+                    <div class="dashboard-sidenav">
+                        <h1 class="hide-in-pc">AttendSmart</h1>
+                        <div class="dash-head">
+                            <h2><span>General</span></h2>
+                            <div class="dash-head-nav">
+                                <% if (setup===false) { %>
+                                    <p id="finish-setup">Finish setup</p>
+                                    <% } %>
+                                        <p>Settings</p>
+                            </div>
+                        </div>
+
+                        <div class="dash-head">
+                            <h2><span>Attendance Control</span></h2>
+                            <div class="dash-head-nav">
+                                <p>Edit Attendance</p>
+                                <p>View Attendance Summary</p>
+                                <p>Download Reports</p>
+                            </div>
+                        </div>
+
+
+                        <div class="dash-head">
+                            <h2><span>User & Data Management</span></h2>
+                            <div class="dash-head-nav">
+                                <p>View Users</p>
+                                <p>Add Users</p>
+                                <p>Remove / Suspend Users</p>
+                                <p>Accept / Reject Leave Requests</p>
+                                <p>View Logs</p>
+                            </div>
+                        </div>
+
+                        <div class="dash-head">
+                            <h2><span>Communication</span></h2>
+                            <div class="dash-head-nav">
+                                <p>Send Notice</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right-side">
+                <% if (setup===false) { %> 
+                    <div class="upload-card">
+                        <h2>Complete the setup</h2>
+                        <form id="subjectsForm" enctype="multipart/form-data">
+                            <input type="file" id="subjectsCsv" name="subjectsCsv" accept=".csv" hidden>
+
+                            <label for="subjectsCsv" class="upload-label">
+                                <div class="upload-content">
+                                    <div class="upload-icon">📄</div>
+                                    <p class="upload-title">Upload the subjects CSV file</p>
+                                    <p class="upload-subtitle">Only .csv files are supported</p>
+                                </div>
+                            </label>
+                        </form>
+                        <p class="tip"><b>Note:</b> You can later make changes in subject's list through settings</p>
+                    </div>
+                    <% } %>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="foot-content">
+            <div class="foot1">
+                <div class="useful-links">
+                    <p><strong>Useful-links</strong></p>
+                    <a href="#register" class="links foot-links" target="_blank">Register</a>
+                    <a href="#support-forms" class="links foot-links" target="_blank">Support</a>
+                </div>
+                <div class="legal">
+                    <p><strong>Legal</strong></p>
+                    <a href="#" class="links foot-links" target="_blank">Terms & conditions</a>
+                    <a href="#" class="links foot-links" target="_blank">Privacy Policy</a>
+                    <a href="#" class="links foot-links" target="_blank">Refund Policy</a>
+                </div>
+            </div>
+            <div class="foot2">
+                <div class="socials">
+                    <p><strong>Socials</strong></p>
+                    <a href="#" class="links foot-links" target="_blank">
+                        <i class="fa-brands fa-instagram"></i> | @faisal_9542
+                    </a>
+                    <a href="#" class="links foot-links" target="_blank">
+                        <i class="fa-brands fa-discord"></i> | @famaeoxiaa
+                    </a>
+                    <a href="#" class="links foot-links" target="_blank">
+                        <i class="fa-brands fa-github"></i> | @FaisalTaslim
+                    </a>
+                </div>
+                <div class="contacts">
+                    <p><strong>Contacts</strong></p>
+                    <p><i class="fa-solid fa-phone"></i> | +91 7449925137 </p>
+                    <p><i class="fa-solid fa-envelope"></i> | mailto: faisaltaslim79@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/global/layout/side-nav.js"></script>
+    <script src="/js/global/layout/rearrange-footer.js"></script>
+    <script src="/js/page-specific/dashboard/admin/upload-csv.js"></script>
+</body>
+
+</html>

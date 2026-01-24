@@ -55,7 +55,11 @@ const collegeStudentSchema = new Schema({
         default: 'light',
     },
     password: {type: String, required: true},
-    termsCheck: {type: String, required: true, default: "not-accepted"}
+    termsCheck: {type: String, required: true, default: "not-accepted"},
+    setup_done: {
+        type: Boolean,
+        default: false,
+    }
 
 }, { timestamps: true });
 

@@ -26,10 +26,6 @@ const logSchema = new Schema({
                 type: String, 
                 required: true
             },
-            ip: { 
-                type: String, 
-                required: true 
-            },
             createdAt: { type: Date, default: Date.now },
             _id: false,
         }
