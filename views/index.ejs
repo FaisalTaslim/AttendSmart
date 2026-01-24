@@ -165,16 +165,6 @@
                                         </select>
                                     </div>
                                 </fieldset>
-                                <!-- 
-
-                                <fieldset>
-                                    <legend>Create Subjects Database</legend>
-
-                                    <div class="outer-group">
-                                        <label for="excel-1">Upload the excel sheet</label>
-                                        <input type="file" id="excel-1" name="excel-1" accept=".xlsx,.xls, .csv">
-                                    </div>
-                                </fieldset> -->
 
                                 <fieldset>
                                     <legend>Confirmation</legend>
@@ -194,7 +184,8 @@
                                 </button>
                             </form>
 
-                            <form action="/registration/student/college" method="POST" class="form-box r-forms hidden-mob" id="c-form">
+                            <form action="/registration/student/college" method="POST"
+                                class="form-box r-forms hidden-mob" id="c-form">
                                 <fieldset>
                                     <legend>Organization details</legend>
 
@@ -256,7 +247,8 @@
 
                             </form>
 
-                            <form action="/registration/student/school" method="POST" class="form-box r-forms hidden-mob" id="s-form">
+                            <form action="/registration/student/school" method="POST"
+                                class="form-box r-forms hidden-mob" id="s-form">
                                 <fieldset>
                                     <legend>Organization details</legend>
 
@@ -326,19 +318,27 @@
 
                             </form>
 
-                            <form class="form-box r-forms hidden-mob" id="e-form" enctype="multipart/form-data">
+                            <form action="/registration/employee" method="POST" class="form-box r-forms hidden-mob" id="e-form">
+                                <fieldset>
+                                    <legend>Organization details</legend>
+
+                                    <div class="outer-group">
+                                        <select name="org" id="orgSelect3" required></select>
+                                    </div>
+                                </fieldset>
+
                                 <fieldset>
                                     <legend>Employee Registration</legend>
 
                                     <div class="outer-group">
-                                        <input type="text" name="userName" placeholder="Full Name" required>
+                                        <input type="text" name="name" placeholder="Full Name" required>
                                         <input type="text" name="employeeId" placeholder="Employee ID" required>
                                         <input type="text" name="designation" placeholder="Designation / Job Role"
                                             required>
                                     </div>
 
                                     <div class="outer-group">
-                                        <select name="workType" required>
+                                        <select name="workPlace" required>
                                             <option value="" disabled selected>Works At</option>
                                             <option value="school">School</option>
                                             <option value="college">College</option>
@@ -350,11 +350,6 @@
                                             <option value="day">Day</option>
                                             <option value="night">Night</option>
                                         </select>
-                                    </div>
-
-                                    <div class="outer-group">
-                                        <input type="text" name="orgName" placeholder="Organization Name" required>
-                                        <input type="text" name="orgBranch" placeholder="Organization Branch" required>
                                     </div>
 
                                     <div class="outer-group">
@@ -375,15 +370,6 @@
                                 </fieldset>
 
                                 <fieldset>
-                                    <legend>Face Verification</legend>
-
-                                    <div class="form-group">
-                                        <input type="file" name="faceImage" id="faceImage3" accept="image/*">
-                                        <img style="display:none;">
-                                    </div>
-                                </fieldset>
-
-                                <fieldset>
                                     <legend>Terms & Conditions</legend>
 
                                     <div class="terms-wrapper">
@@ -400,7 +386,6 @@
                                 </button>
 
                             </form>
-
                         </div>
                     </div>
                 </div>
@@ -721,6 +706,7 @@
             <script src="/js/global/face-api/face-register/s-student.js"></script> -->
             <script type="module" src="/js/page-specific/homepage/college-forms-ui.js"></script>
             <script type="module" src="/js/page-specific/homepage/school-forms-ui.js"></script>
+            <script type="module" src="/js/page-specific/homepage/employee-forms-ui.js"></script>
 </body>
 
 </html>

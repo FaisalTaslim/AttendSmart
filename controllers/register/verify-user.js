@@ -1,6 +1,7 @@
 const Org = require("../../models/users/organization");
 const collegeStudent = require("../../models/users/college-student");
 const schoolStudent = require("../../models/users/school-student");
+const Employee = require("../../models/users/employee");
 const { sendRegistrationMail } = require("../../utils/send-emails");
 
 exports.verify = async (req, res) => {
@@ -18,10 +19,6 @@ exports.verify = async (req, res) => {
 
             if (!org) {
                 return res.render('confirmation-pages/register_link_error')
-            }
-
-            if (org.verification.status === "verified") {
-                return res.send("Organization already verified");
             }
 
             const userName = org.admin[0].name;
@@ -59,10 +56,6 @@ exports.verify = async (req, res) => {
                 return res.render('confirmation-pages/register_link_error')
             }
 
-            if (student.verification.status === "verified") {
-                return res.send("Student already verified");
-            }
-
             const userName = student.name;
             const email = student.email;
 
@@ -75,6 +68,31 @@ exports.verify = async (req, res) => {
             await student.save();
 
             res.render('confirmation-pages/register');
+        }
+        else if (role === "Employee") {
+            const emp = await Employee.findOne({
+                code,
+                "verification.token": token,
+                "verification.status": "pending",
+                "verification.expiresAt": { $gt: new Date() }
+            });
+
+            if (!emp) {
+                return res.render("confirmation-pages/register_link_error");
+            }
+
+            const userName = emp.name;
+            const email = emp.email;
+
+            await sendRegistrationMail(email, userName, code, "Employee");
+
+            emp.verification.status = "verified";
+            emp.verification.token = null;
+            emp.verification.expiresAt = null;
+
+            await emp.save();
+
+            return res.render("confirmation-pages/register");
         }
     }
     catch (err) {

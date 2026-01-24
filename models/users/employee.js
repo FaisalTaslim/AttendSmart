@@ -3,21 +3,20 @@ const { Schema } = mongoose;
 
 const employeeSchema = new Schema({
     org: {type: String, required: true},
-    uniqueId: {
+    code: {
         type: String, 
         required: true,
         unique: true
     },
-    userName: {
+    name: {
         type: String,
         required: true,
         trim: true
     },
     employeeId: { type: String, required: true},
-    dept: {type: String, default: ""},
-    workType: {
+    workPlace: {
         type: String,
-        enum: ['school_college', 'corporate'],
+        enum: ['school', 'college', 'corporate'],
         required: true
     },
     shift: {
@@ -49,11 +48,6 @@ const employeeSchema = new Schema({
         expiresAt: {
             type: Date
         }
-    },
-    org_verified: {
-        type: Boolean,
-        required: true,
-        default: false,
     },
     onLeave: {type: Boolean, required: true, default: false},
     isDeleted: {type: Boolean, default: false},
