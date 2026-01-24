@@ -4,10 +4,10 @@ const Org = require("../../models/users/organization");
 const Employee = require('../../models/users/employee');
 const EmployeeSummary = require("../../models/statistics/employee-summary");
 const OrgLog = require("../../models/statistics/logs");
-const generateCode = require("../../utils/codes");
+const generateCode = require("../../utils/functions/codes");
 const crypto = require("crypto");
-const { sendVerificationEmail } = require("../../utils/send-emails");
-const verifyEmail = require("../../utils/registration/verify-domains");
+const { sendVerificationEmail } = require("../../utils/emails/send-emails");
+const verifyEmail = require("../../utils/emails/verify-domains");
 const moment = require("moment");
 
 exports.register_emp = async (req, res) => {

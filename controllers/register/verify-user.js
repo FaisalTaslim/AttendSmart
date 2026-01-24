@@ -2,7 +2,7 @@ const Org = require("../../models/users/organization");
 const collegeStudent = require("../../models/users/college-student");
 const schoolStudent = require("../../models/users/school-student");
 const Employee = require("../../models/users/employee");
-const { sendRegistrationMail } = require("../../utils/send-emails");
+const { sendRegistrationMail } = require("../../utils/emails/send-emails");
 
 exports.verify = async (req, res) => {
     try {

@@ -5,10 +5,10 @@ const CollegeStudent = require("../../models/users/college-student");
 const SchoolStudent = require("../../models/users/school-student");
 const Summary = require("../../models/statistics/student-summary");
 const OrgLog = require("../../models/statistics/logs");
-const generateCode = require("../../utils/codes");
+const generateCode = require("../../utils/functions/codes");
 const crypto = require("crypto");
-const { sendVerificationEmail } = require("../../utils/send-emails");
-const verifyEmail = require("../../utils/registration/verify-domains");
+const { sendVerificationEmail } = require("../../utils/emails/send-emails");
+const verifyEmail = require("../../utils/emails/verify-domains");
 const moment = require("moment");
 
 

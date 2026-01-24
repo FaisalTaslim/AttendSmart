@@ -1,4 +1,4 @@
-const transporter = require('../config/mailer');
+const transporter = require('../../config/mailer');
 
 async function sendRegistrationMail(to, userName, uniqueId, role = 'Student') {
     const htmlContent = `
