@@ -9,4 +9,10 @@ router.post(
     admin.uploadSubjects
 );
 
+router.post(
+    "/admin/schedule/upload",
+    upload.single("scheduleCsv"),
+    admin.uploadSchedule,
+)
+
 module.exports = router;

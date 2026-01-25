@@ -57,10 +57,12 @@
                         <div class="dash-head">
                             <h2><span>General</span></h2>
                             <div class="dash-head-nav">
-                                <% if (setup===false) { %>
+                                <% if (type !== 'corporate' && (subjectsUpload === false && scheduleUpload === false)) { %>
                                     <p id="finish-setup">Finish setup</p>
-                                    <% } %>
-                                        <p>Settings</p>
+                                    <% } else if(type === 'corporate' && scheduleUpload === false) { %>
+                                        <p id="finish-setup">Finish setup</p>
+                                        <% }%>
+                                            <p>Settings</p>
                             </div>
                         </div>
 
@@ -95,7 +97,7 @@
                 </div>
             </div>
             <div class="right-side">
-                <% if (setup===false) { %> 
+                <% if (type !=='corporate' && subjectsUpload===false) { %>
                     <div class="upload-card">
                         <h2>Complete the setup</h2>
                         <form id="subjectsForm" enctype="multipart/form-data">
@@ -109,9 +111,27 @@
                                 </div>
                             </label>
                         </form>
-                        <p class="tip"><b>Note:</b> You can later make changes in subject's list through settings</p>
                     </div>
                     <% } %>
+
+                        <% if (scheduleUpload===false) { %>
+                            <div class="upload-card">
+                                <form id="scheduleForm" enctype="multipart/form-data">
+                                    <input type="file" id="scheduleCsv" name="scheduleCsv" accept=".csv" hidden>
+
+                                    <label for="scheduleCsv" class="upload-label">
+                                        <div class="upload-content">
+                                            <div class="upload-icon">📄</div>
+                                            <p class="upload-title">Upload the schedule CSV file</p>
+                                            <p class="upload-subtitle">Only .csv files are supported</p>
+                                        </div>
+                                    </label>
+                                </form>
+                                <p class="tip"><b>Note:</b> You can later make changes in subjects and schedule list
+                                    through
+                                    settings</p>
+                            </div>
+                            <% } %>
             </div>
         </div>
     </main>
