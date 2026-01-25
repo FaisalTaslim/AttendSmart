@@ -56,8 +56,9 @@
                         <div class="dash-head">
                             <h2><span>Registration</span></h2>
                             <div class="dash-head-nav">
-                                <p>Admin</p>
-                                <p>Excel Files Upload</p>
+                                <a href="#adm-register">Admin</a>
+                                <a href="#subjects-upload">Subjects Upload</a>
+                                <a href="#schedule-upload">Schedule Upload</a>
                             </div>
                         </div>
                     </div>
@@ -90,175 +91,292 @@
                             </b>
                         </p>
                     </div>
-                    <div class="excel-upload font-styling" id="excel-upload">
-                        <h1><i class="fa-solid fa-2"></i> | Excel Files Upload Guide</h1>
-                        <p>These Excel Files will be used to lock subjects for your students</p>
+                    <div class="excel-upload font-styling" id="subjects-upload">
+                        <h1><i class="fa-solid fa-2"></i> | CSV Files Upload Guide</h1>
                         <p>
-                            <b class="tip">
-                                If this is a non-educational institute, you can safely skip this step, and send the
-                                links to all your employees for the registration.
-                            </b>
+                            These <b>CSV files</b> are used to configure subjects and lock attendance rules for
+                            students.
+                            Please follow the format carefully. Even small deviations can cause upload failures.
                         </p>
-                        <h2>How to Fill the Excel Sheet (By Institution Type)</h2>
-                        <h2>School Use Case</h2>
-                        <h3>Classes 1-8 (Primary and Middle School)</h3>
+
+                        <h2>CSV File Structure Overview</h2>
+                        <p>
+                            Each CSV file must contain headers in the first row. Subjects inside cells should be
+                            <b>comma-separated</b>.
+                        </p>
+
+                        <p><b>Common CSV Headers:</b></p>
                         <ul>
-                            <li><b>Class:</b> Enter the class number (e.g. 5, 6, 7..etc)</li>
-                            <li><b>Semester:</b> Leave Empty</li>
-                            <li><b>Majors:</b> Enter all subjects taught to the class</li>
-                            <li>
-                                <b>Optionals / Minors:</b> Usually not applicable in most schools; leave empty unless
-                                your school follows a different structure.
-                            </li>
+                            <li><b>class</b> – Class number (school) or department code (college)</li>
+                            <li><b>majors</b> – Compulsory / common subjects</li>
+                            <li><b>optionals</b> – Stream-based or elective subjects</li>
+                            <li><b>minors</b> – Minor subjects, if applicable</li>
                         </ul>
-                        <p><b>Example Table:</b></p>
+
+                        <h2>School Use Case</h2>
+
+                        <h3>Classes 1–8 (Primary & Middle School)</h3>
+                        <ul>
+                            <li><b>Class:</b> Enter the class number (e.g. 5, 6, 7)</li>
+                            <li><b>Majors:</b> All compulsory subjects for the class</li>
+                            <li><b>Optionals / Minors:</b> Enter only if your school offers them</li>
+                        </ul>
+
+                        <p><b>Sample CSV:</b></p>
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Class</th>
-                                    <th>Semester</th>
-                                    <th>Majors</th>
-                                    <th>Optionals</th>
-                                    <th>Minors</th>
+                                    <th>class</th>
+                                    <th>majors</th>
+                                    <th>optionals</th>
+                                    <th>minors</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>5</td>
-                                    <td></td>
-                                    <td>English, Mathematics, Science, Social Science</td>
-                                    <td></td>
+                                    <td>English Language, English Literature, Mathematics, Science, Social Science</td>
+                                    <td>Hindi, Bengali, Computer Applications</td>
                                     <td></td>
                                 </tr>
                             </tbody>
                         </table>
-                        <h3>Classes 9-12 (Stream-based Structure)</h3>
+
+                        <h3>Classes 9–10 (Stream-Based Structure)</h3>
                         <ul>
-                            <li><b>Class:</b> Enter the class number (e.g. 9, 10, 11,..etc)</li>
-                            <li><b>Semester:</b> Leave empty</li>
-                            <li><b>Majors:</b> Subjects that are common across all streams</li>
-                            <li><b>Optionals:</b>Subjects that vary by stream</li>
-                            <li>
-                                <b>Minors:</b> Usually not applicable in most schools; leave empty unless your school
-                                follows a different structure.
-                            </li>
+                            <li><b>Class:</b> Enter 9 or 10</li>
+                            <li><b>Majors:</b> Subjects common to all streams</li>
+                            <li><b>Optionals:</b> Stream-specific subjects</li>
+                            <li><b>Minors:</b> Usually not applicable</li>
                         </ul>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Class</th>
-                                    <th>Semester</th>
-                                    <th>Majors (Common Subjects)</th>
-                                    <th>Optionals (Stream Subjects)</th>
-                                    <th>Minors</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>11</td>
-                                    <td></td>
-                                    <td>English Language, English Literature</td>
-                                    <td>Physics, Chemistry, Mathematics, Biology, Accounts, Economics, History,
-                                        Geography, Hindi</td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <p>
-                            <b class="error">
-                                NOTE: Once again, for classes 9-12, major column only contains those subjects that are
-                                common to all streams.
-                            </b>
-                        </p>
+
                         <p>
                             <b class="tip">
-                                For example, if <em>English Language</em> and <em>English Literature</em> are the only
-                                subjects common across all streams in your school, then enter only these subjects in the
-                                <b>Majors</b> column. All other stream-specific subjects should be entered under the
-                                <b>Optionals</b> column.
+                                Example: If <em>English Language</em> and <em>English Literature</em> are common across
+                                all
+                                streams, they go into <b>Majors</b>. Physics, Accounts, History, etc. go into
+                                <b>Optionals</b>.
                             </b>
                         </p>
-                        <p>
-                            <b class="error">
-                                NOTE: Also for any class, If PT or Games periods are conducted and attendance is required, include
-                                them in the <b>Majors</b> column. System won't mark attendance for such periods, if it
-                                isn't mentioned in your excel sheet.
-                            </b>
-                        </p>
+
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Class</th>
-                                    <th>Semester</th>
-                                    <th>Majors</th>
-                                    <th>Optionals</th>
-                                    <th>Minors</th>
+                                    <th>class</th>
+                                    <th>majors</th>
+                                    <th>optionals</th>
+                                    <th>minors</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>10</td>
-                                    <td></td>
                                     <td>English Language, English Literature, Physical Training, Games</td>
-                                    <td>Physics, Chemistry, Mathematics, Biology, History, Geography, Accounts, Commerce
-                                    </td>
+                                    <td>Physics, Chemistry, Mathematics, Biology, History, Geography, Accounts</td>
                                     <td></td>
                                 </tr>
                             </tbody>
                         </table>
-                        <h2>“Common Mistakes” callout</h2>
-                        <ul class="font-styling">
-                            <li>
-                                Do not enter stream-specific subjects (Physics, Accounts, History, etc.) in the
-                                <b>Majors</b> column for Classes 9–12.
-                            </li>
-                            <li>
-                                Do not leave the <b>Majors</b> column empty. At least one common subject must be
-                                provided.
-                            </li>
-                            <li>Do not create separate rows for different streams of the same class.</li>
-                            <li>
-                                If PT or Games attendance is required, do not forget to include them in the
-                                <b>Majors</b> column.
-                            </li>
+
+                        <p>
+                            <b class="error">
+                                NOTE: If PT or Games attendance is required, they <u>must</u> be included in the
+                                <b>Majors</b> column. Otherwise, attendance will not be recorded.
+                            </b>
+                        </p>
+
+                        <h2>Common Mistakes</h2>
+                        <ul>
+                            <li>Do not add stream-specific subjects to <b>Majors</b> for Classes 9–10.</li>
+                            <li>Do not leave the <b>Majors</b> column empty.</li>
+                            <li>Do not create multiple rows for different streams of the same class.</li>
+                            <li>Subjects inside a cell must be comma-separated, not line-separated.</li>
                         </ul>
 
-                        <h2>College Use Case~</h2>
-                        <p>College structures are usually semester-based and more straightforward.</p>
+                        <h2>College Use Case</h2>
+                        <p>
+                            College CSV files are department-based and cumulative across semesters.
+                        </p>
+
                         <ul>
-                            <li>
-                                <b>Class:</b> Enter the department name in short form. (e.g. CSE, EEE, EE, ME...etc)
-                            </li>
-                            <li><b>Semester:</b> Enter semester number (e.g. 1, 2, 3, 4..etc)</li>
-                            <li><b>Majors:</b> Core Subjects</li>
-                            <li><b>Optionals:</b> Electives, if any.</li>
-                            <li>
-                                <b>Minors:</b> If Applicable.
-                            </li>
+                            <li><b>Class:</b> Department short code (CSE, EEE, EE, IT, ME, etc.)</li>
+                            <li><b>Majors:</b> All compulsory subjects from 1st to final semester (common to all
+                                students)</li>
+                            <li><b>Optionals:</b> All elective subjects across all semesters</li>
+                            <li><b>Minors:</b> Minor subjects, if applicable</li>
                         </ul>
-                        <p><b>Example:</b></p>
+
+                        <p><b>Sample CSV:</b></p>
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Class</th>
-                                    <th>Semester</th>
-                                    <th>Majors</th>
-                                    <th>Optionals</th>
-                                    <th>Minors</th>
+                                    <th>class</th>
+                                    <th>majors</th>
+                                    <th>optionals</th>
+                                    <th>minors</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>CSE</td>
-                                    <td>5</td>
-                                    <td>DBMS, Operating Systems, Computer Networks</td>
-                                    <td>AI, Machine Learning</td>
-                                    <td>Cyber Security</td>
+                                    <td>IT</td>
+                                    <td>Programming Fundamentals, OOP, Data Structures, DBMS, OS, Computer Networks, Web
+                                        Technologies</td>
+                                    <td>AI, ML, Cloud Computing, Cyber Security</td>
+                                    <td>Mathematics, Management Studies</td>
                                 </tr>
                             </tbody>
                         </table>
 
+                        <p class="tip">
+                            Tip: Do <b>not</b> split subjects semester-wise in CSV. The system automatically maps them
+                            during attendance processing.
+                        </p>
+                        <p class="tip">
+                            Tip: Do not remove any column from the CSV. If a field is not applicable to your
+                            organization, keep the column and leave its value empty.
+                        </p>
                     </div>
+                    <div class="excel-upload font-styling" id="schedule-upload">
+                        <h1><i class="fa-solid fa-3"></i> | Schedule CSV Upload Guide</h1>
+
+                        <p>
+                            This CSV file is used to configure <b>daily check-in and check-out schedules</b> for your
+                            organization.
+                            Each day can have a <b>day shift</b> and an optional <b>night shift</b>.
+                        </p>
+
+                        <h2>CSV File Structure</h2>
+                        <p>
+                            The CSV file must contain the following headers exactly as shown.
+                            Header names are case-insensitive.
+                        </p>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Column</th>
+                                    <th>Description</th>
+                                    <th>Required</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>day</td>
+                                    <td>Day of the week (Monday–Sunday)</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>day_check_in</td>
+                                    <td>Day shift check-in time (HH:MM)</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>day_check_out</td>
+                                    <td>Day shift check-out time (HH:MM)</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>night_check_in</td>
+                                    <td>Night shift check-in time (HH:MM)</td>
+                                    <td>No</td>
+                                </tr>
+                                <tr>
+                                    <td>night_check_out</td>
+                                    <td>Night shift check-out time (HH:MM)</td>
+                                    <td>No</td>
+                                </tr>
+                                <tr>
+                                    <td>grace</td>
+                                    <td>Grace period in minutes (0–60)</td>
+                                    <td>Yes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h2>Valid Values & Rules</h2>
+                        <ul>
+                            <li>
+                                <b>day</b> must be one of:
+                                <em>Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday</em>
+                            </li>
+                            <li>
+                                Each day can appear <b>only once</b> in the CSV.
+                            </li>
+                            <li>
+                                Time format must be <b>24-hour HH:MM</b> (e.g. 09:30, 17:45).
+                            </li>
+                            <li>
+                                <b>Night shift is optional</b>, but if provided, both
+                                <b>night_check_in</b> and <b>night_check_out</b> must be filled.
+                            </li>
+                            <li>
+                                <b>grace</b> must be a number between <b>0 and 60</b>.
+                            </li>
+                        </ul>
+
+                        <p class="tip">
+                            Tip: Even if a shift is not applicable, the column must still be present in the CSV.
+                            You may leave the value empty.
+                        </p>
+
+                        <h2>Sample CSV</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>day</th>
+                                    <th>day_check_in</th>
+                                    <th>day_check_out</th>
+                                    <th>night_check_in</th>
+                                    <th>night_check_out</th>
+                                    <th>grace</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Monday</td>
+                                    <td>09:00</td>
+                                    <td>17:00</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>10</td>
+                                </tr>
+                                <tr>
+                                    <td>Tuesday</td>
+                                    <td>09:00</td>
+                                    <td>17:00</td>
+                                    <td>22:00</td>
+                                    <td>06:00</td>
+                                    <td>5</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h2>Common Mistakes</h2>
+                        <ul>
+                            <li>
+                                Using invalid day names (e.g. <em>Mon</em>, <em>Fri</em>, <em>Holiday</em>)
+                            </li>
+                            <li>
+                                Entering only one night shift time without the other
+                            </li>
+                            <li>
+                                Removing unused columns instead of leaving them empty
+                            </li>
+                            <li>
+                                Using incorrect time formats (e.g. 9:00 AM, 17.00)
+                            </li>
+                            <li>
+                                Setting grace values outside the range 0–60
+                            </li>
+                        </ul>
+
+                        <p class="error">
+                            NOTE: Uploading a new schedule will <b>replace the existing schedule</b> for your
+                            organization.
+                            Make sure all required days are included in the CSV.
+                        </p>
+                    </div>
+
                 </div>
             </div>
         </div>
