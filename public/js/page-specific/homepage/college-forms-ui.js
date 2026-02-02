@@ -10,7 +10,6 @@ async function loadCollegeOrganizations() {
     try {
         const res = await fetch("/public/org/list");
         const data = await res.json();
-
         if (!data.success) return;
 
         organizations = data.organizations;

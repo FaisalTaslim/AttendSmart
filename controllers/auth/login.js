@@ -105,7 +105,7 @@ exports.login = async (req, res) => {
             req.session.user = {
                 code: student.code,
                 name: student.name,
-                role: "school student"
+                role: "school-student"
             };
 
             return res.redirect("/dashboard/school-student");
@@ -152,7 +152,7 @@ exports.login = async (req, res) => {
             req.session.user = {
                 code: student.code,
                 name: student.name,
-                role: "college student"
+                role: "college-student"
             };
 
             return res.redirect("/dashboard/college-student");

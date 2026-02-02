@@ -36,6 +36,12 @@ const employeeSchema = new Schema({
         },
         trim: true
     },
+    faceData: {
+        descriptors: {
+            type: [[Number]],
+            default: []
+        }
+    },
     verification: {
         status: {
             type: String,
@@ -59,9 +65,8 @@ const employeeSchema = new Schema({
     },
     password: {type: String, required: true},
     termsCheck: {type: String, required: true, default: "not-accepted"},
-    setup_done: {
-        type: Boolean,
-        default: false,
+    setup: {
+        faceUploaded: {type: Boolean, default: false},
     }
     
 }, { timestamps: true });

@@ -81,6 +81,9 @@ exports.register_emp = async (req, res) => {
                         token: verificationToken,
                         expiresAt: tokenExpiry,
                     },
+                    setup: {
+                        faceUploaded: false,
+                    },
                     password: hashedPassword,
                     termsCheck: "accepted",
                 },

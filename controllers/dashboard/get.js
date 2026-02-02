@@ -3,6 +3,6 @@ exports.get = async (req, res) => {
 
     if(role == 'admin') res.redirect('/dashboard/admin');
     if(role == 'employee') res.redirect('/dashboard/employee');
-    if(role == 'school student') res.redirect('/dashboard/school-student');
-    if(role == 'college student') res.redirect('/dashboard/college-student'); 
+    if(role == 'school-student') res.redirect('/dashboard/school-student');
+    if(role == 'college-student') res.redirect('/dashboard/college-student'); 
 }

@@ -84,7 +84,10 @@ exports.register_clg = async (req, res) => {
                     expiresAt: tokenExpiry
                 },
                 password: hashedPassword,
-                termsCheck: "accepted"
+                termsCheck: "accepted",
+                setup: {
+                    faceUploaded: false,
+                }
             }],
             { session }
         );
@@ -230,6 +233,9 @@ exports.register_sch = async (req, res) => {
                     status: "pending",
                     token: verificationToken,
                     expiresAt: tokenExpiry
+                },
+                setup: {
+                    faceUploaded: false,
                 },
                 password: hashedPassword,
                 termsCheck: "accepted"

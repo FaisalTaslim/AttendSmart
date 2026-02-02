@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="/css/global/layout/footer.css">
     <link rel="stylesheet" href="/css/global/ui-components/forms.css">
     <link rel="stylesheet" href="/css/global/ui-componenets/popup.css">
-    <link rel="stylesheet" href="/css/page-specific/homepage/main.css">
     <link rel="stylesheet" href="/css/global/layout/dashboard-main.css">
     <link rel="stylesheet" href="/css/page-specific/dashboard/admin.css">
 
@@ -24,7 +23,6 @@
 <body>
     <header>
         <div class="logo">
-            <h1 class="pc-hidden">AttendSmart - Smart Attendance Solution</h1>
             <h1 class="mobile-hidden">AttendSmart</h1>
         </div>
 
@@ -101,21 +99,26 @@
                 <% if (setup===false) { %>
                     <div class="upload-card">
                         <h2>Complete the setup</h2>
+
                         <p>
                             Read the <a href="/guidebook#face-upload" class="link">guide</a> before you upload the image
                         </p>
-                        <form id="subjectsForm" enctype="multipart/form-data">
-                            <input type="file" id="subjectsCsv" name="subjectsCsv" accept=".csv" hidden>
 
-                            <label for="subjectsCsv" class="upload-label">
+                        <form id="faceForm" enctype="multipart/form-data">
+                            <input type="file" id="face" name="faceImage" accept="image/png, image/jpeg" hidden>
+
+                            <label for="face" class="upload-label">
                                 <div class="upload-content">
-                                    <div class="upload-icon">📄</div>
-                                    <p class="upload-title">Upload your clear image</p>
-                                    <p class="upload-subtitle">Only .png files are supported</p>
+                                    <div class="upload-icon">📸</div>
+                                    <p class="upload-title">Upload your clear face image</p>
+                                    <p class="upload-subtitle">PNG or JPG • One face only</p>
                                 </div>
                             </label>
                         </form>
-                        <p class="tip"><b>Note:</b> You can later make changes in subject's list through settings</p>
+
+                        <p class="tip">
+                            <b>Note:</b> You can update your face data later from settings.
+                        </p>
                     </div>
                     <% } %>
             </div>
@@ -159,7 +162,8 @@
     </footer>
     <script src="/js/global/layout/side-nav.js"></script>
     <script src="/js/global/layout/rearrange-footer.js"></script>
-    <script src="/js/page-specific/dashboard/admin/upload-csv.js"></script>
+    <script src="/js/global/face-api/face-api.min.js"></script>
+    <script src="/js/global/face-api/face-init.js"></script>
 </body>
 
 </html>

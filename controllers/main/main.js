@@ -14,7 +14,10 @@ exports.guidebook = async (req, res) => {
 exports.orgList = async (req, res) => {
     try {
         const orgs = await Org.find(
-            { isDeleted: false, setup_done: true },
+            {
+                isDeleted: false,
+                "setup.done": true
+            },
             {
                 org: 1,
                 branch: 1,
