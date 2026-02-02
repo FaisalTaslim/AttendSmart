@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="/css/global/ui-components/font-family.css">
     <link rel="stylesheet" href="/css/global/ui-components/scrollbar.css">
     <link rel="stylesheet" href="/css/global/ui-components/tables.css">
+    <link rel="stylesheet" href="/css/global/ui-components/forms.css">
     <link rel="stylesheet" href="/css/global/layout/header.css">
     <link rel="stylesheet" href="/css/global/layout/footer.css">
-    <link rel="stylesheet" href="/css/page-specific/homepage/main.css">
     <link rel="stylesheet" href="/css/global/layout/dashboard-main.css">
     <link rel="stylesheet" href="/css/page-specific/guidebook.css">
 
@@ -23,23 +23,30 @@
 <body>
     <header>
         <div class="logo">
-            <h1 class="hide-in-mobile">AttendSmart - Smart Attendance Solution</h1>
-            <h2 class="small-heading">AttendSmart</h2>
+            <h1 class="mobile-hidden">AttendSmart</h1>
         </div>
-
-        <nav class="nav-bar">
-            <a href="/" class="nav-links-property">Home</a>
-            <a href="/logout" class="nav-links-property">Logout</a>
-            <a href="/guidebook" class="nav-links-property">GuideBook</a>
+        <nav class="nav-bar nav-select">
+            <% if (isAuthenticated) { %>
+                <a href="/dashboard" class="nav-links-property">Dashboard</a>
+                <a href="/" class="nav-links-property">Home</a>
+                <a href="/logout" class="nav-links-property">Logout</a>
+                <% } else { %>
+                    <p class="nav-links-property login-page-btn">Login</p>
+                    <a href="/guidebook" class="nav-links-property">GuideBook</a>
+                    <% } %>
         </nav>
-
-        <nav class="mobile-nav-container">
-            <div class="nav-select">
+        <nav class="mobile-nav-container nav-select">
+            <div class="form-group">
                 <select id="mobile-nav">
-                    <option value="" disabled selected>-- Navigate --</option>
-                    <option value="/">Home</option>
-                    <option value="/logout">Logout</option>
-                    <option value="/guidebook">GuideBook</option>
+                    <option value="">Navigate</option>
+                    <% if (isAuthenticated) { %>
+                        <option value="/dashboard">Dashboard</option>
+                        <option value="/guidebook">Home</option>
+                        <option value="/">Logout</option>
+                        <% } else { %>
+                            <option value="#login">Login</option>
+                            <option value="/guidebook">GuideBook</option>
+                            <% } %>
                 </select>
             </div>
         </nav>
@@ -54,11 +61,17 @@
                     <div class="dashboard-sidenav">
                         <h1 class="hide-in-pc">AttendSmart</h1>
                         <div class="dash-head">
-                            <h2><span>Registration</span></h2>
+                            <h2><span>Admin</span></h2>
                             <div class="dash-head-nav">
-                                <a href="#adm-register">Admin</a>
+                                <a href="#adm-register">Registration</a>
                                 <a href="#subjects-upload">Subjects Upload</a>
                                 <a href="#schedule-upload">Schedule Upload</a>
+                            </div>
+                        </div>
+                        <div class="dash-head">
+                            <h2><span>Student</span></h2>
+                            <div class="dash-head-nav">
+                                <a href="#face-upload">Face Verification</a>
                             </div>
                         </div>
                     </div>
@@ -236,7 +249,7 @@
                             organization, keep the column and leave its value empty.
                         </p>
                     </div>
-                    <div class="excel-upload font-styling" id="schedule-upload">
+                    <div class="font-styling" id="schedule-upload">
                         <h1><i class="fa-solid fa-3"></i> | Schedule CSV Upload Guide</h1>
 
                         <p>
@@ -374,6 +387,73 @@
                             NOTE: Uploading a new schedule will <b>replace the existing schedule</b> for your
                             organization.
                             Make sure all required days are included in the CSV.
+                        </p>
+                    </div>
+                    <div class="face-upload font-styling" id="face-upload">
+                        <h1><i class="fa-solid fa-4"></i> | Face Image Upload Guide</h1>
+
+                        <p>
+                            This image will be used for <b>face verification and attendance</b>.
+                            Please upload a clear and accurate photo to ensure reliable recognition.
+                        </p>
+
+                        <h2>Image Requirements</h2>
+                        <ul>
+                            <li>
+                                The image must contain <b>only one person</b>.
+                            </li>
+                            <li>
+                                The face must be <b>clearly visible</b> and facing the camera.
+                            </li>
+                            <li>
+                                The image should be <b>well-lit</b> (avoid shadows or very dim lighting).
+                            </li>
+                            <li>
+                                <b>No masks, sunglasses, or face coverings</b>.
+                            </li>
+                            <li>
+                                Avoid blurry, pixelated, or low-quality images.
+                            </li>
+                        </ul>
+
+                        <h2>Recommended Guidelines</h2>
+                        <ul>
+                            <li>
+                                Neutral facial expression (no exaggerated expressions).
+                            </li>
+                            <li>
+                                Plain or simple background is preferred.
+                            </li>
+                            <li>
+                                Face should occupy a reasonable portion of the image (not too far or too close).
+                            </li>
+                            <li>
+                                Use a recent photo that reflects your current appearance.
+                            </li>
+                        </ul>
+
+                        <p class="tip">
+                            Tip: A front-facing mobile camera photo taken in daylight usually works best.
+                        </p>
+
+                        <h2>Allowed File Types</h2>
+                        <ul>
+                            <li><b>JPG / JPEG</b></li>
+                            <li><b>PNG</b></li>
+                        </ul>
+
+                        <h2>Common Reasons for Rejection</h2>
+                        <ul>
+                            <li>Multiple faces detected in the image</li>
+                            <li>Face partially covered (mask, scarf, hand, hair)</li>
+                            <li>Side-face or tilted head</li>
+                            <li>Very dark or overexposed images</li>
+                            <li>Edited, filtered, or AI-generated images</li>
+                        </ul>
+
+                        <p class="error">
+                            NOTE: Uploading an unclear or incorrect image may cause face verification
+                            failures during attendance. Please upload carefully.
                         </p>
                     </div>
 

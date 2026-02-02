@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="/css/global/layout/footer.css">
     <link rel="stylesheet" href="/css/global/ui-components/forms.css">
     <link rel="stylesheet" href="/css/global/ui-componenets/popup.css">
-    <link rel="stylesheet" href="/css/page-specific/homepage/main.css">
     <link rel="stylesheet" href="/css/global/layout/dashboard-main.css">
     <link rel="stylesheet" href="/css/page-specific/dashboard/admin.css">
 
@@ -24,8 +23,8 @@
 <body>
     <header>
         <div class="logo">
-            <h1 class="hide-in-mobile">AttendSmart - Smart Attendance Solution</h1>
-            <h2 class="small-heading">AttendSmart</h2>
+            <h1 class="pc-hidden">AttendSmart - Smart Attendance Solution</h1>
+            <h1 class="mobile-hidden">AttendSmart</h1>
         </div>
 
         <nav class="nav-bar">
@@ -57,9 +56,9 @@
                         <div class="dash-head">
                             <h2><span>General</span></h2>
                             <div class="dash-head-nav">
-                                <% if (type !== 'corporate' && (subjectsUpload === false && scheduleUpload === false)) { %>
+                                <% if (type !=='corporate' && (subjectsUpload===false && scheduleUpload===false)) { %>
                                     <p id="finish-setup">Finish setup</p>
-                                    <% } else if(type === 'corporate' && scheduleUpload === false) { %>
+                                    <% } else if(type==='corporate' && scheduleUpload===false) { %>
                                         <p id="finish-setup">Finish setup</p>
                                         <% }%>
                                             <p>Settings</p>
@@ -101,7 +100,8 @@
                     <div class="upload-card">
                         <h2>Complete the setup</h2>
                         <p>
-                            Read the <a href="/guideboook">guide</a> before you submit these csv files. Also feel free to reach out for <a href="/">support</a> if you need any help.
+                            Read the <a href="/guideboook" class="link">guide</a> before you submit these csv files.
+                            Also feel free to reach out for <a href="/" class="link">support</a> if you need any help.
                         </p>
                         <form id="subjectsForm" enctype="multipart/form-data">
                             <input type="file" id="subjectsCsv" name="subjectsCsv" accept=".csv" hidden>

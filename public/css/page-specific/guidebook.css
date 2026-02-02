@@ -1,13 +1,17 @@
-header {gap: 28rem;}
 .left-side {justify-content: unset;}
+.main-1 {width: 74%;}
 .guide {
     background: var(--bg-primary);
     height: 99%;
-    width: 98%;
+    width: 100%;
     padding: 1rem;
     box-sizing: border-box;
     border-radius: 0.8rem;
     overflow-y: auto;
+}
+.right-side h1 {
+    text-align: left;
+    color: var(--accent);
 }
 .font-styling h1 {
     font-size: 1.5rem;
@@ -25,7 +29,36 @@ header {gap: 28rem;}
     font-size: 1rem;
     margin-bottom: 1rem;
 }
-table {margin-bottom: 1rem;}
-.font-styling ul {margin: 0 1.5rem 1rem 1.5rem;}
+
+i {color: var(--accent)}
+.font-styling ul {
+    margin: 0 1.5rem 1rem 1.5rem;
+}
 .tip {color: var(--tip-text)}
 .error {color: var(--error)}
+
+@media (max-width: 540px), (min-width: 481px) and (max-width: 1024px) {
+    .main-1 {
+        width: 100%;
+    }
+    table {overflow: auto;}
+    .font-styling p {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        line-height: 2.0rem;
+    }
+    .guide {padding: 0.3rem;}
+    table {
+        margin-bottom: 1rem;
+        display: block;
+    }
+}
+
+@media screen and (min-width: 950px) and (max-width: 1024px) and  (min-height: 580px) and (max-height: 620px)  {
+    .left-side {display: flex;}
+    .right-side {width: 68%;}
+}
+
+@media screen and (min-width: 1100px) and (max-width: 1366px) and (min-height: 750px) and (max-height: 1024px) {
+    .right-side {width: 67%;}
+}

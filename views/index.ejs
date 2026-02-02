@@ -30,8 +30,9 @@
 
             <header>
                 <div class="logo">
-                    <h1 class="pc-hidden">AttendSmart - Smart Attendance Solution</h1>
-                    <h1 class="mobile-hidden">AttendSmart</h1>
+                    <div class="logo">
+                        <h1>AttendSmart</h1>
+                    </div>
                 </div>
                 <nav class="nav-bar nav-select">
                     <% if (isAuthenticated) { %>
@@ -318,7 +319,8 @@
 
                             </form>
 
-                            <form action="/registration/employee" method="POST" class="form-box r-forms hidden-mob" id="e-form">
+                            <form action="/registration/employee" method="POST" class="form-box r-forms hidden-mob"
+                                id="e-form">
                                 <fieldset>
                                     <legend>Organization details</legend>
 

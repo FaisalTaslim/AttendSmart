@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Student</title>
+    <title>Student</title>
     <link rel="stylesheet" href="/css/global/theme/light-theme.css">
     <link rel="stylesheet" href="/css/global/ui-components/font-family.css">
     <link rel="stylesheet" href="/css/global/ui-components/scrollbar.css">
@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/css/page-specific/homepage/main.css">
     <link rel="stylesheet" href="/css/global/layout/dashboard-main.css">
     <link rel="stylesheet" href="/css/page-specific/dashboard/admin.css">
+    <link rel="stylesheet" href="/css/page-specific/dashboard/college-student.css">
 
     <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,8 +25,8 @@
 <body>
     <header>
         <div class="logo">
-            <h1 class="hide-in-mobile">AttendSmart - Smart Attendance Solution</h1>
-            <h2 class="small-heading">AttendSmart</h2>
+            <h1 class="pc-hidden">AttendSmart - Smart Attendance Solution</h1>
+            <h1 class="mobile-hidden">AttendSmart</h1>
         </div>
 
         <nav class="nav-bar">
@@ -95,16 +96,19 @@
                 </div>
             </div>
             <div class="right-side">
-                <% if (setup===false) { %> 
+                <% if (setup===false) { %>
                     <div class="upload-card">
                         <h2>Complete the setup</h2>
+                        <p>
+                            Read the <a href="/guidebook" class="link">guide</a> before you upload the image
+                        </p>
                         <form id="subjectsForm" enctype="multipart/form-data">
                             <input type="file" id="subjectsCsv" name="subjectsCsv" accept=".csv" hidden>
 
                             <label for="subjectsCsv" class="upload-label">
                                 <div class="upload-content">
                                     <div class="upload-icon">📄</div>
-                                    <p class="upload-title">Upload the subjects CSV file</p>
+                                    <p class="upload-title">Upload your clear image</p>
                                     <p class="upload-subtitle">Only .csv files are supported</p>
                                 </div>
                             </label>
