@@ -10,7 +10,9 @@ main {
     align-items: center;
     height: fit-content;
 }
-
+html {
+  scroll-behavior: smooth;
+}
 .main-1 {
     height: 70vh;
     display: flex;
