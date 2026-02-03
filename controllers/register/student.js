@@ -93,16 +93,39 @@ exports.register_clg = async (req, res) => {
         );
 
 
-        const summaries = subjects.map(subject => ({
-            org: org,
-            code: student.code,
-            name: student.name,
-            department: student.dept,
-            subject: subject,
-            month: moment().format("YYYY-MM"),
-        }));
+        const attendanceType = (await Org.findOne(
+            { code: org },
+            null,
+            { session }
+        ))?.attendanceMethod;
 
-        await Summary.insertMany(summaries, { session });
+        if (attendanceType === 'subject-wise') {
+            const summaries = subjects.map(subject => ({
+                org: org,
+                code: student.code,
+                name: student.name,
+                department: student.dept,
+                subject: subject,
+                month: moment().format("YYYY-MM"),
+            }));
+
+            await Summary.insertMany(summaries, { session });
+        }
+        else if (attendanceType === 'one-time') {
+            await Summary.create(
+                [
+                    {
+                        org: org,
+                        code: student.code,
+                        name: student.name,
+                        department: student.dept,
+                        subject: null,
+                        month: moment().format("YYYY-MM"),
+                    }
+                ],
+                { session }
+            );
+        }
 
         await OrgLog.findOneAndUpdate(
             { org: org },
@@ -243,20 +266,40 @@ exports.register_sch = async (req, res) => {
             { session }
         );
 
-        const subjectList = subjects
-            .filter(s => s && s.trim())
-            .map(s => s.toLowerCase());
+        const attendanceType = (await Org.findOne(
+            { code: org },
+            null,
+            { session }
+        ))?.attendanceMethod;
 
-        const summaries = subjectList.map(subject => ({
-            org: org,
-            code: student.code,
-            name: student.name,
-            department: student.standard,
-            subject,
-            month: moment().format("YYYY-MM"),
-        }));
+        if (attendanceType === 'subject-wise') {
+            const summaries = subjects.map(subject => ({
+                org: org,
+                code: student.code,
+                name: student.name,
+                department: student.standard,
+                subject: subject,
+                month: moment().format("YYYY-MM"),
+            }));
 
-        await Summary.insertMany(summaries, { session });
+            await Summary.insertMany(summaries, { session });
+        }
+        else if (attendanceType === 'one-time') {
+            await Summary.create(
+                [
+                    {
+                        org: org,
+                        code: student.code,
+                        name: student.name,
+                        department: student.standard,
+                        subject: null,
+                        month: moment().format("YYYY-MM"),
+                    }
+                ],
+                { session }
+            );
+
+        }
 
         await OrgLog.findOneAndUpdate(
             { org },

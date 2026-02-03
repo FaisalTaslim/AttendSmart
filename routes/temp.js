@@ -5,7 +5,7 @@ async function run() {
   try {
     await mongoose.connect('mongodb+srv://faisaltaslim79_db_user:csq70DZxQMMwBzAG@cluster0.bgldtwb.mongodb.net/AttendSmart');
 
-    const result = await StudentSummary.deleteMany({ code: 977997 });
+    const result = await StudentSummary.deleteMany({ code: 777020 });
 
     console.log('Deleted documents:', result.deletedCount);
 
