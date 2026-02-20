@@ -54,143 +54,189 @@
                 <div class="hero-status">
                     <% if (type !=='corporate' && (subjectsUpload===false && scheduleUpload===false)) { %>
                         <div id="finish-setup" class="status-badge status-alert">Finish setup</div>
-                    <% } else if (type==='corporate' && scheduleUpload===false) { %>
-                        <div id="finish-setup" class="status-badge status-alert">Finish setup</div>
-                    <% } else { %>
-                        <div class="status-badge status-ok">Setup complete</div>
-                    <% } %>
-                    <div class="status-badge">Account: <%= type %></div>
+                        <% } else if (type==='corporate' && scheduleUpload===false) { %>
+                            <div id="finish-setup" class="status-badge status-alert">Finish setup</div>
+                            <% } else { %>
+                                <div class="status-badge status-ok">Setup complete</div>
+                                <% } %>
+                                    <div class="status-badge">Account: <%= type %>
+                                    </div>
                 </div>
             </section>
 
-            <section class="quick-grid">
-                <article class="quick-card">
-                    <h3>Account & Organization</h3>
-                    <div class="card-links">
-                        <p>Account & Security</p>
-                        <p>Organization Details</p>
-                        <p>Appearance & Preferences</p>
-                    </div>
-                </article>
+            <section id="dashboard-overview" class="dashboard-overview">
+                <section id="quick-grid" class="quick-grid">
+                    <article class="quick-card">
+                        <h3>Attendance</h3>
+                        <div class="card-links">
+                            <p id="option-edit-attendance" class="feature-link">Edit Attendance</p>
+                            <p id="option-attendance-summary" class="feature-link">Attendance Summary</p>
+                            <p id="option-download-reports" class="feature-link">Download Reports</p>
+                        </div>
+                    </article>
 
-                <article class="quick-card">
-                    <h3>Attendance</h3>
-                    <div class="card-links">
-                        <p>Attendance Settings</p>
-                        <p>Edit Attendance</p>
-                        <p>Attendance Summary</p>
-                        <p>Download Reports</p>
-                    </div>
-                </article>
+                    <article class="quick-card">
+                        <h3>User Management</h3>
+                        <div class="card-links">
+                            <p id="option-view-users" class="feature-link">View Users</p>
+                            <p id="option-add-users" class="feature-link">Add Users</p>
+                            <p id="option-suspend-remove-users" class="feature-link">Suspend / Remove Users</p>
+                            <p id="option-leave-requests" class="feature-link">Leave Requests</p>
+                        </div>
+                    </article>
 
-                <article class="quick-card">
-                    <h3>Face Recognition</h3>
-                    <div class="card-links">
-                        <p>Face Registration</p>
-                        <p>Recognition Settings</p>
-                        <p>Reset Face Data</p>
-                    </div>
-                </article>
+                    <article class="quick-card">
+                        <h3>Academic Configuration</h3>
+                        <div class="card-links">
+                            <p id="option-subjects" class="feature-link">Subjects</p>
+                            <p id="option-schedules" class="feature-link">Schedules</p>
+                            <p id="option-academic-year" class="feature-link">Academic Year</p>
+                        </div>
+                    </article>
 
-                <article class="quick-card">
-                    <h3>User Management</h3>
-                    <div class="card-links">
-                        <p>View Users</p>
-                        <p>Add Users</p>
-                        <p>Suspend / Remove Users</p>
-                        <p>Leave Requests</p>
-                    </div>
-                </article>
+                    <article class="quick-card">
+                        <h3>Communication</h3>
+                        <div class="card-links">
+                            <p id="option-send-notice" class="feature-link">Send Notice</p>
+                            <p id="option-announcements" class="feature-link">Announcements</p>
+                        </div>
+                    </article>
 
-                <article class="quick-card">
-                    <h3>Academic Configuration</h3>
-                    <div class="card-links">
-                        <p>Subjects</p>
-                        <p>Schedules</p>
-                        <p>Academic Year</p>
-                    </div>
-                </article>
+                    <article class="quick-card">
+                        <h3>Logs & Reports</h3>
+                        <div class="card-links">
+                            <p id="option-activity-logs" class="feature-link">Activity Logs</p>
+                            <p id="option-attendance-logs" class="feature-link">Attendance Logs</p>
+                            <p id="option-system-logs" class="feature-link">System Logs</p>
+                        </div>
+                    </article>
 
-                <article class="quick-card">
-                    <h3>Communication</h3>
-                    <div class="card-links">
-                        <p>Send Notice</p>
-                        <p>Announcements</p>
-                    </div>
-                </article>
+                    <article class="quick-card">
+                        <h3>Support</h3>
+                        <div class="card-links">
+                            <p id="option-support-requests" class="feature-link">Support Requests</p>
+                            <p id="option-help-guidebook" class="feature-link">Help & Guidebook</p>
+                        </div>
+                    </article>
+                </section>
 
-                <article class="quick-card">
-                    <h3>Logs & Reports</h3>
-                    <div class="card-links">
-                        <p>Activity Logs</p>
-                        <p>Attendance Logs</p>
-                        <p>System Logs</p>
-                    </div>
-                </article>
+                <section class="setup-uploads">
+                    <% if (type !=='corporate' && subjectsUpload===false) { %>
+                        <div class="upload-card">
+                            <h2>Complete the setup</h2>
+                            <p>
+                                Read the <a href="/guideboook" class="link">guide</a> before you submit these csv files.
+                                Also feel free to reach out for <a href="/" class="link">support</a> if you need any
+                                help.
+                            </p>
+                            <form id="subjectsForm" enctype="multipart/form-data">
+                                <input type="file" id="subjectsCsv" name="subjectsCsv" accept=".csv" hidden>
 
-                <article class="quick-card">
-                    <h3>Support</h3>
-                    <div class="card-links">
-                        <p>Support Requests</p>
-                        <p>Help & Guidebook</p>
-                    </div>
-                </article>
+                                <label for="subjectsCsv" class="upload-label">
+                                    <div class="upload-content">
+                                        <div class="upload-icon"><i class="fa-solid fa-file-arrow-up"></i></div>
+                                        <p class="upload-title">Upload the subjects CSV file</p>
+                                        <p class="upload-subtitle">Only .csv files are supported</p>
+                                    </div>
+                                </label>
+                            </form>
+                        </div>
+                        <% } %>
 
-                <article class="quick-card danger-zone">
-                    <h3>Danger Zone</h3>
-                    <div class="card-links">
-                        <p>Reset Attendance Data</p>
-                        <p>Reset Face Data</p>
-                        <p>Lock Organization</p>
-                    </div>
-                </article>
+                            <% if (scheduleUpload===false) { %>
+                                <div class="upload-card">
+                                    <h2>Schedule setup</h2>
+                                    <form id="scheduleForm" enctype="multipart/form-data">
+                                        <input type="file" id="scheduleCsv" name="scheduleCsv" accept=".csv" hidden>
+
+                                        <label for="scheduleCsv" class="upload-label">
+                                            <div class="upload-content">
+                                                <div class="upload-icon"><i class="fa-solid fa-calendar-plus"></i></div>
+                                                <p class="upload-title">Upload the schedule CSV file</p>
+                                                <p class="upload-subtitle">Only .csv files are supported</p>
+                                            </div>
+                                        </label>
+                                    </form>
+                                    <p class="tip"><b>Note:</b> You can later make changes in subjects and schedule list
+                                        through settings</p>
+                                </div>
+                                <% } %>
+                </section>
             </section>
 
-            <section class="setup-uploads">
-                <% if (type !=='corporate' && subjectsUpload===false) { %>
-                    <div class="upload-card">
-                        <h2>Complete the setup</h2>
-                        <p>
-                            Read the <a href="/guideboook" class="link">guide</a> before you submit these csv files.
-                            Also feel free to reach out for <a href="/" class="link">support</a> if you need any
-                            help.
-                        </p>
-                        <form id="subjectsForm" enctype="multipart/form-data">
-                            <input type="file" id="subjectsCsv" name="subjectsCsv" accept=".csv" hidden>
+            <section id="content" class="content" hidden>
+                <button id="go-back" class="go-back" type="button">
+                    <i class="fa-solid fa-arrow-left"></i> Go Back
+                </button>
 
-                            <label for="subjectsCsv" class="upload-label">
-                                <div class="upload-content">
-                                    <div class="upload-icon"><i class="fa-solid fa-file-arrow-up"></i></div>
-                                    <p class="upload-title">Upload the subjects CSV file</p>
-                                    <p class="upload-subtitle">Only .csv files are supported</p>
-                                </div>
-                            </label>
-                        </form>
-                    </div>
-                <% } %>
-
-                <% if (scheduleUpload===false) { %>
-                    <div class="upload-card">
-                        <h2>Schedule setup</h2>
-                        <form id="scheduleForm" enctype="multipart/form-data">
-                            <input type="file" id="scheduleCsv" name="scheduleCsv" accept=".csv" hidden>
-
-                            <label for="scheduleCsv" class="upload-label">
-                                <div class="upload-content">
-                                    <div class="upload-icon"><i class="fa-solid fa-calendar-plus"></i></div>
-                                    <p class="upload-title">Upload the schedule CSV file</p>
-                                    <p class="upload-subtitle">Only .csv files are supported</p>
-                                </div>
-                            </label>
-                        </form>
-                        <p class="tip"><b>Note:</b> You can later make changes in subjects and schedule list through settings</p>
-                    </div>
-                <% } %>
-            </section>
-
-            <section class="account-security">
-                <h2>Account Settings</h2>
-                <p>Central space for configuration and organization-level preferences.</p>
+                <article id="content-edit-attendance" class="content-panel" hidden>
+                    <h2>Edit Attendance</h2>
+                    <p>Update attendance records for any date, class, and subject from a single workflow.</p>
+                </article>
+                <article id="content-attendance-summary" class="content-panel" hidden>
+                    <h2>Attendance Summary</h2>
+                    <p>View monthly and daily summaries for students and employees inside your organization.</p>
+                </article>
+                <article id="content-download-reports" class="content-panel" hidden>
+                    <h2>Download Reports</h2>
+                    <p>Export filtered attendance data into report files for audits and internal use.</p>
+                </article>
+                <article id="content-view-users" class="content-panel" hidden>
+                    <h2>View Users</h2>
+                    <p>See registered students and employees with organization-level filtering.</p>
+                </article>
+                <article id="content-add-users" class="content-panel" hidden>
+                    <h2>Add Users</h2>
+                    <p>Create new student and employee accounts with role-specific registration fields.</p>
+                </article>
+                <article id="content-suspend-remove-users" class="content-panel" hidden>
+                    <h2>Suspend / Remove Users</h2>
+                    <p>Suspend or remove user access while preserving important attendance history.</p>
+                </article>
+                <article id="content-leave-requests" class="content-panel" hidden>
+                    <h2>Leave Requests</h2>
+                    <p>Review incoming leave requests and approve or reject them quickly.</p>
+                </article>
+                <article id="content-subjects" class="content-panel" hidden>
+                    <h2>Subjects</h2>
+                    <p>Maintain your subject list and keep mapping clean for attendance sessions.</p>
+                </article>
+                <article id="content-schedules" class="content-panel" hidden>
+                    <h2>Schedules</h2>
+                    <p>Manage class and department schedules used in daily attendance capture.</p>
+                </article>
+                <article id="content-academic-year" class="content-panel" hidden>
+                    <h2>Academic Year</h2>
+                    <p>Configure active academic year and apply it across relevant modules.</p>
+                </article>
+                <article id="content-send-notice" class="content-panel" hidden>
+                    <h2>Send Notice</h2>
+                    <p>Send structured notices to students, employees, or selected groups.</p>
+                </article>
+                <article id="content-announcements" class="content-panel" hidden>
+                    <h2>Announcements</h2>
+                    <p>Publish organization-wide updates for important events and schedules.</p>
+                </article>
+                <article id="content-activity-logs" class="content-panel" hidden>
+                    <h2>Activity Logs</h2>
+                    <p>Track account and dashboard actions for transparency and troubleshooting.</p>
+                </article>
+                <article id="content-attendance-logs" class="content-panel" hidden>
+                    <h2>Attendance Logs</h2>
+                    <p>Inspect detailed check-in history and validation status in one place.</p>
+                </article>
+                <article id="content-system-logs" class="content-panel" hidden>
+                    <h2>System Logs</h2>
+                    <p>Review technical logs related to setup, uploads, and key system actions.</p>
+                </article>
+                <article id="content-support-requests" class="content-panel" hidden>
+                    <h2>Support Requests</h2>
+                    <p>View open support tickets and keep communication organized.</p>
+                </article>
+                <article id="content-help-guidebook" class="content-panel" hidden>
+                    <h2>Help & Guidebook</h2>
+                    <p>Access guides and setup references for smoother admin operations.</p>
+                </article>
             </section>
         </div>
     </main>
@@ -234,6 +280,7 @@
 
     <script src="/js/global/layout/rearrange-footer.js"></script>
     <script src="/js/page-specific/dashboard/admin/upload-csv.js"></script>
+    <script src="/js/page-specific/dashboard/admin/navigate-contents.js"></script>
 </body>
 
 </html>

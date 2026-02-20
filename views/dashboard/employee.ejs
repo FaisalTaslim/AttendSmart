@@ -66,69 +66,115 @@
                     <h3>General</h3>
                     <div class="card-links">
                         <% if (setup===false) { %>
-                            <p id="finish-setup">Finish setup</p>
+                            <p id="option-finish-setup">Finish setup</p>
                         <% } %>
-                        <p>Profile Settings</p>
+                        <p id="option-profile-settings">Profile Settings</p>
                     </div>
                 </article>
 
                 <article class="quick-card">
                     <h3>My Attendance</h3>
                     <div class="card-links">
-                        <p>Attendance Summary</p>
-                        <p>Download Attendance Report</p>
+                        <p id="option-attendance-summary">Attendance Summary</p>
+                        <p id="option-download-attendance-report">Download Attendance Report</p>
                     </div>
                 </article>
 
                 <article class="quick-card">
                     <h3>Academics</h3>
                     <div class="card-links">
-                        <p>My Subjects</p>
+                        <p id="option-my-subjects">My Subjects</p>
                     </div>
                 </article>
 
                 <article class="quick-card">
                     <h3>Requests</h3>
                     <div class="card-links">
-                        <p>Apply for Leave</p>
-                        <p>Leave Status</p>
+                        <p id="option-apply-for-leave">Apply for Leave</p>
+                        <p id="option-leave-status">Leave Status</p>
                     </div>
                 </article>
 
                 <article class="quick-card">
                     <h3>Communication</h3>
                     <div class="card-links">
-                        <p>View Notices</p>
+                        <p id="option-view-notices">View Notices</p>
                     </div>
                 </article>
             </section>
 
-            <section class="setup-uploads">
-                <% if (setup===false) { %>
-                    <div class="upload-card">
-                        <h2>Complete the setup</h2>
+            <section class="content" style="display: none;">
+                <button id="go-back" class="go-back" type="button">
+                    <i class="fa-solid fa-arrow-left"></i> Go Back
+                </button>
 
-                        <p>
-                            Read the <a href="/guidebook#face-upload" class="link">guide</a> before you upload the image
-                        </p>
+                <article id="content-finish-setup" class="content-panel" style="display: none;">
+                    <h2>Finish Setup</h2>
+                    <% if (setup===false) { %>
+                        <section class="setup-uploads">
+                            <div class="upload-card">
+                                <h2>Complete the setup</h2>
 
-                        <form id="faceForm" enctype="multipart/form-data">
-                            <input type="file" id="face" name="faceImage" accept="image/png, image/jpeg" hidden>
+                                <p>
+                                    Read the <a href="/guidebook#face-upload" class="link">guide</a> before you upload the image
+                                </p>
 
-                            <label for="face" class="upload-label">
-                                <div class="upload-content">
-                                    <div class="upload-icon"><i class="fa-solid fa-camera"></i></div>
-                                    <p class="upload-title">Upload your clear face image</p>
-                                    <p class="upload-subtitle">PNG or JPG • One face only</p>
-                                </div>
-                            </label>
-                        </form>
+                                <form id="faceForm" enctype="multipart/form-data">
+                                    <input type="file" id="face" name="faceImage" accept="image/png, image/jpeg" hidden>
 
-                        <p class="tip">
-                            <b>Note:</b> You can update your face data later from settings.
-                        </p>
-                    </div>
-                <% } %>
+                                    <label for="face" class="upload-label">
+                                        <div class="upload-content">
+                                            <div class="upload-icon"><i class="fa-solid fa-camera"></i></div>
+                                            <p class="upload-title">Upload your clear face image</p>
+                                            <p class="upload-subtitle">PNG or JPG • One face only</p>
+                                        </div>
+                                    </label>
+                                </form>
+
+                                <p class="tip">
+                                    <b>Note:</b> You can update your face data later from settings.
+                                </p>
+                            </div>
+                        </section>
+                    <% } else { %>
+                        <p>Your setup is already complete.</p>
+                    <% } %>
+                </article>
+
+                <article id="content-profile-settings" class="content-panel" style="display: none;">
+                    <h2>Profile Settings</h2>
+                    <p>Update your account profile and personal preferences from one place.</p>
+                </article>
+
+                <article id="content-attendance-summary" class="content-panel" style="display: none;">
+                    <h2>Attendance Summary</h2>
+                    <p>View overall attendance trends and recent check-in activity.</p>
+                </article>
+
+                <article id="content-download-attendance-report" class="content-panel" style="display: none;">
+                    <h2>Download Attendance Report</h2>
+                    <p>Download your attendance report in supported formats for official use.</p>
+                </article>
+
+                <article id="content-my-subjects" class="content-panel" style="display: none;">
+                    <h2>My Subjects</h2>
+                    <p>Check assigned subjects and subject-wise attendance details.</p>
+                </article>
+
+                <article id="content-apply-for-leave" class="content-panel" style="display: none;">
+                    <h2>Apply for Leave</h2>
+                    <p>Submit leave requests with date range and reason.</p>
+                </article>
+
+                <article id="content-leave-status" class="content-panel" style="display: none;">
+                    <h2>Leave Status</h2>
+                    <p>Track approval status of your current and previous leave requests.</p>
+                </article>
+
+                <article id="content-view-notices" class="content-panel" style="display: none;">
+                    <h2>View Notices</h2>
+                    <p>Read official notices and announcements from your organization.</p>
+                </article>
             </section>
         </div>
     </main>
@@ -173,6 +219,7 @@
     <script src="/js/global/layout/rearrange-footer.js"></script>
     <script src="/js/global/face-api/face-api.min.js"></script>
     <script src="/js/global/face-api/face-init.js"></script>
+    <script src="/js/page-specific/dashboard/corporate-employee/navigate-contents.js"></script>
 </body>
 
 </html>

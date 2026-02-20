@@ -22,7 +22,6 @@
 <body>
     <header>
         <div class="logo">
-            <h1 class="pc-hidden">AttendSmart - Smart Attendance Solution</h1>
             <h1 class="mobile-hidden">AttendSmart</h1>
         </div>
 
@@ -62,44 +61,115 @@
                 <article class="quick-card">
                     <h3>General</h3>
                     <div class="card-links">
-                        <p>Profile</p>
-                        <p>Settings</p>
-                        <p>Support</p>
+                        <p id="option-profile">Profile</p>
+                        <p id="option-settings">Settings</p>
+                        <p id="option-support">Support</p>
                     </div>
                 </article>
 
                 <article class="quick-card">
                     <h3>Attendance</h3>
                     <div class="card-links">
-                        <p>Start Session</p>
-                        <p>Edit Attendance</p>
-                        <p>Attendance History</p>
+                        <p id="option-start-session">Start Session</p>
+                        <p id="option-edit-attendance">Edit Attendance</p>
+                        <p id="option-attendance-history">Attendance History</p>
                     </div>
                 </article>
 
                 <article class="quick-card">
                     <h3>Students</h3>
                     <div class="card-links">
-                        <p>View Students</p>
-                        <p>Mark Leave</p>
-                        <p>Student Attendance</p>
+                        <p id="option-view-students">View Students</p>
+                        <p id="option-mark-leave">Mark Leave</p>
+                        <p id="option-student-attendance">Student Attendance</p>
                     </div>
                 </article>
 
                 <article class="quick-card">
                     <h3>Communication</h3>
                     <div class="card-links">
-                        <p>Send Notice</p>
-                        <p>View Announcements</p>
+                        <p id="option-send-notice">Send Notice</p>
+                        <p id="option-view-announcements">View Announcements</p>
                     </div>
                 </article>
 
                 <article class="quick-card">
                     <h3>Reports</h3>
                     <div class="card-links">
-                        <p>Download Reports</p>
-                        <p>Monthly Summary</p>
+                        <p id="option-download-reports">Download Reports</p>
+                        <p id="option-monthly-summary">Monthly Summary</p>
                     </div>
+                </article>
+            </section>
+
+            <section class="content" style="display: none;">
+                <button id="go-back" class="go-back" type="button">
+                    <i class="fa-solid fa-arrow-left"></i> Go Back
+                </button>
+
+                <article id="content-profile" class="content-panel" style="display: none;">
+                    <h2>Profile</h2>
+                    <p>View and update your teaching profile details.</p>
+                </article>
+
+                <article id="content-settings" class="content-panel" style="display: none;">
+                    <h2>Settings</h2>
+                    <p>Update teacher dashboard preferences and account settings.</p>
+                </article>
+
+                <article id="content-support" class="content-panel" style="display: none;">
+                    <h2>Support</h2>
+                    <p>Reach support for technical or classroom workflow issues.</p>
+                </article>
+
+                <article id="content-start-session" class="content-panel" style="display: none;">
+                    <h2>Start Session</h2>
+                    <p>Start a class attendance session for a selected subject and time slot.</p>
+                </article>
+
+                <article id="content-edit-attendance" class="content-panel" style="display: none;">
+                    <h2>Edit Attendance</h2>
+                    <p>Make attendance corrections for completed sessions.</p>
+                </article>
+
+                <article id="content-attendance-history" class="content-panel" style="display: none;">
+                    <h2>Attendance History</h2>
+                    <p>View past class sessions and attendance records.</p>
+                </article>
+
+                <article id="content-view-students" class="content-panel" style="display: none;">
+                    <h2>View Students</h2>
+                    <p>Browse student lists linked to your assigned classes.</p>
+                </article>
+
+                <article id="content-mark-leave" class="content-panel" style="display: none;">
+                    <h2>Mark Leave</h2>
+                    <p>Mark or verify approved leave against attendance sessions.</p>
+                </article>
+
+                <article id="content-student-attendance" class="content-panel" style="display: none;">
+                    <h2>Student Attendance</h2>
+                    <p>Inspect attendance details for specific students.</p>
+                </article>
+
+                <article id="content-send-notice" class="content-panel" style="display: none;">
+                    <h2>Send Notice</h2>
+                    <p>Send notices to class groups or selected students.</p>
+                </article>
+
+                <article id="content-view-announcements" class="content-panel" style="display: none;">
+                    <h2>View Announcements</h2>
+                    <p>Read latest academic and organizational announcements.</p>
+                </article>
+
+                <article id="content-download-reports" class="content-panel" style="display: none;">
+                    <h2>Download Reports</h2>
+                    <p>Download attendance and class reports for records.</p>
+                </article>
+
+                <article id="content-monthly-summary" class="content-panel" style="display: none;">
+                    <h2>Monthly Summary</h2>
+                    <p>Review monthly attendance performance at a glance.</p>
                 </article>
             </section>
         </div>
@@ -144,6 +214,7 @@
     </footer>
 
     <script src="/js/global/layout/rearrange-footer.js"></script>
+    <script src="/js/page-specific/dashboard/teacher-employee/navigate-contents.js"></script>
 </body>
 
 </html>

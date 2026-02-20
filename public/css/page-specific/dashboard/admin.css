@@ -135,6 +135,7 @@ main {
     background: var(--bg-primary);
     border: 1px solid transparent;
     transition: all 0.2s ease;
+    cursor: pointer;
 }
 
 .card-links p:hover {
@@ -221,23 +222,88 @@ main {
     margin-bottom: 0;
 }
 
-.account-security {
+.dashboard-overview {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.content {
     width: 100%;
-    border-radius: 0.8rem;
-    background-color: var(--bg-card);
+    background: var(--bg-card);
     border: 1px solid var(--border-color);
+    border-radius: 0.9rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.go-back {
+    border: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border-radius: 0.5rem;
+    width: fit-content;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.go-back:hover {
+    border-color: rgba(var(--accent-rgb), 0.38);
+    color: var(--accent);
+}
+
+.content-panel {
+    background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 0.8rem;
     padding: 1rem;
 }
 
-.account-security h2 {
-    margin: 0;
-    color: var(--accent);
-    font-size: 1.2rem;
+.content-panel h2 {
+    margin: 0 0 0.4rem;
+    color: var(--text-primary);
+    font-size: 1.1rem;
 }
 
-.account-security p {
-    margin: 0.5rem 0 0;
+.content-panel p {
+    margin: 0;
     color: var(--text-secondary);
+    line-height: 1.45;
+}
+
+.fade-in {
+    animation: fadeSlideIn 0.28s ease forwards;
+}
+
+.fade-out {
+    animation: fadeSlideOut 0.22s ease forwards;
+}
+
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeSlideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(8px);
+    }
 }
 
 @media (max-width: 1120px) {
@@ -254,6 +320,14 @@ main {
 
     .setup-uploads {
         grid-template-columns: 1fr;
+    }
+
+    .content {
+        padding: 0.8rem;
+    }
+
+    .content-panel {
+        padding: 0.8rem;
     }
 
     header {
