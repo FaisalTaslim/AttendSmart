@@ -12,6 +12,8 @@ body {
     gap: 1.8rem;
 }
 
+.nav-select select {padding: 0.5rem 3rem 0.5rem 1rem;}
+
 main {
     display: flex;
     flex-direction: column;
@@ -237,6 +239,7 @@ main {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+    box-sizing: border-box;
 }
 
 .go-back {
@@ -274,6 +277,182 @@ main {
     margin: 0;
     color: var(--text-secondary);
     line-height: 1.45;
+}
+
+.users-filter-row {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.users-filter-row label {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.users-filter-select {
+    min-width: 180px;
+    max-width: 260px;
+}
+
+.users-table-view {
+    margin-top: 0.9rem;
+}
+
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.users-table {
+    min-width: 760px;
+}
+
+.content-add-users > p {
+    margin-bottom: 0.9rem;
+}
+
+.add-users-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+}
+
+.add-user-card {
+    padding: 0.9rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.8rem;
+    background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+}
+
+.add-user-card h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.add-user-card .tip {
+    margin-top: 0.7rem;
+    margin-bottom: 0.6rem;
+}
+
+.add-user-card .link {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+}
+
+.manage-users-panel {
+    margin-top: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.8rem;
+    background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+    padding: 0.9rem;
+}
+
+.manage-users-controls {
+    display: grid;
+    grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+    gap: 0.7rem;
+    margin-bottom: 0.85rem;
+}
+
+.manage-users-control {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.manage-users-control label {
+    color: var(--text-primary);
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+#manage-users-search {
+    border: 1px solid var(--border-color);
+    border-radius: 0.55rem;
+    padding: 0.52rem 0.72rem;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 0.86rem;
+}
+
+#manage-users-search:focus {
+    outline: none;
+    border-color: rgba(var(--accent-rgb), 0.45);
+}
+
+.manage-users-table {
+    min-width: 860px;
+}
+
+.manage-status-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.22rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    border: 1px solid var(--border-color);
+}
+
+.manage-status-chip.active {
+    color: var(--accent);
+    background: rgba(var(--accent-rgb), 0.12);
+    border-color: rgba(var(--accent-rgb), 0.35);
+}
+
+.manage-status-chip.suspended {
+    color: #96581b;
+    background: rgba(220, 134, 28, 0.14);
+    border-color: rgba(220, 134, 28, 0.35);
+}
+
+.manage-status-chip.deleted {
+    color: var(--error);
+    background: rgba(176, 0, 32, 0.12);
+    border-color: rgba(176, 0, 32, 0.35);
+}
+
+.manage-actions-cell {
+    display: flex;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+}
+
+.manage-action-btn {
+    border: 1px solid var(--border-color);
+    border-radius: 0.45rem;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.32rem 0.62rem;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.manage-action-btn:hover {
+    border-color: rgba(var(--accent-rgb), 0.45);
+    color: var(--accent);
+}
+
+.manage-action-btn.remove-user-btn:hover {
+    border-color: rgba(176, 0, 32, 0.45);
+    color: var(--error);
+}
+
+
+.csv-upload-form {
+    margin-top: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .fade-in {
@@ -330,6 +509,14 @@ main {
         padding: 0.8rem;
     }
 
+    .add-users-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .manage-users-controls {
+        grid-template-columns: 1fr;
+    }
+
     header {
         gap: unset;
         justify-content: space-between;
@@ -359,5 +546,77 @@ main {
 
     .hero-status {
         width: 100%;
+    }
+
+    .users-filter-row {
+        align-items: stretch;
+    }
+
+    .users-filter-select {
+        min-width: 0;
+        width: 100%;
+        max-width: none;
+    }
+
+    .users-table {
+        min-width: 100%;
+        border-spacing: 0;
+    }
+
+    .users-table thead {
+        display: none;
+    }
+
+    .users-table tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+    }
+
+    .users-table tbody tr {
+        display: block;
+        border: 1px solid var(--border-color);
+        border-radius: 0.7rem;
+        background: var(--bg-secondary);
+        padding: 0.55rem 0.6rem;
+    }
+
+    .users-table tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 0.6rem;
+        border-bottom: 1px solid var(--border-color);
+        padding: 0.45rem 0;
+        font-size: 0.86rem;
+        word-break: break-word;
+    }
+
+    .users-table tbody td:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .users-table tbody td::before {
+        content: attr(data-label);
+        color: var(--text-muted);
+        font-weight: 600;
+        flex: 0 0 40%;
+    }
+
+    .manage-actions-cell {
+        justify-content: flex-end;
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .users-table td[colspan] {
+        display: block;
+        border-bottom: none;
+        padding: 0.35rem 0;
+    }
+
+    .users-table td[colspan]::before {
+        content: none;
     }
 }
