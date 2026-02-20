@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="/css/global/ui-components/forms.css">
     <link rel="stylesheet" href="/css/global/layout/header.css">
     <link rel="stylesheet" href="/css/global/layout/footer.css">
-    <link rel="stylesheet" href="/css/global/layout/dashboard-main.css">
     <link rel="stylesheet" href="/css/page-specific/guidebook.css">
 
     <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
@@ -30,10 +29,10 @@
                 <a href="/dashboard" class="nav-links-property">Dashboard</a>
                 <a href="/" class="nav-links-property">Home</a>
                 <a href="/logout" class="nav-links-property">Logout</a>
-                <% } else { %>
-                    <p class="nav-links-property login-page-btn">Login</p>
-                    <a href="/guidebook" class="nav-links-property">GuideBook</a>
-                    <% } %>
+            <% } else { %>
+                <p class="nav-links-property login-page-btn">Login</p>
+                <a href="/guidebook" class="nav-links-property">GuideBook</a>
+            <% } %>
         </nav>
         <nav class="mobile-nav-container nav-select">
             <div class="form-group">
@@ -43,424 +42,414 @@
                         <option value="/dashboard">Dashboard</option>
                         <option value="/guidebook">Home</option>
                         <option value="/">Logout</option>
-                        <% } else { %>
-                            <option value="#login">Login</option>
-                            <option value="/guidebook">GuideBook</option>
-                            <% } %>
+                    <% } else { %>
+                        <option value="#login">Login</option>
+                        <option value="/guidebook">GuideBook</option>
+                    <% } %>
                 </select>
             </div>
         </nav>
     </header>
+
     <main>
-        <div class="main-1">
-            <div class="left-side">
-                <button class="nav-toggle" aria-label="Open menu">
-                    ☰
-                </button>
-                <div class="sidenav-wrapper">
-                    <div class="dashboard-sidenav">
-                        <h1 class="hide-in-pc">AttendSmart</h1>
-                        <div class="dash-head">
-                            <h2><span>Admin</span></h2>
-                            <div class="dash-head-nav">
-                                <a href="#adm-register">Registration</a>
-                                <a href="#subjects-upload">Subjects Upload</a>
-                                <a href="#schedule-upload">Schedule Upload</a>
-                            </div>
-                        </div>
-                        <div class="dash-head">
-                            <h2><span>Student</span></h2>
-                            <div class="dash-head-nav">
-                                <a href="#face-upload">Face Verification</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="right-side">
-                <div class="guide">
-                    <div class="adm-register font-styling" id="adm-register">
-                        <h1><i class="fa-solid fa-1"></i> | Admin Registration</h1>
-                        <p>
-                            Fill in all the details to the best of you knowledge. Any discripency or misuse found
-                            regarding your account will result into suspension.
-                        </p>
-                        <p>
-                            <b>Once you have completed the registration~</b>
-                        </p>
-                        <ul>
-                            <li>Log into your account</li>
-                            <li>You'll be redirected to your dashboard</li>
-                            <li>Complete the rest of the setup</li>
-                            <li>
-                                After the upload of CSV files is done, and setup is completed, you're advised to send
-                                the registration link to the users of your organization
-                            </li>
-                        </ul>
-                        <p>
-                            <b class="error">
-                                NOTE: DO NOT send the registration link to the users until the setup is completed
-                                without any errors.
-                            </b>
-                        </p>
-                    </div>
-                    <div class="excel-upload font-styling" id="subjects-upload">
-                        <h1><i class="fa-solid fa-2"></i> | CSV Files Upload Guide</h1>
-                        <p>
-                            These <b>CSV files</b> are used to configure subjects and lock attendance rules for
-                            students.
-                            Please follow the format carefully. Even small deviations can cause upload failures.
-                        </p>
+        <div class="guidebook-shell">
+            <section class="guide-hero">
+                <p class="eyebrow">Guidebook</p>
+                <h1>Setup and upload guidance for AttendSmart</h1>
+                <p>Follow each section in order for smooth onboarding and accurate attendance tracking.</p>
+            </section>
 
-                        <h2>CSV File Structure Overview</h2>
-                        <p>
-                            Each CSV file must contain headers in the first row. Subjects inside cells should be
-                            <b>comma-separated</b>.
-                        </p>
+            <nav class="guide-nav" aria-label="Guidebook Sections">
+                <a href="#adm-register">Admin Registration</a>
+                <a href="#subjects-upload">Subjects CSV</a>
+                <a href="#schedule-upload">Schedule CSV</a>
+                <a href="#face-upload">Face Upload</a>
+            </nav>
 
-                        <p><b>Common CSV Headers:</b></p>
-                        <ul>
-                            <li><b>class</b> – Class number (school) or department code (college)</li>
-                            <li><b>majors</b> – Compulsory / common subjects</li>
-                            <li><b>optionals</b> – Stream-based or elective subjects</li>
-                            <li><b>minors</b> – Minor subjects, if applicable</li>
-                        </ul>
+            <div class="guide-content">
+                <section class="guide-card font-styling" id="adm-register">
+                    <h2><i class="fa-solid fa-1"></i> | Admin Registration</h2>
+                    <p>
+                        Fill in all the details to the best of you knowledge. Any discripency or misuse found
+                        regarding your account will result into suspension.
+                    </p>
+                    <p>
+                        <b>Once you have completed the registration~</b>
+                    </p>
+                    <ul>
+                        <li>Log into your account</li>
+                        <li>You'll be redirected to your dashboard</li>
+                        <li>Complete the rest of the setup</li>
+                        <li>
+                            After the upload of CSV files is done, and setup is completed, you're advised to send
+                            the registration link to the users of your organization
+                        </li>
+                    </ul>
+                    <p>
+                        <b class="error">
+                            NOTE: DO NOT send the registration link to the users until the setup is completed
+                            without any errors.
+                        </b>
+                    </p>
+                </section>
 
-                        <h2>School Use Case</h2>
+                <section class="guide-card font-styling" id="subjects-upload">
+                    <h2><i class="fa-solid fa-2"></i> | CSV Files Upload Guide</h2>
+                    <p>
+                        These <b>CSV files</b> are used to configure subjects and lock attendance rules for
+                        students.
+                        Please follow the format carefully. Even small deviations can cause upload failures.
+                    </p>
 
-                        <h3>Classes 1–8 (Primary & Middle School)</h3>
-                        <ul>
-                            <li><b>Class:</b> Enter the class number (e.g. 5, 6, 7)</li>
-                            <li><b>Majors:</b> All compulsory subjects for the class</li>
-                            <li><b>Optionals / Minors:</b> Enter only if your school offers them</li>
-                        </ul>
+                    <h3>CSV File Structure Overview</h3>
+                    <p>
+                        Each CSV file must contain headers in the first row. Subjects inside cells should be
+                        <b>comma-separated</b>.
+                    </p>
 
-                        <p><b>Sample CSV:</b></p>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>class</th>
-                                    <th>majors</th>
-                                    <th>optionals</th>
-                                    <th>minors</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>5</td>
-                                    <td>English Language, English Literature, Mathematics, Science, Social Science</td>
-                                    <td>Hindi, Bengali, Computer Applications</td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <p><b>Common CSV Headers:</b></p>
+                    <ul>
+                        <li><b>class</b> - Class number (school) or department code (college)</li>
+                        <li><b>majors</b> - Compulsory / common subjects</li>
+                        <li><b>optionals</b> - Stream-based or elective subjects</li>
+                        <li><b>minors</b> - Minor subjects, if applicable</li>
+                    </ul>
 
-                        <h3>Classes 9–10 (Stream-Based Structure)</h3>
-                        <ul>
-                            <li><b>Class:</b> Enter 9 or 10</li>
-                            <li><b>Majors:</b> Subjects common to all streams</li>
-                            <li><b>Optionals:</b> Stream-specific subjects</li>
-                            <li><b>Minors:</b> Usually not applicable</li>
-                        </ul>
+                    <h3>School Use Case</h3>
 
-                        <p>
-                            <b class="tip">
-                                Example: If <em>English Language</em> and <em>English Literature</em> are common across
-                                all
-                                streams, they go into <b>Majors</b>. Physics, Accounts, History, etc. go into
-                                <b>Optionals</b>.
-                            </b>
-                        </p>
+                    <h4>Classes 1-8 (Primary & Middle School)</h4>
+                    <ul>
+                        <li><b>Class:</b> Enter the class number (e.g. 5, 6, 7)</li>
+                        <li><b>Majors:</b> All compulsory subjects for the class</li>
+                        <li><b>Optionals / Minors:</b> Enter only if your school offers them</li>
+                    </ul>
 
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>class</th>
-                                    <th>majors</th>
-                                    <th>optionals</th>
-                                    <th>minors</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>10</td>
-                                    <td>English Language, English Literature, Physical Training, Games</td>
-                                    <td>Physics, Chemistry, Mathematics, Biology, History, Geography, Accounts</td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <p><b>Sample CSV:</b></p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>class</th>
+                                <th>majors</th>
+                                <th>optionals</th>
+                                <th>minors</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>5</td>
+                                <td>English Language, English Literature, Mathematics, Science, Social Science</td>
+                                <td>Hindi, Bengali, Computer Applications</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                        <p>
-                            <b class="error">
-                                NOTE: If PT or Games attendance is required, they <u>must</u> be included in the
-                                <b>Majors</b> column. Otherwise, attendance will not be recorded.
-                            </b>
-                        </p>
+                    <h4>Classes 9-10 (Stream-Based Structure)</h4>
+                    <ul>
+                        <li><b>Class:</b> Enter 9 or 10</li>
+                        <li><b>Majors:</b> Subjects common to all streams</li>
+                        <li><b>Optionals:</b> Stream-specific subjects</li>
+                        <li><b>Minors:</b> Usually not applicable</li>
+                    </ul>
 
-                        <h2>Common Mistakes</h2>
-                        <ul>
-                            <li>Do not add stream-specific subjects to <b>Majors</b> for Classes 9–10.</li>
-                            <li>Do not leave the <b>Majors</b> column empty.</li>
-                            <li>Do not create multiple rows for different streams of the same class.</li>
-                            <li>Subjects inside a cell must be comma-separated, not line-separated.</li>
-                        </ul>
+                    <p>
+                        <b class="tip">
+                            Example: If <em>English Language</em> and <em>English Literature</em> are common across all
+                            streams, they go into <b>Majors</b>. Physics, Accounts, History, etc. go into
+                            <b>Optionals</b>.
+                        </b>
+                    </p>
 
-                        <h2>College Use Case</h2>
-                        <p>
-                            College CSV files are department-based and cumulative across semesters.
-                        </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>class</th>
+                                <th>majors</th>
+                                <th>optionals</th>
+                                <th>minors</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>10</td>
+                                <td>English Language, English Literature, Physical Training, Games</td>
+                                <td>Physics, Chemistry, Mathematics, Biology, History, Geography, Accounts</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                        <ul>
-                            <li><b>Class:</b> Department short code (CSE, EEE, EE, IT, ME, etc.)</li>
-                            <li><b>Majors:</b> All compulsory subjects from 1st to final semester (common to all
-                                students)</li>
-                            <li><b>Optionals:</b> All elective subjects across all semesters</li>
-                            <li><b>Minors:</b> Minor subjects, if applicable</li>
-                        </ul>
+                    <p>
+                        <b class="error">
+                            NOTE: If PT or Games attendance is required, they <u>must</u> be included in the
+                            <b>Majors</b> column. Otherwise, attendance will not be recorded.
+                        </b>
+                    </p>
 
-                        <p><b>Sample CSV:</b></p>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>class</th>
-                                    <th>majors</th>
-                                    <th>optionals</th>
-                                    <th>minors</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>IT</td>
-                                    <td>Programming Fundamentals, OOP, Data Structures, DBMS, OS, Computer Networks, Web
-                                        Technologies</td>
-                                    <td>AI, ML, Cloud Computing, Cyber Security</td>
-                                    <td>Mathematics, Management Studies</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <h3>Common Mistakes</h3>
+                    <ul>
+                        <li>Do not add stream-specific subjects to <b>Majors</b> for Classes 9-10.</li>
+                        <li>Do not leave the <b>Majors</b> column empty.</li>
+                        <li>Do not create multiple rows for different streams of the same class.</li>
+                        <li>Subjects inside a cell must be comma-separated, not line-separated.</li>
+                    </ul>
 
-                        <p class="tip">
-                            Tip: Do <b>not</b> split subjects semester-wise in CSV. The system automatically maps them
-                            during attendance processing.
-                        </p>
-                        <p class="tip">
-                            Tip: Do not remove any column from the CSV. If a field is not applicable to your
-                            organization, keep the column and leave its value empty.
-                        </p>
-                    </div>
-                    <div class="font-styling" id="schedule-upload">
-                        <h1><i class="fa-solid fa-3"></i> | Schedule CSV Upload Guide</h1>
+                    <h3>College Use Case</h3>
+                    <p>
+                        College CSV files are department-based and cumulative across semesters.
+                    </p>
 
-                        <p>
-                            This CSV file is used to configure <b>daily check-in and check-out schedules</b> for your
-                            organization.
-                            Each day can have a <b>day shift</b> and an optional <b>night shift</b>.
-                        </p>
+                    <ul>
+                        <li><b>Class:</b> Department short code (CSE, EEE, EE, IT, ME, etc.)</li>
+                        <li><b>Majors:</b> All compulsory subjects from 1st to final semester (common to all
+                            students)</li>
+                        <li><b>Optionals:</b> All elective subjects across all semesters</li>
+                        <li><b>Minors:</b> Minor subjects, if applicable</li>
+                    </ul>
 
-                        <h2>CSV File Structure</h2>
-                        <p>
-                            The CSV file must contain the following headers exactly as shown.
-                            Header names are case-insensitive.
-                        </p>
+                    <p><b>Sample CSV:</b></p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>class</th>
+                                <th>majors</th>
+                                <th>optionals</th>
+                                <th>minors</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>IT</td>
+                                <td>Programming Fundamentals, OOP, Data Structures, DBMS, OS, Computer Networks, Web
+                                    Technologies</td>
+                                <td>AI, ML, Cloud Computing, Cyber Security</td>
+                                <td>Mathematics, Management Studies</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Column</th>
-                                    <th>Description</th>
-                                    <th>Required</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>day</td>
-                                    <td>Day of the week (Monday–Sunday)</td>
-                                    <td>Yes</td>
-                                </tr>
-                                <tr>
-                                    <td>day_check_in</td>
-                                    <td>Day shift check-in time (HH:MM)</td>
-                                    <td>Yes</td>
-                                </tr>
-                                <tr>
-                                    <td>day_check_out</td>
-                                    <td>Day shift check-out time (HH:MM)</td>
-                                    <td>Yes</td>
-                                </tr>
-                                <tr>
-                                    <td>night_check_in</td>
-                                    <td>Night shift check-in time (HH:MM)</td>
-                                    <td>No</td>
-                                </tr>
-                                <tr>
-                                    <td>night_check_out</td>
-                                    <td>Night shift check-out time (HH:MM)</td>
-                                    <td>No</td>
-                                </tr>
-                                <tr>
-                                    <td>grace</td>
-                                    <td>Grace period in minutes (0–60)</td>
-                                    <td>Yes</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <p class="tip">
+                        Tip: Do <b>not</b> split subjects semester-wise in CSV. The system automatically maps them
+                        during attendance processing.
+                    </p>
+                    <p class="tip">
+                        Tip: Do not remove any column from the CSV. If a field is not applicable to your
+                        organization, keep the column and leave its value empty.
+                    </p>
+                </section>
 
-                        <h2>Valid Values & Rules</h2>
-                        <ul>
-                            <li>
-                                <b>day</b> must be one of:
-                                <em>Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday</em>
-                            </li>
-                            <li>
-                                Each day can appear <b>only once</b> in the CSV.
-                            </li>
-                            <li>
-                                Time format must be <b>24-hour HH:MM</b> (e.g. 09:30, 17:45).
-                            </li>
-                            <li>
-                                <b>Night shift is optional</b>, but if provided, both
-                                <b>night_check_in</b> and <b>night_check_out</b> must be filled.
-                            </li>
-                            <li>
-                                <b>grace</b> must be a number between <b>0 and 60</b>.
-                            </li>
-                        </ul>
+                <section class="guide-card font-styling" id="schedule-upload">
+                    <h2><i class="fa-solid fa-3"></i> | Schedule CSV Upload Guide</h2>
 
-                        <p class="tip">
-                            Tip: Even if a shift is not applicable, the column must still be present in the CSV.
-                            You may leave the value empty.
-                        </p>
+                    <p>
+                        This CSV file is used to configure <b>daily check-in and check-out schedules</b> for your
+                        organization.
+                        Each day can have a <b>day shift</b> and an optional <b>night shift</b>.
+                    </p>
 
-                        <h2>Sample CSV</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>day</th>
-                                    <th>day_check_in</th>
-                                    <th>day_check_out</th>
-                                    <th>night_check_in</th>
-                                    <th>night_check_out</th>
-                                    <th>grace</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Monday</td>
-                                    <td>09:00</td>
-                                    <td>17:00</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                    <td>Tuesday</td>
-                                    <td>09:00</td>
-                                    <td>17:00</td>
-                                    <td>22:00</td>
-                                    <td>06:00</td>
-                                    <td>5</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <h3>CSV File Structure</h3>
+                    <p>
+                        The CSV file must contain the following headers exactly as shown.
+                        Header names are case-insensitive.
+                    </p>
 
-                        <h2>Common Mistakes</h2>
-                        <ul>
-                            <li>
-                                Using invalid day names (e.g. <em>Mon</em>, <em>Fri</em>, <em>Holiday</em>)
-                            </li>
-                            <li>
-                                Entering only one night shift time without the other
-                            </li>
-                            <li>
-                                Removing unused columns instead of leaving them empty
-                            </li>
-                            <li>
-                                Using incorrect time formats (e.g. 9:00 AM, 17.00)
-                            </li>
-                            <li>
-                                Setting grace values outside the range 0–60
-                            </li>
-                        </ul>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Column</th>
+                                <th>Description</th>
+                                <th>Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>day</td>
+                                <td>Day of the week (Monday-Sunday)</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>day_check_in</td>
+                                <td>Day shift check-in time (HH:MM)</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>day_check_out</td>
+                                <td>Day shift check-out time (HH:MM)</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>night_check_in</td>
+                                <td>Night shift check-in time (HH:MM)</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>night_check_out</td>
+                                <td>Night shift check-out time (HH:MM)</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>grace</td>
+                                <td>Grace period in minutes (0-60)</td>
+                                <td>Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                        <p class="error">
-                            NOTE: Uploading a new schedule will <b>replace the existing schedule</b> for your
-                            organization.
-                            Make sure all required days are included in the CSV.
-                        </p>
-                    </div>
-                    <div class="face-upload font-styling" id="face-upload">
-                        <h1><i class="fa-solid fa-4"></i> | Face Image Upload Guide</h1>
+                    <h3>Valid Values & Rules</h3>
+                    <ul>
+                        <li>
+                            <b>day</b> must be one of:
+                            <em>Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday</em>
+                        </li>
+                        <li>
+                            Each day can appear <b>only once</b> in the CSV.
+                        </li>
+                        <li>
+                            Time format must be <b>24-hour HH:MM</b> (e.g. 09:30, 17:45).
+                        </li>
+                        <li>
+                            <b>Night shift is optional</b>, but if provided, both
+                            <b>night_check_in</b> and <b>night_check_out</b> must be filled.
+                        </li>
+                        <li>
+                            <b>grace</b> must be a number between <b>0 and 60</b>.
+                        </li>
+                    </ul>
 
-                        <p>
-                            This image will be used for <b>face verification and attendance</b>.
-                            Please upload a clear and accurate photo to ensure reliable recognition.
-                        </p>
+                    <p class="tip">
+                        Tip: Even if a shift is not applicable, the column must still be present in the CSV.
+                        You may leave the value empty.
+                    </p>
 
-                        <h2>Image Requirements</h2>
-                        <ul>
-                            <li>
-                                The image must contain <b>only one person</b>.
-                            </li>
-                            <li>
-                                The face must be <b>clearly visible</b> and facing the camera.
-                            </li>
-                            <li>
-                                The image should be <b>well-lit</b> (avoid shadows or very dim lighting).
-                            </li>
-                            <li>
-                                <b>No masks, sunglasses, or face coverings</b>.
-                            </li>
-                            <li>
-                                Avoid blurry, pixelated, or low-quality images.
-                            </li>
-                        </ul>
+                    <h3>Sample CSV</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>day</th>
+                                <th>day_check_in</th>
+                                <th>day_check_out</th>
+                                <th>night_check_in</th>
+                                <th>night_check_out</th>
+                                <th>grace</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Monday</td>
+                                <td>09:00</td>
+                                <td>17:00</td>
+                                <td></td>
+                                <td></td>
+                                <td>10</td>
+                            </tr>
+                            <tr>
+                                <td>Tuesday</td>
+                                <td>09:00</td>
+                                <td>17:00</td>
+                                <td>22:00</td>
+                                <td>06:00</td>
+                                <td>5</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                        <h2>Recommended Guidelines</h2>
-                        <ul>
-                            <li>
-                                Neutral facial expression (no exaggerated expressions).
-                            </li>
-                            <li>
-                                Plain or simple background is preferred.
-                            </li>
-                            <li>
-                                Face should occupy a reasonable portion of the image (not too far or too close).
-                            </li>
-                            <li>
-                                Use a recent photo that reflects your current appearance.
-                            </li>
-                        </ul>
+                    <h3>Common Mistakes</h3>
+                    <ul>
+                        <li>
+                            Using invalid day names (e.g. <em>Mon</em>, <em>Fri</em>, <em>Holiday</em>)
+                        </li>
+                        <li>
+                            Entering only one night shift time without the other
+                        </li>
+                        <li>
+                            Removing unused columns instead of leaving them empty
+                        </li>
+                        <li>
+                            Using incorrect time formats (e.g. 9:00 AM, 17.00)
+                        </li>
+                        <li>
+                            Setting grace values outside the range 0-60
+                        </li>
+                    </ul>
 
-                        <p class="tip">
-                            Tip: A front-facing mobile camera photo taken in daylight usually works best.
-                        </p>
+                    <p class="error">
+                        NOTE: Uploading a new schedule will <b>replace the existing schedule</b> for your
+                        organization.
+                        Make sure all required days are included in the CSV.
+                    </p>
+                </section>
 
-                        <h2>Allowed File Types</h2>
-                        <ul>
-                            <li><b>JPG / JPEG</b></li>
-                            <li><b>PNG</b></li>
-                        </ul>
+                <section class="guide-card font-styling" id="face-upload">
+                    <h2><i class="fa-solid fa-4"></i> | Face Image Upload Guide</h2>
 
-                        <h2>Common Reasons for Rejection</h2>
-                        <ul>
-                            <li>Multiple faces detected in the image</li>
-                            <li>Face partially covered (mask, scarf, hand, hair)</li>
-                            <li>Side-face or tilted head</li>
-                            <li>Very dark or overexposed images</li>
-                            <li>Edited, filtered, or AI-generated images</li>
-                        </ul>
+                    <p>
+                        This image will be used for <b>face verification and attendance</b>.
+                        Please upload a clear and accurate photo to ensure reliable recognition.
+                    </p>
 
-                        <p class="error">
-                            NOTE: Uploading an unclear or incorrect image may cause face verification
-                            failures during attendance. Please upload carefully.
-                        </p>
-                    </div>
+                    <h3>Image Requirements</h3>
+                    <ul>
+                        <li>
+                            The image must contain <b>only one person</b>.
+                        </li>
+                        <li>
+                            The face must be <b>clearly visible</b> and facing the camera.
+                        </li>
+                        <li>
+                            The image should be <b>well-lit</b> (avoid shadows or very dim lighting).
+                        </li>
+                        <li>
+                            <b>No masks, sunglasses, or face coverings</b>.
+                        </li>
+                        <li>
+                            Avoid blurry, pixelated, or low-quality images.
+                        </li>
+                    </ul>
 
-                </div>
+                    <h3>Recommended Guidelines</h3>
+                    <ul>
+                        <li>
+                            Neutral facial expression (no exaggerated expressions).
+                        </li>
+                        <li>
+                            Plain or simple background is preferred.
+                        </li>
+                        <li>
+                            Face should occupy a reasonable portion of the image (not too far or too close).
+                        </li>
+                        <li>
+                            Use a recent photo that reflects your current appearance.
+                        </li>
+                    </ul>
+
+                    <p class="tip">
+                        Tip: A front-facing mobile camera photo taken in daylight usually works best.
+                    </p>
+
+                    <h3>Allowed File Types</h3>
+                    <ul>
+                        <li><b>JPG / JPEG</b></li>
+                        <li><b>PNG</b></li>
+                    </ul>
+
+                    <h3>Common Reasons for Rejection</h3>
+                    <ul>
+                        <li>Multiple faces detected in the image</li>
+                        <li>Face partially covered (mask, scarf, hand, hair)</li>
+                        <li>Side-face or tilted head</li>
+                        <li>Very dark or overexposed images</li>
+                        <li>Edited, filtered, or AI-generated images</li>
+                    </ul>
+
+                    <p class="error">
+                        NOTE: Uploading an unclear or incorrect image may cause face verification
+                        failures during attendance. Please upload carefully.
+                    </p>
+                </section>
             </div>
         </div>
     </main>
+
     <footer>
         <div class="foot-content">
             <div class="foot1">
@@ -498,7 +487,6 @@
             </div>
         </div>
     </footer>
-    <script src="/js/global/layout/side-nav.js"></script>
     <script src="/js/global/layout/rearrange-footer.js"></script>
 </body>
 

@@ -13,6 +13,7 @@ main {
 html {
   scroll-behavior: smooth;
 }
+header {gap: 48rem;}
 .main-1 {
     height: 70vh;
     display: flex;
@@ -110,10 +111,6 @@ html {
 }
 .hide-in-pc {display: none}
 
-@media (max-width: 540px) {
-
-}
-
 @media (max-width: 1023px) {
     .hide-in-mobile {display: none};
     .mobile-hidden {display: none;}
@@ -138,6 +135,7 @@ html {
         color: var(--accent);
         cursor: pointer;
     }
+    .left-side {display: none;}
     .sidenav-wrapper {
         position: fixed;
         inset: 0;
@@ -192,5 +190,5 @@ html {
         gap: 33rem;
     }
     .main-1 {width: 84%;}
-    .right-side {width: 33%}
+    .right-side {width: 98%}
 }

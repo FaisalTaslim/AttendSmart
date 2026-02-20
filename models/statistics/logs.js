@@ -78,7 +78,6 @@ const logSchema = new Schema({
             _id: false,
         }
     ],
-
     studentAttendanceHistory: [
         {
             code: {type: String, required: true},
@@ -101,7 +100,6 @@ const logSchema = new Schema({
             _id: false,
         }
     ],
-
     employeeAttendanceHistory: [
         {
             code: {type: String, required: true},
@@ -124,7 +122,6 @@ const logSchema = new Schema({
             _id: false,
         }
     ],
-
     leave: [
         {
             code: {type: String, required: true},

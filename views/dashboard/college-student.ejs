@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student</title>
+    <title>College Student Dashboard</title>
     <link rel="stylesheet" href="/css/global/theme/light-theme.css">
     <link rel="stylesheet" href="/css/global/ui-components/font-family.css">
     <link rel="stylesheet" href="/css/global/ui-components/scrollbar.css">
@@ -12,9 +12,6 @@
     <link rel="stylesheet" href="/css/global/layout/footer.css">
     <link rel="stylesheet" href="/css/global/ui-components/forms.css">
     <link rel="stylesheet" href="/css/global/ui-componenets/popup.css">
-    <!-- <link rel="stylesheet" href="/css/page-specific/homepage/main.css"> -->
-    <link rel="stylesheet" href="/css/global/layout/dashboard-main.css">
-    <link rel="stylesheet" href="/css/page-specific/dashboard/admin.css">
     <link rel="stylesheet" href="/css/page-specific/dashboard/college-student.css">
 
     <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
@@ -45,59 +42,68 @@
             </div>
         </nav>
     </header>
+
     <main>
-        <div class="main-1">
-            <div class="left-side">
-                <button class="nav-toggle" aria-label="Open menu">
-                    ☰
-                </button>
-                <div class="sidenav-wrapper">
-                    <div class="dashboard-sidenav">
-                        <h1 class="hide-in-pc">AttendSmart</h1>
-
-                        <div class="dash-head">
-                            <h2><span>General</span></h2>
-                            <div class="dash-head-nav">
-                                <% if (setup===false) { %>
-                                    <p id="finish-setup">Finish setup</p>
-                                    <% } %>
-                                        <p>Profile Settings</p>
-                            </div>
-                        </div>
-
-                        <div class="dash-head">
-                            <h2><span>My Attendance</span></h2>
-                            <div class="dash-head-nav">
-                                <p>Attendance Summary</p>
-                                <p>Download Attendance Report</p>
-                            </div>
-                        </div>
-
-                        <div class="dash-head">
-                            <h2><span>Academics</span></h2>
-                            <div class="dash-head-nav">
-                                <p>My Subjects</p>
-                            </div>
-                        </div>
-
-                        <div class="dash-head">
-                            <h2><span>Requests</span></h2>
-                            <div class="dash-head-nav">
-                                <p>Apply for Leave</p>
-                                <p>Leave Status</p>
-                            </div>
-                        </div>
-
-                        <div class="dash-head">
-                            <h2><span>Communication</span></h2>
-                            <div class="dash-head-nav">
-                                <p>View Notices</p>
-                            </div>
-                        </div>
-                    </div>
+        <div class="main-1 college-student-shell">
+            <section class="student-hero">
+                <div class="hero-content">
+                    <p class="hero-tag">College Student Dashboard</p>
+                    <h1>Track attendance, academics, requests, and notices in one place</h1>
+                    <p>Your college workflows are organized in responsive cards for quick daily access.</p>
                 </div>
-            </div>
-            <div class="right-side">
+                <div class="hero-status">
+                    <% if (setup===false) { %>
+                        <div id="finish-setup" class="status-badge status-alert">Finish setup</div>
+                    <% } else { %>
+                        <div class="status-badge status-ok">Setup complete</div>
+                    <% } %>
+                    <div class="status-badge">College Portal</div>
+                </div>
+            </section>
+
+            <section class="quick-grid">
+                <article class="quick-card">
+                    <h3>General</h3>
+                    <div class="card-links">
+                        <% if (setup===false) { %>
+                            <p id="finish-setup">Finish setup</p>
+                        <% } %>
+                        <p>Profile Settings</p>
+                    </div>
+                </article>
+
+                <article class="quick-card">
+                    <h3>My Attendance</h3>
+                    <div class="card-links">
+                        <p>Attendance Summary</p>
+                        <p>Download Attendance Report</p>
+                    </div>
+                </article>
+
+                <article class="quick-card">
+                    <h3>Academics</h3>
+                    <div class="card-links">
+                        <p>My Subjects</p>
+                    </div>
+                </article>
+
+                <article class="quick-card">
+                    <h3>Requests</h3>
+                    <div class="card-links">
+                        <p>Apply for Leave</p>
+                        <p>Leave Status</p>
+                    </div>
+                </article>
+
+                <article class="quick-card">
+                    <h3>Communication</h3>
+                    <div class="card-links">
+                        <p>View Notices</p>
+                    </div>
+                </article>
+            </section>
+
+            <section class="setup-uploads">
                 <% if (setup===false) { %>
                     <div class="upload-card">
                         <h2>Complete the setup</h2>
@@ -111,7 +117,7 @@
 
                             <label for="face" class="upload-label">
                                 <div class="upload-content">
-                                    <div class="upload-icon">📸</div>
+                                    <div class="upload-icon"><i class="fa-solid fa-camera"></i></div>
                                     <p class="upload-title">Upload your clear face image</p>
                                     <p class="upload-subtitle">PNG or JPG • One face only</p>
                                 </div>
@@ -122,10 +128,11 @@
                             <b>Note:</b> You can update your face data later from settings.
                         </p>
                     </div>
-                    <% } %>
-            </div>
+                <% } %>
+            </section>
         </div>
     </main>
+
     <footer>
         <div class="foot-content">
             <div class="foot1">
@@ -162,7 +169,7 @@
             </div>
         </div>
     </footer>
-    <script src="/js/global/layout/side-nav.js"></script>
+
     <script src="/js/global/layout/rearrange-footer.js"></script>
     <script src="/js/global/face-api/face-api.min.js"></script>
     <script src="/js/global/face-api/face-init.js"></script>

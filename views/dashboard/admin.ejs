@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="/css/global/layout/footer.css">
     <link rel="stylesheet" href="/css/global/ui-components/forms.css">
     <link rel="stylesheet" href="/css/global/ui-componenets/popup.css">
-    <link rel="stylesheet" href="/css/global/layout/dashboard-main.css">
     <link rel="stylesheet" href="/css/page-specific/dashboard/admin.css">
 
     <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
@@ -43,100 +42,159 @@
             </div>
         </nav>
     </header>
+
     <main>
-        <div class="main-1">
-            <div class="left-side">
-                <button class="nav-toggle" aria-label="Open menu">
-                    ☰
-                </button>
-                <div class="sidenav-wrapper">
-                    <div class="dashboard-sidenav">
-                        <h1 class="hide-in-pc">AttendSmart</h1>
-                        <div class="dash-head">
-                            <h2><span>General</span></h2>
-                            <div class="dash-head-nav">
-                                <% if (type !=='corporate' && (subjectsUpload===false && scheduleUpload===false)) { %>
-                                    <p id="finish-setup">Finish setup</p>
-                                    <% } else if(type==='corporate' && scheduleUpload===false) { %>
-                                        <p id="finish-setup">Finish setup</p>
-                                        <% }%>
-                                            <p>Settings</p>
-                            </div>
-                        </div>
-
-                        <div class="dash-head">
-                            <h2><span>Attendance Control</span></h2>
-                            <div class="dash-head-nav">
-                                <p>Edit Attendance</p>
-                                <p>View Attendance Summary</p>
-                                <p>Download Reports</p>
-                            </div>
-                        </div>
-
-
-                        <div class="dash-head">
-                            <h2><span>User & Data Management</span></h2>
-                            <div class="dash-head-nav">
-                                <p>View Users</p>
-                                <p>Add Users</p>
-                                <p>Remove / Suspend Users</p>
-                                <p>Accept / Reject Leave Requests</p>
-                                <p>View Logs</p>
-                            </div>
-                        </div>
-
-                        <div class="dash-head">
-                            <h2><span>Communication</span></h2>
-                            <div class="dash-head-nav">
-                                <p>Send Notice</p>
-                            </div>
-                        </div>
-                    </div>
+        <div class="main-1 admin-shell">
+            <section class="admin-hero">
+                <div class="hero-content">
+                    <p class="hero-tag">Admin Control Center</p>
+                    <h1>Manage your organization from one modern dashboard</h1>
+                    <p>Everything from setup to reports is grouped below for faster access and cleaner workflows.</p>
                 </div>
-            </div>
-            <div class="right-side">
+                <div class="hero-status">
+                    <% if (type !=='corporate' && (subjectsUpload===false && scheduleUpload===false)) { %>
+                        <div id="finish-setup" class="status-badge status-alert">Finish setup</div>
+                    <% } else if (type==='corporate' && scheduleUpload===false) { %>
+                        <div id="finish-setup" class="status-badge status-alert">Finish setup</div>
+                    <% } else { %>
+                        <div class="status-badge status-ok">Setup complete</div>
+                    <% } %>
+                    <div class="status-badge">Account: <%= type %></div>
+                </div>
+            </section>
+
+            <section class="quick-grid">
+                <article class="quick-card">
+                    <h3>Account & Organization</h3>
+                    <div class="card-links">
+                        <p>Account & Security</p>
+                        <p>Organization Details</p>
+                        <p>Appearance & Preferences</p>
+                    </div>
+                </article>
+
+                <article class="quick-card">
+                    <h3>Attendance</h3>
+                    <div class="card-links">
+                        <p>Attendance Settings</p>
+                        <p>Edit Attendance</p>
+                        <p>Attendance Summary</p>
+                        <p>Download Reports</p>
+                    </div>
+                </article>
+
+                <article class="quick-card">
+                    <h3>Face Recognition</h3>
+                    <div class="card-links">
+                        <p>Face Registration</p>
+                        <p>Recognition Settings</p>
+                        <p>Reset Face Data</p>
+                    </div>
+                </article>
+
+                <article class="quick-card">
+                    <h3>User Management</h3>
+                    <div class="card-links">
+                        <p>View Users</p>
+                        <p>Add Users</p>
+                        <p>Suspend / Remove Users</p>
+                        <p>Leave Requests</p>
+                    </div>
+                </article>
+
+                <article class="quick-card">
+                    <h3>Academic Configuration</h3>
+                    <div class="card-links">
+                        <p>Subjects</p>
+                        <p>Schedules</p>
+                        <p>Academic Year</p>
+                    </div>
+                </article>
+
+                <article class="quick-card">
+                    <h3>Communication</h3>
+                    <div class="card-links">
+                        <p>Send Notice</p>
+                        <p>Announcements</p>
+                    </div>
+                </article>
+
+                <article class="quick-card">
+                    <h3>Logs & Reports</h3>
+                    <div class="card-links">
+                        <p>Activity Logs</p>
+                        <p>Attendance Logs</p>
+                        <p>System Logs</p>
+                    </div>
+                </article>
+
+                <article class="quick-card">
+                    <h3>Support</h3>
+                    <div class="card-links">
+                        <p>Support Requests</p>
+                        <p>Help & Guidebook</p>
+                    </div>
+                </article>
+
+                <article class="quick-card danger-zone">
+                    <h3>Danger Zone</h3>
+                    <div class="card-links">
+                        <p>Reset Attendance Data</p>
+                        <p>Reset Face Data</p>
+                        <p>Lock Organization</p>
+                    </div>
+                </article>
+            </section>
+
+            <section class="setup-uploads">
                 <% if (type !=='corporate' && subjectsUpload===false) { %>
                     <div class="upload-card">
                         <h2>Complete the setup</h2>
                         <p>
                             Read the <a href="/guideboook" class="link">guide</a> before you submit these csv files.
-                            Also feel free to reach out for <a href="/" class="link">support</a> if you need any help.
+                            Also feel free to reach out for <a href="/" class="link">support</a> if you need any
+                            help.
                         </p>
                         <form id="subjectsForm" enctype="multipart/form-data">
                             <input type="file" id="subjectsCsv" name="subjectsCsv" accept=".csv" hidden>
 
                             <label for="subjectsCsv" class="upload-label">
                                 <div class="upload-content">
-                                    <div class="upload-icon">📄</div>
+                                    <div class="upload-icon"><i class="fa-solid fa-file-arrow-up"></i></div>
                                     <p class="upload-title">Upload the subjects CSV file</p>
                                     <p class="upload-subtitle">Only .csv files are supported</p>
                                 </div>
                             </label>
                         </form>
                     </div>
-                    <% } %>
+                <% } %>
 
-                        <% if (scheduleUpload===false) { %>
-                            <div class="upload-card">
-                                <form id="scheduleForm" enctype="multipart/form-data">
-                                    <input type="file" id="scheduleCsv" name="scheduleCsv" accept=".csv" hidden>
+                <% if (scheduleUpload===false) { %>
+                    <div class="upload-card">
+                        <h2>Schedule setup</h2>
+                        <form id="scheduleForm" enctype="multipart/form-data">
+                            <input type="file" id="scheduleCsv" name="scheduleCsv" accept=".csv" hidden>
 
-                                    <label for="scheduleCsv" class="upload-label">
-                                        <div class="upload-content">
-                                            <div class="upload-icon">📄</div>
-                                            <p class="upload-title">Upload the schedule CSV file</p>
-                                            <p class="upload-subtitle">Only .csv files are supported</p>
-                                        </div>
-                                    </label>
-                                </form>
-                                <p class="tip"><b>Note:</b> You can later make changes in subjects and schedule list
-                                    through
-                                    settings</p>
-                            </div>
-                            <% } %>
-            </div>
+                            <label for="scheduleCsv" class="upload-label">
+                                <div class="upload-content">
+                                    <div class="upload-icon"><i class="fa-solid fa-calendar-plus"></i></div>
+                                    <p class="upload-title">Upload the schedule CSV file</p>
+                                    <p class="upload-subtitle">Only .csv files are supported</p>
+                                </div>
+                            </label>
+                        </form>
+                        <p class="tip"><b>Note:</b> You can later make changes in subjects and schedule list through settings</p>
+                    </div>
+                <% } %>
+            </section>
+
+            <section class="account-security">
+                <h2>Account Settings</h2>
+                <p>Central space for configuration and organization-level preferences.</p>
+            </section>
         </div>
     </main>
+
     <footer>
         <div class="foot-content">
             <div class="foot1">
@@ -173,7 +231,7 @@
             </div>
         </div>
     </footer>
-    <script src="/js/global/layout/side-nav.js"></script>
+
     <script src="/js/global/layout/rearrange-footer.js"></script>
     <script src="/js/page-specific/dashboard/admin/upload-csv.js"></script>
 </body>

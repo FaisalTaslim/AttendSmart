@@ -10,7 +10,7 @@ header {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 53rem;
+    gap: clamp(1rem, 42vw, 53rem);
     padding: 0 1rem;
     box-sizing: border-box;
     background-color: var(--bg-primary);
@@ -51,7 +51,7 @@ header {
     background-color: rgba(212, 175, 55, 0.1); 
     border: 1px solid var(--accent);
 }
-.mobile-nav:hover {
+#mobile-nav:hover {
     border-color: var(--accent, #007bff);
     background: var(--accent-light, #f0f7ff);
 }

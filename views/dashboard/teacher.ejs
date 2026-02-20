@@ -4,16 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher</title>
-    <link rel="stylesheet" href="../../public/css/global/theme/light-theme.css">
-    <link rel="stylesheet" href="../../public/css/global/ui-components/font-family.css">
-    <link rel="stylesheet" href="../../public/css/global/ui-components/scrollbar.css">
-    <link rel="stylesheet" href="../../public/css/global/layout/header.css">
-    <link rel="stylesheet" href="../../public/css/global/layout/footer.css">
-    <link rel="stylesheet" href="../../public/css/global/ui-components/forms.css">
-    <link rel="stylesheet" href="../../public/css/global/ui-componenets/popup.css">
-    <link rel="stylesheet" href="../../public/css/page-specific/homepage/main.css">
-    <link rel="stylesheet" href="../../public/css/global/layout/dashboard-main.css">
+    <title>Teacher Dashboard</title>
+    <link rel="stylesheet" href="/css/global/theme/light-theme.css">
+    <link rel="stylesheet" href="/css/global/ui-components/font-family.css">
+    <link rel="stylesheet" href="/css/global/ui-components/scrollbar.css">
+    <link rel="stylesheet" href="/css/global/layout/header.css">
+    <link rel="stylesheet" href="/css/global/layout/footer.css">
+    <link rel="stylesheet" href="/css/global/ui-components/forms.css">
+    <link rel="stylesheet" href="/css/global/ui-componenets/popup.css">
+    <link rel="stylesheet" href="/css/page-specific/dashboard/teacher.css">
 
     <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,65 +43,68 @@
             </div>
         </nav>
     </header>
+
     <main>
-        <div class="main-1">
-            <div class="right-side">
-                <button class="nav-toggle" aria-label="Open menu">
-                    ☰
-                </button>
-                <div class="sidenav-wrapper">
-                    <div class="dashboard-sidenav">
-
-                        <h1 class="hide-in-pc">AttendSmart</h1>
-
-                        <div class="dash-head">
-                            <h2><span>General</span></h2>
-                            <div class="dash-head-nav">
-                                <p>Profile</p>
-                                <p>Settings</p>
-                                <p>Support</p>
-                            </div>
-                        </div>
-
-                        <div class="dash-head">
-                            <h2><span>Attendance</span></h2>
-                            <div class="dash-head-nav">
-                                <p>Start Session</p>
-                                <p>Edit Attendance</p>
-                                <p>Attendance History</p>
-                            </div>
-                        </div>
-
-                        <div class="dash-head">
-                            <h2><span>Students</span></h2>
-                            <div class="dash-head-nav">
-                                <p>View Students</p>
-                                <p>Mark Leave</p>
-                                <p>Student Attendance</p>
-                            </div>
-                        </div>
-
-                        <div class="dash-head">
-                            <h2><span>Communication</span></h2>
-                            <div class="dash-head-nav">
-                                <p>Send Notice</p>
-                                <p>View Announcements</p>
-                            </div>
-                        </div>
-
-                        <div class="dash-head">
-                            <h2><span>Reports</span></h2>
-                            <div class="dash-head-nav">
-                                <p>Download Reports</p>
-                                <p>Monthly Summary</p>
-                            </div>
-                        </div>
-
-                    </div>
+        <div class="main-1 teacher-shell">
+            <section class="teacher-hero">
+                <div class="hero-content">
+                    <p class="hero-tag">Teacher Dashboard</p>
+                    <h1>Manage classes, attendance, students, and reports in one place</h1>
+                    <p>All teaching workflows are grouped into responsive cards for faster daily operations.</p>
                 </div>
-            </div>
+                <div class="hero-status">
+                    <div class="status-badge status-ok">Ready for Session</div>
+                    <div class="status-badge">Teacher Portal</div>
+                </div>
+            </section>
+
+            <section class="quick-grid">
+                <article class="quick-card">
+                    <h3>General</h3>
+                    <div class="card-links">
+                        <p>Profile</p>
+                        <p>Settings</p>
+                        <p>Support</p>
+                    </div>
+                </article>
+
+                <article class="quick-card">
+                    <h3>Attendance</h3>
+                    <div class="card-links">
+                        <p>Start Session</p>
+                        <p>Edit Attendance</p>
+                        <p>Attendance History</p>
+                    </div>
+                </article>
+
+                <article class="quick-card">
+                    <h3>Students</h3>
+                    <div class="card-links">
+                        <p>View Students</p>
+                        <p>Mark Leave</p>
+                        <p>Student Attendance</p>
+                    </div>
+                </article>
+
+                <article class="quick-card">
+                    <h3>Communication</h3>
+                    <div class="card-links">
+                        <p>Send Notice</p>
+                        <p>View Announcements</p>
+                    </div>
+                </article>
+
+                <article class="quick-card">
+                    <h3>Reports</h3>
+                    <div class="card-links">
+                        <p>Download Reports</p>
+                        <p>Monthly Summary</p>
+                    </div>
+                </article>
+            </section>
         </div>
     </main>
+
     <footer>
         <div class="foot-content">
             <div class="foot1">
@@ -140,8 +142,8 @@
             </div>
         </div>
     </footer>
-    <script src="../../public/js/global/layout/side-nav.js"></script>
-    <script src="../../public/js/global/layout/rearrange-footer.js"></script>
+
+    <script src="/js/global/layout/rearrange-footer.js"></script>
 </body>
 
 </html>

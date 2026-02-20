@@ -202,7 +202,20 @@ exports.login = async (req, res) => {
                 role: "employee"
             };
 
-            return res.redirect("/dashboard/employee");
+            const org = await Org.findOne({
+                code: employee.org,
+                isDeleted: false,
+                isSuspended: false,
+            }).select("type");
+
+            const employeeType = (org && org.type === "corporate") ? "corporate" : "teacher";
+            req.session.user.employeeType = employeeType;
+
+            if (employeeType === "corporate") {
+                return res.redirect("/dashboard/employee/corporate");
+            }
+
+            return res.redirect("/dashboard/employee/teacher");
         }
 
     } catch (err) {

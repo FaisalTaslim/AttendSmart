@@ -25,7 +25,6 @@ app.use('/upload', require('./routes/parse-files/upload-csv'));
 
 /* <------------- MainRoutes ----------> */
 app.use('/', require('./routes/main/main'));
-app.use('/guidebook', require('./routes/main/main'));
 app.use('/dashboard', require('./routes/main/dashboard'));
 app.use("/public/org", require("./routes/main/main"));
 
