@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capture Attendance</title>
+    <link rel="stylesheet" href="/css/global/theme/light-theme.css">
+    <link rel="stylesheet" href="/css/global/ui-components/font-family.css">
+    <link rel="stylesheet" href="/css/global/ui-components/scrollbar.css">
+    <link rel="stylesheet" href="/css/global/layout/header.css">
+    <link rel="stylesheet" href="/css/global/layout/footer.css">
+    <link rel="stylesheet" href="/css/global/ui-components/forms.css">
+    <link rel="stylesheet" href="/css/page-specific/dashboard/capture-attendance.css">
+
+    <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <h1 class="mobile-hidden">AttendSmart</h1>
+        </div>
+
+        <nav class="nav-bar">
+            <a href="/" class="nav-links-property">Home</a>
+            <a href="/dashboard/employee/teacher" class="nav-links-property">Dashboard</a>
+            <a href="/guidebook" class="nav-links-property">GuideBook</a>
+            <a href="/logout" class="nav-links-property">Logout</a>
+        </nav>
+
+        <nav class="mobile-nav-container">
+            <div class="nav-select">
+                <select id="mobile-nav">
+                    <option value="" disabled selected>-- Navigate --</option>
+                    <option value="/">Home</option>
+                    <option value="/dashboard/employee/teacher">Dashboard</option>
+                    <option value="/guidebook">GuideBook</option>
+                    <option value="/logout">Logout</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="capture-shell">
+            <section class="capture-hero">
+                <div>
+                    <p class="hero-tag">Live Attendance Capture</p>
+                    <h1>Capture live classroom video</h1>
+                    <p>Use this screen to start and stop camera preview while preparing attendance capture.</p>
+                </div>
+                <div class="hero-meta">
+                    <div class="meta-chip">
+                        <span id="status-dot" class="dot dot-off"></span>
+                        <span id="camera-status-text">Camera idle</span>
+                    </div>
+                    <div class="meta-chip">
+                        <i class="fa-regular fa-clock"></i>
+                        <span id="live-time">--:--:--</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="capture-layout">
+                <article class="video-panel">
+                    <div class="panel-head">
+                        <h2>Live Camera</h2>
+                        <p>Keep faces inside the frame and maintain steady lighting.</p>
+                    </div>
+
+                    <div class="video-stage">
+                        <video id="live-camera" autoplay muted playsinline></video>
+                        <div class="video-overlay">
+                            <div class="scan-frame" aria-hidden="true"></div>
+                            <p id="video-hint">Click "Start Camera" to begin preview.</p>
+                        </div>
+                    </div>
+
+                    <div class="camera-control-buttons">
+                        <button id="start-camera-btn" type="button" class="btn btn-primary">
+                            <i class="fa-solid fa-video"></i> Start Camera
+                        </button>
+                        <button id="stop-camera-btn" type="button" class="btn btn-secondary" disabled>
+                            <i class="fa-solid fa-video-slash"></i> Stop Camera
+                        </button>
+                    </div>
+
+                    <div class="camera-capture-tips">
+                        <p><i class="fa-solid fa-circle-info"></i> Avoid crowding too many faces in one frame.</p>
+                    </div>
+                </article>
+
+                <aside id="recognition-stats-panel" class="insights-panel hidden-panel">
+                    <article class="card">
+                        <h3>Live Recognition Stats</h3>
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <p>Faces In Frame</p>
+                                <strong id="faces-count">0</strong>
+                            </div>
+                            <div class="stat-box">
+                                <p>Recognized</p>
+                                <strong id="recognized-count">0</strong>
+                            </div>
+                            <div class="stat-box">
+                                <p>Unknown</p>
+                                <strong id="unknown-count">0</strong>
+                            </div>
+                            <div class="stat-box">
+                                <p>Frame Rate</p>
+                                <strong id="fps-count">0 fps</strong>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <h3>Recent Recognitions</h3>
+                        <ul class="recognition-list" id="recognition-list">
+                            <li class="empty-row">No recognitions yet. Start capture to see activity.</li>
+                        </ul>
+                    </article>
+                </aside>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="foot-content">
+            <div class="foot1">
+                <div class="useful-links">
+                    <p><strong>Useful-links</strong></p>
+                    <a href="/dashboard/employee/teacher" class="links foot-links">Teacher Dashboard</a>
+                    <a href="/guidebook" class="links foot-links">GuideBook</a>
+                </div>
+                <div class="legal">
+                    <p><strong>Legal</strong></p>
+                    <a href="#" class="links foot-links">Terms & conditions</a>
+                    <a href="#" class="links foot-links">Privacy Policy</a>
+                </div>
+            </div>
+            <div class="foot2">
+                <div class="contacts">
+                    <p><strong>Capture Tips</strong></p>
+                    <p>Use front camera only when rear camera framing is unstable.</p>
+                    <p>Check unknown faces before final attendance submit.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/global/UI/rearrange-footer.js"></script>
+    <script src="/js/page-specific/dashboard/capture-attendance-ui.js"></script>
+    <script src="/js/global/face-api/face-api.min.js"></script>
+    <script src="/js/global/face-api/recognition/load-models.js"></script>
+    <script src="/js/global/face-api/recognition/employee/live-face-detection.js"></script>
+</body>
+
+</html>

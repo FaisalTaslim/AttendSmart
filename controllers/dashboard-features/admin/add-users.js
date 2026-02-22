@@ -11,8 +11,6 @@ const generateCode = require("../../../utils/functions/codes");
 
 exports.uploadStudents = async (req, res) => {
     try {
-
-        // ✅ Make sure file exists
         if (!req.file) {
             return res.status(400).json({ message: "No file uploaded" });
         }

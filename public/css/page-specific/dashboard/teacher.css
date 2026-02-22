@@ -1,3 +1,7 @@
+.link {
+    color: var(--link);
+}
+
 html {
     scroll-behavior: smooth;
 }
@@ -83,10 +87,92 @@ main {
     font-weight: 600;
 }
 
+.status-alert {
+    border-color: var(--error);
+    color: var(--error);
+    background: rgba(176, 0, 32, 0.08);
+}
+
 .status-ok {
     border-color: rgba(var(--accent-rgb), 0.5);
     color: var(--accent);
     background: rgba(var(--accent-rgb), 0.12);
+}
+
+#finish-setup {
+    border-color: var(--error);
+    color: var(--error);
+}
+
+.setup-uploads {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+}
+
+.upload-card {
+    background: var(--bg-card);
+    border-radius: 0.8rem;
+    border: 1px solid var(--border-color);
+    padding: 0.95rem;
+}
+
+.upload-card h2 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.upload-card p {
+    color: var(--text-secondary);
+    line-height: 1.45;
+    font-size: 0.9rem;
+}
+
+.upload-label {
+    display: block;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    border: 1px dashed rgba(var(--accent-rgb), 0.42);
+    background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.upload-label:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+}
+
+.upload-content {
+    text-align: center;
+}
+
+.upload-icon {
+    width: 42px;
+    height: 42px;
+    margin: 0 auto 0.55rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--accent);
+    background: rgba(var(--accent-rgb), 0.12);
+}
+
+.upload-title {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.upload-subtitle {
+    margin: 0.25rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+}
+
+.tip {
+    margin-bottom: 0;
 }
 
 .quick-grid {

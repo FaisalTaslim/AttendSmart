@@ -76,6 +76,11 @@
                             <article class="quick-card">
                                 <h3>Attendance</h3>
                                 <div class="card-links">
+                                    <form action="/dashboard/admin/employee/start-session" method="POST">
+                                        <button type="submit" class="feature-link">
+                                            Start Session
+                                        </button>
+                                    </form>
                                     <p id="option-edit-attendance" class="feature-link">Edit Attendance</p>
                                     <p id="option-attendance-summary" class="feature-link">Attendance Summary</p>
                                     <p id="option-download-reports" class="feature-link">Download Reports</p>
@@ -226,30 +231,30 @@
                                             <% if (student_users && student_users.length) { %>
                                                 <% student_users.forEach((student)=> { %>
                                                     <tr>
-                                                        <td>
+                                                        <td data-label="Name">
                                                             <%= student.name || '-' %>
                                                         </td>
-                                                        <td>
+                                                        <td data-label="User Code">
                                                             <%= student.code || '-' %>
                                                         </td>
-                                                        <td>
+                                                        <td data-label="Roll">
                                                             <%= student.roll || '-' %>
                                                         </td>
-                                                        <td>
+                                                        <td data-label="Class / Dept">
                                                             <%= student.standard || student.dept || '-' %>
                                                         </td>
-                                                        <td>
+                                                        <td data-label="Email">
                                                             <%= student.email || '-' %>
                                                         </td>
-                                                        <td>
+                                                        <td data-label="Contact">
                                                             <%= student.contact || '-' %>
                                                         </td>
-                                                        <td>
+                                                        <td data-label="Setup Done?">
                                                             <%= student.setup && typeof
                                                                 student.setup.faceUploaded==='boolean' ?
                                                                 (student.setup.faceUploaded ? 'Yes' : 'No' ) : '-' %>
                                                         </td>
-                                                        <td>
+                                                        <td data-label="Status">
                                                             <%= student.isSuspended ? 'Suspended' : (student.isDeleted
                                                                 ? 'Deleted' : 'Active' ) %>
                                                         </td>
@@ -284,30 +289,30 @@
                                             <% if (employee_users && employee_users.length) { %>
                                                 <% employee_users.forEach((employee)=> { %>
                                                     <tr>
-                                                        <td>
+                                                        <td data-label="Name">
                                                             <%= employee.name || '-' %>
                                                         </td>
-                                                        <td>
+                                                        <td data-label="User Code">
                                                             <%= employee.code || '-' %>
                                                         </td>
-                                                        <td>
+                                                        <td data-label="Employee ID">
                                                             <%= employee.employeeId || '-' %>
                                                         </td>
-                                                        <td>
+                                                        <td data-label="Designation">
                                                             <%= employee.designation || '-' %>
                                                         </td>
-                                                        <td>
+                                                        <td data-label="Email">
                                                             <%= employee.email || '-' %>
                                                         </td>
-                                                        <td>
+                                                        <td data-label="Contact">
                                                             <%= employee.contact || '-' %>
                                                         </td>
-                                                        <td>
+                                                        <td data-label="Setup Done?">
                                                             <%= employee.setup && typeof
                                                                 employee.setup.faceUploaded==='boolean' ?
                                                                 (employee.setup.faceUploaded ? 'Yes' : 'No' ) : '-' %>
                                                         </td>
-                                                        <td>
+                                                        <td data-label="Status">
                                                             <%= employee.isSuspended ? 'Suspended' : (employee.isDeleted
                                                                 ? 'Deleted' : 'Active' ) %>
                                                         </td>
@@ -446,10 +451,15 @@
                                                                             <% } %>
                                                             </td>
                                                             <td data-label="Actions" class="manage-actions-cell">
-                                                                <form action="/admin/users/suspend/<%= student.code %>" method="POST">
-                                                                    <button type="submit" class="manage-action-btn suspend-user-btn">Suspend</button>
+                                                                <form
+                                                                    action="/dashboard/admin/users/student/suspend/<%= student.code %>"
+                                                                    method="POST">
+                                                                    <button type="submit"
+                                                                        class="manage-action-btn suspend-user-btn">Suspend</button>
                                                                 </form>
-                                                                <form action="/admin/users/remove/<%= student.code %>" method="POST">
+                                                                <form
+                                                                    action="/dashboard/admin/users/student/remove/<%= student.code %>"
+                                                                    method="POST">
                                                                     <button type="button"
                                                                         class="manage-action-btn remove-user-btn">Remove
                                                                     </button>
@@ -514,10 +524,19 @@
                                                                             <% } %>
                                                             </td>
                                                             <td data-label="Actions" class="manage-actions-cell">
-                                                                <button type="button"
-                                                                    class="manage-action-btn suspend-user-btn">Suspend</button>
-                                                                <button type="button"
-                                                                    class="manage-action-btn remove-user-btn">Remove</button>
+                                                                <form
+                                                                    action="/dashboard/admin/users/employee/suspend/<%= employee.code %>"
+                                                                    method="POST">
+                                                                    <button type="submit"
+                                                                        class="manage-action-btn suspend-user-btn">Suspend</button>
+                                                                </form>
+                                                                <form
+                                                                    action="/dashboard/admin/users/employee/remove/<%= employee.code %>"
+                                                                    method="POST">
+                                                                    <button type="button"
+                                                                        class="manage-action-btn remove-user-btn">Remove
+                                                                    </button>
+                                                                </form>
                                                             </td>
                                                         </tr>
                                                         <% }) %>
@@ -617,7 +636,7 @@
                 </div>
             </footer>
 
-            <script src="/js/global/layout/rearrange-footer.js"></script>
+            <script src="/js/global/UI/rearrange-footer.js"></script>
             <script src="/js/page-specific/dashboard/admin/upload-csv.js"></script>
             <script src="/js/page-specific/dashboard/admin/navigate-contents.js"></script>
             <script src="/js/page-specific/dashboard/admin/view-users.js"></script>

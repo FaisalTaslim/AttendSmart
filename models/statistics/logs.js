@@ -45,19 +45,6 @@ const logSchema = new Schema({
             _id: false,
         }
     ],
-    employeeSessionLogs: [
-        {
-            employeeCode: {
-                type: String,
-                required: true
-            },
-            sessionInstigator: {type: String, required: true},
-            shiftType: {type: String, required: true},
-            attendanceType: {type: String, required: true},
-            createdAt: { type: Date, default: Date.now },
-            _id: false,
-        }
-    ],
     studentSessionLog: [
         {
             code: {type: String, required: true},

@@ -1,4 +1,4 @@
-const SchoolStudent = require('../../models/users/school-student');
+const SchoolStudent = require('../../../models/users/school-student');
 
 exports.dashboard = async (req, res) => {
     const getStudent = await SchoolStudent.findOne({code: req.session.user.code});

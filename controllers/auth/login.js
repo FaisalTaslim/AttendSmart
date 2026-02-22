@@ -16,7 +16,6 @@ exports.login = async (req, res) => {
             });
         }
 
-        /* ================== ORG LOGIN ================== */
         if (userRole === "Org") {
             const org = await Org.findOne({
                 code,
@@ -64,7 +63,6 @@ exports.login = async (req, res) => {
             return res.redirect("/dashboard/admin");
         }
 
-        /* ================== SCHOOL STUDENT ================== */
         if (userRole === "School Student") {
             const student = await SchoolStudent.findOne({
                 code,
@@ -111,7 +109,6 @@ exports.login = async (req, res) => {
             return res.redirect("/dashboard/school-student");
         }
 
-        /* ================== COLLEGE STUDENT ================== */
         if (userRole === "College Student") {
             const student = await CollegeStudent.findOne({
                 code,
@@ -158,7 +155,6 @@ exports.login = async (req, res) => {
             return res.redirect("/dashboard/college-student");
         }
 
-        /* ================== EMPLOYEE ================== */
         if (userRole === "Employee") {
             const employee = await Employee.findOne({
                 code,

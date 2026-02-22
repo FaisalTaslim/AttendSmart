@@ -62,4 +62,4 @@ const collegeStudentSchema = new Schema({
 
 }, { timestamps: true });
 
-module.exports = mongoose.model('collegeStudent', collegeStudentSchema, 'college_student');
+module.exports = mongoose.model('collegeStudent', collegeStudentSchema, 'collegeStudent');

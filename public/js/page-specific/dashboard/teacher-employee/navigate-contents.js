@@ -5,6 +5,7 @@
     const panels = document.querySelectorAll('.content-panel');
 
     const optionToContentMap = {
+        'option-finish-setup': 'content-finish-setup',
         'option-profile': 'content-profile',
         'option-settings': 'content-settings',
         'option-support': 'content-support',

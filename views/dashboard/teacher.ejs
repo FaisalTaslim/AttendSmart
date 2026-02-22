@@ -52,7 +52,11 @@
                     <p>All teaching workflows are grouped into responsive cards for faster daily operations.</p>
                 </div>
                 <div class="hero-status">
-                    <div class="status-badge status-ok">Ready for Session</div>
+                    <% if (setup===false) { %>
+                        <div id="finish-setup" class="status-badge status-alert">Finish setup</div>
+                    <% } else { %>
+                        <div class="status-badge status-ok">Ready for Session</div>
+                    <% } %>
                     <div class="status-badge">Teacher Portal</div>
                 </div>
             </section>
@@ -61,6 +65,9 @@
                 <article class="quick-card">
                     <h3>General</h3>
                     <div class="card-links">
+                        <% if (setup===false) { %>
+                            <p id="option-finish-setup">Finish setup</p>
+                        <% } %>
                         <p id="option-profile">Profile</p>
                         <p id="option-settings">Settings</p>
                         <p id="option-support">Support</p>
@@ -106,6 +113,39 @@
                 <button id="go-back" class="go-back" type="button">
                     <i class="fa-solid fa-arrow-left"></i> Go Back
                 </button>
+
+                <article id="content-finish-setup" class="content-panel" style="display: none;">
+                    <h2>Finish Setup</h2>
+                    <% if (setup===false) { %>
+                        <section class="setup-uploads">
+                            <div class="upload-card">
+                                <h2>Complete the setup</h2>
+
+                                <p>
+                                    Read the <a href="/guidebook#face-upload" class="link">guide</a> before you upload the image
+                                </p>
+
+                                <form id="faceForm" enctype="multipart/form-data">
+                                    <input type="file" id="face" name="faceImage" accept="image/png, image/jpeg" hidden>
+
+                                    <label for="face" class="upload-label">
+                                        <div class="upload-content">
+                                            <div class="upload-icon"><i class="fa-solid fa-camera"></i></div>
+                                            <p class="upload-title">Upload your clear face image</p>
+                                            <p class="upload-subtitle">PNG or JPG • One face only</p>
+                                        </div>
+                                    </label>
+                                </form>
+
+                                <p class="tip">
+                                    <b>Note:</b> You can update your face data later from settings.
+                                </p>
+                            </div>
+                        </section>
+                    <% } else { %>
+                        <p>Your setup is already complete.</p>
+                    <% } %>
+                </article>
 
                 <article id="content-profile" class="content-panel" style="display: none;">
                     <h2>Profile</h2>
@@ -213,7 +253,11 @@
         </div>
     </footer>
 
-    <script src="/js/global/layout/rearrange-footer.js"></script>
+    <script src="/js/global/UI/rearrange-footer.js"></script>
+    <% if (setup===false) { %>
+        <script src="/js/global/face-api/face-api.min.js"></script>
+        <script src="/js/global/face-api/detection/face-init.js"></script>
+    <% } %>
     <script src="/js/page-specific/dashboard/teacher-employee/navigate-contents.js"></script>
 </body>
 

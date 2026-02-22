@@ -1,7 +1,7 @@
-const Org = require('../../models/users/organization');
-const CollegeStudent = require('../../models/users/college-student');
-const SchoolStudent = require('../../models/users/school-student');
-const Employee = require('../../models/users/employee');
+const Org = require('../../../models/users/organization');
+const CollegeStudent = require('../../../models/users/college-student');
+const SchoolStudent = require('../../../models/users/school-student');
+const Employee = require('../../../models/users/employee');
 
 exports.dashboard = async (req, res) => {
     const getOrg = await Org.findOne({ code: req.session.user.code });

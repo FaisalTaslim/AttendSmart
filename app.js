@@ -21,7 +21,7 @@ app.use('/registration', require('./routes/register/registration'));
 app.use('/', require('./routes/register/verify-user'));
 
 /* <------------- Uploading Routes ----------> */
-app.use('/upload', require('./routes/parse-files/upload-csv'));
+app.use('/upload', require('./routes/register/upload-csv'));
 
 /* <------------- MainRoutes ----------> */
 app.use('/', require('./routes/main/main'));

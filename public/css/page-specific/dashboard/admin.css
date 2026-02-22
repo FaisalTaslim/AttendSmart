@@ -128,7 +128,8 @@ main {
     gap: 0.38rem;
 }
 
-.card-links p {
+.card-links p,
+.card-links form button {
     margin: 0;
     padding: 0.42rem 0.55rem;
     border-radius: 0.45rem;
@@ -139,8 +140,17 @@ main {
     transition: all 0.2s ease;
     cursor: pointer;
 }
+.card-links form button {
+    width: 100%;
+    text-align: left;
+}
 
-.card-links p:hover {
+.card-links a {
+    text-decoration: none;
+}
+
+.card-links p:hover,
+.card-links form button:hover {
     border-color: rgba(var(--accent-rgb), 0.38);
     color: var(--accent);
 }
