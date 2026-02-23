@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const employeeSessionSchema = new Schema({
+const studentSessionSchema = new Schema({
     sessionCode: {
         type: String,
         required: true,
@@ -25,5 +25,5 @@ const employeeSessionSchema = new Schema({
     }
 });
 
-const employeeSession = mongoose.model('employeeSessions', employeeSessionSchema, "employeeSessions");
-module.exports = employeeSession;
+const studentSession = mongoose.model('studentSessions', studentSessionSchema, "studentSessions");
+module.exports = studentSession;

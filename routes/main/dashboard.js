@@ -34,4 +34,6 @@ router.post('/admin/employee/start-session', ensureLoggedIn, session.employee);
 router.get('/employee/face-data', face1.getFaceData);
 router.post('/employee/increment-attendance', face1.incrementAttendance);
 
+router.post('/teacher/start-session', ensureLoggedIn, teacher.startSession);
+
 module.exports = router;

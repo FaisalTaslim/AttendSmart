@@ -271,6 +271,7 @@ main {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+    box-sizing: border-box;
 }
 
 .go-back {
@@ -321,5 +322,112 @@ main {
 
     .content-panel {
         padding: 0.8rem;
+    }
+}
+
+/* Start Session UI */
+.session-creation-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.session-config, .session-result {
+    background: var(--bg-primary);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.session-config form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.input-group label {
+    font-weight: 700;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-left: 0.2rem;
+}
+
+.start-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.session-result {
+    background: linear-gradient(145deg, var(--bg-card), var(--bg-primary));
+    align-items: center;
+    text-align: center;
+    min-height: 200px;
+}
+
+.empty-state {
+    color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    opacity: 0.3;
+}
+
+.code-box {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--bg-card);
+    padding: 0.5rem 1rem 0.5rem 1.5rem;
+    border-radius: 1rem;
+    border: 2px dashed var(--accent);
+    margin: 1rem 0;
+}
+
+.code-box span {
+    font-family: monospace;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: 2px;
+}
+
+.copy-btn {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: var(--text-secondary);
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    border-radius: 0.5rem;
+}
+
+.copy-btn:hover {
+    transform: translateY(-2px);
+    color: var(--accent);
+    background: rgba(var(--accent-rgb), 0.1);
+    box-shadow: none;
+}
+
+@media (max-width: 700px) {
+    .session-creation-grid {
+        grid-template-columns: 1fr;
+    }
+    .session-result {
+        min-height: 160px;
     }
 }

@@ -163,8 +163,75 @@
                 </article>
 
                 <article id="content-start-session" class="content-panel" style="display: none;">
-                    <h2>Start Session</h2>
-                    <p>Start a class attendance session for a selected subject and time slot.</p>
+                    <div class="panel-header">
+                        <h2>Start Session</h2>
+                        <p>Generate a session code to begin attendance marking process.</p>
+                    </div>
+
+                    <div class="session-creation-grid">
+                        <div class="session-config">
+                            <form id="create-session-form" method="POST" action="/dashboard/teacher/start-session">
+                                <div class="outer-group">
+                                    <div class="input-group">
+                                        <label for="stream-select">Select Stream</label>
+                                        <select id="stream-select" name="stream" required>
+                                            <option value="" disabled selected>-- Select Stream --</option>
+                                            <option value="science">Science</option>
+                                            <option value="commerce">Commerce</option>
+                                            <option value="arts">Arts</option>
+                                            <option value="neutral">Neutral</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="department-select">Select Department</label>
+                                        <select id="department-select" name="department" required>
+                                            <% if (departments.length > 0) { %>
+                                                <option value="" disabled selected>-- Select Department --</option>
+                                                <option value="null">Null</option>
+                                                <% for (let department of departments) { %>
+                                                    <option value="<%=department%>"><%=department%></option>
+                                                <% } %>
+                                            <% } else { %>
+                                                <option value="" disabled selected>-- No Departments --</option>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="subject-select">Select Subject</label>
+                                        <select id="subject-select" name="subject" required>
+                                            <% if (subjects.length > 0) { %>
+                                                <option value="" disabled selected>-- Select Subject --</option>
+                                                <option value="null">null</option>
+                                                <% for (let subject of subjects) { %>
+                                                    <option value="<%=subject%>"><%=subject%></option>
+                                                <% } %>
+                                            <% } else { %>
+                                                <option value="" disabled selected>-- No Subjects --</option>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="start-btn">
+                                    <i class="fa-solid fa-bolt"></i> Start Session
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="session-result" id="session-result-display">
+                            <div class="empty-state" style="<%= (typeof Session !== 'undefined' && Session) ? 'display: none;' : '' %>">
+                                <i class="fa-solid fa-qrcode"></i>
+                                <span>Session code will appear here</span>
+                            </div>
+                            <div class="active-state" style="<%= (typeof Session !== 'undefined' && Session) ? '' : 'display: none;' %>">
+                                <span class="session-badge">Active Session</span>
+                                <div class="code-box">
+                                    <span id="display-code"><%= (typeof Session !== 'undefined' && Session) ? Session.sessionCode : '' %></span>
+                                    <button class="copy-btn" type="button" title="Copy"><i class="fa-regular fa-copy"></i></button>
+                                </div>
+                                <p class="instruction">Share with students</p>
+                            </div>
+                        </div>
+                    </div>
                 </article>
 
                 <article id="content-edit-attendance" class="content-panel" style="display: none;">
