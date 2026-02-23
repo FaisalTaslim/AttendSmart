@@ -75,6 +75,7 @@
                 <article class="quick-card">
                     <h3>My Attendance</h3>
                     <div class="card-links">
+                        <p id="option-mark-attendance">Mark Attendance</p>
                         <p id="option-attendance-summary">Attendance Summary</p>
                         <p id="option-download-attendance-report">Download Attendance Report</p>
                     </div>
@@ -114,7 +115,6 @@
                         <section class="setup-uploads">
                             <div class="upload-card">
                                 <h2>Complete the setup</h2>
-
                                 <p>
                                     Read the <a href="/guidebook#face-upload" class="link">guide</a> before you upload the image
                                 </p>
@@ -144,6 +144,69 @@
                 <article id="content-profile-settings" class="content-panel" style="display: none;">
                     <h2>Profile Settings</h2>
                     <p>Update your account profile and personal preferences from one place.</p>
+                </article>
+
+                <article id="content-mark-attendance" class="content-panel" style="display: none;">
+                    <h2>Mark Attendance</h2>
+                    <p>Verify your identity with live face capture and OTP to submit attendance securely.</p>
+
+                    <section class="face-attendance-ui">
+                        <div class="live-capture-card">
+                            <div class="panel-head">
+                                <h3>Live Face Capture</h3>
+                                <span id="capture-status" class="capture-status idle">Camera idle</span>
+                            </div>
+
+                            <div class="video-wrapper">
+                                <video id="attendance-live-video" autoplay muted playsinline></video>
+                                <div id="video-placeholder" class="video-placeholder">
+                                    <i class="fa-solid fa-camera"></i>
+                                    <p>Click Start Camera to begin live preview</p>
+                                </div>
+                            </div>
+
+                            <div class="capture-controls">
+                                <button id="start-attendance-camera" type="button" class="btn-capture primary">
+                                    <i class="fa-solid fa-video"></i> Start Camera
+                                </button>
+                                <button id="stop-attendance-camera" type="button" class="btn-capture secondary" disabled>
+                                    <i class="fa-solid fa-video-slash"></i> Stop Camera
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="otp-verify-card">
+                            <h3>OTP Verification</h3>
+                            <p>Enter the 6-digit OTP provided by your instructor/session screen.</p>
+
+                            <form id="attendance-otp-form" class="otp-form">
+                                <label for="attendance-subject" class="otp-label">Subject</label>
+                                <select id="attendance-subject" name="subject">
+                                    <option value="" selected>None (null)</option>
+                                    <% if (subjects && subjects.length) { %>
+                                        <% subjects.forEach((subject) => { %>
+                                            <option value="<%= subject %>"><%= subject %></option>
+                                        <% }) %>
+                                    <% } %>
+                                </select>
+
+                                <label for="attendance-otp" class="otp-label">One-Time Password</label>
+                                <input
+                                    id="attendance-otp"
+                                    name="attendanceOtp"
+                                    type="text"
+                                    inputmode="numeric"
+                                    autocomplete="one-time-code"
+                                    maxlength="6"
+                                    placeholder="Enter 6-digit OTP"
+                                    required
+                                >
+                                <button type="submit" class="otp-submit-btn">Verify & Mark Attendance</button>
+                            </form>
+
+                            <p id="otp-feedback" class="otp-feedback" aria-live="polite"></p>
+                        </div>
+                    </section>
                 </article>
 
                 <article id="content-attendance-summary" class="content-panel" style="display: none;">
@@ -217,9 +280,12 @@
     </footer>
 
     <script src="/js/global/UI/rearrange-footer.js"></script>
-    <script src="/js/global/face-api/face-api.min.js"></script>
-    <script src="/js/global/face-api/detection/face-init.js"></script>
+    <% if (setup===false) { %>
+        <script src="/js/global/face-api/face-api.min.js"></script>
+        <script src="/js/global/face-api/detection/face-init.js"></script>
+    <% } %>
     <script src="/js/page-specific/dashboard/college-student/navigate-contents.js"></script>
+    <script src="/js/page-specific/dashboard/college-student/face-attendance.js"></script>
 </body>
 
 </html>

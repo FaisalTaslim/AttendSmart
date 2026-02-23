@@ -7,6 +7,7 @@
     const optionToContentMap = {
         'option-finish-setup': 'content-finish-setup',
         'option-profile-settings': 'content-profile-settings',
+        'option-mark-attendance': 'content-mark-attendance',
         'option-attendance-summary': 'content-attendance-summary',
         'option-download-attendance-report': 'content-download-attendance-report',
         'option-my-subjects': 'content-my-subjects',

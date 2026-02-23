@@ -267,6 +267,192 @@ main {
     line-height: 1.45;
 }
 
+.face-attendance-ui {
+    margin-top: 0.95rem;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 0.9rem;
+}
+
+.live-capture-card,
+.otp-verify-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 0.85rem;
+    padding: 0.9rem;
+}
+
+.panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.7rem;
+    margin-bottom: 0.7rem;
+}
+
+.panel-head h3,
+.otp-verify-card h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.capture-status {
+    border-radius: 999px;
+    padding: 0.28rem 0.6rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    border: 1px solid var(--border-color);
+}
+
+.capture-status.idle {
+    background: rgba(176, 0, 32, 0.08);
+    color: var(--error);
+    border-color: rgba(176, 0, 32, 0.35);
+}
+
+.capture-status.active {
+    background: rgba(var(--accent-rgb), 0.12);
+    color: var(--accent);
+    border-color: rgba(var(--accent-rgb), 0.38);
+}
+
+.video-wrapper {
+    position: relative;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background: #0f1115;
+    aspect-ratio: 16 / 10;
+}
+
+#attendance-live-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.video-placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    gap: 0.35rem;
+    padding: 0.9rem;
+    color: #d6deea;
+    background: linear-gradient(160deg, rgba(10, 14, 18, 0.86) 0%, rgba(11, 21, 26, 0.72) 100%);
+}
+
+.video-placeholder i {
+    font-size: 1.35rem;
+}
+
+.video-placeholder.hidden {
+    display: none;
+}
+
+.capture-controls {
+    margin-top: 0.75rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.btn-capture {
+    border-radius: 0.55rem;
+    border: 1px solid transparent;
+    padding: 0.48rem 0.75rem;
+    font-size: 0.86rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-capture.primary {
+    background: var(--accent);
+    color: #fff;
+}
+
+.btn-capture.secondary {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.btn-capture:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.otp-verify-card p {
+    margin: 0.35rem 0 0.9rem;
+}
+
+.otp-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.otp-label {
+    color: var(--text-primary);
+    font-size: 0.86rem;
+    font-weight: 600;
+}
+
+#attendance-otp {
+    border-radius: 0.58rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    padding: 0.52rem 0.7rem;
+    letter-spacing: 0.08em;
+}
+
+#attendance-subject {
+    border-radius: 0.58rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 0.92rem;
+    padding: 0.52rem 0.7rem;
+}
+
+#attendance-subject:focus,
+#attendance-otp:focus {
+    outline: none;
+    border-color: rgba(var(--accent-rgb), 0.45);
+}
+
+.otp-submit-btn {
+    margin-top: 0.25rem;
+    border: none;
+    border-radius: 0.58rem;
+    padding: 0.56rem 0.85rem;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.otp-feedback {
+    margin-top: 0.6rem;
+    min-height: 1.15rem;
+    font-size: 0.84rem;
+    color: var(--text-secondary);
+}
+
+.otp-feedback.success {
+    color: var(--success, #1b8d53);
+}
+
+.otp-feedback.error {
+    color: var(--error);
+}
+
 @media (max-width: 1120px) {
     .quick-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -297,6 +483,10 @@ main {
     .content-panel {
         padding: 0.8rem;
     }
+
+    .face-attendance-ui {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (min-width: 901px) and (max-width: 1024px) {
@@ -315,6 +505,15 @@ main {
     }
 
     .hero-status {
+        width: 100%;
+    }
+
+    .capture-controls {
+        flex-direction: column;
+    }
+
+    .btn-capture,
+    .otp-submit-btn {
         width: 100%;
     }
 }
