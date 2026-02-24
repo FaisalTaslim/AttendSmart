@@ -9,10 +9,14 @@ exports.verifyOtp = async (req, res) => {
             return res.status(401).json({ success: false, message: "Session expired. Please login again." });
         }
 
-        const { sessionCode, subject } = req.body;
+        let { sessionCode, subject } = req.body;
         const studentCode = req.session.user.code;
         const studentEmail = req.session.user.email;
         const studentName = req.session.user.name;
+
+        if(subject === "null") {
+            subject = null;
+        }
 
         if (!sessionCode || !subject) {
             return res.json({ success: false, message: "Subject and Session Code are required." });

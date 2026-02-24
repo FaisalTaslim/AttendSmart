@@ -187,7 +187,7 @@
                             <form id="attendance-otp-form" class="otp-form">
                                 <label for="attendance-subject" class="otp-label">Subject</label>
                                 <select id="attendance-subject" name="subject">
-                                    <option value="" selected>None (null)</option>
+                                    <option value="null" selected>None (null)</option>
                                     <% if (subjects && subjects.length) { %>
                                         <% subjects.forEach((subject)=> { %>
                                             <option value="<%= subject %>">
