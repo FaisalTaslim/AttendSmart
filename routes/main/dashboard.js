@@ -13,7 +13,7 @@ const adminFeatures = require('../../controllers/dashboard-features/admin/add-us
 const upload = require('../../utils/file-parsing/multer');
 const manageUsers = require('../../controllers/dashboard-features/admin/delete-suspend-users')
 const session = require('../../controllers/dashboard-features/admin/start-session');
-const face1 = require('../../controllers/face.../recognition/employee')
+const face1 = require('../../controllers/face.../recognition/employee/employee')
 
 router.get('/', ensureLoggedIn, dashboard.get);
 router.get('/admin', ensureLoggedIn, admin.dashboard);

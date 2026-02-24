@@ -57,6 +57,7 @@ exports.login = async (req, res) => {
             req.session.user = {
                 code: org.code,
                 name: admin.name,
+                email: admin.email,
                 role: "admin"
             };
 
@@ -103,6 +104,7 @@ exports.login = async (req, res) => {
             req.session.user = {
                 code: student.code,
                 name: student.name,
+                email: student.email,
                 role: "school-student"
             };
 
@@ -149,6 +151,7 @@ exports.login = async (req, res) => {
             req.session.user = {
                 code: student.code,
                 name: student.name,
+                email: student.email,
                 role: "college-student"
             };
 
@@ -195,6 +198,7 @@ exports.login = async (req, res) => {
             req.session.user = {
                 code: employee.code,
                 name: employee.name,
+                email: employee.email,
                 role: "employee"
             };
 

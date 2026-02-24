@@ -32,6 +32,7 @@
     "nodemailer": "^7.0.12",
     "prompt-sync": "^4.2.0",
     "qrcode": "^1.5.4",
+    "twilio": "^5.12.2",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

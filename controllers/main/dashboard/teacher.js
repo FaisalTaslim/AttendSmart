@@ -50,12 +50,17 @@ exports.dashboard = async (req, res) => {
         }
     }
 
+    console.log("Session user code:", req.session.user.code);
+    console.log("Current time:", new Date());
     // 🔹 Fetch active session for this teacher
+    
     const Session = await studentSession.findOne({
         code: req.session.user.code,
         status: "active",
         expiresAt: { $gt: new Date() }
     });
+
+    console.log(Session);
 
     res.render('dashboard/teacher', {
         setup,

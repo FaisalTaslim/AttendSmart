@@ -1,6 +1,6 @@
-const Employee = require('../../../models/users/employee');
-const Summary = require('../../../models/statistics/employee-summary')
-const Session = require('../../../models/statistics/employee-session');
+const Employee = require('../../../../models/users/employee');
+const Summary = require('../../../../models/statistics/employee-summary')
+const Session = require('../../../../models/statistics/employee-session');
 const moment = require('moment');
 
 exports.getFaceData = async (req, res) => {

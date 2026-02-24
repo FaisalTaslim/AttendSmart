@@ -16,20 +16,19 @@ app.set('trust proxy', true);
 app.use(sessionMiddleware);
 app.use(setLocals);
 
-/* <------------- Register Routes ----------> */
 app.use('/registration', require('./routes/register/registration'));
 app.use('/', require('./routes/register/verify-user'));
-
-/* <------------- Uploading Routes ----------> */
 app.use('/upload', require('./routes/register/upload-csv'));
 
-/* <------------- MainRoutes ----------> */
 app.use('/', require('./routes/main/main'));
 app.use('/dashboard', require('./routes/main/dashboard'));
 app.use("/public/org", require("./routes/main/main"));
 
-/* <------------- Logout Routes ----------> */
 app.use("/auth", require("./routes/auth/login"));
 app.use('/', require('./routes/auth/logout'));
+// face-attendance routes
+app.use('/student', require('./routes/face .../recognition/student/send-otp'));
+app.use('/student', require('./routes/face .../recognition/student/mark-attendance'));
+app.use('/student', require('./routes/face .../recognition/student/fetch-face-data'));
 
 module.exports = app;
