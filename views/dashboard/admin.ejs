@@ -117,9 +117,11 @@
                             <article class="quick-card">
                                 <h3>Logs & Reports</h3>
                                 <div class="card-links">
-                                    <p id="option-activity-logs" class="feature-link">Activity Logs</p>
-                                    <p id="option-attendance-logs" class="feature-link">Attendance Logs</p>
-                                    <p id="option-system-logs" class="feature-link">System Logs</p>
+                                    <p id="option-login-logs" class="feature-link">Login Logs</p>
+                                    <p id="option-register-logs" class="feature-link">Register Logs</p>
+                                    <p id="option-support-logs" class="feature-link">Support Logs</p>
+                                    <p id="option-attendance-history-logs" class="feature-link">Attendance History Logs</p>
+                                    <p id="option-leave-logs" class="feature-link">Leave Logs</p>
                                 </div>
                             </article>
 
@@ -201,355 +203,14 @@
                         <article id="content-view-users" class="content-panel" hidden>
                             <h2>View Users</h2>
                             <p>See registered students and employees with organization-level filtering.</p>
-
-                            <div class="users-filter-row">
-                                <label for="users-type-filter">User Type</label>
-                                <div class="nav-select users-filter-select">
-                                    <select id="users-type-filter">
-                                        <option value="students" selected>Students</option>
-                                        <option value="employees">Employees</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div id="users-table-students" class="users-table-view">
-                                <div class="table-scroll">
-                                    <table class="users-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>User Code</th>
-                                                <th>Roll</th>
-                                                <th>Class / Dept</th>
-                                                <th>Email</th>
-                                                <th>Contact</th>
-                                                <th>Setup Done?</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% if (student_users && student_users.length) { %>
-                                                <% student_users.forEach((student)=> { %>
-                                                    <tr>
-                                                        <td data-label="Name">
-                                                            <%= student.name || '-' %>
-                                                        </td>
-                                                        <td data-label="User Code">
-                                                            <%= student.code || '-' %>
-                                                        </td>
-                                                        <td data-label="Roll">
-                                                            <%= student.roll || '-' %>
-                                                        </td>
-                                                        <td data-label="Class / Dept">
-                                                            <%= student.standard || student.dept || '-' %>
-                                                        </td>
-                                                        <td data-label="Email">
-                                                            <%= student.email || '-' %>
-                                                        </td>
-                                                        <td data-label="Contact">
-                                                            <%= student.contact || '-' %>
-                                                        </td>
-                                                        <td data-label="Setup Done?">
-                                                            <%= student.setup && typeof
-                                                                student.setup.faceUploaded==='boolean' ?
-                                                                (student.setup.faceUploaded ? 'Yes' : 'No' ) : '-' %>
-                                                        </td>
-                                                        <td data-label="Status">
-                                                            <%= student.isSuspended ? 'Suspended' : (student.isDeleted
-                                                                ? 'Deleted' : 'Active' ) %>
-                                                        </td>
-                                                    </tr>
-                                                    <% }) %>
-                                                        <% } else { %>
-                                                            <tr>
-                                                                <td colspan="8">No students found.</td>
-                                                            </tr>
-                                                            <% } %>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div id="users-table-employees" class="users-table-view" hidden>
-                                <div class="table-scroll">
-                                    <table class="users-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>User Code</th>
-                                                <th>Employee ID</th>
-                                                <th>Designation</th>
-                                                <th>Email</th>
-                                                <th>Contact</th>
-                                                <th>Setup Done?</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% if (employee_users && employee_users.length) { %>
-                                                <% employee_users.forEach((employee)=> { %>
-                                                    <tr>
-                                                        <td data-label="Name">
-                                                            <%= employee.name || '-' %>
-                                                        </td>
-                                                        <td data-label="User Code">
-                                                            <%= employee.code || '-' %>
-                                                        </td>
-                                                        <td data-label="Employee ID">
-                                                            <%= employee.employeeId || '-' %>
-                                                        </td>
-                                                        <td data-label="Designation">
-                                                            <%= employee.designation || '-' %>
-                                                        </td>
-                                                        <td data-label="Email">
-                                                            <%= employee.email || '-' %>
-                                                        </td>
-                                                        <td data-label="Contact">
-                                                            <%= employee.contact || '-' %>
-                                                        </td>
-                                                        <td data-label="Setup Done?">
-                                                            <%= employee.setup && typeof
-                                                                employee.setup.faceUploaded==='boolean' ?
-                                                                (employee.setup.faceUploaded ? 'Yes' : 'No' ) : '-' %>
-                                                        </td>
-                                                        <td data-label="Status">
-                                                            <%= employee.isSuspended ? 'Suspended' : (employee.isDeleted
-                                                                ? 'Deleted' : 'Active' ) %>
-                                                        </td>
-                                                    </tr>
-                                                    <% }) %>
-                                                        <% } else { %>
-                                                            <tr>
-                                                                <td colspan="8">No employees found.</td>
-                                                            </tr>
-                                                            <% } %>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
                         </article>
                         <article id="content-add-users" class="content-panel content-add-users" hidden>
                             <h2>Add Users</h2>
                             <p>Upload CSV files to add student and employee accounts in bulk.</p>
-
-                            <section class="add-users-grid">
-                                <article class="upload-card add-user-card">
-                                    <h3>Add Students</h3>
-                                    <p>Upload a student list CSV with the required headers and valid organization
-                                        details.</p>
-
-                                    <form action="/dashboard/admin/upload-students" method="POST"
-                                        id="students-users-form" class="csv-upload-form" enctype="multipart/form-data">
-                                        <input type="file" id="students-users-csv" name="studentsUsersCsv" accept=".csv"
-                                            hidden>
-                                        <label for="students-users-csv" class="upload-label">
-                                            <div class="upload-content">
-                                                <div class="upload-icon"><i class="fa-solid fa-user-graduate"></i></div>
-                                                <p class="upload-title">Upload Students CSV</p>
-                                                <p class="upload-subtitle">Only .csv files are supported</p>
-                                            </div>
-                                        </label>
-                                        <button type="submit">Upload</button>
-                                    </form>
-
-                                    <p class="tip"><b>Required:</b> Name, roll, class/dept, contact, email, and other
-                                        organization-specific fields.</p>
-                                    <a href="/guidebook" class="link">Open CSV guide</a>
-                                </article>
-
-                                <article class="upload-card add-user-card">
-                                    <h3>Add Employees</h3>
-                                    <p>Upload an employee list CSV for teaching and non-teaching staff registration.</p>
-
-                                    <form action="/dashboard/admin/upload-employees" method="POST"
-                                        id="employees-users-form" class="csv-upload-form" enctype="multipart/form-data">
-                                        <input type="file" id="employees-users-csv" name="employeesUsersCsv"
-                                            accept=".csv" hidden>
-                                        <label for="employees-users-csv" class="upload-label">
-                                            <div class="upload-content">
-                                                <div class="upload-icon"><i class="fa-solid fa-user-tie"></i></div>
-                                                <p class="upload-title">Upload Employees CSV</p>
-                                                <p class="upload-subtitle">Only .csv files are supported</p>
-                                            </div>
-                                        </label>
-                                        <button type="submit">Upload</button>
-                                    </form>
-
-                                    <p class="tip"><b>Required:</b> Name, employee ID, designation, contact, email, and
-                                        shift
-                                        details.</p>
-                                    <a href="/guidebook" class="link">Open CSV guide</a>
-                                </article>
-                            </section>
                         </article>
                         <article id="content-suspend-remove-users" class="content-panel" hidden>
                             <h2>Suspend / Remove Users</h2>
                             <p>Find users quickly and take account actions from one place.</p>
-
-                            <section class="manage-users-panel">
-                                <div class="manage-users-controls">
-                                    <div class="manage-users-control">
-                                        <label for="manage-users-type">User Type</label>
-                                        <div class="nav-select users-filter-select">
-                                            <select id="manage-users-type">
-                                                <option value="students" selected>Students</option>
-                                                <option value="employees">Employees</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="manage-users-control">
-                                        <label for="manage-users-search">Search Users</label>
-                                        <input type="text" id="manage-users-search"
-                                            placeholder="Search by name, code, email, roll or employee ID">
-                                    </div>
-                                </div>
-
-                                <div id="manage-students-wrap" class="users-table-view">
-                                    <div class="table-scroll">
-                                        <table class="users-table manage-users-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>User Code</th>
-                                                    <th>Roll</th>
-                                                    <th>Dept</th>
-                                                    <th>Email</th>
-                                                    <th>Status</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <% if (student_users && student_users.length) { %>
-                                                    <% student_users.forEach((student)=> { %>
-                                                        <tr class="manage-student-row">
-                                                            <td data-label="Name" class="manage-student-name">
-                                                                <%= student.name || '-' %>
-                                                            </td>
-                                                            <td data-label="User Code" class="manage-student-code">
-                                                                <%= student.code || '-' %>
-                                                            </td>
-                                                            <td data-label="Roll" class="manage-student-roll">
-                                                                <%= student.roll || '-' %>
-                                                            </td>
-                                                            <td data-label="Dept">
-                                                                <%= student.standard || student.dept || '-' %>
-                                                            </td>
-                                                            <td data-label="Email" class="manage-student-email">
-                                                                <%= student.email || '-' %>
-                                                            </td>
-                                                            <td data-label="Status">
-                                                                <% if (student.isDeleted) { %>
-                                                                    <span
-                                                                        class="manage-status-chip deleted">Deleted</span>
-                                                                    <% } else if (student.isSuspended) { %>
-                                                                        <span
-                                                                            class="manage-status-chip suspended">Suspended</span>
-                                                                        <% } else { %>
-                                                                            <span
-                                                                                class="manage-status-chip active">Active</span>
-                                                                            <% } %>
-                                                            </td>
-                                                            <td data-label="Actions" class="manage-actions-cell">
-                                                                <form
-                                                                    action="/dashboard/admin/users/student/suspend/<%= student.code %>"
-                                                                    method="POST">
-                                                                    <button type="submit"
-                                                                        class="manage-action-btn suspend-user-btn">Suspend</button>
-                                                                </form>
-                                                                <form
-                                                                    action="/dashboard/admin/users/student/remove/<%= student.code %>"
-                                                                    method="POST">
-                                                                    <button type="button"
-                                                                        class="manage-action-btn remove-user-btn">Remove
-                                                                    </button>
-                                                                </form>
-                                                            </td>
-                                                        </tr>
-                                                        <% }) %>
-                                                            <% } else { %>
-                                                                <tr>
-                                                                    <td colspan="7">No students found.</td>
-                                                                </tr>
-                                                                <% } %>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <div id="manage-employees-wrap" class="users-table-view" hidden>
-                                    <div class="table-scroll">
-                                        <table class="users-table manage-users-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>User Code</th>
-                                                    <th>Employee ID</th>
-                                                    <th>Designation</th>
-                                                    <th>Email</th>
-                                                    <th>Status</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <% if (employee_users && employee_users.length) { %>
-                                                    <% employee_users.forEach((employee)=> { %>
-                                                        <tr class="manage-employee-row">
-                                                            <td data-label="Name" class="manage-employee-name">
-                                                                <%= employee.name || '-' %>
-                                                            </td>
-                                                            <td data-label="User Code" class="manage-employee-code">
-                                                                <%= employee.code || '-' %>
-                                                            </td>
-                                                            <td data-label="Employee ID" class="manage-employee-id">
-                                                                <%= employee.employeeId || '-' %>
-                                                            </td>
-                                                            <td data-label="Designation"
-                                                                class="manage-employee-designation">
-                                                                <%= employee.designation || '-' %>
-                                                            </td>
-                                                            <td data-label="Email" class="manage-employee-email">
-                                                                <%= employee.email || '-' %>
-                                                            </td>
-                                                            <td data-label="Status">
-                                                                <% if (employee.isDeleted) { %>
-                                                                    <span
-                                                                        class="manage-status-chip deleted">Deleted</span>
-                                                                    <% } else if (employee.isSuspended) { %>
-                                                                        <span
-                                                                            class="manage-status-chip suspended">Suspended</span>
-                                                                        <% } else { %>
-                                                                            <span
-                                                                                class="manage-status-chip active">Active</span>
-                                                                            <% } %>
-                                                            </td>
-                                                            <td data-label="Actions" class="manage-actions-cell">
-                                                                <form
-                                                                    action="/dashboard/admin/users/employee/suspend/<%= employee.code %>"
-                                                                    method="POST">
-                                                                    <button type="submit"
-                                                                        class="manage-action-btn suspend-user-btn">Suspend</button>
-                                                                </form>
-                                                                <form
-                                                                    action="/dashboard/admin/users/employee/remove/<%= employee.code %>"
-                                                                    method="POST">
-                                                                    <button type="button"
-                                                                        class="manage-action-btn remove-user-btn">Remove
-                                                                    </button>
-                                                                </form>
-                                                            </td>
-                                                        </tr>
-                                                        <% }) %>
-                                                            <% } else { %>
-                                                                <tr>
-                                                                    <td colspan="7">No employees found.</td>
-                                                                </tr>
-                                                                <% } %>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </section>
                         </article>
                         <article id="content-leave-requests" class="content-panel" hidden>
                             <h2>Leave Requests</h2>
@@ -575,17 +236,255 @@
                             <h2>Announcements</h2>
                             <p>Publish organization-wide updates for important events and schedules.</p>
                         </article>
-                        <article id="content-activity-logs" class="content-panel" hidden>
-                            <h2>Activity Logs</h2>
-                            <p>Track account and dashboard actions for transparency and troubleshooting.</p>
+                        <article id="content-login-logs" class="content-panel" hidden>
+                            <section class="login-logs">
+                                <% if (logs && logs.loginLogs && logs.loginLogs.length > 0) { %>
+                                    <div class="login-logs-filter-user">
+                                        <p>Filter Users:</p>
+                                        <form>
+                                            <div class="outer-group">
+                                                <select>
+                                                    <option value="" disabled selected>-- Filter by --</option>
+                                                    <option value="student">Student</option>
+                                                    <option value="employee">Employee</option>
+                                                    <option value="all">All</option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <table class="login-logs-table">
+                                        <thead>
+                                            <tr>
+                                                <th>User Id</th>
+                                                <th>Name</th>
+                                                <th>Role</th>
+                                                <th>Created At</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% logs.loginLogs.forEach(log => { %>
+                                                <tr>
+                                                    <td><%= log.userId %></td>
+                                                    <td><%= log.name %></td>
+                                                    <td><%= log.role %></td>
+                                                    <td><small><%= new Date(log.createdAt).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) %></small></td>
+                                                </tr>
+                                            <% }) %>
+                                        </tbody>
+                                    </table>
+                                <% } else { %>
+                                    <p>Nothing to display.</p>
+                                <% } %>
+                            </section>
                         </article>
-                        <article id="content-attendance-logs" class="content-panel" hidden>
-                            <h2>Attendance Logs</h2>
-                            <p>Inspect detailed check-in history and validation status in one place.</p>
+                        <article id="content-register-logs" class="content-panel" hidden>
+                            <section class="register-logs">
+                                <% if (logs && logs.register && logs.register.length > 0) { %>
+                                    <div class="register-logs-filter-user">
+                                        <p>Filter Users:</p>
+                                        <form>
+                                            <div class="outer-group">
+                                                <select>
+                                                    <option value="" disabled selected>-- Filter by --</option>
+                                                    <option value="student">Student</option>
+                                                    <option value="employee">Employee</option>
+                                                    <option value="all">All</option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <table class="register-logs-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Role</th>
+                                                <th>User Id</th>
+                                                <th>Email</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% logs.register.forEach(log => { %>
+                                                <tr>
+                                                    <td><%= log.name %></td>
+                                                    <td><%= log.role %></td>
+                                                    <td><%= log.id %></td>
+                                                    <td><%= log.email %></td>
+                                                </tr>
+                                            <% }) %>
+                                        </tbody>
+                                    </table>
+                                <% } else { %>
+                                    <p>Nothing to display.</p>
+                                <% } %>
+                            </section>
                         </article>
-                        <article id="content-system-logs" class="content-panel" hidden>
-                            <h2>System Logs</h2>
-                            <p>Review technical logs related to setup, uploads, and key system actions.</p>
+                        <article id="content-support-logs" class="content-panel" hidden>
+                            <section class="support-logs">
+                                <% if (logs && logs.supportLogs && logs.supportLogs.length > 0) { %>
+                                    <div class="support-logs-filter-user">
+                                        <p>Filter Users:</p>
+                                        <form>
+                                            <div class="outer-group">
+                                                <select>
+                                                    <option value="" disabled selected>-- Filter by --</option>
+                                                    <option value="student">Student</option>
+                                                    <option value="employee">Employee</option>
+                                                    <option value="all">All</option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <table class="support-logs-table">
+                                        <thead>
+                                            <tr>
+                                                <th>User Id</th>
+                                                <th>Name</th>
+                                                <th>Role</th>
+                                                <th>Email</th>
+                                                <th>Support Type</th>
+                                                <th>Thoughts</th>
+                                                <th>Created At</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% logs.supportLogs.forEach(log => { %>
+                                                <tr>
+                                                    <td><%= log.userId %></td>
+                                                    <td><%= log.name %></td>
+                                                    <td><%= log.role %></td>
+                                                    <td><%= log.email %></td>
+                                                    <td><%= log.supportType %></td>
+                                                    <td><%= log.thoughts %></td>
+                                                    <td><small><%= new Date(log.createdAt).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) %></small></td>
+                                                </tr>
+                                            <% }) %>
+                                        </tbody>
+                                    </table>
+                                <% } else { %>
+                                    <p>Nothing to display.</p>
+                                <% } %>
+                            </section>
+                        </article>
+                        <article id="content-attendance-history-logs" class="content-panel" hidden>
+                            <section class="attendance-history-logs">
+                                <% if (logs && logs.studentAttendanceHistory && logs.studentAttendanceHistory.length > 0) { %>
+                                    <div class="attendance-history-logs-filter-user">
+                                        <p>Filter Users:</p>
+                                        <form>
+                                            <div class="outer-group">
+                                                <select>
+                                                    <option value="" disabled selected>-- Filter by --</option>
+                                                    <option value="student">Student</option>
+                                                    <option value="employee">Employee</option>
+                                                    <option value="all">All</option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <h3>Student Attendance</h3>
+                                    <table class="attendance-history-logs-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Name</th>
+                                                <th>Dept</th>
+                                                <th>Subject</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                                <th>Reason</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% logs.studentAttendanceHistory.forEach(log => { %>
+                                                <tr>
+                                                    <td><%= log.code %></td>
+                                                    <td><%= log.name %></td>
+                                                    <td><%= log.dept %></td>
+                                                    <td><%= log.subjectName %></td>
+                                                    <td><small><%= log.date %></small></td>
+                                                    <td><%= log.status %></td>
+                                                    <td><%= log.reason %></td>
+                                                </tr>
+                                            <% }) %>
+                                        </tbody>
+                                    </table>
+                                <% } else { %>
+                                    <p>Nothing to display.</p>
+                                <% } %>
+
+                                <% if (logs && logs.employeeAttendanceHistory && logs.employeeAttendanceHistory.length > 0) { %>
+                                    <h3>Employee Attendance</h3>
+                                    <table class="attendance-history-logs-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Name</th>
+                                                <th>Dept</th>
+                                                <th>Check In</th>
+                                                <th>Check Out</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% logs.employeeAttendanceHistory.forEach(log => { %>
+                                                <tr>
+                                                    <td><%= log.code %></td>
+                                                    <td><%= log.name %></td>
+                                                    <td><%= log.dept %></td>
+                                                    <td><small><%= log.checkIn %></small></td>
+                                                    <td><small><%= log.checkOut || '-' %></small></td>
+                                                    <td><%= log.status %></td>
+                                                </tr>
+                                            <% }) %>
+                                        </tbody>
+                                    </table>
+                                <% } else { %>
+                                    <p>Nothing to display.</p>
+                                <% } %>
+                            </section>
+                        </article>
+                        <article id="content-leave-logs" class="content-panel" hidden>
+                            <section class="leave-logs">
+                                <% if (logs && logs.leave && logs.leave.length > 0) { %>
+                                    <div class="leave-logs-filter-user">
+                                        <p>Filter Users:</p>
+                                        <form>
+                                            <div class="outer-group">
+                                                <select>
+                                                    <option value="" disabled selected>-- Filter by --</option>
+                                                    <option value="student">Student</option>
+                                                    <option value="employee">Employee</option>
+                                                    <option value="all">All</option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <table class="leave-logs-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Name</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                                                <th>Reason</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% logs.leave.forEach(log => { %>
+                                                <tr>
+                                                    <td><%= log.code %></td>
+                                                    <td><%= log.name %></td>
+                                                    <td><small><%= new Date(log.startDate).toLocaleDateString('en-IN', { dateStyle: 'medium' }) %></small></td>
+                                                    <td><small><%= new Date(log.endDate).toLocaleDateString('en-IN', { dateStyle: 'medium' }) %></small></td>
+                                                    <td><%= log.reason %></td>
+                                                </tr>
+                                            <% }) %>
+                                        </tbody>
+                                    </table>
+                                <% } else { %>
+                                    <p>Nothing to display.</p>
+                                <% } %>
+                            </section>
                         </article>
                         <article id="content-support-requests" class="content-panel" hidden>
                             <h2>Support Requests</h2>
@@ -639,8 +538,6 @@
             <script src="/js/global/UI/rearrange-footer.js"></script>
             <script src="/js/page-specific/dashboard/admin/upload-csv.js"></script>
             <script src="/js/page-specific/dashboard/admin/navigate-contents.js"></script>
-            <script src="/js/page-specific/dashboard/admin/view-users.js"></script>
-            <script src="/js/page-specific/dashboard/admin/manage-users.js"></script>
             <script src="/js/global/UI/popup.js"></script>
 </body>
 

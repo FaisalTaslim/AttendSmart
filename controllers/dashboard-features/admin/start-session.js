@@ -1,4 +1,4 @@
-const Session = require('../../../models/statistics/employee-session');
+const Session = require('../../../models/logs/employee-session');
 const generateCode = require('../../../utils/functions/codes');
 const employeeSummary = require('../../../models/statistics/employee-summary');
 const mongoose = require('mongoose');

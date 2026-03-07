@@ -1,6 +1,6 @@
 const Employee = require('../../../../models/users/employee');
 const Summary = require('../../../../models/statistics/employee-summary')
-const Session = require('../../../../models/statistics/employee-session');
+const Session = require('../../../../models/logs/employee-session');
 const moment = require('moment');
 
 exports.getFaceData = async (req, res) => {
@@ -14,22 +14,11 @@ exports.getFaceData = async (req, res) => {
         const orgFromQuery = req.query.org;
         const sessionCode = req.session?.user?.code;
 
-        if (orgFromQuery) {
-            query.org = orgFromQuery;
-        } else if (sessionCode) {
-            const loggedEmployee = await Employee.findOne(
-                {
-                    code: sessionCode,
-                    isDeleted: false,
-                    isSuspended: false
-                },
-                { org: 1, _id: 0 }
-            );
-
-            if (loggedEmployee?.org) {
-                query.org = loggedEmployee.org;
-            }
+        if (!sessionCode) {
+            return res.status(401).json({ error: "Unauthorized" });
         }
+
+        query.org = sessionCode;
 
         const employees = await Employee.find(query, { code: 1, name: 1, faceData: 1, _id: 0 });
 

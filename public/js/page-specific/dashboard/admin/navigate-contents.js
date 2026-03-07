@@ -18,11 +18,14 @@
         'option-academic-year': 'content-academic-year',
         'option-send-notice': 'content-send-notice',
         'option-announcements': 'content-announcements',
-        'option-activity-logs': 'content-activity-logs',
-        'option-attendance-logs': 'content-attendance-logs',
         'option-system-logs': 'content-system-logs',
         'option-support-requests': 'content-support-requests',
         'option-help-guidebook': 'content-help-guidebook',
+        'option-login-logs': 'content-login-logs',
+        'option-register-logs': 'content-register-logs',
+        'option-support-logs': 'content-support-logs',
+        'option-attendance-history-logs': 'content-attendance-history-logs',
+        'option-leave-logs': 'content-leave-logs'
     };
 
     if (!quickGrid || !contentSection || !goBackButton) {

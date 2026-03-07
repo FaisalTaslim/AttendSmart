@@ -1,14 +1,10 @@
-const Session = require('../../../../models/statistics/student-session');
+const Session = require('../../../../models/logs/student-session');
 const Summary = require('../../../../models/statistics/student-summary');
 const AttendanceOtp = require('../../../../models/attendance/attendanceOtp');
 
 exports.markAttendance = async (req, res) => {
     let { sessionCode, subject, otp } = req.body;
     const studentCode = req.session.user.code;
-    console.log(studentCode);
-    console.log(sessionCode);
-    console.log(subject);
-    console.log(otp);
 
     if(subject === "null") {
         subject = null;

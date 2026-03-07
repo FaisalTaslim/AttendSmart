@@ -2,6 +2,7 @@ const Org = require('../../../models/users/organization');
 const CollegeStudent = require('../../../models/users/college-student');
 const SchoolStudent = require('../../../models/users/school-student');
 const Employee = require('../../../models/users/employee');
+const Logs = require('../../../models/logs/logs');
 
 exports.dashboard = async (req, res) => {
     const getOrg = await Org.findOne({ code: req.session.user.code });
@@ -18,6 +19,7 @@ exports.dashboard = async (req, res) => {
 
     let student_users = [];
     let employee_users = [];
+    const logs = await Logs.findOne({org: getOrg.code});
 
     const map_models = {
         college: CollegeStudent,
@@ -39,5 +41,6 @@ exports.dashboard = async (req, res) => {
         employee_users,
         popupMessage,
         popupType,
+        logs,
     });
 };

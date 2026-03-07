@@ -1,0 +1,10 @@
+flowchart TD
+  A["Detection loop (every 500ms)"] --> B["detectAllFaces(video, SsdMobilenetv1Options)"]
+  B --> C["withFaceLandmarks()"]
+  C --> D["withFaceDescriptors()"]
+  D --> E["Compare each face descriptor with labeled face-data"]
+  E --> F["FaceMatcher (Euclidean distance, threshold 0.6)"]
+  F --> G{"Known employee AND not already marked?"}
+  G -->|No| H["Skip / continue loop"]
+  G -->|Yes| I["Add to markedEmployees set"]
+  I --> J["Send attendance to backend (see next chart)"]

@@ -16,9 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let faceVerified = false;
     let otpSent = false;
 
-    // -----------------------
-    // FETCH STUDENT DESCRIPTOR
-    // -----------------------
     async function loadStudentFace() {
         const res = await fetch("/student/face-data");
         const data = await res.json();
@@ -33,9 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
         faceMatcher = new faceapi.FaceMatcher([labeled], 0.6);
     }
 
-    // -----------------------
-    // START CAMERA
-    // -----------------------
     async function startCamera() {
         stream = await navigator.mediaDevices.getUserMedia({ video: true });
         video.srcObject = stream;

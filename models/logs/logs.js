@@ -45,26 +45,6 @@ const logSchema = new Schema({
             _id: false,
         }
     ],
-    studentSessionLog: [
-        {
-            code: {type: String, required: true},
-            class: {
-                type: [String],
-                required: true,
-                default: []
-            },
-            sessionInstigator: {type: String, required: true},
-            sessionType: {
-                type: String, 
-                enum: ['fresh-session', 'retake-session'],
-                required: true,
-            },
-            subjectName: {type: String,required: true,},
-            expired: {type: Boolean, required: true},
-            createdAt: { type: Date, default: Date.now },
-            _id: false,
-        }
-    ],
     studentAttendanceHistory: [
         {
             code: {type: String, required: true},

@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const Org = require("../../models/users/organization");
-const OrgLog = require("../../models/statistics/logs");
+const OrgLog = require("../../models/logs/logs");
 const generateCode = require("../../utils/functions/codes");
 const crypto = require("crypto");
 const { sendVerificationEmail } = require("../../utils/emails/send-emails");

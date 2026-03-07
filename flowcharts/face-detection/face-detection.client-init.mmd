@@ -1,0 +1,14 @@
+flowchart TD
+  A["Page loads"] --> B["loadFaceModels()"]
+  B --> C{"Models loaded?"}
+  C -->|Yes| D["Set modelsLoaded = true"]
+  C -->|No| B
+
+  D --> E["User selects file in #face input"]
+  E --> F{"modelsLoaded?"}
+  F -->|No| G["Alert: models still loading"] --> E
+  F -->|Yes| H{"File selected?"}
+  H -->|No| E
+  H -->|Yes| I{"File is image? (image/*)"}
+  I -->|No| J["Alert: invalid image"] --> E
+  I -->|Yes| K["processFace(file)"]

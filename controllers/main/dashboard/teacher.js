@@ -1,6 +1,6 @@
 const Employee = require('../../../models/users/employee');
 const Org = require('../../../models/users/organization');
-const studentSession = require('../../../models/statistics/student-session');
+const studentSession = require('../../../models/logs/student-session');
 const generateCode = require('../../../utils/functions/codes');
 const studentSummary = require('../../../models/statistics/student-summary');
 const schoolStudent = require('../../../models/users/school-student');

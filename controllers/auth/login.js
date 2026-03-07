@@ -3,7 +3,7 @@ const Org = require("../../models/users/organization");
 const CollegeStudent = require("../../models/users/college-student");
 const SchoolStudent = require("../../models/users/school-student");
 const Employee = require('../../models/users/employee');
-const OrgLog = require("../../models/statistics/logs");
+const OrgLog = require("../../models/logs/logs");
 
 exports.login = async (req, res) => {
     try {
