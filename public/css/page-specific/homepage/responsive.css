@@ -7,6 +7,7 @@
         padding: 0.8rem;
         gap: 0.8rem;
     }
+    
 
     .left-side,
     .right-side {
@@ -32,6 +33,11 @@
     .main-2 {
         border-radius: 0.8rem;
         padding: 0.65rem;
+    }
+    .main-3 {width: 100%;}
+    .form-overlay {width: 100%;}
+    .login-form {
+        width: 80%;
     }
 
     .left-side,

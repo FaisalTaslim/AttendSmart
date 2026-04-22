@@ -24,14 +24,32 @@ faceInput.addEventListener("change", async () => {
   }
 
   if (!faceInput.files.length) return;
-  const file = faceInput.files[0];
+  const files = Array.from(faceInput.files);
 
-  if (!file.type.startsWith("image/")) {
-    alert("Please upload a valid image file");
+  const invalidFiles = files.filter(file => !file.type.startsWith("image/"));
+  if (invalidFiles.length) {
+    alert("Please upload valid image files only");
     return;
   }
 
-  processFace(file);
+  const descriptors = [];
+  let failedCount = 0;
+
+  for (const file of files) {
+    const descriptor = await processFace(file);
+    if (descriptor) {
+      descriptors.push(descriptor);
+    } else {
+      failedCount += 1;
+    }
+  }
+
+  if (!descriptors.length) {
+    alert("No faces detected. Please upload clear images with one face each.");
+    return;
+  }
+
+  await uploadDescriptors(descriptors, failedCount);
 });
 
 
@@ -45,27 +63,25 @@ async function processFace(file) {
       .withFaceDescriptor();
 
     if (!detection) {
-      alert("No face detected. Please upload a clear image with one face.");
-      return;
+      return null;
     }
 
-    const descriptor = Array.from(detection.descriptor);
-    uploadDescriptor(descriptor);
+    return Array.from(detection.descriptor);
 
   } catch (err) {
     console.error("Face processing error:", err);
-    alert("Face processing failed. Try another image.");
+    return null;
   }
 }
 
 
-async function uploadDescriptor(descriptor) {
+async function uploadDescriptors(descriptors, failedCount) {
   const res = await fetch("/dashboard/face-register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ descriptor })
+    body: JSON.stringify({ descriptors })
   });
 
   const data = await res.json();
@@ -75,7 +91,11 @@ async function uploadDescriptor(descriptor) {
     return;
   }
 
-  alert("Face registered successfully ✅");
+  if (failedCount) {
+    alert(`Face registered successfully ✅\n${failedCount} image(s) failed face detection.`);
+  } else {
+    alert("Face registered successfully ✅");
+  }
   faceInput.disabled = true;
   location.reload();
 }

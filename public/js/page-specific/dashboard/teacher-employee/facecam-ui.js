@@ -58,13 +58,6 @@
         }
     };
 
-    if (mobileNav) {
-        mobileNav.addEventListener('change', (event) => {
-            if (!event.target.value) return;
-            window.location.href = event.target.value;
-        });
-    }
-
     if (startBtn && stopBtn) {
         startBtn.addEventListener('click', startCamera);
         stopBtn.addEventListener('click', stopCamera);

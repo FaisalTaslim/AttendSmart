@@ -31,6 +31,7 @@
                 <a href="/logout" class="nav-links-property">Logout</a>
             <% } else { %>
                 <p class="nav-links-property login-page-btn">Login</p>
+                <a href="/" class="nav-links-property">Home</a>
                 <a href="/guidebook" class="nav-links-property">GuideBook</a>
             <% } %>
         </nav>
@@ -40,10 +41,11 @@
                     <option value="">Navigate</option>
                     <% if (isAuthenticated) { %>
                         <option value="/dashboard">Dashboard</option>
-                        <option value="/guidebook">Home</option>
-                        <option value="/">Logout</option>
+                        <option value="/">Home</option>
+                        <option value="/logout">Logout</option>
                     <% } else { %>
                         <option value="#login">Login</option>
+                        <option value="/">Home</option>
                         <option value="/guidebook">GuideBook</option>
                     <% } %>
                 </select>
@@ -487,6 +489,7 @@
             </div>
         </div>
     </footer>
+    <script src="/js/global/layout/mobile-nav.js"></script>
     <script src="/js/global/UI/rearrange-footer.js"></script>
 </body>
 

@@ -120,13 +120,13 @@
                                 </p>
 
                                 <form id="faceForm" enctype="multipart/form-data">
-                                    <input type="file" id="face" name="faceImage" accept="image/png, image/jpeg" hidden>
+                                    <input type="file" id="face" name="faceImage" accept="image/png, image/jpeg" multiple hidden>
 
                                     <label for="face" class="upload-label">
                                         <div class="upload-content">
                                             <div class="upload-icon"><i class="fa-solid fa-camera"></i></div>
                                             <p class="upload-title">Upload your clear face image</p>
-                                            <p class="upload-subtitle">PNG or JPG • One face only</p>
+                                            <p class="upload-subtitle">PNG or JPG • One face per image</p>
                                         </div>
                                     </label>
                                 </form>
@@ -216,6 +216,7 @@
         </div>
     </footer>
 
+    <script src="/js/global/layout/mobile-nav.js"></script>
     <script src="/js/global/UI/rearrange-footer.js"></script>
     <script src="/js/face-api/face-api.min.js"></script>
     <script src="/js/face-api/detection/face-init.js"></script>

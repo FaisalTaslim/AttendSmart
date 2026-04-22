@@ -30,9 +30,20 @@ exports.login = async (req, res) => {
                 });
             }
 
-            const admin = org.admin[0];
-            const match = await bcrypt.compare(password, admin.password);
-            if (!match) {
+            let matchedAdmin = null;
+            let matchedIndex = -1;
+
+            for (let i = 0; i < org.admin.length; i += 1) {
+                const candidate = org.admin[i];
+                const match = await bcrypt.compare(password, candidate.password);
+                if (match) {
+                    matchedAdmin = candidate;
+                    matchedIndex = i;
+                    break;
+                }
+            }
+
+            if (!matchedAdmin) {
                 return res.render("index", {
                     popupMessage: "Invalid credentials",
                     popupType: "error",
@@ -44,8 +55,8 @@ exports.login = async (req, res) => {
                 {
                     $push: {
                         loginLogs: {
-                            userId: admin.adminId,
-                            name: admin.name,
+                            userId: matchedAdmin.adminId,
+                            name: matchedAdmin.name,
                             role: "admin",
                             createdAt: new Date()
                         }
@@ -56,10 +67,14 @@ exports.login = async (req, res) => {
 
             req.session.user = {
                 code: org.code,
-                name: admin.name,
-                email: admin.email,
+                name: matchedAdmin.name,
+                email: matchedAdmin.email,
                 role: "admin"
             };
+
+            if (matchedIndex === 1) {
+                return res.redirect("/dashboard/capture-attendance");
+            }
 
             return res.redirect("/dashboard/admin");
         }

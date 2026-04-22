@@ -32,16 +32,7 @@ const logSchema = new Schema({
     ],
     supportLogs: [
         {
-            userId: {type: String, required: true},
-            name: {type: String, required: true},
-            role: {type: String, required: true},
-            email: {type: String, required: true},
-            supportType: {
-                type: String,
-                required: true
-            },
-            thoughts: {type: String, required: true},
-            createdAt: { type: Date, default: Date.now },
+            
             _id: false,
         }
     ],

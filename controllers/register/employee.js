@@ -42,6 +42,8 @@ exports.register_emp = async (req, res) => {
         const existingEmployee = await Employee.findOne(
             {
                 org,
+                name,
+                employeeId,
                 email: email.toLowerCase().trim(),
                 isDeleted: false,
             },

@@ -4,6 +4,7 @@ const studentSession = require('../../../models/logs/student-session');
 const generateCode = require('../../../utils/functions/codes');
 const studentSummary = require('../../../models/statistics/student-summary');
 const schoolStudent = require('../../../models/users/school-student');
+const collegeStudent = require('../../../models/users/college-student');
 const moment = require('moment');
 
 exports.dashboard = async (req, res) => {
@@ -91,43 +92,113 @@ exports.startSession = async (req, res) => {
         expiresAt: moment().add(1, 'hour').toDate(),
     });
 
+    const month = moment().format('YYYY-MM');
+    const attendanceMethod = orgData?.attendanceMethod;
+
     if (orgType === "college") {
-        await studentSummary.findOneAndUpdate(
-            { org: getOrg, department, subject },
-            { $inc: { total: 1 } },
-            { upsert: true }
-        );
+        const studentQuery = {
+            org: getOrg,
+            dept: department
+        };
+        if (attendanceMethod === "subject-wise" && subject) {
+            studentQuery.subjects = subject;
+        }
+
+        const students = await collegeStudent.find(studentQuery);
+
+        if (attendanceMethod === "one-time") {
+            await Promise.all(
+                students.map(student =>
+                    studentSummary.findOneAndUpdate(
+                        { org: getOrg, code: student.code, month, subject: null },
+                        {
+                            $inc: { total: 1 },
+                            $setOnInsert: {
+                                org: getOrg,
+                                code: student.code,
+                                name: student.name,
+                                department: student.dept,
+                                subject: null,
+                                month,
+                            },
+                        },
+                        { upsert: true }
+                    )
+                )
+            );
+        } else if (attendanceMethod === "subject-wise") {
+            await Promise.all(
+                students.map(student =>
+                    studentSummary.findOneAndUpdate(
+                        { org: getOrg, code: student.code, month, subject },
+                        {
+                            $inc: { total: 1 },
+                            $setOnInsert: {
+                                org: getOrg,
+                                code: student.code,
+                                name: student.name,
+                                department: student.dept,
+                                subject,
+                                month,
+                            },
+                        },
+                        { upsert: true }
+                    )
+                )
+            );
+        }
     }
 
     else if (orgType === "school") {
-        const attendanceType = orgData?.attendanceType;
-
-        const students = await schoolStudent.find({
+        const studentQuery = {
             org: getOrg,
-            class: department,
+            standard: department,
             stream: stream
-        });
+        };
+        if (attendanceMethod === "subject-wise" && subject) {
+            studentQuery.subjects = subject;
+        }
 
-        const studentCodes = students.map(s => s.code);
+        const students = await schoolStudent.find(studentQuery);
 
-        if (attendanceType === "one-time") {
+        if (attendanceMethod === "one-time") {
             await Promise.all(
-                studentCodes.map(code =>
+                students.map(student =>
                     studentSummary.findOneAndUpdate(
-                        { code },
-                        { $inc: { total: 1 } },
+                        { org: getOrg, code: student.code, month, subject: null },
+                        {
+                            $inc: { total: 1 },
+                            $setOnInsert: {
+                                org: getOrg,
+                                code: student.code,
+                                name: student.name,
+                                department: student.standard,
+                                subject: null,
+                                month,
+                            },
+                        },
                         { upsert: true }
                     )
                 )
             );
         }
 
-        else if (attendanceType === "subject-wise") {
+        else if (attendanceMethod === "subject-wise") {
             await Promise.all(
-                studentCodes.map(code =>
+                students.map(student =>
                     studentSummary.findOneAndUpdate(
-                        { code, subject },
-                        { $inc: { total: 1 } },
+                        { org: getOrg, code: student.code, month, subject },
+                        {
+                            $inc: { total: 1 },
+                            $setOnInsert: {
+                                org: getOrg,
+                                code: student.code,
+                                name: student.name,
+                                department: student.standard,
+                                subject,
+                                month,
+                            },
+                        },
                         { upsert: true }
                     )
                 )

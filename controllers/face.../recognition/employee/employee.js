@@ -100,6 +100,20 @@ exports.incrementAttendance = async (req, res) => {
             return res.status(200).json({ success: true, message: "Already marked for this session" });
         }
 
+        const updatedSummary = await Summary.findOne({
+            code: recognizedEmployee.code,
+            org: recognizedEmployee.org,
+            shift: recognizedEmployee.shift,
+            month: moment().format("YYYY-MM")
+        });
+
+        if (updatedSummary) {
+            updatedSummary.percentage = updatedSummary.total > 0
+                ? Number(((updatedSummary.attended / updatedSummary.total) * 100).toFixed(2))
+                : 0;
+            await updatedSummary.save();
+        }
+
         res.json({ success: true, message: `Attendance marked for ${employeeCode}` });
 
     } catch (error) {

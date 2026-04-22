@@ -34,6 +34,9 @@ exports.markAttendance = async (req, res) => {
 
     const summary = await Summary.findOne({ code: studentCode, subject });
     summary.attended += 1;
+    summary.percentage = summary.total > 0
+        ? Number(((summary.attended / summary.total) * 100).toFixed(2))
+        : 0;
 
     await summary.save();
 

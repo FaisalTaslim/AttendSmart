@@ -21,7 +21,7 @@ router.get('/school-student', ensureLoggedIn, schoolStudent.dashboard);
 router.get('/college-student', ensureLoggedIn, collegeStudent.dashboard);
 router.get('/employee/corporate', ensureLoggedIn, employee.dashboard);
 router.get('/employee/teacher', ensureLoggedIn, teacher.dashboard);
-router.get('/capture-attendance', captureAttendance.dashboard);
+router.get('/capture-attendance', ensureLoggedIn, captureAttendance.dashboard);
 router.post('/face-register', ensureLoggedIn, faceAPI.registerFace);
 
 
@@ -31,8 +31,8 @@ router.post('/admin/users/:type/remove/:code', ensureLoggedIn, manageUsers.delet
 router.post('/admin/employee/start-session', ensureLoggedIn, session.employee);
 
 
-router.get('/employee/face-data', face1.getFaceData);
-router.post('/employee/increment-attendance', face1.incrementAttendance);
+router.get('/employee/face-data', ensureLoggedIn, face1.getFaceData);
+router.post('/employee/increment-attendance', ensureLoggedIn, face1.incrementAttendance);
 
 router.post('/teacher/start-session', ensureLoggedIn, teacher.startSession);
 

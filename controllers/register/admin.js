@@ -11,6 +11,7 @@ const mongoose = require("mongoose");
 exports.register = async (req, res) => {
     const session = await mongoose.startSession();
     let setup;
+    let successMessage = "Registration successful! Please verify your email.";
     session.startTransaction();
 
     try {
@@ -52,87 +53,128 @@ exports.register = async (req, res) => {
             throw new Error("Please use your organization email address");
         }
 
-        const existingOrg = await Org.findOne({ org: organization });
-        if (existingOrg) {
-            throw new Error("Organization already registered");
-        }
-
-        let code;
-        let codeExists = true;
-
-        while (codeExists) {
-            code = generateCode(6, "numeric");
-            const check = await Org.findOne({ code });
-            if (!check) codeExists = false;
-        }
+        const existingOrg = await Org.findOne({ org: organization }).session(session);
 
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        const token = crypto.randomBytes(32).toString("hex");
-        const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+        if (existingOrg) {
+            const adminExists = existingOrg.admin?.some(existing =>
+                existing.email === email || existing.adminId === adminId
+            );
 
-        if(type === "corporate") {
-            setup = true;
-        }
-        else setup = false;
+            if (adminExists) {
+                throw new Error("Admin already registered for this organization");
+            }
 
-        const orgDoc = await Org.create(
-            [{
-                code,
-                org: organization,
-                branch,
-                type,
-                address,
-                website,
-                attendanceMethod,
-                agreement: true,
-                admin: [
-                    {
-                        name,
-                        adminId,
-                        contact,
-                        email,
-                        password: hashedPassword
+            await Org.updateOne(
+                { _id: existingOrg._id },
+                {
+                    $push: {
+                        admin: {
+                            name,
+                            adminId,
+                            contact,
+                            email,
+                            password: hashedPassword
+                        }
                     }
-                ],
-                verification: {
-                    status: "pending",
-                    token,
-                    expiresAt
                 },
-                setup_done: setup
-            }],
-            { session }
-        );
+                { session }
+            );
 
-        const logDoc = await OrgLog.create(
-            [{
-                org: code,
-                register: [
-                    {
-                        name,
-                        role: "admin",
-                        id: adminId,
-                        email
+            await OrgLog.findOneAndUpdate(
+                { org: existingOrg.code },
+                {
+                    $push: {
+                        register: {
+                            name,
+                            role: "admin",
+                            id: adminId,
+                            email
+                        }
                     }
-                ]
-            }],
-            { session }
-        );
+                },
+                { upsert: true, session }
+            );
 
-        await sendVerificationEmail(
-            email,
-            token,
-            code,
-            "admin",
-            null
-        );
+            successMessage = "Registration successful! You can now log in.";
+        } else {
+            let code;
+            let codeExists = true;
+
+            while (codeExists) {
+                code = generateCode(6, "numeric");
+                const check = await Org.findOne({ code }).session(session);
+                if (!check) codeExists = false;
+            }
+
+            const token = crypto.randomBytes(32).toString("hex");
+            const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+            if (type === "corporate") {
+                setup = true;
+            } else {
+                setup = false;
+            }
+
+            await Org.create(
+                [{
+                    code,
+                    org: organization,
+                    branch,
+                    type,
+                    address,
+                    website,
+                    attendanceMethod,
+                    agreement: true,
+                    admin: [
+                        {
+                            name,
+                            adminId,
+                            contact,
+                            email,
+                            password: hashedPassword
+                        }
+                    ],
+                    verification: {
+                        status: "pending",
+                        token,
+                        expiresAt
+                    },
+                    setup_done: setup
+                }],
+                { session }
+            );
+
+            await OrgLog.create(
+                [{
+                    org: code,
+                    register: [
+                        {
+                            name,
+                            role: "admin",
+                            id: adminId,
+                            email
+                        }
+                    ]
+                }],
+                { session }
+            );
+
+            await sendVerificationEmail(
+                email,
+                token,
+                code,
+                "admin",
+                null
+            );
+        }
 
         await session.commitTransaction();
         session.endSession();
 
         return res.render("index", {
-            popupMessage: "Registration successful! Please verify your email.",
+            popupMessage: successMessage,
             popupType: "success"
         });
 
