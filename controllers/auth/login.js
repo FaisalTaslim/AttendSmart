@@ -2,83 +2,76 @@ const bcrypt = require("bcrypt");
 const Org = require("../../models/users/organization");
 const CollegeStudent = require("../../models/users/college-student");
 const SchoolStudent = require("../../models/users/school-student");
-const Employee = require('../../models/users/employee');
-const LoginLog = require('../../models/logs/login');
-const OrgLog = require("../../models/logs/logs");
+const Employee = require("../../models/users/employee");
+const LoginLog = require("../../models/logs/login");
+
+const logLogin = async ({ type, org, id, name, role, message }) => {
+    try {
+        await LoginLog.create({ type, org, id, name, role, message });
+    } catch (err) {
+        console.error("Log error:", err);
+    }
+};
+
+const sendError = (res, message) => {
+    return res.render("index", {
+        popupMessage: message,
+        popupType: "error",
+    });
+};
 
 exports.login = async (req, res) => {
-    const session = await mongoose.startSession();
-    session.startSession();
-
     const { code, userRole, password } = req.body;
-    let globalUser;
+
+    let globalUser = null;
 
     try {
-        let matchedAdmin = null;
-        let matchedIndex = -1;
-
         if (!code || !userRole || !password) {
-            return res.render("index", {
-                popupMessage: "All fields are required",
-                popupType: "error",
-            });
+            return sendError(res, "All fields are required");
+        }
+
+        const org = await Org.findOne({
+            code,
+            isDeleted: false,
+            isSuspended: false,
+        });
+
+        if (!org || org.verification.status !== "verified") {
+            return sendError(res, "Invalid, suspended or unverified organization");
         }
 
         if (userRole === "Org") {
-            const org = await Org.findOne({
-                code,
-                isDeleted: false,
-                isSuspended: false
-            });
+            let matchedAdmin = null;
 
-            if (!org || org.verification.status !== "verified") {
-                return res.render("index", {
-                    popupMessage: "Invalid, suspended or unverified organization",
-                    popupType: "error",
-                });
-            }
-
-            for (let i = 0; i < org.admin.length; i += 1) {
-                const candidate = org.admin[i];
-                const match = await bcrypt.compare(password, candidate.password);
+            for (const admin of org.admin) {
+                const match = await bcrypt.compare(password, admin.password);
                 if (match) {
-                    matchedAdmin = candidate;
-                    matchedIndex = i;
+                    matchedAdmin = admin;
                     break;
                 }
             }
 
             if (!matchedAdmin) {
-                return res.render("index", {
-                    popupMessage: "Invalid credentials",
-                    popupType: "error",
-                });
+                return sendError(res, "Invalid credentials");
             }
+
             globalUser = matchedAdmin;
 
-            await LoginLog.create(
-                [{
-                    type: 'success',
-                    org: org.code,
-                    user: matchedAdmin.name,
-                    id: matchedAdmin.adminId,
-                    name: matchedAdmin.name,
-                    role: "admin",
-                    message: "Logged in successfully!",
-                }],
-                { session }
-            )
+            await logLogin({
+                type: "success",
+                org: org.code,
+                id: matchedAdmin.adminId,
+                name: matchedAdmin.name,
+                role: "admin",
+                message: "Logged in successfully!",
+            });
 
             req.session.user = {
                 code: org.code,
                 name: matchedAdmin.name,
                 email: matchedAdmin.email,
-                role: "admin"
+                role: "admin",
             };
-
-            if (matchedIndex === 1) {
-                return res.redirect("/dashboard/capture-attendance");
-            }
 
             return res.redirect("/dashboard/admin");
         }
@@ -91,40 +84,30 @@ exports.login = async (req, res) => {
             });
 
             if (!student || student.verification.status !== "verified") {
-                return res.render("index", {
-                    popupMessage: "Invalid or unverified student",
-                    popupType: "error",
-                });
+                return sendError(res, "Invalid or unverified student");
             }
+
+            globalUser = student;
 
             const match = await bcrypt.compare(password, student.password);
             if (!match) {
-                return res.render("index", {
-                    popupMessage: "Invalid credentials",
-                    popupType: "error",
-                });
+                return sendError(res, "Invalid credentials");
             }
 
-            await OrgLog.findOneAndUpdate(
-                { org: student.org },
-                {
-                    $push: {
-                        loginLogs: {
-                            userId: student.code,
-                            name: student.name,
-                            role: "student",
-                            createdAt: new Date()
-                        }
-                    }
-                },
-                { upsert: true }
-            );
+            await logLogin({
+                type: "success",
+                org: org.code,
+                id: student.roll,
+                name: student.name,
+                role: "school-student",
+                message: "Logged in successfully!",
+            });
 
             req.session.user = {
                 code: student.code,
                 name: student.name,
                 email: student.email,
-                role: "school-student"
+                role: "school-student",
             };
 
             return res.redirect("/dashboard/school-student");
@@ -138,40 +121,30 @@ exports.login = async (req, res) => {
             });
 
             if (!student || student.verification.status !== "verified") {
-                return res.render("index", {
-                    popupMessage: "Invalid or unverified student",
-                    popupType: "error",
-                });
+                return sendError(res, "Invalid or unverified student");
             }
+
+            globalUser = student;
 
             const match = await bcrypt.compare(password, student.password);
             if (!match) {
-                return res.render("index", {
-                    popupMessage: "Invalid credentials",
-                    popupType: "error",
-                });
+                return sendError(res, "Invalid credentials");
             }
 
-            await OrgLog.findOneAndUpdate(
-                { org: student.org },
-                {
-                    $push: {
-                        loginLogs: {
-                            userId: student.code,
-                            name: student.name,
-                            role: "student",
-                            createdAt: new Date()
-                        }
-                    }
-                },
-                { upsert: true }
-            );
+            await logLogin({
+                type: "success",
+                org: org.code,
+                id: student.roll,
+                name: student.name,
+                role: "college-student",
+                message: "Logged in successfully!",
+            });
 
             req.session.user = {
                 code: student.code,
                 name: student.name,
                 email: student.email,
-                role: "college-student"
+                role: "college-student",
             };
 
             return res.redirect("/dashboard/college-student");
@@ -185,75 +158,64 @@ exports.login = async (req, res) => {
             });
 
             if (!employee || employee.verification.status !== "verified") {
-                return res.render("index", {
-                    popupMessage: "Invalid or unverified employee",
-                    popupType: "error",
-                });
+                return sendError(res, "Invalid or unverified employee");
             }
+
+            globalUser = employee;
 
             const match = await bcrypt.compare(password, employee.password);
             if (!match) {
-                return res.render("index", {
-                    popupMessage: "Invalid credentials",
-                    popupType: "error",
-                });
+                return sendError(res, "Invalid credentials");
             }
 
-            await OrgLog.findOneAndUpdate(
-                { org: employee.org },
-                {
-                    $push: {
-                        loginLogs: {
-                            userId: employee.code,
-                            name: employee.name,
-                            role: "employee",
-                            createdAt: new Date()
-                        }
-                    }
-                },
-                { upsert: true }
-            );
+            await logLogin({
+                type: "success",
+                org: org.code,
+                id: employee.employeeId || employee.code,
+                name: employee.name,
+                role: "employee",
+                message: "Logged in successfully!",
+            });
 
             req.session.user = {
                 code: employee.code,
                 name: employee.name,
                 email: employee.email,
-                role: "employee"
+                role: "employee",
             };
 
-            const org = await Org.findOne({
-                code: employee.org,
-                isDeleted: false,
-                isSuspended: false,
-            }).select("type");
+            const orgData = await Org.findOne({ code: employee.org }).select("type");
 
-            const employeeType = (org && org.type === "corporate") ? "corporate" : "teacher";
+            const employeeType =
+                orgData && orgData.type === "corporate" ? "corporate" : "teacher";
+
             req.session.user.employeeType = employeeType;
 
-            if (employeeType === "corporate") {
-                return res.redirect("/dashboard/employee/corporate");
-            }
-
-            return res.redirect("/dashboard/employee/teacher");
+            return res.redirect(
+                employeeType === "corporate"
+                    ? "/dashboard/employee/corporate"
+                    : "/dashboard/employee/teacher"
+            );
         }
 
+        return sendError(res, "Invalid role selected");
+
     } catch (err) {
-        await session.abortTransaction();
-        session.endSession();
+        console.error("Login Error:", err);
 
-        await LoginLog.create({
-            type: 'failed',
-            org: code || '--',
-            id: globalUser.adminId || globalUser.employeeId || globalUser.role || '--',
-            name: globalUser.name || '--',
-            role: userrole || '--',
-            message: err.message || 'Something went wrong during login',
-
+        await logLogin({
+            type: "failed",
+            org: code || "null",
+            id:
+                globalUser?.adminId ||
+                globalUser?.employeeId ||
+                globalUser?.roll ||
+                "null",
+            name: globalUser?.name || "null",
+            role: userRole || "null",
+            message: err.message || "Login failed",
         });
 
-        return res.render("index", {
-            popupMessage: "Something went wrong during login",
-            popupType: "error",
-        });
+        return sendError(res, "Something went wrong during login");
     }
 };
