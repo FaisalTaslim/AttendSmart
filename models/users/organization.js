@@ -68,6 +68,14 @@ const orgSchema = new mongoose.Schema({
         token: { type: String },
         expiresAt: { type: Date }
     },
+    settings: {
+        theme: {
+            type: String,
+            enum: ['dark', 'light'],
+            default: 'light',
+            _id: false,
+        },
+    },
     setup: {
         subjectsUploaded: { type: Boolean, default: false },
         scheduleUploaded: { type: Boolean, default: false },

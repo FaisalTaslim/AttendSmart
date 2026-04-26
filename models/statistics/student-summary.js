@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-const moment = require('moment');
 
 const summary = new Schema({
     org: {type: String, required: true},    
@@ -11,8 +10,7 @@ const summary = new Schema({
     subject: {type: String, default: null},
 
     month: {
-        type: String,
-        default: () => moment().format("YYYY-MM")
+        type: Number,
     },
     total: {type: Number, default: 0},
     attended: {type: Number, default: 0},

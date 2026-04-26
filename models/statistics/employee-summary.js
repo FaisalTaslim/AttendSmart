@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const moment = require("moment");
 
 const employeeSummarySchema = new Schema({
     org: { type: String, required: true },
@@ -15,20 +14,22 @@ const employeeSummarySchema = new Schema({
     department: { type: String, required: true },
     shift: { type: String, default: null },
     month: {
-        type: String,
-        default: () => moment().format("YYYY-MM"),
+        type: Number,
+        required: true,
     },
     markedSessions: [
         {
             sessionCode: { type: String },
-            date: { type: Date, default: Date.now },
-            isMarked: { type: Boolean }
+            date: {type: String},
+            checkIn: Date,
+            checkout: Date,
+            isMarked: Boolean,
         }
     ],
     total: { type: Number, default: 0 },
     attended: { type: Number, default: 0 },
-    leave: { type: Number, default: 0 },
     percentage: { type: Number, default: 0 },
+
 }, { timestamps: true });
 
 module.exports =

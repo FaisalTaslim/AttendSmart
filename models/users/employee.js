@@ -49,7 +49,8 @@ const employeeSchema = new Schema({
             default: "pending"
         },
         token: {
-            type: String
+            type: String,
+            unique: true
         },
         expiresAt: {
             type: Date
@@ -58,10 +59,13 @@ const employeeSchema = new Schema({
     onLeave: {type: Boolean, required: true, default: false},
     isDeleted: {type: Boolean, default: false},
     isSuspended: {type: Boolean, default: false},
-    theme: {
-        type: String,
-        enum: ['dark', 'light'],
-        default: 'light',
+    settings: {
+        theme: {
+            type: String,
+            enum: ['dark', 'light'],
+            default: 'light',
+            _id: false,
+        },
     },
     password: {type: String, required: true},
     termsCheck: {type: String, required: true, default: "not-accepted"},

@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const collegeStudentSchema = new Schema({
-    org: {type: String, required: true},
+    org: { type: String, required: true },
     code: {
-        type: String, 
-        required: true, 
+        type: String,
+        required: true,
         unique: true
     },
     name: {
@@ -13,9 +13,9 @@ const collegeStudentSchema = new Schema({
         required: true,
         trim: true
     },
-    roll: {type: String, required: true},
-    dept: {type: String, required: true},
-    contact: {type: String, required: true},
+    roll: { type: String, required: true },
+    dept: { type: String, required: true },
+    contact: { type: String, required: true },
     email: {
         type: String,
         required: true,
@@ -45,19 +45,20 @@ const collegeStudentSchema = new Schema({
             type: Date
         }
     },
-    onLeave: {type: Boolean, required: true, default: false},
-    totalLeave: {type: Number, default: 0},
-    isDeleted: {type: Boolean, default: false},
-    isSuspended: {type: Boolean, default: false},
-    theme: {
-        type: String,
-        enum: ['dark', 'light'],
-        default: 'light',
+    isDeleted: { type: Boolean, default: false },
+    isSuspended: { type: Boolean, default: false },
+    settings: {
+        theme: {
+            type: String,
+            enum: ['dark', 'light'],
+            default: 'light',
+            _id: false,
+        },
     },
-    password: {type: String, required: true},
-    termsCheck: {type: String, required: true, default: "not-accepted"},
+    password: { type: String, required: true },
+    termsCheck: { type: String, required: true, default: "not-accepted" },
     setup: {
-        faceUploaded: {type: Boolean, default: false},
+        faceUploaded: { type: Boolean, default: false },
     }
 
 }, { timestamps: true });

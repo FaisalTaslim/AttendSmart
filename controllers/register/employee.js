@@ -3,51 +3,48 @@ const mongoose = require("mongoose");
 const Org = require("../../models/users/organization");
 const Employee = require('../../models/users/employee');
 const EmployeeSummary = require("../../models/statistics/employee-summary");
-const OrgLog = require("../../models/logs/logs");
+const RegisterLog = require('../../models/logs/register');
 const generateCode = require("../../utils/functions/codes");
 const crypto = require("crypto");
-const { sendVerificationEmail } = require("../../utils/emails/send-emails");
-const verifyEmail = require("../../utils/emails/verify-domains");
-const moment = require("moment");
+const { sendVerificationEmail } = require("../../utils/emails/send-register-emails");
+const verifyDomains = require("../../utils/emails/verify-domains");
+const getMonthKey = require('../../utils/functions/getMonthKey');
 
 exports.register_emp = async (req, res) => {
     const session = await mongoose.startSession();
     session.startTransaction();
+    const month = getMonthKey();
+    let code;
+
+    const {
+        org,
+        name,
+        employeeId,
+        designation,
+        workPlace,
+        shift,
+        contact,
+        email,
+        password,
+        confirmPassword,
+    } = req.body;
 
     const verificationToken = crypto.randomBytes(20).toString("hex");
     const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
     try {
-        const {
-            org,
-            name,
-            employeeId,
-            designation,
-            workPlace,
-            shift,
-            contact,
-            email,
-            password,
-            confirmPassword,
-        } = req.body;
-
-        if (password !== confirmPassword) {
-            throw new Error("PASSWORD_MISMATCH");
-        }
-
-        if (!verifyEmail(email.toLowerCase())) {
-            throw new Error("INVALID_EMAIL_DOMAIN");
+        if ((password !== confirmPassword) || !(verifyDomains(email.toLowerCase()))) {
+            throw new Error("SUSPICIOUS_ACTIVITY");
         }
 
         const existingEmployee = await Employee.findOne(
             {
                 org,
-                name,
-                employeeId,
+                name: name.toLowerCase().trim(),
+                employeeId: employeeId.toLowerCase().trim(),
                 email: email.toLowerCase().trim(),
                 isDeleted: false,
             },
-            null,
             { session }
         );
 
@@ -56,24 +53,16 @@ exports.register_emp = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
+        code = generateCode(6, "numeric");
 
-        let code;
-        let codeExists = true;
-
-        while (codeExists) {
-            code = generateCode(6, "numeric");
-            const check = await Employee.findOne({ code });
-            if (!check) codeExists = false;
-        }
-
-        const [employee] = await Employee.create(
+        const employee = await Employee.create(
             [
                 {
                     org,
                     code,
-                    name: name.trim(),
-                    employeeId: employeeId.trim(),
-                    designation: designation.trim(),
+                    name: name.toLowerCase().trim(),
+                    employeeId: employeeId.toLowerCase().trim(),
+                    designation: designation.toLowerCase().trim(),
                     workPlace,
                     shift,
                     contact,
@@ -86,6 +75,9 @@ exports.register_emp = async (req, res) => {
                     setup: {
                         faceUploaded: false,
                     },
+                    settings: {
+                        theme: 'light',
+                    },
                     password: hashedPassword,
                     termsCheck: "accepted",
                 },
@@ -97,36 +89,33 @@ exports.register_emp = async (req, res) => {
             [
                 {
                     org,
-                    code: employee.code,
-                    name: employee.name,
-                    department: employee.designation,
-                    shift: employee.shift,
-                    month: moment().format("YYYY-MM"),
+                    code,
+                    name: name.toLowerCase().trim(),
+                    department: designation.toLowerCase().trim(),
+                    shift,
+                    month,
                 },
             ],
             { session }
         );
 
-        await OrgLog.findOneAndUpdate(
-            { org },
-            {
-                $push: {
-                    register: {
-                        name: employee.name,
-                        role: "employee",
-                        id: employee.employeeId,
-                        email: employee.email,
-                    },
-                },
-            },
-            { upsert: true, session }
-        );
+        await RegisterLog.create([{
+            type: 'success',
+            org: org,
+            name: name.toLowerCase().trim(),
+            id: employeeId.toLowerCase().trim(),
+            role: 'employee',
+            email: email.toLowerCase().trim(),
+            contact,
+            message: 'Employee registered successfully!'
+        }],
+            { session })
 
         await session.commitTransaction();
         session.endSession();
 
         await sendVerificationEmail(
-            employee.email,
+            email.toLowerCase().trim(),
             verificationToken,
             employee.code,
             "Employee",
@@ -142,12 +131,20 @@ exports.register_emp = async (req, res) => {
         await session.abortTransaction();
         session.endSession();
 
-        console.error(err);
+        await RegisterLog.create({
+            type: 'failed',
+            org: org || 'null',
+            name: name || 'null',
+            id: employeeId?.trim().toLowerCase() || 'null',
+            role: 'employee',
+            email: email?.toLowerCase().trim() || 'null',
+            contact: contact || 'null',
+            message: err.message,
+        })
 
         let message = "Registration failed. Please try again.";
 
-        if (err.message === "PASSWORD_MISMATCH") message = "Password mismatch!";
-        if (err.message === "INVALID_EMAIL_DOMAIN") message = "Use organization email only";
+        if (err.message === "SUSPICIOUS_ACTIVITY") message = "Suspicious activity detected! Failed to register.";
         if (err.message === "ACCOUNT_EXISTS") message = "Employee already registered";
 
         return res.render("index", {

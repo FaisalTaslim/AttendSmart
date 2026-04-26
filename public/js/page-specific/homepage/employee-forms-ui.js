@@ -28,7 +28,7 @@ async function loadOrganizations2() {
         organizations.forEach(org => {
             const opt = document.createElement("option");
             opt.value = org.code;
-            opt.textContent = `${org.org} - ${org.branch}`;
+            opt.textContent = `${org.org}, ${org.branch}`;
             orgSelect3.appendChild(opt);
         });
 

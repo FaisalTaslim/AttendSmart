@@ -57,9 +57,13 @@ const schoolStudentSchema = new Schema({
     isDeleted: {type: Boolean, default: false},
     isSuspended: {type: Boolean, default: false},
     theme: {
-        type: String,
-        enum: ['dark', 'light'],
-        default: 'light'
+     settings: {
+        theme: {
+            type: String,
+            enum: ['dark', 'light'],
+            default: 'light',
+            _id: false,
+        },
     },
     password: {type: String, required: true},
     termsCheck: {type: String, required: true, default: "not-accepted"},

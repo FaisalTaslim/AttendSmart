@@ -4,46 +4,46 @@ const Org = require("../../models/users/organization");
 const CollegeStudent = require("../../models/users/college-student");
 const SchoolStudent = require("../../models/users/school-student");
 const Summary = require("../../models/statistics/student-summary");
+const RegisterLog = require('../../models/logs/register');
 const OrgLog = require("../../models/logs/logs");
 const generateCode = require("../../utils/functions/codes");
 const crypto = require("crypto");
-const { sendVerificationEmail } = require("../../utils/emails/send-emails");
-const verifyEmail = require("../../utils/emails/verify-domains");
-const moment = require("moment");
-
+const { sendVerificationEmail } = require("../../utils/emails/send-register-emails");
+const getMonthKey = require('../../utils/functions/getMonthKey');
+const verifyDomains = require("../../utils/emails/verify-domains");
 
 exports.register_clg = async (req, res) => {
     const session = await mongoose.startSession();
     session.startTransaction();
 
+    const month = getMonthKey();
+
+    const {
+        name,
+        roll,
+        dept,
+        contact,
+        email,
+        org,
+        password,
+        confirmPassword,
+    } = req.body;
+
+    const {
+        majors = [],
+        minors = [],
+        optionals = []
+    } = req.body;
+
+    let code;
+    let subjects = [];
+
     const verificationToken = crypto.randomBytes(20).toString("hex");
     const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
     try {
-        const {
-            name,
-            roll,
-            dept,
-            contact,
-            email,
-            org,
-            password,
-            confirmPassword,
-        } = req.body;
-
-        const {
-            majors = [],
-            minors = [],
-            optionals = []
-        } = req.body;
-
-        let code;
-        let subjects = [];
-        let codeExists = true;
-
-
         if (password !== confirmPassword) throw new Error("PASSWORD_MISMATCH");
-        if (!verifyEmail(email.toLowerCase())) throw new Error("INVALID_EMAIL_DOMAIN");
+        if (!verifyDomains(email.toLowerCase())) throw new Error("INVALID_EMAIL_DOMAIN");
 
         const existing = await CollegeStudent.findOne(
             { email: email.toLowerCase().trim(), isDeleted: false },
@@ -61,18 +61,13 @@ exports.register_clg = async (req, res) => {
 
 
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        while (codeExists) {
-            code = generateCode(6, "numeric");
-            const check = await CollegeStudent.findOne({ code });
-            if (!check) codeExists = false;
-        }
+        code = generateCode(6, "numeric");
 
         const [student] = await CollegeStudent.create(
             [{
                 org,
                 code,
-                name,
+                name: name.toLowerCase().trim(),
                 roll,
                 dept,
                 contact,
@@ -83,6 +78,9 @@ exports.register_clg = async (req, res) => {
                     token: verificationToken,
                     expiresAt: tokenExpiry
                 },
+                settings: {
+                    theme: 'light',
+                },
                 password: hashedPassword,
                 termsCheck: "accepted",
                 setup: {
@@ -92,21 +90,16 @@ exports.register_clg = async (req, res) => {
             { session }
         );
 
-
-        const attendanceType = (await Org.findOne(
-            { code: org },
-            null,
-            { session }
-        ))?.attendanceMethod;
+        const attendanceType = (await Org.findOne({ code: org }).session(session))?.attendanceMethod;
 
         if (attendanceType === 'subject-wise') {
             const summaries = subjects.map(subject => ({
                 org: org,
-                code: student.code,
-                name: student.name,
-                department: student.dept,
+                code,
+                name: name.toLowerCase().trim(),
+                department: dept,
                 subject: subject,
-                month: moment().format("YYYY-MM"),
+                month,
             }));
 
             await Summary.insertMany(summaries, { session });
@@ -120,35 +113,32 @@ exports.register_clg = async (req, res) => {
                         name: student.name,
                         department: student.dept,
                         subject: null,
-                        month: moment().format("YYYY-MM"),
+                        month,
                     }
                 ],
                 { session }
             );
         }
 
-        await OrgLog.findOneAndUpdate(
-            { org: org },
-            {
-                $push: {
-                    register: {
-                        name: student.name,
-                        role: "student",
-                        id: roll,
-                        email: student.email.toLowerCase().trim()
-                    }
-                }
-            },
-            { upsert: true, session }
-        );
+        await RegisterLog.create([{
+            type: 'success',
+            org: org,
+            name: name.toLowerCase().trim(),
+            id: roll,
+            role: 'student',
+            email: email.toLowerCase().trim(),
+            contact,
+            message: 'Student registered successfully!'
+        }],
+            { session })
 
         await session.commitTransaction();
         session.endSession();
 
         await sendVerificationEmail(
-            student.email,
+            email.toLowerCase().trim(),
             verificationToken,
-            student.code,
+            code,
             "Student",
             "collegeStudent"
         );
@@ -162,7 +152,16 @@ exports.register_clg = async (req, res) => {
         await session.abortTransaction();
         session.endSession();
 
-        console.error(err);
+        await RegisterLog.create({
+            type: 'failed',
+            org: org || 'null',
+            name: name || 'null',
+            id: roll || 'null',
+            role: 'student',
+            email: email?.toLowerCase().trim() || 'null',
+            contact: contact || 'null',
+            message: err.message,
+        })
 
         let message = "Registration failed. Please try again.";
 
@@ -181,44 +180,43 @@ exports.register_clg = async (req, res) => {
 
 exports.register_sch = async (req, res) => {
     const session = await mongoose.startSession();
-    session.startTransaction();
+    const month = getMonthKey();
+
+    const {
+        org,
+        name,
+        roll,
+        standard,
+        stream,
+        contact,
+        email,
+        password,
+        confirmPassword,
+    } = req.body;
+
+    const {
+        majors = [],
+        minors = [],
+        optionals = []
+    } = req.body;
 
     const verificationToken = crypto.randomBytes(20).toString("hex");
     const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    let code;
+
+    session.startTransaction();
 
     try {
-        const {
-            org,
-            name,
-            roll,
-            standard,
-            stream,
-            contact,
-            email,
-            password,
-            confirmPassword,
-        } = req.body;
-
-        const {
-            majors = [],
-            minors = [],
-            optionals = []
-        } = req.body;
-
-        const normalizedName = name.trim().toLowerCase();
-        const normalizedStandard = standard.trim().toLowerCase();
         let subjects = [];
-        let code;
-        let codeExists = true;
 
         if (password !== confirmPassword) throw new Error("PASSWORD_MISMATCH");
-        if (!verifyEmail(email.toLowerCase())) throw new Error("INVALID_EMAIL_DOMAIN");
+        if (!verifyDomains(email.toLowerCase())) throw new Error("INVALID_EMAIL_DOMAIN");
 
         const existing = await SchoolStudent.findOne(
             {
-                name: normalizedName,
+                name: name.toLowerCase().trim(),
                 roll: roll.trim(),
-                standard: normalizedStandard,
+                standard: standard,
                 isDeleted: false
             },
             null,
@@ -235,19 +233,15 @@ exports.register_sch = async (req, res) => {
 
         if (subjects.length === 0) throw new Error("NO_SUBJECTS");
 
-        while (codeExists) {
-            code = generateCode(6, "numeric");
-            const check = await SchoolStudent.findOne({ code });
-            if (!check) codeExists = false;
-        }
+        code = generateCode(6, "numeric");
 
         const [student] = await SchoolStudent.create(
             [{
                 org,
                 code,
-                name: normalizedName,
+                name: name.toLowerCase().trim(),
                 roll: roll.trim().toLowerCase(),
-                standard: normalizedStandard,
+                standard: standard.trim(),
                 stream,
                 contact,
                 email: email.toLowerCase().trim(),
@@ -256,6 +250,9 @@ exports.register_sch = async (req, res) => {
                     status: "pending",
                     token: verificationToken,
                     expiresAt: tokenExpiry
+                },
+                settings: {
+                    theme: 'light'
                 },
                 setup: {
                     faceUploaded: false,
@@ -274,12 +271,12 @@ exports.register_sch = async (req, res) => {
 
         if (attendanceType === 'subject-wise') {
             const summaries = subjects.map(subject => ({
-                org: org,
-                code: student.code,
-                name: student.name,
-                department: student.standard,
+                org,
+                code,
+                name: name.toLowerCase().trim(),
+                department: standard,
                 subject: subject,
-                month: moment().format("YYYY-MM"),
+                month,
             }));
 
             await Summary.insertMany(summaries, { session });
@@ -288,12 +285,12 @@ exports.register_sch = async (req, res) => {
             await Summary.create(
                 [
                     {
-                        org: org,
-                        code: student.code,
-                        name: student.name,
-                        department: student.standard,
+                        org,
+                        code,
+                        name: name.toLowerCase().trim(),
+                        department: standard,
                         subject: null,
-                        month: moment().format("YYYY-MM"),
+                        month,
                     }
                 ],
                 { session }
@@ -301,20 +298,17 @@ exports.register_sch = async (req, res) => {
 
         }
 
-        await OrgLog.findOneAndUpdate(
-            { org },
-            {
-                $push: {
-                    register: {
-                        name: student.name,
-                        role: "student",
-                        id: roll,
-                        email: student.email
-                    }
-                }
-            },
-            { upsert: true, session }
-        );
+        await RegisterLog.create([{
+            type: 'success',
+            org: org,
+            name: name.toLowerCase().trim(),
+            id: roll.trim(),
+            role: 'student',
+            email: email.toLowerCase().trim(),
+            contact,
+            message: 'Student registered successfully!'
+        }],
+            { session })
 
         await session.commitTransaction();
         session.endSession();
@@ -336,7 +330,17 @@ exports.register_sch = async (req, res) => {
         await session.abortTransaction();
         session.endSession();
 
-        console.error(err);
+        await RegisterLog.create([{
+            type: 'failed',
+            org: org,
+            name: name?.toLowerCase().trim() || 'null',
+            id: roll?.trim() || 'null',
+            role: 'student',
+            email: email?.toLowerCase().trim() || 'null',
+            contact: contact || 'null',
+            message: 'Student registration failed!'
+        }],
+            { session })
 
         let message = "Registration failed. Please try again.";
 

@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
 const registerLog = new Schema({
+    type: {
+        type: String,
+        enum: ['failed', 'success'],
+        required: true,
+    },
     org: {
         type: String,
         required: true
@@ -15,6 +20,7 @@ const registerLog = new Schema({
     },
     email: {type: String, required: true},
     contact: {type: String, required: true},
+    message: {type: String, required: true},
     
 
 }, {timestamps: true});

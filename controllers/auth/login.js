@@ -3,11 +3,19 @@ const Org = require("../../models/users/organization");
 const CollegeStudent = require("../../models/users/college-student");
 const SchoolStudent = require("../../models/users/school-student");
 const Employee = require('../../models/users/employee');
+const LoginLog = require('../../models/logs/login');
 const OrgLog = require("../../models/logs/logs");
 
 exports.login = async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startSession();
+
+    const { code, userRole, password } = req.body;
+    let globalUser;
+
     try {
-        const { code, userRole, password } = req.body;
+        let matchedAdmin = null;
+        let matchedIndex = -1;
 
         if (!code || !userRole || !password) {
             return res.render("index", {
@@ -25,13 +33,10 @@ exports.login = async (req, res) => {
 
             if (!org || org.verification.status !== "verified") {
                 return res.render("index", {
-                    popupMessage: "Invalid or unverified organization",
+                    popupMessage: "Invalid, suspended or unverified organization",
                     popupType: "error",
                 });
             }
-
-            let matchedAdmin = null;
-            let matchedIndex = -1;
 
             for (let i = 0; i < org.admin.length; i += 1) {
                 const candidate = org.admin[i];
@@ -49,21 +54,20 @@ exports.login = async (req, res) => {
                     popupType: "error",
                 });
             }
+            globalUser = matchedAdmin;
 
-            await OrgLog.findOneAndUpdate(
-                { org: org.code },
-                {
-                    $push: {
-                        loginLogs: {
-                            userId: matchedAdmin.adminId,
-                            name: matchedAdmin.name,
-                            role: "admin",
-                            createdAt: new Date()
-                        }
-                    }
-                },
-                { upsert: true }
-            );
+            await LoginLog.create(
+                [{
+                    type: 'success',
+                    org: org.code,
+                    user: matchedAdmin.name,
+                    id: matchedAdmin.adminId,
+                    name: matchedAdmin.name,
+                    role: "admin",
+                    message: "Logged in successfully!",
+                }],
+                { session }
+            )
 
             req.session.user = {
                 code: org.code,
@@ -234,7 +238,19 @@ exports.login = async (req, res) => {
         }
 
     } catch (err) {
-        console.error("Login error:", err);
+        await session.abortTransaction();
+        session.endSession();
+
+        await LoginLog.create({
+            type: 'failed',
+            org: code || '--',
+            id: globalUser.adminId || globalUser.employeeId || globalUser.role || '--',
+            name: globalUser.name || '--',
+            role: userrole || '--',
+            message: err.message || 'Something went wrong during login',
+
+        });
+
         return res.render("index", {
             popupMessage: "Something went wrong during login",
             popupType: "error",

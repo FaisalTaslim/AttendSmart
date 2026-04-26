@@ -2,11 +2,15 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const loginLog = new Schema({
+    type: {
+        type: String,
+        enum: ['failed', 'success'],
+        required: true,
+    },
     org: {
         type: String,
         required: true
     },
-    user: {type: String, required: true},
     id: {
         type: String, 
         required: true
@@ -17,7 +21,8 @@ const loginLog = new Schema({
         enum: ['admin', 'employee', 'student', 'employee'],
         required: true
     },
-    createdAt: {type: Date, default: Date.now},
+    message: {type: String, required: true},
+
 
 }, { timestamps: true });
 

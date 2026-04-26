@@ -1,9 +1,9 @@
 const bcrypt = require("bcrypt");
 const Org = require("../../models/users/organization");
-const OrgLog = require("../../models/logs/logs");
+const RegisterLog = require('../../models/logs/register');
 const generateCode = require("../../utils/functions/codes");
 const crypto = require("crypto");
-const { sendVerificationEmail } = require("../../utils/emails/send-emails");
+const { sendVerificationEmail } = require("../../utils/emails/send-register-emails");
 const verifyDomains = require("../../utils/emails/verify-domains");
 const mongoose = require("mongoose");
 
@@ -11,50 +11,41 @@ const mongoose = require("mongoose");
 exports.register = async (req, res) => {
     const session = await mongoose.startSession();
     let setup;
+    let code;
     let successMessage = "Registration successful! Please verify your email.";
+    const {
+        admin,
+        organization,
+        branch,
+        address,
+        type,
+        website,
+        attendanceMethod,
+        confirmPassword,
+        termsCheck
+    } = req.body;
+
+    const adminData = admin?.[0];
+    const {
+        name,
+        adminId,
+        contact,
+        email,
+        password
+    } = adminData;
+    -
     session.startTransaction();
 
     try {
-        const {
-            admin,
-            organization,
-            branch,
-            address,
-            type,
-            website,
-            attendanceMethod,
-            confirmPassword,
-            termsCheck
-        } = req.body;
-
-        const adminData = admin?.[0];
-
-        if (!adminData) {
-            throw new Error("Admin details missing");
+        if(!adminData || !termsCheck || !password || (password !== confirmPassword)) {
+            throw new Error("Suspicious behavior detected! Missing required fields!");
         }
-
-        const {
-            name,
-            adminId,
-            contact,
-            email,
-            password
-        } = adminData;
-
-        if (!termsCheck) {
-            throw new Error("You must accept the Terms & Conditions");
-        }
-
-        if (password !== confirmPassword) {
-            throw new Error("Passwords do not match");
-        }
-
+    
         if (!verifyDomains(email)) {
-            throw new Error("Please use your organization email address");
+            throw new Error("Please use your organization domain to register.");
         }
 
         const existingOrg = await Org.findOne({ org: organization }).session(session);
-
         const hashedPassword = await bcrypt.hash(password, 12);
 
         if (existingOrg) {
@@ -62,19 +53,19 @@ exports.register = async (req, res) => {
                 existing.email === email || existing.adminId === adminId
             );
 
-            if (adminExists) {
-                throw new Error("Admin already registered for this organization");
+            if(adminExists) {
+                alert("An admin already exists for this organization. Inserting another admin...");
             }
 
-            await Org.updateOne(
+            await Org.findOneAndUpdate(
                 { _id: existingOrg._id },
                 {
                     $push: {
                         admin: {
-                            name,
-                            adminId,
+                            name: name.toLowerCase().trim(),
+                            adminId: adminId.toLowerCase().trim(),
                             contact,
-                            email,
+                            email: email.toLowerCase().trim(),
                             password: hashedPassword
                         }
                     }
@@ -82,15 +73,19 @@ exports.register = async (req, res) => {
                 { session }
             );
 
-            await OrgLog.findOneAndUpdate(
+            await RegisterLog.findOneAndUpdate(
                 { org: existingOrg.code },
                 {
                     $push: {
                         register: {
-                            name,
+                            type: 'success',
+                            org: existingOrg.code,
+                            name: name.toLowerCase().trim(),
                             role: "admin",
-                            id: adminId,
-                            email
+                            id: adminId.toLowerCase().trim(),
+                            email: email.toLowerCase().trim(),
+                            contact,
+                            message: "Another admin added successfully!"
                         }
                     }
                 },
@@ -99,7 +94,6 @@ exports.register = async (req, res) => {
 
             successMessage = "Registration successful! You can now log in.";
         } else {
-            let code;
             let codeExists = true;
 
             while (codeExists) {
@@ -111,17 +105,26 @@ exports.register = async (req, res) => {
             const token = crypto.randomBytes(32).toString("hex");
             const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-            if (type === "corporate") {
-                setup = true;
-            } else {
-                setup = false;
+            if (type == 'corporate') {
+                setup = {
+                    "subjectsUploaded": true,
+                    "scheduleUploaded": false,
+                    "done": false
+                }
+            }
+            else {
+                setup = {
+                    "subjectsUploaded": false,
+                    "scheduleUploaded": false,
+                    "done": false
+                }
             }
 
             await Org.create(
                 [{
                     code,
                     org: organization,
-                    branch,
+                    branch: branch.toLowerCase().trim(),
                     type,
                     address,
                     website,
@@ -129,40 +132,42 @@ exports.register = async (req, res) => {
                     agreement: true,
                     admin: [
                         {
-                            name,
-                            adminId,
+                            name: name.toLowerCase().trim(),
+                            adminId: adminId.toLowerCase().trim(),
                             contact,
-                            email,
+                            email.toLowerCase().trim(),
                             password: hashedPassword
                         }
                     ],
+                    settings: {
+                        theme: 'light',
+                    },
                     verification: {
                         status: "pending",
                         token,
                         expiresAt
                     },
-                    setup_done: setup
+                    setup: setup,
                 }],
                 { session }
             );
 
-            await OrgLog.create(
-                [{
+            await RegisterLog.create(
+                {
+                    type: 'success',
                     org: code,
-                    register: [
-                        {
-                            name,
-                            role: "admin",
-                            id: adminId,
-                            email
-                        }
-                    ]
-                }],
+                    name: name.toLowerCase().trim(),
+                    id: adminId.toLowerCase().trim(),
+                    role: "admin",
+                    email: email.toLowerCase().trim(),
+                    contact,
+                    message: "Admin Registered successfully!",
+                },
                 { session }
             );
 
             await sendVerificationEmail(
-                email,
+                email.toLowerCase().trim(),
                 token,
                 code,
                 "admin",
@@ -182,7 +187,16 @@ exports.register = async (req, res) => {
         await session.abortTransaction();
         session.endSession();
 
-        console.error("Admin Registration Error:", err);
+        await RegisterLog.create({
+            type: 'failed',
+            org: code || 'null',
+            name: name.toLowerCase().trim() || 'null',
+            id: adminId.toLowerCase().trim() || 'null',
+            role: 'admin',
+            email: email.toLowerCase().trim() || 'null',
+            contact: contact || 'null',
+            message: err.message,
+        })
 
         return res.render("index", {
             popupMessage: err.message || "Registration failed. Please try again.",
