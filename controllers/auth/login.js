@@ -1,8 +1,6 @@
 const bcrypt = require("bcrypt");
 const Org = require("../../models/users/organization");
-const CollegeStudent = require("../../models/users/college-student");
-const SchoolStudent = require("../../models/users/school-student");
-const Employee = require("../../models/users/employee");
+const resolveUserModel = require("../../utils/functions/resolveUserModels");
 const LoginLog = require("../../models/logs/login");
 
 const logLogin = async ({ type, org, id, name, role, message }) => {
@@ -24,23 +22,24 @@ exports.login = async (req, res) => {
     const { code, userRole, password } = req.body;
 
     let globalUser = null;
+    let globalOrgCode = null;
 
     try {
         if (!code || !userRole || !password) {
             return sendError(res, "All fields are required");
         }
 
-        const org = await Org.findOne({
-            code,
-            isDeleted: false,
-            isSuspended: false,
-        });
+        if (userRole === "admin") {
+            const org = await Org.findOne({
+                code,
+                isDeleted: false,
+                isSuspended: false,
+            });
 
-        if (!org || org.verification.status !== "verified") {
-            return sendError(res, "Invalid, suspended or unverified organization");
-        }
+            if (!org || org.verification.status !== "verified") {
+                return sendError(res, "Invalid or unverified organization");
+            }
 
-        if (userRole === "Org") {
             let matchedAdmin = null;
 
             for (const admin of org.admin) {
@@ -56,10 +55,11 @@ exports.login = async (req, res) => {
             }
 
             globalUser = matchedAdmin;
+            globalOrgCode = org.code;
 
             await logLogin({
                 type: "success",
-                org: org.code,
+                org: globalOrgCode,
                 id: matchedAdmin.adminId,
                 name: matchedAdmin.name,
                 role: "admin",
@@ -76,118 +76,52 @@ exports.login = async (req, res) => {
             return res.redirect("/dashboard/admin");
         }
 
-        if (userRole === "School Student") {
-            const student = await SchoolStudent.findOne({
-                code,
-                isDeleted: false,
-                isSuspended: false,
-            });
+        const Model = resolveUserModel(userRole);
 
-            if (!student || student.verification.status !== "verified") {
-                return sendError(res, "Invalid or unverified student");
-            }
-
-            globalUser = student;
-
-            const match = await bcrypt.compare(password, student.password);
-            if (!match) {
-                return sendError(res, "Invalid credentials");
-            }
-
-            await logLogin({
-                type: "success",
-                org: org.code,
-                id: student.roll,
-                name: student.name,
-                role: "school-student",
-                message: "Logged in successfully!",
-            });
-
-            req.session.user = {
-                code: student.code,
-                name: student.name,
-                email: student.email,
-                role: "school-student",
-            };
-
-            return res.redirect("/dashboard/school-student");
+        if (!Model) {
+            return sendError(res, "Invalid role");
         }
 
-        if (userRole === "College Student") {
-            const student = await CollegeStudent.findOne({
-                code,
-                isDeleted: false,
-                isSuspended: false,
-            });
+        const user = await Model.findOne({
+            code,
+            isDeleted: false,
+            isSuspended: false,
+        });
 
-            if (!student || student.verification.status !== "verified") {
-                return sendError(res, "Invalid or unverified student");
-            }
-
-            globalUser = student;
-
-            const match = await bcrypt.compare(password, student.password);
-            if (!match) {
-                return sendError(res, "Invalid credentials");
-            }
-
-            await logLogin({
-                type: "success",
-                org: org.code,
-                id: student.roll,
-                name: student.name,
-                role: "college-student",
-                message: "Logged in successfully!",
-            });
-
-            req.session.user = {
-                code: student.code,
-                name: student.name,
-                email: student.email,
-                role: "college-student",
-            };
-
-            return res.redirect("/dashboard/college-student");
+        if (!user || user.verification.status !== "verified") {
+            return sendError(res, "Invalid or unverified user");
         }
 
-        if (userRole === "Employee") {
-            const employee = await Employee.findOne({
-                code,
-                isDeleted: false,
-                isSuspended: false,
-            });
+        globalUser = user;
+        globalOrgCode = user.org;
 
-            if (!employee || employee.verification.status !== "verified") {
-                return sendError(res, "Invalid or unverified employee");
-            }
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+            return sendError(res, "Invalid credentials");
+        }
 
-            globalUser = employee;
+        await logLogin({
+            type: "success",
+            org: globalOrgCode,
+            id: user.employeeId || user.roll || user.code,
+            name: user.name,
+            role: userRole,
+            message: "Logged in successfully!",
+        });
 
-            const match = await bcrypt.compare(password, employee.password);
-            if (!match) {
-                return sendError(res, "Invalid credentials");
-            }
+        req.session.user = {
+            code: user.code,
+            name: user.name,
+            email: user.email,
+            role: userRole,
+        };
 
-            await logLogin({
-                type: "success",
-                org: org.code,
-                id: employee.employeeId || employee.code,
-                name: employee.name,
-                role: "employee",
-                message: "Logged in successfully!",
-            });
 
-            req.session.user = {
-                code: employee.code,
-                name: employee.name,
-                email: employee.email,
-                role: "employee",
-            };
-
-            const orgData = await Org.findOne({ code: employee.org }).select("type");
+        if (userRole === "employee") {
+            const orgData = await Org.findOne({ code: user.org }).select("type");
 
             const employeeType =
-                orgData && orgData.type === "corporate" ? "corporate" : "teacher";
+                orgData?.type === "corporate" ? "corporate" : "teacher";
 
             req.session.user.employeeType = employeeType;
 
@@ -198,14 +132,14 @@ exports.login = async (req, res) => {
             );
         }
 
-        return sendError(res, "Invalid role selected");
+        return res.redirect(`/dashboard/${userRole}`);
 
     } catch (err) {
         console.error("Login Error:", err);
 
         await logLogin({
             type: "failed",
-            org: code || "null",
+            org: globalOrgCode || "null",
             id:
                 globalUser?.adminId ||
                 globalUser?.employeeId ||
