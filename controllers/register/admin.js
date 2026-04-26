@@ -135,7 +135,7 @@ exports.register = async (req, res) => {
                             name: name.toLowerCase().trim(),
                             adminId: adminId.toLowerCase().trim(),
                             contact,
-                            email.toLowerCase().trim(),
+                            email: email.toLowerCase().trim(),
                             password: hashedPassword
                         }
                     ],

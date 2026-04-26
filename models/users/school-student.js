@@ -57,19 +57,20 @@ const schoolStudentSchema = new Schema({
     isDeleted: {type: Boolean, default: false},
     isSuspended: {type: Boolean, default: false},
     theme: {
-     settings: {
-        theme: {
-            type: String,
-            enum: ['dark', 'light'],
-            default: 'light',
-            _id: false,
-        },
+        settings: {
+            theme: {
+                type: String,
+                enum: ['dark', 'light'],
+                default: 'light',
+                _id: false,
+            },
+        }
     },
     password: {type: String, required: true},
     termsCheck: {type: String, required: true, default: "not-accepted"},
     setup: {
         faceUploaded: {type: Boolean, default: false},
-    }
+    },
 
 }, { timestamps: true });
 
