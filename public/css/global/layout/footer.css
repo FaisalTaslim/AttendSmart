@@ -1,20 +1,26 @@
 footer {
-    background-color: var(--bg-primary);
+    width: 80%;
+    background: var(--gradient-dark);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 10px;
     margin-top: 1rem;
+    border-radius: 0.8rem;
+    z-index: 9999;
 }
 footer > * {
-    font-size: 1rem;
+    font-family: var(--font-body);
 }
 .foot-content {
     display: flex;
     flex-direction: row;
-    width: 70%;
+    width: 95%;
     gap: 10vh;
     justify-content: center;
+    padding: 1rem 0;
+    margin: 1rem;
+    border-bottom: 1px solid var(--border);
 }
 .foot1, .foot2 {
     display: flex;
@@ -27,19 +33,27 @@ footer > * {
     flex-direction: column;
     gap: 10px;
 }
-footer a, footer i {
-    color: var(--link);
+footer a, 
+footer i {
+    font-size: var(--fs-caption);
+    color: var(--text-secondary);
 }
-footer a:hover, footer i:hover {
-    color: var(--link-hover);
+footer a:hover, 
+footer i:hover {
+    color: var(--accent);
 }
 footer p {
-    color: var(--link);
+    color: var(--text-secondary);
     cursor: pointer;
+    font-size: var(--fs-caption);
 }
 footer p:hover {
-    color: var(--link-hover);
+    color: var(--accent);
     cursor: pointer;
+}
+.copyright {
+    color: var(--text-muted);
+    padding: 1rem 0;
 }
 
 @media (max-width: 540px) {
@@ -85,11 +99,13 @@ footer p:hover {
 }
 
 @media screen and (min-width: 950px) and (max-width: 1024px) and  (min-height: 580px) and (max-height: 620px) {
-    .foot-content {flex-direction: row;}
+    footer {
+        width: 98%;
+    }
     .foot1 {flex-direction: row;}
     .foot2 {flex-direction: row;}
 }
 
 @media screen and (min-width: 1100px) and (max-width: 1366px) and (min-height: 750px) and (max-height: 1024px) {
-    .foot-content {width: 91%;}
+    footer {width: 98%;}
 }

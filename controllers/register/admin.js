@@ -34,13 +34,13 @@ exports.register = async (req, res) => {
         password
     } = adminData;
     -
-    session.startTransaction();
+        session.startTransaction();
 
     try {
-        if(!adminData || !termsCheck || !password || (password !== confirmPassword)) {
+        if (!adminData || !termsCheck || !password || (password !== confirmPassword)) {
             throw new Error("Suspicious behavior detected! Missing required fields!");
         }
-    
+
         if (!verifyDomains(email)) {
             throw new Error("Please use your organization domain to register.");
         }
@@ -53,8 +53,8 @@ exports.register = async (req, res) => {
                 existing.email === email || existing.adminId === adminId
             );
 
-            if(adminExists) {
-                alert("An admin already exists for this organization. Inserting another admin...");
+            if (adminExists) {
+                successMessage = "Admin already exists. Added another admin successfully!";
             }
 
             await Org.findOneAndUpdate(
@@ -128,7 +128,7 @@ exports.register = async (req, res) => {
                     type,
                     address,
                     website,
-                    attendanceMethod,
+                    attendanceMethod: null,
                     agreement: true,
                     admin: [
                         {
@@ -153,18 +153,19 @@ exports.register = async (req, res) => {
             );
 
             await RegisterLog.create(
-                {
-                    type: 'success',
-                    org: code,
-                    name: name.toLowerCase().trim(),
-                    id: adminId.toLowerCase().trim(),
-                    role: "admin",
-                    email: email.toLowerCase().trim(),
-                    contact,
-                    message: "Admin Registered successfully!",
-                },
-                { session }
-            );
+                [
+                    {
+                        type: 'success',
+                        org: code,
+                        name: name.toLowerCase().trim(),
+                        id: adminId.toLowerCase().trim(),
+                        role: "admin",
+                        email: email.toLowerCase().trim(),
+                        contact,
+                        message: "Admin Registered successfully!",
+                    }
+                ], { session }
+            )
 
             await sendVerificationEmail(
                 email.toLowerCase().trim(),
@@ -190,10 +191,10 @@ exports.register = async (req, res) => {
         await RegisterLog.create({
             type: 'failed',
             org: code || 'null',
-            name: name.toLowerCase().trim() || 'null',
-            id: adminId.toLowerCase().trim() || 'null',
+            name: name?.toLowerCase().trim() || 'null',
+            id: adminId?.toLowerCase().trim() || 'null',
             role: 'admin',
-            email: email.toLowerCase().trim() || 'null',
+            email: email?.toLowerCase().trim() || 'null',
             contact: contact || 'null',
             message: err.message,
         })

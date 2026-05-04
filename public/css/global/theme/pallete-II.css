@@ -1,0 +1,49 @@
+:root {
+    --bg-dark: #ffffff;
+    --bg-primary: #f9fafb;
+    --bg-secondary: #f3f4f6;
+
+    --primary: #0f172a;
+    --secondary: #4b5563;
+    --accent: #2563eb;
+    --highlight: #9333ea;
+
+    --text-primary: #111827;
+    --text-secondary: #4b5563;
+    --text-muted: #9ca3af;
+
+    --border: rgba(0, 0, 0, 0.08);
+    --glass: rgba(0, 0, 0, 0.04);
+
+    --gradient-main: linear-gradient(90deg, #ffffff 0%, #ffffff 20%, #fbcfe8 100%);
+    --gradient-dark: linear-gradient(180deg, #ffffff, #f3f4f6);
+    --gradient-accent: linear-gradient(135deg, #3b82f6, #a855f7);
+    --gradient-text: linear-gradient(90deg, #111827, #6b7280);
+
+    --shadow-glow: 0 0 20px rgba(0, 0, 0, 0.06);
+    --radius: 16px;
+
+    --btn-primary-bg: #da1176;
+    --btn-primary-hover: #be0f66;
+    --btn-primary-text: #ffffff;
+
+    --btn-secondary-bg: rgba(0, 0, 0, 0.04);
+    --btn-secondary-hover: rgba(0, 0, 0, 0.08);
+    --btn-secondary-text: #1f2937;
+
+    --btn-outline-border: rgba(0, 0, 0, 0.15);
+    --btn-outline-text: #db2777;
+    --btn-outline-hover-bg: rgba(219, 39, 119, 0.08);
+
+    --btn-gradient-bg: linear-gradient(90deg, #da1176, #f472b6);
+}
+.gradient-text {
+    background: var(--gradient-accent);     
+    -webkit-background-clip: text;       
+    -webkit-text-fill-color: transparent; 
+    background-clip: text;                
+    color: transparent;                   
+}
+:where(header, main div, main section, footer) {background: var(--gradient-dark)}
+:where(h1, h2, h3, .nav-bar a, .nav-bar p) {color: var(--text-primary)}
+:where(summary, p, li) {color: var(--text-secondary)}

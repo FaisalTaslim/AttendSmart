@@ -7,39 +7,7 @@
     --font-code: 'JetBrains Mono', monospace;
 }
 
-body {
-    font-family: var(--font-body);
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 1.6;
-    color: #1c1c1e;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-}
-
-button,
-.btn,
-nav a,
-.link {
-    font-family: var(--font-accent);
-    font-weight: 500;
-    letter-spacing: 0.3px;
-}
-
-code,
-pre {
-    font-family: var(--font-code);
-    background: #f2f2f7;
-    padding: 4px 6px;
-    border-radius: 4px;
-    color: #c7254e;
-}
+:where(h1, h2, h3, legend, label) {font-family: var(--font-heading)}
+:where(p, li, a, summary) {font-family: var(--font-body)}
+:where(button, .nav-bar a, .nav-bar p) {font-family: var(--font-accent)};
+:where(td, .timestamp) {font-family: var(--font-code)}

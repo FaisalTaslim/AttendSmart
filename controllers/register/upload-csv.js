@@ -122,6 +122,16 @@ const VALID_DAYS = new Set([
     "Sunday",
 ]);
 
+const DAY_KEY_BY_LOWER = {
+    monday: "Monday",
+    tuesday: "Tuesday",
+    wednesday: "Wednesday",
+    thursday: "Thursday",
+    friday: "Friday",
+    saturday: "Saturday",
+    sunday: "Sunday",
+};
+
 exports.uploadSchedule = async (req, res) => {
     console.log("hitting the schedule route")
     const session = await mongoose.startSession();
@@ -137,8 +147,9 @@ exports.uploadSchedule = async (req, res) => {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
-        const schedules = [];
         const seenDays = new Set();
+        const week = {};
+        let scheduleGrace;
 
         const stream = Readable.from(req.file.buffer.toString());
 
@@ -147,7 +158,9 @@ exports.uploadSchedule = async (req, res) => {
                 .pipe(csv({ mapHeaders: ({ header }) => header.toLowerCase().trim() }))
                 .on("data", row => {
                     try {
-                        const day = row.day?.trim();
+                        const rawDay = row.day?.trim();
+                        const day =
+                            rawDay && DAY_KEY_BY_LOWER[String(rawDay).toLowerCase()];
 
                         if (!day || !VALID_DAYS.has(day)) {
                             throw new Error(`Invalid or missing day: ${row.day}`);
@@ -185,29 +198,32 @@ exports.uploadSchedule = async (req, res) => {
                             throw new Error(`Invalid grace value on ${day}`);
                         }
 
-                        schedules.push({
-                            org: orgCode,
-                            day,
-                            shifts: {
-                                day: {
-                                    type: "day",
-                                    check_in: dayIn,
-                                    check_out: dayOut,
-                                },
-                                night: nightIn
-                                    ? {
-                                        type: "night",
-                                        check_in: nightIn,
-                                        check_out: nightOut,
-                                    }
-                                    : {
-                                        type: "night",
-                                        check_in: "00:00",
-                                        check_out: "00:00",
-                                    },
+                        if (scheduleGrace === undefined) {
+                            scheduleGrace = grace;
+                        } else if (scheduleGrace !== grace) {
+                            throw new Error(
+                                `Grace must be the same for every row (found ${scheduleGrace} and ${grace})`
+                            );
+                        }
+
+                        week[day] = {
+                            day: {
+                                type: "day",
+                                check_in: dayIn,
+                                check_out: dayOut,
                             },
-                            grace,
-                        });
+                            night: nightIn
+                                ? {
+                                    type: "night",
+                                    check_in: nightIn,
+                                    check_out: nightOut,
+                                }
+                                : {
+                                    type: "night",
+                                    check_in: "00:00",
+                                    check_out: "00:00",
+                                },
+                        };
 
                     } catch (err) {
                         reject(err);
@@ -217,10 +233,32 @@ exports.uploadSchedule = async (req, res) => {
                 .on("error", reject);
         });
 
+        const missingDays = Object.values(DAY_KEY_BY_LOWER).filter(d => !seenDays.has(d));
+        if (missingDays.length) {
+            throw new Error(`Missing schedule rows for: ${missingDays.join(", ")}`);
+        }
 
-        await Schedule.deleteMany({ org: orgCode }).session(session);
+        if (scheduleGrace === undefined) {
+            throw new Error("Grace is required");
+        }
 
-        await Schedule.insertMany(schedules, { session });
+        await Schedule.findOneAndUpdate(
+            { org: orgCode },
+            {
+                $set: {
+                    org: orgCode,
+                    week,
+                    grace: scheduleGrace,
+                },
+            },
+            {
+                upsert: true,
+                new: true,
+                session,
+                runValidators: true,
+                setDefaultsOnInsert: true,
+            }
+        );
 
         const org = await Org.findOneAndUpdate(
             { code: orgCode },

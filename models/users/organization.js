@@ -49,7 +49,7 @@ const orgSchema = new mongoose.Schema({
         }
     ],
     attendanceMethod: {
-        type: String, required: true,
+        type: String
     },
     address: { type: String, trim: true, required: true },
     website: { type: String },

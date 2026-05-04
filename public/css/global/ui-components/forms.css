@@ -1,83 +1,71 @@
-:root {
-    --form-radius: 0.7rem;
-    --form-border: 1px solid rgba(var(--accent-rgb), 0.12);
-    --form-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-}
-
 form {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
     box-sizing: border-box;
+    background: var(--gradient-main);
 }
 fieldset {
     width: 100%;
-    border: var(--form-border);
-    border-radius: var(--form-radius);
-    padding: 0.9rem 1rem;
-    background: var(--bg-card);
-    box-shadow: var(--form-shadow);
+    border: none;
+    border-radius: 0.8rem;
     display: flex;
     flex-direction: column;
     gap: 0.9rem;
-    transition: box-shadow 0.2s ease, border-color 0.2s ease;
     box-sizing: border-box;
 }
-
-fieldset:hover {
-    border-color: var(--accent);
-    box-shadow: 0 10px 22px rgba(var(--accent-rgb), 0.15);
-}
-
-/* Legend */
 legend {
     font-weight: 700;
     font-size: 1rem;
-    padding: 0 0.4rem;
-    color: var(--accent);
+    color: var(--text-primary);
+    margin-bottom: 1rem;
 }
-
-/* Layout */
 .outer-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1.2rem;
+    background: transparent;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: 100%;
 }
 
-/* Inputs */
 .outer-group input,
 .outer-group select,
 .outer-group textarea {
-    background: rgba(var(--accent-rgb), 0.03);
-    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
     border-radius: 0.5rem;
     padding: 0.5rem 0.7rem;
     font-size: 0.9rem;
-    width: 100%;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: auto;
+    flex: 1 1 10rem;
+    min-width: 9rem;
+    min-inline-size: 0;
 }
-
+.outer-group label {
+    flex: 1 0 100%;
+    color: var(--text-primary);
+}
 .outer-group textarea {
     resize: vertical;
     min-height: 90px;
+    flex-basis: 100%;
 }
-
 .outer-group input:focus,
-.outer-group select:focus,
 .outer-group textarea:focus {
     outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.15);
+    color: var(--text-secondary);
+    font-weight: bold;
 }
-
-/* Multiple select */
 .outer-group select[multiple] {
     min-height: 110px;
     background: var(--bg-card);
+    flex-basis: 10rem;
 }
-
-/* Button */
 button {
     align-self: center;
     padding: 0.55rem 1.8rem;
@@ -86,36 +74,22 @@ button {
     border-radius: 0.6rem;
     border: none;
     cursor: pointer;
-    background: var(--accent);
+    background: var(--btn-primary-bg);
     color: #fff;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
-    box-shadow: 0 6px 16px rgba(var(--accent-rgb), 0.25);
 }
-
 button:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 24px rgba(var(--accent-rgb), 0.35);
 }
-
 button:active {
     transform: scale(0.97);
 }
-
-/* Checkbox */
 input[type="checkbox"] {
     width: 16px;
     height: 16px;
-    accent-color: var(--accent);
+    accent-color: var(--btn-secondary-bg);
 }
-
-/* Nav Select */
-.nav-select select {
-    padding: 0.6rem 2.4rem 0.6rem 0.8rem;
-    border-radius: 0.6rem;
-    font-size: 0.9rem;
-}
-
-/* Upload */
 .upload-label {
     border: 1.5px dashed rgba(var(--accent-rgb), 0.35);
     border-radius: 0.7rem;
@@ -123,17 +97,14 @@ input[type="checkbox"] {
     background: rgba(var(--accent-rgb), 0.04);
     transition: border-color 0.2s ease, background 0.2s ease;
 }
-
 .upload-label:hover {
     border-color: var(--accent);
     background: rgba(var(--accent-rgb), 0.08);
 }
-
 .upload-content {
     text-align: center;
     font-size: 0.9rem;
 }
-
 .upload-icon {
     font-size: 28px;
     margin-bottom: 6px;

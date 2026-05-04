@@ -93,7 +93,6 @@
                                     <p id="option-view-users" class="feature-link">View Users</p>
                                     <p id="option-add-users" class="feature-link">Add Users</p>
                                     <p id="option-suspend-remove-users" class="feature-link">Suspend / Remove Users</p>
-                                    <p id="option-leave-requests" class="feature-link">Leave Requests</p>
                                 </div>
                             </article>
 
@@ -121,7 +120,6 @@
                                     <p id="option-register-logs" class="feature-link">Register Logs</p>
                                     <p id="option-support-logs" class="feature-link">Support Logs</p>
                                     <p id="option-attendance-history-logs" class="feature-link">Attendance History Logs</p>
-                                    <p id="option-leave-logs" class="feature-link">Leave Logs</p>
                                 </div>
                             </article>
 
@@ -212,10 +210,6 @@
                             <h2>Suspend / Remove Users</h2>
                             <p>Find users quickly and take account actions from one place.</p>
                         </article>
-                        <article id="content-leave-requests" class="content-panel" hidden>
-                            <h2>Leave Requests</h2>
-                            <p>Review incoming leave requests and approve or reject them quickly.</p>
-                        </article>
                         <article id="content-subjects" class="content-panel" hidden>
                             <h2>Subjects</h2>
                             <p>Maintain your subject list and keep mapping clean for attendance sessions.</p>
@@ -278,45 +272,7 @@
                             </section>
                         </article>
                         <article id="content-register-logs" class="content-panel" hidden>
-                            <section class="register-logs">
-                                <% if (logs && logs.register && logs.register.length > 0) { %>
-                                    <div class="register-logs-filter-user">
-                                        <p>Filter Users:</p>
-                                        <form>
-                                            <div class="outer-group">
-                                                <select>
-                                                    <option value="" disabled selected>-- Filter by --</option>
-                                                    <option value="student">Student</option>
-                                                    <option value="employee">Employee</option>
-                                                    <option value="all">All</option>
-                                                </select>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <table class="register-logs-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Role</th>
-                                                <th>User Id</th>
-                                                <th>Email</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% logs.register.forEach(log => { %>
-                                                <tr>
-                                                    <td><%= log.name %></td>
-                                                    <td><%= log.role %></td>
-                                                    <td><%= log.id %></td>
-                                                    <td><%= log.email %></td>
-                                                </tr>
-                                            <% }) %>
-                                        </tbody>
-                                    </table>
-                                <% } else { %>
-                                    <p>Nothing to display.</p>
-                                <% } %>
-                            </section>
+                            
                         </article>
                         <article id="content-support-logs" class="content-panel" hidden>
                             <section class="support-logs">
@@ -443,49 +399,7 @@
                                 <% } %>
                             </section>
                         </article>
-                        <article id="content-leave-logs" class="content-panel" hidden>
-                            <section class="leave-logs">
-                                <% if (logs && logs.leave && logs.leave.length > 0) { %>
-                                    <div class="leave-logs-filter-user">
-                                        <p>Filter Users:</p>
-                                        <form>
-                                            <div class="outer-group">
-                                                <select>
-                                                    <option value="" disabled selected>-- Filter by --</option>
-                                                    <option value="student">Student</option>
-                                                    <option value="employee">Employee</option>
-                                                    <option value="all">All</option>
-                                                </select>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <table class="leave-logs-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Code</th>
-                                                <th>Name</th>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
-                                                <th>Reason</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% logs.leave.forEach(log => { %>
-                                                <tr>
-                                                    <td><%= log.code %></td>
-                                                    <td><%= log.name %></td>
-                                                    <td><small><%= new Date(log.startDate).toLocaleDateString('en-IN', { dateStyle: 'medium' }) %></small></td>
-                                                    <td><small><%= new Date(log.endDate).toLocaleDateString('en-IN', { dateStyle: 'medium' }) %></small></td>
-                                                    <td><%= log.reason %></td>
-                                                </tr>
-                                            <% }) %>
-                                        </tbody>
-                                    </table>
-                                <% } else { %>
-                                    <p>Nothing to display.</p>
-                                <% } %>
-                            </section>
-                        </article>
+                        
                         <article id="content-support-requests" class="content-panel" hidden>
                             <h2>Support Requests</h2>
                             <p>View open support tickets and keep communication organized.</p>

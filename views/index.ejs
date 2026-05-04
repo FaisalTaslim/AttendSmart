@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomePage</title>
-    <link rel="stylesheet" href="/css/global/theme/light-theme.css">
+    <link rel="stylesheet" href="/css/global/theme/pallete-I.css">
     <link rel="stylesheet" href="/css/global/ui-components/font-family.css">
+    <link rel="stylesheet" href="/css/global/ui-components/font-size.css">
     <link rel="stylesheet" href="/css/global/ui-components/scrollbar.css">
     <link rel="stylesheet" href="/css/global/ui-components/selection.css">
     <link rel="stylesheet" href="/css/global/layout/header.css">
@@ -31,7 +32,7 @@
             <header>
                 <div class="logo">
                     <div class="logo">
-                        <h1>AttendSmart</h1>
+                        <h1 class="gradient-text">AttendSmart</h1>
                     </div>
                 </div>
                 <nav class="nav-bar nav-select">
@@ -45,7 +46,7 @@
                             <% } %>
                 </nav>
                 <nav class="mobile-nav-container nav-select">
-                    <div class="form-group">
+                    <div class="outer-group">
                         <select id="mobile-nav">
                             <option value="">Navigate</option>
                             <% if (isAuthenticated) { %>
@@ -152,7 +153,7 @@
 
                                     <div class="outer-group">
                                         <label for="attendance-method">Select Attendance Method</label>
-                                        <select name="attendanceMethod" id="attendance-method" required>
+                                        <select name="attendanceMethod" id="attendance-method">
                                             <option value="">Select method</option>
                                             <option value="one-time" class="for-schools">One-time attendance (Mark at
                                                 beginning)</option>
@@ -168,10 +169,10 @@
                                     <div class="terms-wrapper">
                                         <input type="checkbox" class="terms-check" name="termsCheck" required>
 
-                                        <label for="a-terms" class="terms-text">
+                                        <span for="a-terms" class="terms-text">
                                             I agree to the
                                             <a href="/terms" target="_blank">Terms & Conditions</a>
-                                        </label>
+                                        </span>
                                     </div>
                                 </fieldset>
 
@@ -398,13 +399,7 @@
                         </p>
                         <ul class="support-features">
                             <li>
-                                <strong>Issue Submission Form –</strong> Report bugs, glitches, or anything that’s not
-                                working
-                                as expected.
-                            </li>
-                            <li>
-                                <strong>Feedback Form –</strong> Share your ideas, suggestions, or just tell us how
-                                we're doing.
+                                <strong>Support Form –</strong> Can be used to Report bugs, glitches, feedback or suggestions.
                             </li>
                             <li>
                                 <strong>Frequently Asked Questions (FAQs) –</strong> Get quick answers to common queries
@@ -636,10 +631,10 @@
 
                                     <select name="userRole" required>
                                         <option value="" disabled selected>Select your role</option>
-                                        <option value="Org">Admin</option>
-                                        <option value="School Student">School Student</option>
-                                        <option value="College Student">College Student</option>
-                                        <option value="Employee">Employee</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="school-student">School Student</option>
+                                        <option value="college-student">College Student</option>
+                                        <option value="employee">Employee</option>
                                     </select>
                                 </div>
 
@@ -698,6 +693,7 @@
                         </div>
                     </div>
                 </div>
+                <p class="copyright">&copy2026 AttendSmart. All Rights Reserved.</p>
             </footer>
             <script src="/js/global/layout/mobile-nav.js"></script>
             <script src="/js/global/UI/rearrange-footer.js"></script>

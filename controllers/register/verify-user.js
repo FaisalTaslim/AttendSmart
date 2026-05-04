@@ -31,6 +31,8 @@ exports.verify = async (req, res) => {
             org.verification.expiresAt = null;
 
             await org.save();
+
+            res.render('confirmation-pages/register');
         }
         else if (role == "Student") {
             let student;

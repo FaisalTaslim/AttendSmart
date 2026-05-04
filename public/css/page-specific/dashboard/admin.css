@@ -1,18 +1,14 @@
 .link {
     color: var(--link);
 }
-
 html {
     scroll-behavior: smooth;
 }
-
 body {
     display: flex;
     flex-direction: column;
     gap: 1.8rem;
 }
-
-.nav-select select {padding: 0.5rem 3rem 0.5rem 1rem;}
 
 main {
     display: flex;
@@ -22,7 +18,6 @@ main {
     height: fit-content;
     width: 100%;
 }
-
 .admin-shell {
     width: min(1180px, 96%);
     height: auto;
@@ -35,7 +30,6 @@ main {
     border: 1px solid var(--border-color);
     border-radius: 1rem;
 }
-
 .admin-hero {
     background: linear-gradient(120deg, rgba(var(--accent-rgb), 0.12) 0%, var(--bg-card) 55%, rgba(var(--accent-rgb), 0.05) 100%);
     border: 1px solid rgba(var(--accent-rgb), 0.22);
@@ -47,7 +41,6 @@ main {
     gap: 1rem;
     flex-wrap: wrap;
 }
-
 .hero-content h1 {
     margin: 0.35rem 0 0.4rem;
     color: var(--text-primary);
@@ -289,7 +282,6 @@ main {
     line-height: 1.45;
 }
 
-
 .csv-upload-form {
     margin-top: 0.7rem;
     display: flex;
@@ -305,41 +297,6 @@ main {
     animation: fadeSlideOut 0.22s ease forwards;
 }
 
-.login-logs,
-.register-logs,
-.support-logs,
-.attendance-history-logs,
-.leave-logs {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-.login-logs-filter-user,
-.register-logs-filter-user,
-.support-logs-filter-user,
-.attendance-history-logs-filter-user,
-.leave-logs-filter-user {
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-}
-.login-logs-filter-user p, 
-.register-logs-filter-user p, 
-.support-logs-filter-user p, 
-.attendance-history-logs-filter-user p, 
-.leave-logs-filter-user p {
-    margin: 0;
-    color: var(--text-secondary);
-    font-weight: bold;
-    align-self: center;
-}
-.login-logs-table tbody tr td,
-.register-logs-table tbody tr td,
-.support-logs-table tbody tr td,
-.attendance-history-logs-table tbody tr td,
-.leave-logs-table tbody tr td {
-    text-align: center;
-}
 
 @keyframes fadeSlideIn {
     from {
@@ -396,13 +353,6 @@ main {
 
     header .mobile-hidden {
         display: block !important;
-    }
-    .login-logs-table tbody tr td,
-    .support-logs-table tbody tr td,
-    .register-logs-table tbody tr td,
-    .attendance-history-logs-table tbody tr td,
-    .leave-logs-table tbody tr td {
-        text-align: left;
     }
 }
 

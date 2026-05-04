@@ -22,47 +22,47 @@ const shiftSchema = new Schema(
     { _id: false }
 );
 
-const scheduleSchema = new Schema(
-    {
-        org: {
-            type: String,
-            required: true,
-            index: true,
-        },
+const scheduleSchema = new Schema({
+    org: { type: String, required: true, unique: true },
 
-        day: {
-            type: String,
-            enum: [
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday",
-                "Sunday",
-            ],
-            required: true,
+    week: {
+        Monday: {
+            day: shiftSchema,
+            night: shiftSchema,
         },
-
-        shifts: {
-            day: {
-                type: shiftSchema,
-                required: true,
-            },
-            night: {
-                type: shiftSchema,
-                required: true,
-            },
+        Tuesday: {
+            day: shiftSchema,
+            night: shiftSchema,
         },
-
-        grace: {
-            type: Number,
-            required: true,
-            min: 0,
-            max: 60,
+        Wednesday: {
+            day: shiftSchema,
+            night: shiftSchema,
+        },
+        Thursday: {
+            day: shiftSchema,
+            night: shiftSchema,
+        },
+        Friday: {
+            day: shiftSchema,
+            night: shiftSchema,
+        },
+        Saturday: {
+            day: shiftSchema,
+            night: shiftSchema,
+        },
+        Sunday: {
+            day: shiftSchema,
+            night: shiftSchema,
         },
     },
-    { timestamps: true }
-);
+
+    grace: {
+        type: Number,
+        min: 0,
+        max: 60,
+        required: true
+    }
+
+}, { timestamps: true });
 
 module.exports = mongoose.model("Schedule", scheduleSchema);

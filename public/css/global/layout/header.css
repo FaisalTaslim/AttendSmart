@@ -1,10 +1,5 @@
-* {
-    margin: 0;
-    padding: 0;
-    color: var(--text-primary)
-}
 body {
-    background-color: var(--bg-primary);
+    background-color: var(--bg-primaryzz);
 }
 header {
     display: flex;
@@ -13,10 +8,12 @@ header {
     gap: clamp(1rem, 42vw, 53rem);
     padding: 0 1rem;
     box-sizing: border-box;
-    background-color: var(--bg-primary);
     height: 8vh;
-    width: 100%;
+    width: 80%;
+    align-self: center;
     box-sizing: border-box;
+    z-index: 9999;
+    border-radius: 0.8rem;
 }
 .mobile-nav-container {display: none;}
 .logo {
@@ -27,8 +24,8 @@ header {
     align-items: center;
 }
 .logo h1 {
-    font-size: 1.5rem;
-    color: var(--accent);
+    font-size: var(--fs-subheading);
+    font-weight: bold;
 }
 .nav-bar {
     display: flex;
@@ -39,24 +36,21 @@ header {
 }
 .nav-links-property {
     text-decoration: none;
-    color: var(--link);
-    font-size: 1rem;
     border-radius: 0.5rem;
     padding: 0.5rem 1rem;
 }
 .nav-links-property:hover {
     cursor: pointer;
-    color: var(--accent); 
-    border-color: var(--accent);
+    color: var(--highlight); 
+    border: 1px solid var(--highlight);
     background-color: rgba(212, 175, 55, 0.1); 
-    border: 1px solid var(--accent);
-}
-#mobile-nav:hover {
-    border-color: var(--accent, #007bff);
-    background: var(--accent-light, #f0f7ff);
 }
 
 @media (max-width: 540px) {
+    header {
+        width: 100%;
+        align-items: center;
+    }
     .nav-bar {display: none;}
     .pc-header {display: none;}
     .pc-hidden {display: none;}
@@ -76,6 +70,10 @@ header {
 }
 
 @media (min-width: 481px) and (max-width: 1024px) {
+    header {
+        width: 100%;
+        align-items: center;
+    }
     .nav-bar {display: none;}
     .mobile-nav-container {
         display: block;
@@ -96,10 +94,17 @@ header {
     }
 }
 
+@media screen and (min-width: 950px) and (max-width: 1024px) and  (min-height: 580px) and (max-height: 620px) {
+    header {width: 98%;}
+}
+
 @media screen and (min-width: 1100px) and (max-width: 1366px) and (min-height: 750px) and (max-height: 1024px) {
     header {
         gap: 44rem;
+        width: 98%;
     }
+    .logo h1 {font-size: var(--fs-smallheading)}
+    
     .pc-hidden {display: none}
     .mobile-hidden {display: block;}
 }

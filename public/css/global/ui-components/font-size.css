@@ -1,0 +1,23 @@
+:root {
+    --fs-heading: 3rem;
+    --fs-subheading: 2rem;
+    --fs-smallheading: 1.5rem;
+    --fs-paragraph: 1rem;
+    --fs-caption: 0.875rem;
+
+    --fw-regular: 400;
+    --fw-medium: 500;
+    --fw-bold: 700;
+}
+
+:where(h1) {font-size: var(--fs-heading); font-weight: var(--fw-bold);}
+:where(h2) {font-size: var(--fs-subheading); font-weight: var(--fw-medium);}
+:where(h3) {font-size: var(--fs-smallheading); font-weight: var(--fw-medium);}
+
+:where(p) {font-size: var(--fs-paragraph); font-weight: var(--fw-regular);}
+:where(.nav-bar a, .nav-bar p, li, summary) {font-size: var(--fs-caption)}
+
+:where(button) {
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+}

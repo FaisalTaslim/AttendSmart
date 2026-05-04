@@ -8,3 +8,5 @@ function normalizeString(string) {
         .join(' ')
         .trim();
 }
+
+module.exports = normalizeString;
