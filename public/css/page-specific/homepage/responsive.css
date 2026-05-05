@@ -3,7 +3,7 @@
     .main-2 {
         width: 98%;
         min-height: auto;
-        grid-template-columns: 1fr;
+        flex-direction: column;
         padding: 0.8rem;
         gap: 0.8rem;
     }
@@ -14,7 +14,10 @@
     
     .left-side,
     .right-side {
-        padding: 0.85rem;
+        width: 98%;
+        border-radius: 0.7rem;
+        padding: 1rem;
+        box-sizing: border-box;
     }
 
     .form-box,
@@ -23,7 +26,7 @@
     }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 480px) {
     html {font-size: 15px}
     summary, p, li {line-height: 1.5rem;}
     #mobile-nav {align-self: center;}
@@ -39,6 +42,8 @@
 
     .main-1,
     .main-2 {
+        flex-direction: column;
+        width: 98%;
         border-radius: 0.8rem;
         padding: unset;
     }
@@ -48,8 +53,10 @@
 
     .left-side,
     .right-side {
+        width: 98%;
         border-radius: 0.7rem;
-        padding: 0.72rem;
+        padding: 1rem;
+        box-sizing: border-box;
     }
 
     .left-side h1 {font-size: 1.25rem;}
