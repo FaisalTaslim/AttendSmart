@@ -57,6 +57,7 @@ footer p:hover {
 }
 
 @media (max-width: 540px) {
+    footer {width: 98%;}
     .foot-content {
         display: flex;
         flex-direction: column;
@@ -77,6 +78,7 @@ footer p:hover {
 }
 
 @media (min-width: 481px) and (max-width: 1024px) {
+    footer {width: 98%;}
     .foot-content {
         display: flex;
         flex-direction: column;

@@ -29,9 +29,6 @@
 @media (max-width: 480px) {
     html {font-size: 15px}
     summary, p, li {line-height: 1.5rem;}
-    #mobile-nav {align-self: center;}
-
-    .logo h1 {font-size: var(--fs-smallheading)}
     main {gap: 1rem;}
     fieldset {padding: unset;}
     footer {

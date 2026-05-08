@@ -1,0 +1,118 @@
+main section {width: 80%}
+.user-dashboard {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 0.8rem;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+.headings-and-status {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 2px solid var(--border);
+}
+#headings {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+#headings h3 {
+    font-size: var(--fs-caption);
+    font-weight: var(fw-medium);
+    color: var(--accent);
+    text-transform: uppercase;
+}
+#headings h2 {
+    font-size: var(--fs-subheading);
+}
+#headings p:last-child {
+    font-size: var(--fs-paragraph);
+}
+#status {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+#status p {
+    border: 2px solid var(--border);
+    padding: 0.55rem 0.8rem;
+    border-radius: 0.8rem;
+    font-size: var(--fs-caption);
+    font-weight: var(--fw-medium)
+}
+.dashboard-navigation {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 calc(33.33% - 1rem);
+    gap: 1rem;
+    padding: 1rem;
+    box-sizing: border-box;
+    border: 3px solid var(--border);
+}
+.card h3 {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+.card p:hover {
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 0.8rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 0 20px rgba(218, 17, 118, 0.25);
+}
+
+@media (max-width: 480px) {
+    html {font-size: 15px}
+    .headings-and-status {
+        flex-direction: column;
+    }
+    .user-dashboard {
+        width: 98%;
+        box-sizing: border-box;
+    }
+    .card {
+        flex: 1 1 calc(50% - 1rem);
+    }
+    .headings-and-status {
+        justify-content: unset;
+        gap: 1rem;
+    }
+    #status {
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 1024px) {
+    html {font-size: 16px}
+    .headings-and-status {
+        flex-direction: column;
+    }
+    .user-dashboard {
+        width: 98%;
+        box-sizing: border-box;
+    }
+    .headings-and-status {
+        justify-content: unset;
+        gap: 1rem;
+    }
+    #status {
+        flex-direction: row;
+    }
+}
+@media screen and (min-width: 1100px) and (max-width: 1366px) and (min-height: 750px) and (max-height: 1024px) 
+{
+    .user-dashboard {
+        width: 98%;
+        box-sizing: border-box;
+    }
+}

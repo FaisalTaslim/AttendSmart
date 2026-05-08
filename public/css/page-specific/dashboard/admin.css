@@ -1,14 +1,3 @@
-.link {
-    color: var(--link);
-}
-html {
-    scroll-behavior: smooth;
-}
-body {
-    display: flex;
-    flex-direction: column;
-    gap: 1.8rem;
-}
 
 main {
     display: flex;
@@ -19,20 +8,17 @@ main {
     width: 100%;
 }
 .admin-shell {
-    width: min(1180px, 96%);
+    width: 80%;
     height: auto;
     min-height: 76vh;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: 1rem;
-    background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border);
     border-radius: 1rem;
 }
 .admin-hero {
-    background: linear-gradient(120deg, rgba(var(--accent-rgb), 0.12) 0%, var(--bg-card) 55%, rgba(var(--accent-rgb), 0.05) 100%);
-    border: 1px solid rgba(var(--accent-rgb), 0.22);
+    background: var(--gradient-dark);
     border-radius: 0.9rem;
     padding: 1.1rem;
     display: flex;
@@ -43,64 +29,59 @@ main {
 }
 .hero-content h1 {
     margin: 0.35rem 0 0.4rem;
-    color: var(--text-primary);
     font-size: clamp(1.2rem, 2vw, 1.85rem);
     line-height: 1.3;
 }
-
 .hero-content p {
     margin: 0;
-    color: var(--text-secondary);
 }
-
-.hero-tag {
+.section-label {
     display: inline-block;
     margin: 0;
-    padding: 0.26rem 0.6rem;
     border-radius: 999px;
     color: var(--accent);
-    background: rgba(var(--accent-rgb), 0.12);
     font-size: 0.74rem;
-    font-weight: 700;
     letter-spacing: 0.02em;
+    text-transform: uppercase;
 }
-
 .hero-status {
     display: flex;
     gap: 0.55rem;
     align-items: center;
     flex-wrap: wrap;
 }
-
 .status-badge {
-    border: 1px solid var(--border-color);
-    background: var(--bg-card);
-    color: var(--text-secondary);
-    border-radius: 999px;
+    border: 1px solid var(--border);
+    border-radius: 1rem;
     padding: 0.35rem 0.75rem;
     font-size: 0.82rem;
     font-weight: 600;
 }
-
 .status-alert {
-    border-color: var(--error);
-    color: var(--error);
-    background: rgba(176, 0, 32, 0.08);
+    border: 1px solid red;
+    color: red;
 }
-
 .status-ok {
     border-color: rgba(var(--accent-rgb), 0.5);
     color: var(--accent);
-    background: rgba(var(--accent-rgb), 0.12);
+}
+
+.dashboard-overview {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 98%;
+    align-items: center;
 }
 
 .quick-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    display: flex;
+    flex-direction: row;
     gap: 0.8rem;
 }
 
 .quick-card {
+    width: 30%;
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: 0.8rem;
