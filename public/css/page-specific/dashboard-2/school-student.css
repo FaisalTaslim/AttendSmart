@@ -1,0 +1,8 @@
+body {
+    height: 100vh;
+    justify-content: center;
+}
+
+@media (max-width: 480px) {
+    body {height: unset;}
+}

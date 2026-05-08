@@ -72,6 +72,7 @@ main section {width: 80%}
 }
 
 @media (max-width: 480px) {
+    body {height: unset;}
     html {font-size: 15px}
     .headings-and-status {
         flex-direction: column;
