@@ -1,14 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const connectDB = require('./config/database');
 const sessionMiddleware = require('./config/sessions');
 const setLocals = require('./middleware/locals');
-const { startMonthlySummaryCron } = require('./utils/cron/monthly-summaries');
 const app = express();
-connectDB().then(() => {
-    startMonthlySummaryCron();
-});
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
@@ -19,16 +14,13 @@ app.set('trust proxy', true);
 app.use(sessionMiddleware);
 app.use(setLocals);
 
-app.use('/registration', require('./routes/register/registration'));
-app.use('/', require('./routes/register/verify-user'));
-app.use('/upload', require('./routes/register/upload-csv'));
+const mainPages = require('./routes/main');
+const register = require('./routes/registration');
+const authentication = require('./routes/auth');
 
-app.use('/', require('./routes/main/main'));
-app.use('/dashboard', require('./routes/main/dashboard'));
-app.use("/public/org", require("./routes/main/main"));
-
-app.use("/auth", require("./routes/auth/login"));
-app.use('/', require('./routes/auth/logout'));
+app.use('/register', register);
+app.use("/auth", authentication);
+app.use('/', mainPages);
 
 app.use('/student', require('./routes/face .../recognition/student/send-otp'));
 app.use('/student', require('./routes/face .../recognition/student/mark-attendance'));
