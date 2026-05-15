@@ -25,6 +25,11 @@
 </head>
 
 <body>
+    <% if (popupMessage) { %>
+        <div id="popup" class="popup <%= popupType %> show">
+            <%= popupMessage %>
+        </div>
+        <% } %>
     <header>
         <div class="logo">
             <h1 class="mobile-hidden gradient-text">AttendSmart</h1>
@@ -41,7 +46,7 @@
                 <select id="mobile-nav">
                     <option value="" disabled selected>-- Navigate --</option>
                     <option value="/">Home</option>
-                    <option value="/logout">Logout</option>
+                    <option value="/auth/logout">Logout</option>
                     <option value="/guidebook">GuideBook</option>
                 </select>
             </div>
@@ -87,6 +92,38 @@
                     <p>Update Contact Informations</p>
                 </section>
             </div>
+            <div id="content-finish-setup" class="content-panel" style="display: none;">
+                    <h2>Finish Setup</h2>
+                    <% if (setup.faceUploaded===false) { %>
+                        <section class="setup-uploads">
+                            <div class="upload-card">
+                                <h2>Complete the setup</h2>
+                                <p>
+                                    Read the <a href="/guidebook#face-upload" class="link">guide</a> before you upload
+                                    the image
+                                </p>
+
+                                <form id="faceForm" enctype="multipart/form-data">
+                                    <input type="file" id="face" name="faceImage" accept="image/png, image/jpeg" multiple hidden>
+
+                                    <label for="face" class="upload-label">
+                                        <div class="upload-content">
+                                            <div class="upload-icon"><i class="fa-solid fa-camera"></i></div>
+                                            <p class="upload-title">Upload your clear face image</p>
+                                            <p class="upload-subtitle">PNG or JPG • One face per image</p>
+                                        </div>
+                                    </label>
+                                </form>
+
+                                <p class="tip">
+                                    <b>Note:</b> You can update your face data later from settings.
+                                </p>
+                            </div>
+                        </section>
+                        <% } else { %>
+                            <p>Your setup is already complete.</p>
+                            <% } %>
+                </div>
         </section>
     </main>
     <footer>

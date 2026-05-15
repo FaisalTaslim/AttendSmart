@@ -2,708 +2,693 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HomePage</title>
-    <link rel="stylesheet" href="/css/global/theme/palette-II.css">
-    <link rel="stylesheet" href="/css/global/ui-components/font-family.css">
-    <link rel="stylesheet" href="/css/global/ui-components/font-size.css">
-    <link rel="stylesheet" href="/css/global/ui-components/scrollbar.css">
-    <link rel="stylesheet" href="/css/global/ui-components/selection.css">
-    <link rel="stylesheet" href="/css/global/layout/main.css">
-    <link rel="stylesheet" href="/css/global/layout/header.css">
-    <link rel="stylesheet" href="/css/global/layout/footer.css">
-    <link rel="stylesheet" href="/css/global/ui-components/forms.css">
-    <link rel="stylesheet" href="/css/global/ui-components/popup.css">
-    <link rel="stylesheet" href="/css/page-specific/homepage/main.css">
-    <link rel="stylesheet" href="/css/page-specific/homepage/responsive.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HomePage</title>
+  <link rel="stylesheet" href="/css/global/theme/palette-II.css">
+  <link rel="stylesheet" href="/css/global/ui-components/font-family.css">
+  <link rel="stylesheet" href="/css/global/ui-components/font-size.css">
+  <link rel="stylesheet" href="/css/global/ui-components/scrollbar.css">
+  <link rel="stylesheet" href="/css/global/ui-components/selection.css">
+  <link rel="stylesheet" href="/css/global/layout/main.css">
+  <link rel="stylesheet" href="/css/global/layout/header.css">
+  <link rel="stylesheet" href="/css/global/layout/footer.css">
+  <link rel="stylesheet" href="/css/global/ui-components/forms.css">
+  <link rel="stylesheet" href="/css/global/ui-components/popup.css">
+  <link rel="stylesheet" href="/css/page-specific/homepage/main.css">
+  <link rel="stylesheet" href="/css/page-specific/homepage/responsive.css">
 
-    <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 
 <body>
-    <% if (popupMessage) { %>
-        <div id="popup" class="popup <%= popupType %> show">
-            <%= popupMessage %>
+  <% if (popupMessage) { %>
+  <div id="popup" class="popup <%= popupType %> show">
+    <%= popupMessage %>
+  </div>
+  <% } %>
+
+  <header>
+    <div class="logo">
+      <div class="logo">
+        <h1 class="gradient-text">AttendSmart</h1>
+      </div>
+    </div>
+    <nav class="nav-bar nav-select">
+      <% if (isAuthenticated) { %>
+      <a href="/dashboard" class="nav-links-property">Dashboard</a>
+      <a href="/auth/logout" class="nav-links-property">Logout</a>
+      <a href="/guidebook" class="nav-links-property">GuideBook</a>
+      <% } else { %>
+      <p class="nav-links-property login-page-btn">Login</p>
+      <a href="/guidebook" class="nav-links-property">GuideBook</a>
+      <% } %>
+    </nav>
+    <nav class="mobile-nav-container nav-select">
+      <div class="outer-group">
+        <select id="mobile-nav">
+          <option value="">Navigate</option>
+          <% if (isAuthenticated) { %>
+          <option value="/dashboard">Dashboard</option>
+          <option value="/auth/logout">Logout</option>
+          <option value="/guidebook">GuideBook</option>
+          <% } else { %>
+          <option value="#login">Login</option>
+          <option value="/guidebook">GuideBook</option>
+          <% } %>
+        </select>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <div class="main-1">
+      <div class="left-side">
+        <% if (typeof error !=='undefined' && error) { %>
+        <div id="error-popup" class="error-popup">
+          <%= error %>
         </div>
         <% } %>
-
-            <header>
-                <div class="logo">
-                    <div class="logo">
-                        <h1 class="gradient-text">AttendSmart</h1>
-                    </div>
-                </div>
-                <nav class="nav-bar nav-select">
-                    <% if (isAuthenticated) { %>
-                        <a href="/dashboard" class="nav-links-property">Dashboard</a>
-                        <a href="/logout" class="nav-links-property">Logout</a>
-                        <a href="/guidebook" class="nav-links-property">GuideBook</a>
-                        <% } else { %>
-                            <p class="nav-links-property login-page-btn">Login</p>
-                            <a href="/guidebook" class="nav-links-property">GuideBook</a>
-                            <% } %>
-                </nav>
-                <nav class="mobile-nav-container nav-select">
-                    <div class="outer-group">
-                        <select id="mobile-nav">
-                            <option value="">Navigate</option>
-                            <% if (isAuthenticated) { %>
-                                <option value="/dashboard">Dashboard</option>
-                                <option value="/logout">Logout</option>
-                                <option value="/guidebook">GuideBook</option>
-                                <% } else { %>
-                                    <option value="#login">Login</option>
-                                    <option value="/guidebook">GuideBook</option>
-                                    <% } %>
-                        </select>
-                    </div>
-                </nav>
-            </header>
-            <main>
-                <div class="main-1">
-                    <div class="left-side">
-                        <% if (typeof error !=='undefined' && error) { %>
-                            <div id="error-popup" class="error-popup">
-                                <%= error %>
-                            </div>
-                            <% } %>
-                                <p class="section-label">Attendance Platform</p>
-                                <h1>Attendance management that actually feels effortless</h1>
-                                <p>
-                                    AttendSmart is a web-based attendance system for schools, colleges, and companies.
-                                    It supports QR attendance, facial verification, and timed sessions in one platform.
-                                </p>
-                                <p>
-                                    The system is built around role-based access with real-time dashboards so teams can
-                                    track attendance quickly and reliably.
-                                </p>
-
-                                <div class="highlight-points">
-                                    <p>Say goodbye to manual registers</p>
-                                    <p>Fast setup with minimal cost</p>
-                                    <p>Built to reduce proxy attendance</p>
-                                </div>
-                    </div>
-                    <div class="right-side">
-                        <h1>Register on AttendSmart</h1>
-                        <div class="forms" id="register">
-                            <div class="outer-group">
-                                <select id="registration-type">
-                                    <option value="" disabled selected>-- Select a Registration Type --</option>
-                                    <option value="a-form">Admin Register</option>
-                                    <option value="c-form">College Student Register</option>
-                                    <option value="s-form">School Student Register</option>
-                                    <option value="e-form">Employee Register</option>
-                                </select>
-                            </div>
-                            <form action="/register/admin" class="form-box r-forms hidden-mob" id="a-form"
-                                method="POST">
-                                <fieldset>
-                                    <legend>Admin Details</legend>
-
-                                    <div class="outer-group">
-                                        <input type="text" name="admin[0][name]" placeholder="Full Name" required>
-                                        <input type="text" name="admin[0][adminId]" placeholder="Admin ID" required>
-                                        <input type="tel" name="admin[0][contact]" placeholder="Mobile" required>
-                                    </div>
-
-                                    <div class="outer-group">
-                                        <input type="email" name="admin[0][email]" placeholder="Email" required>
-                                    </div>
-
-                                    <div class="outer-group">
-                                        <input type="password" class="password" name="admin[0][password]"
-                                            placeholder="Create password" required>
-
-                                        <input type="password" class="confirm-password" name="confirmPassword"
-                                            placeholder="Confirm password" required>
-                                    </div>
-                                </fieldset>
-
-                                <fieldset>
-                                    <legend>Organization Details</legend>
-
-                                    <div class="outer-group">
-                                        <input type="text" name="organization" placeholder="Organization name" required>
-                                        <input type="text" name="branch" placeholder="Branch" required>
-                                    </div>
-
-                                    <div class="outer-group">
-                                        <input type="text" name="address" placeholder="Address" required>
-                                    </div>
-
-                                    <div class="outer-group">
-                                        <select name="type" required>
-                                            <option value="">Select organization type</option>
-                                            <option value="school">School</option>
-                                            <option value="college">College</option>
-                                            <option value="corporate">Corporate</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="outer-group">
-                                        <input type="url" name="website" placeholder="Website">
-                                    </div>
-                                </fieldset>
-
-                                <fieldset>
-                                    <legend>Attendance Method</legend>
-
-                                    <div class="outer-group">
-                                        <label for="attendance-method">Select Attendance Method</label>
-                                        <select name="attendanceMethod" id="attendance-method">
-                                            <option value="">Select method</option>
-                                            <option value="one-time" class="for-schools">One-time attendance (Mark at
-                                                beginning)</option>
-                                            <option value="subject-wise" class="for-college">Subject-wise attendance
-                                            </option>
-                                        </select>
-                                    </div>
-                                </fieldset>
-
-                                <fieldset>
-                                    <legend>Confirmation</legend>
-
-                                    <div class="terms-wrapper">
-                                        <input type="checkbox" class="terms-check" name="termsCheck" required>
-
-                                        <span for="a-terms" class="terms-text">
-                                            I agree to the
-                                            <a href="/terms" target="_blank">Terms & Conditions</a>
-                                        </span>
-                                    </div>
-                                </fieldset>
-
-                                <button type="submit" class="form-submit-btn to-disable">
-                                    Register Organization
-                                </button>
-                            </form>
-
-                            <form action="/register/student/college" method="POST" class="form-box r-forms hidden-mob"
-                                id="c-form">
-                                <fieldset>
-                                    <legend>Organization details</legend>
-
-                                    <div class="outer-group">
-                                        <select name="org" id="orgSelect" required></select>
-                                    </div>
-                                </fieldset>
-
-                                <fieldset>
-                                    <legend>College Student Registration</legend>
-
-                                    <div class="outer-group">
-                                        <input type="text" name="name" placeholder="Full Name" required>
-                                        <input type="text" name="roll" placeholder="Roll Number" required>
-                                        <select name="dept" id="flood-department" required></select>
-                                    </div>
-
-                                    <div class="outer-group">
-                                        <input type="tel" name="contact" placeholder="Contact Number" required>
-                                        <input type="email" name="email" placeholder="Email Address" required>
-                                    </div>
-                                </fieldset>
-
-                                <fieldset>
-                                    <legend>Subject Details</legend>
-
-                                    <div class="outer-group">
-                                        <select name="majors[]" id="majorSelect1" multiple size="5"></select>
-                                        <select name="minors[]" id="minorSelect1" multiple size="5"></select>
-                                        <select name="optionals[]" id="optionalSelect1" multiple size="5"></select>
-                                    </div>
-                                </fieldset>
-
-                                <fieldset>
-                                    <legend>Password Setup</legend>
-
-                                    <div class="outer-group">
-                                        <input type="password" class="password" name="password"
-                                            placeholder="Set Password" required>
-                                        <input type="password" class="confirm-password" name="confirmPassword"
-                                            placeholder="Confirm Password" required>
-                                    </div>
-                                </fieldset>
-
-                                <fieldset>
-                                    <legend>Terms & Conditions</legend>
-
-                                    <div class="form-group terms-wrapper">
-                                        <input type="checkbox" class="terms-check" name="termsCheck" required>
-                                        <span class="terms-text">
-                                            I agree to the
-                                            <a href="/terms" target="_blank">Terms & Conditions</a>
-                                        </span>
-                                    </div>
-                                </fieldset>
-
-                                <button type="submit" class="form-submit-btn to-disable">
-                                    Register Student
-                                </button>
-
-                            </form>
-
-                            <form action="/register/student/school" method="POST"
-                                class="form-box r-forms hidden-mob" id="s-form">
-                                <fieldset>
-                                    <legend>Organization details</legend>
-
-                                    <div class="outer-group">
-                                        <select name="org" id="orgSelect2" required></select>
-                                    </div>
-                                </fieldset>
-
-                                <fieldset>
-                                    <legend>School Student Registration</legend>
-
-                                    <div class="outer-group">
-                                        <input type="text" name="name" placeholder="Name" required>
-                                        <input type="text" name="roll" placeholder="Roll Number" required>
-                                        <select name="standard" id="flood-class" required></select>
-                                    </div>
-
-                                    <div class="outer-group">
-                                        <input type="tel" name="contact" placeholder="Mobile" required>
-                                        <input type="email" name="email" placeholder="Email" required>
-                                    </div>
-                                </fieldset>
-
-                                <fieldset>
-                                    <legend>Subject Details</legend>
-
-                                    <div class="outer-group">
-                                        <select name="stream" required>
-                                            <option value="neutral">Neutral</option>
-                                            <option value="science">Science</option>
-                                            <option value="commerce">Commerce</option>
-                                            <option value="arts">Arts</option>
-                                        </select>
-
-                                        <select name="majors[]" id="MajorSelect2" multiple size="5"></select>
-                                        <select name="minors[]" id="MinorSelect2" multiple size="5"></select>
-                                        <select name="optionals[]" id="OptionalSelect2" multiple size="5"></select>
-                                    </div>
-                                </fieldset>
-
-                                <fieldset>
-                                    <legend>Password Setup</legend>
-
-                                    <div class="outer-group">
-                                        <input type="password" class="password" name="password"
-                                            placeholder="Set Password" required>
-                                        <input type="password" class="confirm-password" name="confirmPassword"
-                                            placeholder="Confirm Password" required>
-                                    </div>
-                                </fieldset>
-
-                                <fieldset>
-                                    <legend>Terms & Conditions</legend>
-
-                                    <div class="terms-wrapper">
-                                        <input type="checkbox" class="terms-check" name="termsCheck" required>
-                                        <span class="terms-text">
-                                            I agree to the
-                                            <a href="/terms" target="_blank">Terms & Conditions</a>
-                                        </span>
-                                    </div>
-                                </fieldset>
-
-                                <button type="submit" class="form-submit-btn to-disable">
-                                    Register Student
-                                </button>
-
-                            </form>
-
-                            <form action="/register/employee" method="POST" class="form-box r-forms hidden-mob"
-                                id="e-form">
-                                <fieldset>
-                                    <legend>Organization details</legend>
-
-                                    <div class="outer-group">
-                                        <select name="org" id="orgSelect3" required></select>
-                                    </div>
-                                </fieldset>
-
-                                <fieldset>
-                                    <legend>Employee Registration</legend>
-
-                                    <div class="outer-group">
-                                        <input type="text" name="name" placeholder="Full Name" required>
-                                        <input type="text" name="employeeId" placeholder="Employee ID" required>
-                                        <input type="text" name="designation" placeholder="Designation / Job Role"
-                                            required>
-                                    </div>
-
-                                    <div class="outer-group">
-                                        <select name="workPlace" required>
-                                            <option value="" disabled selected>Works At</option>
-                                            <option value="school">School</option>
-                                            <option value="college">College</option>
-                                            <option value="corporate">Corporate</option>
-                                        </select>
-
-                                        <select name="shift" required>
-                                            <option value="" disabled selected>Select Shift</option>
-                                            <option value="day">Day</option>
-                                            <option value="night">Night</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="outer-group">
-                                        <input type="tel" name="contact" placeholder="Contact Number" required>
-                                        <input type="email" name="email" placeholder="Email Address" required>
-                                    </div>
-                                </fieldset>
-
-                                <fieldset>
-                                    <legend>Password Setup</legend>
-
-                                    <div class="outer-group">
-                                        <input type="password" class="password" name="password"
-                                            placeholder="Set Password" required>
-                                        <input type="password" class="confirm-password" name="confirmPassword"
-                                            placeholder="Confirm Password" required>
-                                    </div>
-                                </fieldset>
-
-                                <fieldset>
-                                    <legend>Terms & Conditions</legend>
-
-                                    <div class="terms-wrapper">
-                                        <input type="checkbox" class="terms-check" name="termsCheck" required>
-
-                                        <span class="terms-text">
-                                            I agree to the
-                                            <a href="/terms" target="_blank">Terms & Conditions</a>
-                                    </div>
-                                </fieldset>
-
-                                <button type="submit" class="form-submit-btn disable">
-                                    Register Employee
-                                </button>
-
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="main-2">
-                    <div class="left-side">
-                        <p class="section-label">Support</p>
-                        <h1>Need Help?</h1>
-                        <p>
-                            At AttendSmart, support isn’t just an afterthought — it’s built right in. Whether you’re
-                            facing a
-                            technical glitch, have a suggestion, or simply want to share your thoughts, we’re all ears.
-                        </p>
-                        <ul class="support-features">
-                            <li>
-                                <strong>Support Form –</strong> Can be used to Report bugs, glitches, feedback or
-                                suggestions.
-                            </li>
-                            <li>
-                                <strong>Frequently Asked Questions (FAQs) –</strong> Get quick answers to common queries
-                                and
-                                how-tos.
-                            </li>
-                            <li>
-                                <strong>Contact Details –</strong> You'll find the contact details in the footer.
-                                Remember,
-                                useContact Support only when you're not able to reach out through other methods.
-                            </li>
-                        </ul>
-                        <div class="highlight-points support-points">
-                            <p>Report issues in seconds</p>
-                            <p>Get quick support responses</p>
-                            <p>Find answers in the FAQ</p>
-                        </div>
-                    </div>
-                    <div class="right-side">
-                        <div class="forms" id="support-forms">
-                            <div class="outer-group">
-                                <select id="support-type">
-                                    <option value="" selected disabled>-- Select Support Method --</option>
-                                    <option value="faq">FAQ</option>
-                                    <option value="support-form">Support Form</option>
-                                </select>
-                            </div>
-                            <section class="faq-section  s-forms hidden-mob form-box" id="faq">
-                                <h2>Frequently Asked Questions</h2>
-
-                                <details>
-                                    <summary>How do I reset my password?</summary>
-                                    <p class="fontSize">Go to the <a href="/login" class="links" target="_blank">Login
-                                            Page</a>
-                                        and click on “Forgot Password.” You’ll receive a
-                                        reset link on your
-                                        registered email.</p>
-                                </details>
-
-                                <details class="login-credentials-problem">
-                                    <summary>I didn’t receive my login credentials. What should I do?</summary>
-                                    <ul class="level-1">
-                                        <li>Please check your spam, or promotions folder on your <strong>registered
-                                                email</strong>.</li>
-                                        <li>
-                                            If you still can't find your credentials:
-                                            <ul class="level-2">
-                                                <li>Go to Issue Submission Form, and submit your problem.</li>
-                                                <li>
-                                                    Do not forget to include:
-                                                    <ul class="level-3">
-                                                        <li><strong>Your Organization Name</strong></li>
-                                                        <li><strong>Your Roll No:</strong> For Students</li>
-                                                        <li><strong>Your Employee ID:</strong> For Employees</li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </details>
-
-                                <details>
-                                    <summary>I paid for the premium, but I didn't get the access to the software.
-                                    </summary>
-                                    <p>
-                                        We're sorry for the inconvenience! Please reach out to <b
-                                            style="color: var(--tip-text)">support@attendsmart.io</b>. Use your
-                                        registered email
-                                        to send us a mail. Add a subject matching to your problem, i.e., "Didn't
-                                        receieve the
-                                        premium access". Include your Organization name, your Employee ID, and a photo
-                                        proof of
-                                        the amount you paid for the premium. Then wait for the reply from our end!
-                                    </p>
-                                </details>
-
-                                <details>
-                                    <summary>Can multiple branches or departments use AttendSmart under one
-                                        organization?
-                                    </summary>
-                                    <p>Yes! AttendSmart is designed to be universal and scalable. So multiple
-                                        branches under the same organization can register and get started with
-                                        AttendSmart.</p>
-                                </details>
-
-                                <details>
-                                    <summary>What platforms does AttendSmart work best on?</summary>
-                                    <p>
-                                        AttendSmart is currently optimized for desktops and smartphones. While tablets
-                                        will work
-                                        just fine, we still recommend avoiding tablet use for the best experience for
-                                        now. Full
-                                        Tablet compatibility and certain features are still under development. We
-                                        appreciate
-                                        your patience and support. Stay tuned — exciting updates are on the way! Keep
-                                        your eyes
-                                        out on AttendSmart <a href="/log" class="links">LogBook</a> to track
-                                        changes made by developers.
-                                    </p>
-                                </details>
-
-                                <details>
-                                    <summary>How can I report proxy or fake attendance?</summary>
-                                    <p>AttendSmart is built with features to <strong>minimize proxy
-                                            attendance</strong> through
-                                        secure tracking methods. However, if someone bypasses the system by logging into
-                                        another
-                                        user's account, the responsibility for monitoring and disciplinary action lies
-                                        with the
-                                        respective organization.</p>
-
-                                    <p>To help with this, AttendSmart provides advanced tools like:</p>
-                                    <ul>
-                                        <li><strong>Dashboard activity logs</strong> to trace user behavior
-                                        </li>
-                                        <li><strong>Suspend / Freeze features</strong> to temporarily restrict
-                                            access or halt
-                                            attendance tracking for specific users</li>
-                                    </ul>
-
-                                    <p>These features are designed to empower admins and maintain transparency
-                                        in attendance
-                                        records.</p>
-                                </details>
-
-                                <details>
-                                    <summary>How can I delete my account?</summary>
-                                    <p>
-                                        If you're a student or employee, account deletion requests must be handled by
-                                        your
-                                        organization's admin. For security and compliance reasons, only admins have the
-                                        authority to manage or remove user accounts. Please contact your respective
-                                        admin for
-                                        assistance.
-                                    </p>
-                                </details>
-
-                                <details>
-                                    <summary>Can I suggest a feature?</summary>
-                                    <p>
-                                        Absolutely! We love new ideas. Use the <strong>Feedback Form</strong> on the
-                                        Support
-                                        page
-                                        to send us your suggestions.
-                                    </p>
-                                </details>
-
-                                <details>
-                                    <summary>Is AttendSmart free or paid?</summary>
-                                    <p>
-                                        AttendSmart is currently a paid software. We’re a small, independent team, and
-                                        every
-                                        contribution goes directly into maintaining the platform and building better
-                                        features
-                                        for our users. Your support helps us grow, improve, and keep things running
-                                        smoothly.
-                                    </p>
-                                </details>
-
-                                <details>
-                                    <summary>How secure is my data?</summary>
-                                    <p>
-                                        Your data security is important to us. We follow industry-standard
-                                        practices for encryption and access control. More security layers will be added
-                                        in
-                                        future updates.
-                                    </p>
-                                </details>
-                            </section>
-                            <section class="issue-form-section s-forms hidden-mob form-box" id="support-form">
-                                <form class="issue-form" action="/api/support" method="POST">
-                                    <fieldset>
-                                        <legend>Support Form</legend>
-
-
-                                        <fieldset>
-                                            <legend>Contact</legend>
-
-                                            <div class="outer-group">
-                                                <input type="text" name="userName" placeholder="Username" required>
-
-                                                <input type="email" name="email" placeholder="Email address" required>
-                                            </div>
-                                        </fieldset>
-
-                                        <fieldset>
-                                            <legend>Support</legend>
-
-                                            <div class="outer-group">
-                                                <select name="supportType" required>
-                                                    <option value="" disabled selected>-- Select Support Type --
-                                                    </option>
-                                                    <option value="feedback">Feedback</option>
-                                                    <option value="problem">Report a problem</option>
-                                                    <option value="question">Ask a question</option>
-                                                    <option value="question">Suggestion</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="outer-group">
-                                                <textarea name="thoughts" rows="5" placeholder="Write your message"
-                                                    required></textarea>
-                                            </div>
-                                        </fieldset>
-
-                                        <button type="submit" class="form-submit-btn disable">
-                                            Submit
-                                        </button>
-                                    </fieldset>
-                                </form>
-                            </section>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="main-3">
-                    <div class="form-overlay">
-                        <form class="login-form" action="/auth/login" method="POST">
-
-                            <button type="button" class="login-go-back continue-btn">
-                                Go Back
-                            </button>
-
-                            <fieldset>
-                                <legend>Login to Continue</legend>
-
-                                <div class="outer-group">
-                                    <input type="text" name="code" placeholder="Unique ID" required>
-
-                                    <select name="userRole" required>
-                                        <option value="" disabled selected>Select your role</option>
-                                        <option value="admin">Admin</option>
-                                        <option value="school-student">School Student</option>
-                                        <option value="college-student">College Student</option>
-                                        <option value="employee">Employee</option>
-                                    </select>
-                                </div>
-
-                                <div class="outer-group">
-                                    <input type="password" name="password" placeholder="Password" required>
-                                </div>
-
-                                <div class="outer-group">
-                                    <button type="submit" class="continue-btn">
-                                        Continue
-                                    </button>
-
-                                    <button type="button" class="continue-btn">
-                                        Forgot Password?
-                                    </button>
-                                </div>
-                            </fieldset>
-
-                        </form>
-                    </div>
-                </div>
-            </main>
-            <footer>
-                <div class="foot-content">
-                    <div class="foot1">
-                        <div class="useful-links">
-                            <p><strong>Useful-links</strong></p>
-                            <a href="#register" class="links foot-links" target="_blank">Register</a>
-                            <a href="#support-forms" class="links foot-links" target="_blank">Support</a>
-                            <a href="/dashboard" class="links foot-links" target="_blank">Dashboard</a>
-                        </div>
-                        <div class="legal">
-                            <p><strong>Legal</strong></p>
-                            <a href="#" class="links foot-links" target="_blank">Terms & conditions</a>
-                            <a href="#" class="links foot-links" target="_blank">Privacy Policy</a>
-                            <a href="#" class="links foot-links" target="_blank">Refund Policy</a>
-                        </div>
-                    </div>
-                    <div class="foot2">
-                        <div class="socials">
-                            <p><strong>Socials</strong></p>
-                            <a href="#" class="links foot-links" target="_blank">
-                                <i class="fa-brands fa-instagram"></i> | @faisal_9542
-                            </a>
-                            <a href="#" class="links foot-links" target="_blank">
-                                <i class="fa-brands fa-discord"></i> | @famaeoxiaa
-                            </a>
-                            <a href="#" class="links foot-links" target="_blank">
-                                <i class="fa-brands fa-github"></i> | @FaisalTaslim
-                            </a>
-                        </div>
-                        <div class="contacts">
-                            <p><strong>Contacts</strong></p>
-                            <p><i class="fa-solid fa-phone"></i> | +91 7449925137 </p>
-                            <p><i class="fa-solid fa-envelope"></i> | mailto: faisaltaslim79@gmail.com</p>
-                        </div>
-                    </div>
-                </div>
-                <p class="copyright">&copy2026 AttendSmart. All Rights Reserved.</p>
-            </footer>
-            <script src="/js/global/layout/mobile-nav.js"></script>
-            <script src="/js/global/UI/rearrange-footer.js"></script>
-            <script src="/js/page-specific/homepage/functions.js"></script>
-            <script src="/js/global/UI/popup.js"></script>
-            <script type="module" src="/js/page-specific/homepage/college-forms-ui.js"></script>
-            <script type="module" src="/js/page-specific/homepage/school-forms-ui.js"></script>
-            <script type="module" src="/js/page-specific/homepage/employee-forms-ui.js"></script>
+        <p class="section-label">Attendance Platform</p>
+        <h1>Attendance management that actually feels effortless</h1>
+        <p>
+          AttendSmart is a web-based attendance system for schools, colleges, and companies.
+          It supports QR attendance, facial verification, and timed sessions in one platform.
+        </p>
+        <p>
+          The system is built around role-based access with real-time dashboards so teams can
+          track attendance quickly and reliably.
+        </p>
+
+        <div class="highlight-points">
+          <p>Say goodbye to manual registers</p>
+          <p>Fast setup with minimal cost</p>
+          <p>Built to reduce proxy attendance</p>
+        </div>
+      </div>
+      <div class="right-side">
+        <h1>Register on AttendSmart</h1>
+        <div class="forms" id="register">
+          <div class="outer-group">
+            <select id="registration-type">
+              <option value="" disabled selected>-- Select a Registration Type --</option>
+              <option value="a-form">Admin Register</option>
+              <option value="c-form">College Student Register</option>
+              <option value="s-form">School Student Register</option>
+              <option value="e-form">Employee Register</option>
+            </select>
+          </div>
+          <form action="/register/admin" class="form-box r-forms hidden-mob" id="a-form" method="POST">
+            <fieldset>
+              <legend>Admin Details</legend>
+
+              <div class="outer-group">
+                <input type="text" name="admin[0][name]" placeholder="Full Name" required>
+                <input type="text" name="admin[0][adminId]" placeholder="Admin ID" required>
+                <input type="tel" name="admin[0][contact]" placeholder="Mobile" required>
+              </div>
+
+              <div class="outer-group">
+                <input type="email" name="admin[0][email]" placeholder="Email" required>
+              </div>
+
+              <div class="outer-group">
+                <input type="password" class="password" name="admin[0][password]" placeholder="Create password" required>
+
+                <input type="password" class="confirm-password" name="confirmPassword" placeholder="Confirm password" required>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Organization Details</legend>
+
+              <div class="outer-group">
+                <input type="text" name="organization" placeholder="Organization name" required>
+                <input type="text" name="branch" placeholder="Branch" required>
+              </div>
+
+              <div class="outer-group">
+                <input type="text" name="address" placeholder="Address" required>
+              </div>
+
+              <div class="outer-group">
+                <select name="type" required>
+                  <option value="">Select organization type</option>
+                  <option value="school">School</option>
+                  <option value="college">College</option>
+                  <option value="corporate">Corporate</option>
+                </select>
+              </div>
+
+              <div class="outer-group">
+                <input type="url" name="website" placeholder="Website">
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Attendance Method</legend>
+
+              <div class="outer-group">
+                <label for="attendance-method">Select Attendance Method</label>
+                <select name="attendanceMethod" id="attendance-method">
+                  <option value="">Select method</option>
+                  <option value="one-time" class="for-schools">One-time attendance (Mark at
+                    beginning)</option>
+                  <option value="subject-wise" class="for-college">Subject-wise attendance
+                  </option>
+                </select>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Confirmation</legend>
+
+              <div class="terms-wrapper">
+                <input type="checkbox" class="terms-check" name="termsCheck" required>
+
+                <span for="a-terms" class="terms-text">
+                  I agree to the
+                  <a href="/terms" target="_blank">Terms & Conditions</a>
+                </span>
+              </div>
+            </fieldset>
+
+            <button type="submit" class="form-submit-btn to-disable">
+              Register Organization
+            </button>
+          </form>
+
+          <form action="/register/student/college" method="POST" class="form-box r-forms hidden-mob" id="c-form">
+            <fieldset>
+              <legend>Organization details</legend>
+
+              <div class="outer-group">
+                <select name="org" id="orgSelect" required></select>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>College Student Registration</legend>
+
+              <div class="outer-group">
+                <input type="text" name="name" placeholder="Full Name" required>
+                <input type="text" name="roll" placeholder="Roll Number" required>
+                <select name="dept" id="flood-department" required></select>
+              </div>
+
+              <div class="outer-group">
+                <input type="tel" name="contact" placeholder="Contact Number" required>
+                <input type="email" name="email" placeholder="Email Address" required>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Subject Details</legend>
+
+              <div class="outer-group">
+                <select name="majors[]" id="majorSelect1" multiple size="5"></select>
+                <select name="minors[]" id="minorSelect1" multiple size="5"></select>
+                <select name="optionals[]" id="optionalSelect1" multiple size="5"></select>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Password Setup</legend>
+
+              <div class="outer-group">
+                <input type="password" class="password" name="password" placeholder="Set Password" required>
+                <input type="password" class="confirm-password" name="confirmPassword" placeholder="Confirm Password" required>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Terms & Conditions</legend>
+
+              <div class="form-group terms-wrapper">
+                <input type="checkbox" class="terms-check" name="termsCheck" required>
+                <span class="terms-text">
+                  I agree to the
+                  <a href="/terms" target="_blank">Terms & Conditions</a>
+                </span>
+              </div>
+            </fieldset>
+
+            <button type="submit" class="form-submit-btn to-disable">
+              Register Student
+            </button>
+
+          </form>
+
+          <form action="/register/student/school" method="POST" class="form-box r-forms hidden-mob" id="s-form">
+            <fieldset>
+              <legend>Organization details</legend>
+
+              <div class="outer-group">
+                <select name="org" id="orgSelect2" required></select>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>School Student Registration</legend>
+
+              <div class="outer-group">
+                <input type="text" name="name" placeholder="Name" required>
+                <input type="text" name="roll" placeholder="Roll Number" required>
+                <select name="standard" id="flood-class" required></select>
+              </div>
+
+              <div class="outer-group">
+                <input type="tel" name="contact" placeholder="Mobile" required>
+                <input type="email" name="email" placeholder="Email" required>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Subject Details</legend>
+
+              <div class="outer-group">
+                <select name="stream" required>
+                  <option value="neutral">Neutral</option>
+                  <option value="science">Science</option>
+                  <option value="commerce">Commerce</option>
+                  <option value="arts">Arts</option>
+                </select>
+
+                <select name="majors[]" id="MajorSelect2" multiple size="5"></select>
+                <select name="minors[]" id="MinorSelect2" multiple size="5"></select>
+                <select name="optionals[]" id="OptionalSelect2" multiple size="5"></select>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Password Setup</legend>
+
+              <div class="outer-group">
+                <input type="password" class="password" name="password" placeholder="Set Password" required>
+                <input type="password" class="confirm-password" name="confirmPassword" placeholder="Confirm Password" required>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Terms & Conditions</legend>
+
+              <div class="terms-wrapper">
+                <input type="checkbox" class="terms-check" name="termsCheck" required>
+                <span class="terms-text">
+                  I agree to the
+                  <a href="/terms" target="_blank">Terms & Conditions</a>
+                </span>
+              </div>
+            </fieldset>
+
+            <button type="submit" class="form-submit-btn to-disable">
+              Register Student
+            </button>
+
+          </form>
+
+          <form action="/register/employee" method="POST" class="form-box r-forms hidden-mob" id="e-form">
+            <fieldset>
+              <legend>Organization details</legend>
+
+              <div class="outer-group">
+                <select name="org" id="orgSelect3" required></select>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Employee Registration</legend>
+
+              <div class="outer-group">
+                <input type="text" name="name" placeholder="Full Name" required>
+                <input type="text" name="employeeId" placeholder="Employee ID" required>
+                <input type="text" name="designation" placeholder="Designation / Job Role" required>
+              </div>
+
+              <div class="outer-group">
+                <select name="workPlace" required>
+                  <option value="" disabled selected>Works At</option>
+                  <option value="school">School</option>
+                  <option value="college">College</option>
+                  <option value="corporate">Corporate</option>
+                </select>
+
+                <select name="shift" required>
+                  <option value="" disabled selected>Select Shift</option>
+                  <option value="day">Day</option>
+                  <option value="night">Night</option>
+                </select>
+              </div>
+
+              <div class="outer-group">
+                <input type="tel" name="contact" placeholder="Contact Number" required>
+                <input type="email" name="email" placeholder="Email Address" required>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Password Setup</legend>
+
+              <div class="outer-group">
+                <input type="password" class="password" name="password" placeholder="Set Password" required>
+                <input type="password" class="confirm-password" name="confirmPassword" placeholder="Confirm Password" required>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Terms & Conditions</legend>
+
+              <div class="terms-wrapper">
+                <input type="checkbox" class="terms-check" name="termsCheck" required>
+
+                <span class="terms-text">
+                  I agree to the
+                  <a href="/terms" target="_blank">Terms & Conditions</a>
+              </div>
+            </fieldset>
+
+            <button type="submit" class="form-submit-btn disable">
+              Register Employee
+            </button>
+
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="main-2">
+      <div class="left-side">
+        <p class="section-label">Support</p>
+        <h1>Need Help?</h1>
+        <p>
+          At AttendSmart, support isn’t just an afterthought — it’s built right in. Whether you’re
+          facing a
+          technical glitch, have a suggestion, or simply want to share your thoughts, we’re all ears.
+        </p>
+        <ul class="support-features">
+          <li>
+            <strong>Support Form –</strong> Can be used to Report bugs, glitches, feedback or
+            suggestions.
+          </li>
+          <li>
+            <strong>Frequently Asked Questions (FAQs) –</strong> Get quick answers to common queries
+            and
+            how-tos.
+          </li>
+          <li>
+            <strong>Contact Details –</strong> You'll find the contact details in the footer.
+            Remember,
+            useContact Support only when you're not able to reach out through other methods.
+          </li>
+        </ul>
+        <div class="highlight-points support-points">
+          <p>Report issues in seconds</p>
+          <p>Get quick support responses</p>
+          <p>Find answers in the FAQ</p>
+        </div>
+      </div>
+      <div class="right-side">
+        <div class="forms" id="support-forms">
+          <div class="outer-group">
+            <select id="support-type">
+              <option value="" selected disabled>-- Select Support Method --</option>
+              <option value="faq">FAQ</option>
+              <option value="support-form">Support Form</option>
+            </select>
+          </div>
+          <section class="faq-section  s-forms hidden-mob form-box" id="faq">
+            <h2>Frequently Asked Questions</h2>
+
+            <details>
+              <summary>How do I reset my password?</summary>
+              <p class="fontSize">Go to the <a href="/login" class="links" target="_blank">Login
+                  Page</a>
+                and click on “Forgot Password.” You’ll receive a
+                reset link on your
+                registered email.</p>
+            </details>
+
+            <details class="login-credentials-problem">
+              <summary>I didn’t receive my login credentials. What should I do?</summary>
+              <ul class="level-1">
+                <li>Please check your spam, or promotions folder on your <strong>registered
+                    email</strong>.</li>
+                <li>
+                  If you still can't find your credentials:
+                  <ul class="level-2">
+                    <li>Go to Issue Submission Form, and submit your problem.</li>
+                    <li>
+                      Do not forget to include:
+                      <ul class="level-3">
+                        <li><strong>Your Organization Name</strong></li>
+                        <li><strong>Your Roll No:</strong> For Students</li>
+                        <li><strong>Your Employee ID:</strong> For Employees</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </details>
+
+            <details>
+              <summary>I paid for the premium, but I didn't get the access to the software.
+              </summary>
+              <p>
+                We're sorry for the inconvenience! Please reach out to <b style="color: var(--tip-text)">support@attendsmart.io</b>. Use your
+                registered email
+                to send us a mail. Add a subject matching to your problem, i.e., "Didn't
+                receieve the
+                premium access". Include your Organization name, your Employee ID, and a photo
+                proof of
+                the amount you paid for the premium. Then wait for the reply from our end!
+              </p>
+            </details>
+
+            <details>
+              <summary>Can multiple branches or departments use AttendSmart under one
+                organization?
+              </summary>
+              <p>Yes! AttendSmart is designed to be universal and scalable. So multiple
+                branches under the same organization can register and get started with
+                AttendSmart.</p>
+            </details>
+
+            <details>
+              <summary>What platforms does AttendSmart work best on?</summary>
+              <p>
+                AttendSmart is currently optimized for desktops and smartphones. While tablets
+                will work
+                just fine, we still recommend avoiding tablet use for the best experience for
+                now. Full
+                Tablet compatibility and certain features are still under development. We
+                appreciate
+                your patience and support. Stay tuned — exciting updates are on the way! Keep
+                your eyes
+                out on AttendSmart <a href="/log" class="links">LogBook</a> to track
+                changes made by developers.
+              </p>
+            </details>
+
+            <details>
+              <summary>How can I report proxy or fake attendance?</summary>
+              <p>AttendSmart is built with features to <strong>minimize proxy
+                  attendance</strong> through
+                secure tracking methods. However, if someone bypasses the system by logging into
+                another
+                user's account, the responsibility for monitoring and disciplinary action lies
+                with the
+                respective organization.</p>
+
+              <p>To help with this, AttendSmart provides advanced tools like:</p>
+              <ul>
+                <li><strong>Dashboard activity logs</strong> to trace user behavior
+                </li>
+                <li><strong>Suspend / Freeze features</strong> to temporarily restrict
+                  access or halt
+                  attendance tracking for specific users</li>
+              </ul>
+
+              <p>These features are designed to empower admins and maintain transparency
+                in attendance
+                records.</p>
+            </details>
+
+            <details>
+              <summary>How can I delete my account?</summary>
+              <p>
+                If you're a student or employee, account deletion requests must be handled by
+                your
+                organization's admin. For security and compliance reasons, only admins have the
+                authority to manage or remove user accounts. Please contact your respective
+                admin for
+                assistance.
+              </p>
+            </details>
+
+            <details>
+              <summary>Can I suggest a feature?</summary>
+              <p>
+                Absolutely! We love new ideas. Use the <strong>Feedback Form</strong> on the
+                Support
+                page
+                to send us your suggestions.
+              </p>
+            </details>
+
+            <details>
+              <summary>Is AttendSmart free or paid?</summary>
+              <p>
+                AttendSmart is currently a paid software. We’re a small, independent team, and
+                every
+                contribution goes directly into maintaining the platform and building better
+                features
+                for our users. Your support helps us grow, improve, and keep things running
+                smoothly.
+              </p>
+            </details>
+
+            <details>
+              <summary>How secure is my data?</summary>
+              <p>
+                Your data security is important to us. We follow industry-standard
+                practices for encryption and access control. More security layers will be added
+                in
+                future updates.
+              </p>
+            </details>
+          </section>
+          <section class="issue-form-section s-forms hidden-mob form-box" id="support-form">
+            <form class="issue-form" action="/api/support" method="POST">
+              <fieldset>
+                <legend>Support Form</legend>
+
+
+                <fieldset>
+                  <legend>Contact</legend>
+
+                  <div class="outer-group">
+                    <input type="text" name="userName" placeholder="Username" required>
+
+                    <input type="email" name="email" placeholder="Email address" required>
+                  </div>
+                </fieldset>
+
+                <fieldset>
+                  <legend>Support</legend>
+
+                  <div class="outer-group">
+                    <select name="supportType" required>
+                      <option value="" disabled selected>-- Select Support Type --
+                      </option>
+                      <option value="feedback">Feedback</option>
+                      <option value="problem">Report a problem</option>
+                      <option value="question">Ask a question</option>
+                      <option value="question">Suggestion</option>
+                    </select>
+                  </div>
+
+                  <div class="outer-group">
+                    <textarea name="thoughts" rows="5" placeholder="Write your message" required></textarea>
+                  </div>
+                </fieldset>
+
+                <button type="submit" class="form-submit-btn disable">
+                  Submit
+                </button>
+              </fieldset>
+            </form>
+          </section>
+
+        </div>
+      </div>
+    </div>
+    <div class="main-3">
+      <div class="form-overlay">
+        <form class="login-form" action="/auth/login" method="POST">
+
+          <button type="button" class="login-go-back continue-btn">
+            Go Back
+          </button>
+
+          <fieldset>
+            <legend>Login to Continue</legend>
+
+            <div class="outer-group">
+              <input type="text" name="code" placeholder="Unique ID" required>
+
+              <select name="userRole" required>
+                <option value="" disabled selected>Select your role</option>
+                <option value="admin">Admin</option>
+                <option value="school-student">School Student</option>
+                <option value="college-student">College Student</option>
+                <option value="employee">Employee</option>
+              </select>
+            </div>
+
+            <div class="outer-group">
+              <input type="password" name="password" placeholder="Password" required>
+            </div>
+
+            <div class="outer-group">
+              <button type="submit" class="continue-btn">
+                Continue
+              </button>
+
+              <button type="button" class="continue-btn">
+                Forgot Password?
+              </button>
+            </div>
+          </fieldset>
+
+        </form>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="foot-content">
+      <div class="foot1">
+        <div class="useful-links">
+          <p><strong>Useful-links</strong></p>
+          <a href="#register" class="links foot-links" target="_blank">Register</a>
+          <a href="#support-forms" class="links foot-links" target="_blank">Support</a>
+          <a href="/dashboard" class="links foot-links" target="_blank">Dashboard</a>
+        </div>
+        <div class="legal">
+          <p><strong>Legal</strong></p>
+          <a href="#" class="links foot-links" target="_blank">Terms & conditions</a>
+          <a href="#" class="links foot-links" target="_blank">Privacy Policy</a>
+          <a href="#" class="links foot-links" target="_blank">Refund Policy</a>
+        </div>
+      </div>
+      <div class="foot2">
+        <div class="socials">
+          <p><strong>Socials</strong></p>
+          <a href="#" class="links foot-links" target="_blank">
+            <i class="fa-brands fa-instagram"></i> | @faisal_9542
+          </a>
+          <a href="#" class="links foot-links" target="_blank">
+            <i class="fa-brands fa-discord"></i> | @famaeoxiaa
+          </a>
+          <a href="#" class="links foot-links" target="_blank">
+            <i class="fa-brands fa-github"></i> | @FaisalTaslim
+          </a>
+        </div>
+        <div class="contacts">
+          <p><strong>Contacts</strong></p>
+          <p><i class="fa-solid fa-phone"></i> | +91 7449925137 </p>
+          <p><i class="fa-solid fa-envelope"></i> | mailto: faisaltaslim79@gmail.com</p>
+        </div>
+      </div>
+    </div>
+    <p class="copyright">&copy2026 AttendSmart. All Rights Reserved.</p>
+  </footer>
+  <script src="/js/global/layout/mobile-nav.js"></script>
+  <script src="/js/global/UI/rearrange-footer.js"></script>
+  <script src="/js/page-specific/homepage/functions.js"></script>
+  <script src="/js/global/UI/popup.js"></script>
+  <script type="module" src="/js/page-specific/homepage/college-forms-ui.js"></script>
+  <script type="module" src="/js/page-specific/homepage/school-forms-ui.js"></script>
+  <script type="module" src="/js/page-specific/homepage/employee-forms-ui.js"></script>
 </body>
 
 </html>

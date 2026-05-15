@@ -8,7 +8,7 @@ let organizations = [];
 
 async function loadCollegeOrganizations() {
     try {
-        const res = await fetch("/public/org/list");
+        const res = await fetch("/register/get-org-list");
         const data = await res.json();
         if (!data.success) return;
 

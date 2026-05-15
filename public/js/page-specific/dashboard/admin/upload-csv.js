@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
             formData.append("subjectsCsv", file);
 
             try {
-                const res = await fetch("/upload/admin/subjects/upload", {
+                const res = await fetch("/register/admin/subjects/upload", {
                     method: "POST",
                     body: formData,
                 });
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
             formData.append("scheduleCsv", file);
 
             try {
-                const res = await fetch("/upload/admin/schedule/upload", {
+                const res = await fetch("/register/admin/schedule/upload", {
                     method: "POST",
                     body: formData,
                 });

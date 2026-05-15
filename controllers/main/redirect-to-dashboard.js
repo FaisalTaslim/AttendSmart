@@ -1,23 +1,29 @@
 exports.redirect = (req, res) => {
-    if(req.session.user.role == 'admin') {
-        res.render('dashboards/admin');
+
+    const redirect = {
+        'admin': '/dashboard/admin',
+        'school-student': '/dashboard/school-student',
+        'college-student': '/dashboard/college-student',
+        'corporate': '/dashboard/employee',
+        'teacher': '/dashboard/teacher'
     }
-    else if(req.session.user.role == 'school-student') {
-        res.render('dashboards/school-student');
-    }
-    else if(req.session.user.role == 'college-student') { 
-        res.render('dashboards/college-student');
-    }
-    else if(req.session.user.role == 'employee' && req.session.user.employeeType == 'corporate') {
-        res.render('dashboards/employee');
-    }
-    else if (req.session.user.role == 'employee' && req.session.user.employeeType == 'teacher') {
-        res.render('dashboards/teacher');
+
+    let targetRoute;
+
+    if (req.session.user.role !== 'employee') {
+        targetRoute = redirect[req.session.user.role];
     }
     else {
-        res.redirect('index', {
-            popupMessage: 'Not a valid role',
-            popupType: 'error',
-        })
+        targetRoute =
+            redirect[req.session.user.employeeType];
     }
+
+    if (!targetRoute) {
+        return res.render('index', {
+            popupMessage: 'Invalid role detected',
+            popupType: 'error'
+        });
+    }
+
+    return res.redirect(targetRoute);
 }

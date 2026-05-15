@@ -1,4 +1,7 @@
-main section {width: 80%}
+main section {
+    width: 80%;
+    overflow-y: auto;
+}
 .user-dashboard {
     width: 80%;
     display: flex;

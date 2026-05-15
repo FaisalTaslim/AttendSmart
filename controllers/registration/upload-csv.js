@@ -37,8 +37,6 @@ function isValidTime(time) {
     return /^([01]\d|2[0-3]):([0-5]\d)$/.test(time);
 }
 
-let tracker = 0;
-
 exports.uploadSubjects = async (req, res) => {
     const session = await mongoose.startSession();
     session.startTransaction();

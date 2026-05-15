@@ -3,5 +3,6 @@ module.exports = {
     student: require('./student'),
     employee: require('./employee'),
     uploadCsv: require('./upload-csv'),
-    verifyUser: require('./verify-user')
+    verifyUser: require('./verify-user'),
+    orgList: require('./fetch-org-list')
 }
