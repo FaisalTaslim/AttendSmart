@@ -1,7 +1,7 @@
+const { MODEL_URL } = window.FACE_API_CONFIG;
+
 document.addEventListener("DOMContentLoaded", () => {
     async function loadModels() {
-        const MODEL_URL = "/models";
-
         await Promise.all([
             faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
             faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),

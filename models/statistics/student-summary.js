@@ -10,7 +10,8 @@ const summary = new Schema({
     subject: {type: String, default: null},
 
     month: {
-        type: Number,
+        type: String,
+        required: true
     },
     total: {type: Number, default: 0},
     attended: {type: Number, default: 0},

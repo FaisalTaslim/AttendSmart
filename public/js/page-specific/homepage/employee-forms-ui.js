@@ -1,4 +1,10 @@
 const orgSelect3 = document.querySelector("#orgSelect3");
+const workPlaceSelect = document.querySelector("#workPlaceSelect");
+
+if (!orgSelect3 || !workPlaceSelect) {
+    console.warn("[employee-forms-ui] Missing expected form elements; script disabled.");
+} else {
+
 let organizations = [];
 
 function resetSelect(select, placeholder, multiple = false) {
@@ -14,16 +20,18 @@ function resetSelect(select, placeholder, multiple = false) {
     }
 }
 
-async function loadOrganizations2() {
+async function loadOrganizationsForType(type) {
     try {
         const res = await fetch("/register/get-org-list");
         const data = await res.json();
 
         if (!data.success) return;
 
-        organizations = data.organizations;
+        organizations = (data.organizations || []).filter((o) => o?.type === type);
 
         resetSelect(orgSelect3, "-- Select Organization --");
+
+        if (!organizations.length) return;
 
         organizations.forEach(org => {
             const opt = document.createElement("option");
@@ -38,5 +46,16 @@ async function loadOrganizations2() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    loadOrganizations2();
+    orgSelect3.disabled = true;
+    resetSelect(orgSelect3, "-- Select workplace first --");
 });
+
+workPlaceSelect.addEventListener("change", async (e) => {
+    const type = e.target.value;
+    orgSelect3.disabled = !type;
+    resetSelect(orgSelect3, "-- Select Organization --");
+    if (!type) return;
+    await loadOrganizationsForType(type);
+});
+
+}

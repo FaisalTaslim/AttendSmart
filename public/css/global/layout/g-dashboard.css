@@ -73,6 +73,27 @@ main section {
     border: 1px solid var(--border);
     box-shadow: 0 0 20px rgba(218, 17, 118, 0.25);
 }
+.setup-uploads {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+.upload-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.upload-card {
+    flex: 1 1 calc(50% - 1rem);
+    padding: 1rem;
+    box-sizing: border-box;
+    border: 1px solid var(--border);
+    border-radius: 0.8rem;
+}
+.upload-card:hover {cursor: pointer;}
 
 @media (max-width: 480px) {
     body {height: unset;}

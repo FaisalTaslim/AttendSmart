@@ -1,23 +1,10 @@
 let modelsLoaded = false;
 const faceInput = document.getElementById("face");
 
-async function loadFaceModels() {
-  const MODEL_URL = "/models";
-
-  await Promise.all([
-    faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
-    faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
-    faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
-  ]);
-
-  modelsLoaded = true;
-  console.log("✅ Face API models loaded");
-}
-
-
-loadFaceModels();
 
 faceInput.addEventListener("change", async () => {
+  await window.faceModelsReady;
+
   if (!modelsLoaded) {
     alert("Face recognition models are still loading. Please wait a moment.");
     return;
@@ -76,7 +63,7 @@ async function processFace(file) {
 
 
 async function uploadDescriptors(descriptors, failedCount) {
-  const res = await fetch("/dashboard/face-register", {
+  const res = await fetch("/face-api/face-register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

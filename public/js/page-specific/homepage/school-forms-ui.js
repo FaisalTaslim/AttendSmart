@@ -5,6 +5,10 @@ const MajorSelect2 = document.querySelector("#MajorSelect2");
 const MinorSelect2 = document.querySelector("#MinorSelect2");
 const OptionalSelect2 = document.querySelector("#OptionalSelect2");
 
+if (!orgSelect2 || !classSelect || !MajorSelect2 || !MinorSelect2 || !OptionalSelect2) {
+    console.warn("[school-forms-ui] Missing expected form elements; script disabled.");
+} else {
+
 let organizations = [];
 
 function resetSelect(select, placeholder, multiple = false) {
@@ -27,9 +31,11 @@ async function loadOrganizations2() {
 
         if (!data.success) return;
 
-        organizations = data.organizations;
+        organizations = (data.organizations || []).filter((o) => o?.type === "school");
 
         resetSelect(orgSelect2, "-- Select Organization --");
+
+        if (!organizations.length) return;
 
         organizations.forEach(org => {
             const opt = document.createElement("option");
@@ -132,3 +138,5 @@ orgSelect2.addEventListener("change", e => {
 classSelect.addEventListener("change", e => {
     floodSchoolSubjects(e.target.value);
 });
+
+}

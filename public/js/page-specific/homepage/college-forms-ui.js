@@ -4,15 +4,23 @@ const majorSelect1 = document.querySelector("#majorSelect1");
 const minorSelect1 = document.querySelector("#minorSelect1");
 const optionalSelect1 = document.querySelector("#optionalSelect1");
 
+if (!orgSelect || !departmentSelect || !majorSelect1 || !minorSelect1 || !optionalSelect1) {
+    console.warn("[college-forms-ui] Missing expected form elements; script disabled.");
+} else {
+
 let organizations = [];
 
 async function loadCollegeOrganizations() {
     try {
+        console.log("Fetching the orgs.");
         const res = await fetch("/register/get-org-list");
         const data = await res.json();
         if (!data.success) return;
 
-        organizations = data.organizations;
+        organizations = (data.organizations || []).filter((o) => o?.type === "college");
+        console.log("Organizations:", organizations);
+
+        orgSelect.innerHTML = "";
 
         const placeholder = document.createElement("option");
         placeholder.value = "";
@@ -20,6 +28,8 @@ async function loadCollegeOrganizations() {
         placeholder.disabled = true;
         placeholder.selected = true;
         orgSelect.appendChild(placeholder);
+
+        if (!organizations.length) return;
 
         organizations.forEach(org => {
             const option = document.createElement("option");
@@ -113,3 +123,5 @@ orgSelect.addEventListener("change", e => {
 departmentSelect.addEventListener("change", (e) => {
     floodCollegeSubjects(e.target.value);
 });
+
+}

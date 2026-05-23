@@ -17,10 +17,12 @@ app.use(setLocals);
 const mainPages = require('./routes/main');
 const register = require('./routes/registration');
 const authentication = require('./routes/auth');
+const faceApi = require('./routes/face-api');
 
 app.use('/register', register);
 app.use("/auth", authentication);
 app.use('/', mainPages);
+app.use('/face-api', faceApi);
 
 app.use('/student', require('./routes/face .../recognition/student/send-otp'));
 app.use('/student', require('./routes/face .../recognition/student/mark-attendance'));
