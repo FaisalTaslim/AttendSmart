@@ -4,4 +4,4 @@ const face = require('../controllers/face-api/index.js');
 
 router.post('/register-face', face.registerApi.registerFace);
 
-module.exports = router;
+module.exports = router; 

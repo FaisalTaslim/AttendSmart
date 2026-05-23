@@ -106,7 +106,7 @@ main section {
         box-sizing: border-box;
     }
     .card {
-        flex: 1 1 calc(50% - 1rem);
+        flex: 1 1 calc(100% - 1rem);
     }
     .headings-and-status {
         justify-content: unset;

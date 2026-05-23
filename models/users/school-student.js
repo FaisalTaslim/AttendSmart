@@ -70,6 +70,7 @@ const schoolStudentSchema = new Schema({
     termsCheck: {type: String, required: true, default: "not-accepted"},
     setup: {
         faceUploaded: {type: Boolean, default: false},
+        done: {type: Boolean, default: false}
     },
 
 }, { timestamps: true });

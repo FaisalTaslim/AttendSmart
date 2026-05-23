@@ -1,19 +1,17 @@
-let modelsLoaded = false;
 const faceInput = document.getElementById("face");
 
-
 faceInput.addEventListener("change", async () => {
+
   await window.faceModelsReady;
 
-  if (!modelsLoaded) {
-    alert("Face recognition models are still loading. Please wait a moment.");
-    return;
-  }
-
   if (!faceInput.files.length) return;
+
   const files = Array.from(faceInput.files);
 
-  const invalidFiles = files.filter(file => !file.type.startsWith("image/"));
+  const invalidFiles = files.filter(
+    file => !file.type.startsWith("image/")
+  );
+
   if (invalidFiles.length) {
     alert("Please upload valid image files only");
     return;
@@ -23,12 +21,15 @@ faceInput.addEventListener("change", async () => {
   let failedCount = 0;
 
   for (const file of files) {
+
     const descriptor = await processFace(file);
+
     if (descriptor) {
       descriptors.push(descriptor);
     } else {
       failedCount += 1;
     }
+
   }
 
   if (!descriptors.length) {
@@ -37,6 +38,7 @@ faceInput.addEventListener("change", async () => {
   }
 
   await uploadDescriptors(descriptors, failedCount);
+
 });
 
 
@@ -63,7 +65,7 @@ async function processFace(file) {
 
 
 async function uploadDescriptors(descriptors, failedCount) {
-  const res = await fetch("/face-api/face-register", {
+  const res = await fetch("/face-api/register-face", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

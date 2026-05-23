@@ -44,7 +44,10 @@ exports.registerFace = async (req, res) => {
                         $slice: -5
                     }
                 },
-                $set: { "setup.faceUploaded": true }
+                $set: { 
+                    "setup.faceUploaded": true,
+                    "setup.done": true
+                }
             }
         );
 

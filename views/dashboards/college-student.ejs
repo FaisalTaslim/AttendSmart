@@ -37,7 +37,7 @@
 
     <nav class="nav-bar">
       <a href="/" class="nav-links-property">Home</a>
-      <a href="/logout" class="nav-links-property">Logout</a>
+      <a href="/auth/logout" class="nav-links-property">Logout</a>
       <a href="/guidebook" class="nav-links-property">GuideBook</a>
     </nav>
 
@@ -101,8 +101,6 @@
         </p>
         <div class="upload-container">
           <div class="upload-card">
-
-
             <form id="faceForm" enctype="multipart/form-data">
               <input type="file" id="face" name="faceImage" accept="image/png, image/jpeg" multiple hidden>
 
@@ -116,12 +114,13 @@
             </form>
 
             <p class="tip">
-              <b>Note:</b> You can update your face data later from settings.
+              <b>Note:</b> You can upload 5 images at once.
             </p>
           </div>
         </div>
       </div>
       <%}%>
+    </section>
     </main>
     <footer>
         <div class="foot-content">
