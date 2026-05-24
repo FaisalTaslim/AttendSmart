@@ -1,78 +1,82 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const schoolStudentSchema = new Schema({
-    org: {type: String, required: true},
+const schoolStudentSchema = new Schema(
+  {
+    org: { type: String, required: true },
     code: {
-        type: String,
-        required: true,
-        unique: true
+      type: String,
+      required: true,
+      unique: true,
     },
     name: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true,
     },
     roll: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
-    standard: {type: String, required: true},
+    standard: { type: String, required: true },
     stream: {
-        type: String, 
-        required: true,
-        enum: ['neutral', 'science', 'commerce', 'arts']
+      type: String,
+      required: true,
+      enum: ["neutral", "science", "commerce", "arts"],
     },
-    contact: {type: String, required: true},
+    contact: { type: String, required: true },
     email: {
-        type: String,
-        required: true,
-        lowercase: true,
+      type: String,
+      required: true,
+      lowercase: true,
     },
     subjects: {
-        type: [String],
-        required: true
+      type: [String],
+      required: true,
     },
     faceData: {
-        descriptors: {
-            type: [[Number]],
-            default: []
-        }
+      descriptors: {
+        type: [[Number]],
+        default: [],
+      },
     },
     verification: {
-        status: {
-            type: String,
-            enum: ["pending", "verified"],
-            default: "pending"
-        },
-        token: {
-            type: String
-        },
-        expiresAt: {
-            type: Date
-        }
+      status: {
+        type: String,
+        enum: ["pending", "verified"],
+        default: "pending",
+      },
+      token: {
+        type: String,
+      },
+      expiresAt: {
+        type: Date,
+      },
     },
-    onLeave: {type: Boolean, required: true, default: false},
-    totalLeave: {type: Number, default: 0},
-    isDeleted: {type: Boolean, default: false},
-    isSuspended: {type: Boolean, default: false},
-    theme: {
-        settings: {
-            theme: {
-                type: String,
-                enum: ['dark', 'light'],
-                default: 'light',
-                _id: false,
-            },
-        }
+    onLeave: { type: Boolean, required: true, default: false },
+    totalLeave: { type: Number, default: 0 },
+    isDeleted: { type: Boolean, default: false },
+    isSuspended: { type: Boolean, default: false },
+    settings: {
+      theme: {
+        type: String,
+        enum: ["dark", "light"],
+        default: "light",
+        _id: false,
+      },
     },
-    password: {type: String, required: true},
-    termsCheck: {type: String, required: true, default: "not-accepted"},
+    password: { type: String, required: true },
+    termsCheck: { type: String, required: true, default: "not-accepted" },
     setup: {
-        faceUploaded: {type: Boolean, default: false},
-        done: {type: Boolean, default: false}
+      faceUploaded: { type: Boolean, default: false },
+      done: { type: Boolean, default: false },
     },
+  },
+  { timestamps: true },
+);
 
-}, { timestamps: true });
-
-module.exports = mongoose.model('schoolStudent', schoolStudentSchema, 'schoolStudent');
+module.exports = mongoose.model(
+  "schoolStudent",
+  schoolStudentSchema,
+  "schoolStudent",
+);

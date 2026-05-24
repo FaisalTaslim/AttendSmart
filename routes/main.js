@@ -10,7 +10,7 @@ router.get('/dashboard', main.dashboard.redirect);
 router.get('/dashboard/admin', dashboard.admin.display);
 router.get('/dashboard/school-student', dashboard.schoolStudent.display);
 router.get('/dashboard/college-student', dashboard.collegeStudent.display);
-router.get('/dashboard/employee', dashboard.employee.display);
-router.get('/dashboard/teacher', dashboard.teacher.display);
+router.get('/dashboard/employee/corporate', dashboard.employee.display);
+router.get('/dashboard/employee/teacher', dashboard.teacher.display);
 
 module.exports = router;

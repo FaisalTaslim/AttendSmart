@@ -1,8 +1,8 @@
-const transporter = require('../../config/mailer');
-const normalizeString  = require('../functions/normalize-strings');
+const transporter = require("../../config/mailer");
+const normalizeString = require("../functions/normalize-strings");
 
-async function sendRegistrationMail(to, userName, uniqueId, role = 'Student') {
-    const htmlContent = `
+async function sendRegistrationMail(to, userName, uniqueId, role = "Student") {
+  const htmlContent = `
     <div style="background:#f4f6f8;padding:40px 0;font-family:Arial,Helvetica,sans-serif;">
         <div style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:10px;
                     overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.08);">
@@ -18,12 +18,13 @@ async function sendRegistrationMail(to, userName, uniqueId, role = 'Student') {
             <!-- Body -->
             <div style="padding:30px;color:#374151;">
                 <h2 style="margin-top:0;font-size:20px;">
-                    ${role === 'Admin'
-            ? 'Organization Registered Successfully'
-            : role === 'Employee'
-                ? 'Welcome to AttendSmart'
-                : 'Registration Successful'
-        }
+                    ${
+                      role === "Admin"
+                        ? "Organization Registered Successfully"
+                        : role === "Employee"
+                          ? "Welcome to AttendSmart"
+                          : "Registration Successful"
+                    }
                 </h2>
 
                 <p style="font-size:15px;line-height:1.6;">
@@ -31,10 +32,11 @@ async function sendRegistrationMail(to, userName, uniqueId, role = 'Student') {
                 </p>
 
                 <p style="font-size:15px;line-height:1.6;">
-                    ${role === 'Admin'
-            ? 'Your organization has been successfully registered on AttendSmart.'
-            : 'Your account has been successfully created in our system.'
-        }
+                    ${
+                      role === "Admin"
+                        ? "Your organization has been successfully registered on AttendSmart."
+                        : "Your account has been successfully created in our system."
+                    }
                 </p>
 
                 <!-- Details -->
@@ -80,32 +82,37 @@ async function sendRegistrationMail(to, userName, uniqueId, role = 'Student') {
     </div>
     `;
 
-    try {
-        await transporter.sendMail({
-            from: `"AttendSmart" <${process.env.EMAIL_USER}>`,
-            to,
-            subject:
-                role === 'Admin'
-                    ? 'Organization Registered | AttendSmart'
-                    : 'Registration Successful | AttendSmart',
-            html: htmlContent
-        });
+  try {
+    await transporter.sendMail({
+      from: `"AttendSmart" <${process.env.EMAIL_USER}>`,
+      to,
+      subject:
+        role === "Admin"
+          ? "Organization Registered | AttendSmart"
+          : "Registration Successful | AttendSmart",
+      html: htmlContent,
+    });
 
-        console.log(`✅ ${role} registration email sent to ${to}`);
-    } catch (error) {
-        console.error('❌ Failed to send registration email:', error);
-    }
+    console.log(`✅ ${role} registration email sent to ${to}`);
+  } catch (error) {
+    console.error("❌ Failed to send registration email:", error);
+  }
 }
 
+async function sendVerificationEmail(
+  to,
+  token,
+  code,
+  role,
+  secondary_role = null,
+) {
+  const link = `http://localhost:3000/register/verify/${token}/${role}/${code}/${secondary_role}`;
 
-async function sendVerificationEmail(to, token, code, role, secondary_role = null) {
-    const link = `http://localhost:3000/register/verify/${token}/${role}/${code}/${secondary_role}`;
-
-    await transporter.sendMail({
-        from: `"AttendSmart" <${process.env.EMAIL_USER}>`,
-        to,
-        subject: "Verify your organization | AttendSmart",
-        html: `
+  await transporter.sendMail({
+    from: `"AttendSmart" <${process.env.EMAIL_USER}>`,
+    to,
+    subject: "Verify your organization | AttendSmart",
+    html: `
         <div style="background:#f4f6f8;padding:40px 0;font-family:Arial,Helvetica,sans-serif;">
             <div style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:10px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.08);">
                 
@@ -157,11 +164,11 @@ async function sendVerificationEmail(to, token, code, role, secondary_role = nul
 
             </div>
         </div>
-        `
-    });
+        `,
+  });
 }
 
 module.exports = {
-    sendRegistrationMail,
-    sendVerificationEmail
+  sendRegistrationMail,
+  sendVerificationEmail,
 };

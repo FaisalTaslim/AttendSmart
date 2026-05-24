@@ -139,8 +139,8 @@ exports.register_clg = async (req, res) => {
             email.toLowerCase().trim(),
             verificationToken,
             code,
-            "Student",
-            "collegeStudent"
+            "student",
+            "college-student"
         );
 
         return res.render("index", {
@@ -317,8 +317,8 @@ exports.register_sch = async (req, res) => {
             student.email,
             verificationToken,
             student.code,
-            "Student",
-            "schoolStudent"
+            "student",
+            "school-student"
         );
 
         return res.render("index", {

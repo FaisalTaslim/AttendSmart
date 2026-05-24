@@ -14,7 +14,7 @@ const employeeSummarySchema = new Schema({
     department: { type: String, required: true },
     shift: { type: String, default: null },
     month: {
-        type: Number,
+        type: String,
         required: true,
     },
     markedSessions: [
