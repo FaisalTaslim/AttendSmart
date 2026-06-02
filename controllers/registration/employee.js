@@ -10,7 +10,7 @@ const {
   sendVerificationEmail,
 } = require("../../utils/emails/send-registration-emails");
 const verifyDomains = require("../../utils/emails/verify-domains");
-const getMonthKey = require("../../utils/functions/get-month");
+const { getMonthKey } = require("../../utils/functions/time");
 
 exports.register_emp = async (req, res) => {
   const session = await mongoose.startSession();

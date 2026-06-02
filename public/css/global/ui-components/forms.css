@@ -74,7 +74,7 @@ button {
     border: none;
     cursor: pointer;
     background: var(--btn-primary-bg);
-    color: #fff;
+    color: var(--text-primary);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 button:hover {

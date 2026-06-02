@@ -9,7 +9,7 @@ const OrgLog = require("../../models/logs/logs");
 const generateCode = require("../../utils/functions/generate-code");
 const crypto = require("crypto");
 const { sendVerificationEmail } = require("../../utils/emails/send-registration-emails");
-const getMonthKey = require('../../utils/functions/get-month');
+const { getMonthKey } = require('../../utils/functions/time');
 const verifyDomains = require("../../utils/emails/verify-domains");
 
 exports.register_clg = async (req, res) => {

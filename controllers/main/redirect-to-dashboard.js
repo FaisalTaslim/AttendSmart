@@ -4,8 +4,8 @@ exports.redirect = (req, res) => {
         'admin': '/dashboard/admin',
         'school-student': '/dashboard/school-student',
         'college-student': '/dashboard/college-student',
-        'corporate': '/dashboard/employee',
-        'teacher': '/dashboard/teacher'
+        'corporate': '/dashboard/employee/corporate',
+        'teacher': '/dashboard/employee/teacher'
     }
 
     let targetRoute;

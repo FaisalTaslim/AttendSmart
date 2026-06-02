@@ -7,7 +7,6 @@ footer {
     align-items: center;
     margin-top: 1rem;
     border-radius: 0.8rem;
-    z-index: 9999;
 }
 footer > * {
     font-family: var(--font-body);

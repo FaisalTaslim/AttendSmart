@@ -71,7 +71,7 @@
       <div class="dashboard-navigation">
         <section class="card">
           <h3>Attendance</h3>
-          <p>Start Session</p>
+          <p id='start-session-btn'>Start Session</p>
           <p>Edit Attendance & Summary</p>
           <p>Download Reports</p>
         </section>
@@ -100,50 +100,82 @@
         </section>
       </div>
       <%if (!isSetupDone) { %>
-        <div class="setup-uploads">
+      <div class="setup-uploads">
         <h2>Complete the setup</h2>
         <p>
-          Read the <a href="/guideboook" class="link">guide</a> before you submit these csv files. Also feel free to reach out for <a href="/" class="link">support</a> if you need any help.
+          Read the <a href="/guideboook" class="link">guide</a> before you submit these csv files. Also feel free
+          to reach out for <a href="/" class="link">support</a> if you need any help.
         </p>
         <div class="upload-container">
           <% if (orgType !=='corporate' && isSubjectsUploaded===false) { %>
-      <div class="upload-card">
-        <form id="subjectsForm" enctype="multipart/form-data">
-          <input type="file" id="subjectsCsv" name="subjectsCsv" accept=".csv" hidden>
+          <div class="upload-card">
+            <form id="subjectsForm" enctype="multipart/form-data">
+              <input type="file" id="subjectsCsv" name="subjectsCsv" accept=".csv" hidden>
 
-          <label for="subjectsCsv" class="upload-label">
-            <div class="upload-content">
-              <div class="upload-icon"><i class="fa-solid fa-file-arrow-up"></i></div>
-              <p class="upload-title">Upload the subjects CSV file</p>
-              <p class="upload-subtitle">Only .csv files are supported</p>
+              <label for="subjectsCsv" class="upload-label">
+                <div class="upload-content">
+                  <div class="upload-icon"><i class="fa-solid fa-file-arrow-up"></i></div>
+                  <p class="upload-title">Upload the subjects CSV file</p>
+                  <p class="upload-subtitle">Only .csv files are supported</p>
+                </div>
+              </label>
+            </form>
+          </div>
+          <% } %>
+
+          <% if (isScheduleUploaded===false) { %>
+          <div class="upload-card">
+            <form id="scheduleForm" enctype="multipart/form-data">
+              <input type="file" id="scheduleCsv" name="scheduleCsv" accept=".csv" hidden>
+
+              <label for="scheduleCsv" class="upload-label">
+                <div class="upload-content">
+                  <div class="upload-icon"><i class="fa-solid fa-calendar-plus"></i>
+                  </div>
+                  <p class="upload-title">Upload the schedule CSV file</p>
+                  <p class="upload-subtitle">Only .csv files are supported</p>
+                </div>
+              </label>
+            </form>
+          </div>
+          <% } %>
+        </div>
+        <p class="tip">
+          <b>Note:</b> You can later make changes in subjects and schedule list through settings
+        </p>
+      </div>
+      <% } %>
+    </section>
+    <section class="dashboard-contents">
+      <div class="overlay">
+        <div class="session-fallback">
+          <div class="fallback-header">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <h3>Outside Scheduled Session Time</h3>
+          </div>
+          <p class="fallback-text">
+            This attendance session is being started outside the configured schedule window.
+          </p>
+          <div class="session-details">
+            <div class="detail-row">
+              <span>Scheduled</span>
+              <b>8:00 AM – 9:00 AM</b>
             </div>
-          </label>
-        </form>
-      </div>
-      <% } %>
-
-      <% if (isScheduleUploaded===false) { %>
-      <div class="upload-card">
-        <form id="scheduleForm" enctype="multipart/form-data">
-          <input type="file" id="scheduleCsv" name="scheduleCsv" accept=".csv" hidden>
-
-          <label for="scheduleCsv" class="upload-label">
-            <div class="upload-content">
-              <div class="upload-icon"><i class="fa-solid fa-calendar-plus"></i>
-              </div>
-              <p class="upload-title">Upload the schedule CSV file</p>
-              <p class="upload-subtitle">Only .csv files are supported</p>
+            <div class="detail-row">
+              <span>Current Time</span>
+              <b>9:27 AM</b>
             </div>
-          </label>
-        </form>
+            <div class="detail-row">
+              <span>Shift</span>
+              <b>Day</b>
+            </div>
+          </div>
+          <div class="fallback-actions">
+            <button class="cancel-btn" id="fallback-cancel">Cancel</button>
+            <button class="continue-btn" id="continue-btn">Continue Anyway</button>
+          </div>
+        </div>
       </div>
-      <% } %>
-      </div>
-      <p class="tip">
-        <b>Note:</b> You can later make changes in subjects and schedule list through settings
-      </p>
-      </div>
-      <% } %>
     </section>
   </main>
   <footer>
@@ -185,7 +217,9 @@
     <p class="copyright">&copy2026 AttendSmart. All Rights Reserved.</p>
   </footer>
 
+  <script src="/js/page-specific/dashboard/admin/remove-fallback-container.js"></script>
   <script src="/js/page-specific/dashboard/admin/upload-csv.js"></script>
+  <script src="/js/page-specific/dashboard/admin/employee-session.js"></script>
 
 </body>
 

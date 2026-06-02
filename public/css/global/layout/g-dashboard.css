@@ -95,6 +95,7 @@ main section {
 }
 .upload-card:hover {cursor: pointer;}
 
+
 @media (max-width: 480px) {
     body {height: unset;}
     html {font-size: 15px}

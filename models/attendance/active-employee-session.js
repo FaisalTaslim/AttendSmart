@@ -1,31 +1,33 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const employeeSessionSchema = new Schema({
+const activeSession = new Schema({
+    org: {
+        type: String,
+        required: true
+    },
     sessionCode: {
         type: String,
         required: true,
         unique: true,
     },
-    orgCode: {
-        type: String,
-        required: true
-    },
     instigator: {
         type: String,
-        required: true,
+        required: true
     },
     shift: {
         type: String,
         required: true,
         enum: ['day', 'night']
     },
-    status: {
-        type: String,
-        enum: ['active', 'closed'],
-        default: 'active'
-    },
+    expiresAt: {
+        type: Date,
+        required: true,
+        index: { expires: 0 }
+    }
 
 }, { timestamps: true });
 
-module.exports = mongoose.model('employeeSessions', employeeSessionSchema, 'employeeSessions');
+module.exports = mongoose.model(
+    'activeEmployeeSessions', activeSession, 'activeEmployeeSessions'
+);
