@@ -1,6 +1,4 @@
-
 const input = document.getElementById("subjectsCsv");
-console.log("schedule input:", document.getElementById("scheduleCsv"));
 
 document.addEventListener("DOMContentLoaded", () => {
 

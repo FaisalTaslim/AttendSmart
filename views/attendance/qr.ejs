@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attendance QR</title>
+  <link rel="stylesheet" href="/css/page-specific/attendance/qr.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+</head>
+
+<body>
+
+  <div class="card">
+    <div class="header">
+      <div class="header-left">
+        <div class="label">Attendance Session</div>
+        <div class="subject"><%= subject %></div>
+        <div class="dept"><%= dept %></div>
+      </div>
+      <div class="badge">
+        <span class="dot"></span>
+        Live
+      </div>
+    </div>
+
+    <div class="qr-wrap">
+      <div class="qr-frame">
+        <div class="corner-br"></div>
+        <div class="corner-bl"></div>
+        <div id="qrcode"></div>
+      </div>
+    </div>
+
+    <div class="meta">
+      <div class="meta-item">
+        <div class="key">Instructor</div>
+        <div class="val"><%= instructor %></div>
+      </div>
+      <div class="meta-item">
+        <div class="key">Joined</div>
+        <div class="val" id="joined-count">0 students</div>
+      </div>
+      <div class="meta-item">
+        <div class="key">Date</div>
+        <div class="val" id="date-val">—</div>
+      </div>
+      <div class="meta-item">
+        <div class="key">Room</div>
+        <div class="val"><%= dept %></div>
+      </div>
+    </div>
+
+    <div class="timer-row" style="display: block;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span class="timer-label">Session expires in</span>
+        <span class="timer-value" id="timer">15:00</span>
+      </div>
+      <div class="timer-bar-wrap">
+        <div class="timer-bar" id="timer-bar" style="width:100%;"></div>
+      </div>
+    </div>
+
+    <div class="code-row">
+      <div class="session-code">Code: <span id="code-display">—</span></div>
+      <button class="copy-btn" id="copy-btn">Copy</button>
+    </div>
+
+    <div class="footer-note">Scan with the student app &bull; Valid for one scan per student</div>
+  </div>
+  <script>
+    window.__SESSION_DATA__ = <%- JSON.stringify({
+    sessionCode: sessionCode || "",
+    sessionMins: sessionMins || 15,
+    joinedCount: 0,
+    instructor: instructor || "",
+    subject: subject || "",
+    dept: dept || "",
+  }) %>;
+  </script>
+  <script src="/js/page-specific/qr.js"></script>
+</body>
+
+</html>

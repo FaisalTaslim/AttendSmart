@@ -6,7 +6,7 @@ exports.display = async (req, res) => {
     const isSetupDone = user.setup.done;
     const isFaceUploaded = user.setup.faceUploaded;
 
-    res.render('dashboards/college-student',
+    res.render('dashboards/corporate',
         {
             popupMessage: null,
             popupType: null,

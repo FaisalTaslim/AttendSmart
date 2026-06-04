@@ -1,4 +1,4 @@
-const Session = require('../../../../models/logs/student-session');
+
 const Summary = require('../../../../models/statistics/student-summary');
 const AttendanceOtp = require('../../../../models/attendance/attendanceOtp');
 

@@ -17,15 +17,6 @@ const employeeSummarySchema = new Schema({
         type: String,
         required: true,
     },
-    markedSessions: [
-        {
-            sessionCode: { type: String },
-            date: {type: String},
-            checkIn: Date,
-            checkout: Date,
-            isMarked: Boolean,
-        }
-    ],
     total: { type: Number, default: 0 },
     attended: { type: Number, default: 0 },
     percentage: { type: Number, default: 0 },

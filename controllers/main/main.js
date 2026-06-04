@@ -1,3 +1,5 @@
+const resolveUserModel = require('../../utils/functions/resolve-user-models');
+
 exports.homepage = async (req, res) => {
     res.render('index', {
         popupMessage: null,
@@ -7,4 +9,40 @@ exports.homepage = async (req, res) => {
 
 exports.guidebook = async (req, res) => {
     res.render('guidebook')
+}
+
+exports.captureAttendanceWindow = async (req, res) => {
+    const role = req.session.user.role;
+    const isUser = req.query.for;
+    const userModel = resolveUserModel(role);
+    const user = await userModel.findOne({code: req.session.user.code});
+    const userType = req.query.for;
+
+    res.render('dashboards/capture-attendance', 
+        {
+            popupMessage: null,
+            popupType: null,
+            userType,
+            isUser,
+        }
+    );
+}
+
+exports.qrPage = async (req, res) => {
+  const instigator = req.query.instigator;
+  const subject = req.query.subject;
+  const dept = req.query.dept;
+  const sessionCode = req.query['session-code'];
+
+    res.render('attendance/qr', {
+        instructor: instigator,
+        subject,
+        dept,
+        sessionCode,
+        sessionMins: 15,
+    });
+}
+
+exports.scanner = async(req, res) => {
+    res.render('attendance/scanner');
 }

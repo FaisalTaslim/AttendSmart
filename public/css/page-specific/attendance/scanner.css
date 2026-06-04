@@ -1,0 +1,33 @@
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: sans-serif;
+  background: #f5f5f5;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 100vh;
+}
+
+.scanner-container {
+  width: min(500px, 95vw);
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+}
+
+#reader {
+  width: 100%;
+}
+
+.status {
+  text-align: center;
+  margin-top: 15px;
+}

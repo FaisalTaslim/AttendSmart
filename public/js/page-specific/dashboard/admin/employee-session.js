@@ -3,6 +3,27 @@ const continueBtn = document.getElementById('continue-btn');
 const contentsContainer2 = document.getElementsByClassName('dashboard-contents')[0];
 const overlay2 = document.getElementsByClassName('overlay')[0];
 
+async function startSessionAndRedirect(override = false) {
+    const sessionRes = await fetch(`/dashboard/admin/start-employee-session${override ? '?override=true' : ''}`);
+    
+    let sessionData;
+    try {
+        sessionData = await sessionRes.json();
+    } catch (e) {
+        console.error("Invalid JSON response");
+        alert("Server error (invalid response)");
+        return;
+    }
+
+    if (!sessionRes.ok || sessionData.status === "error") {
+        console.error(sessionData);
+        alert(sessionData.message || "Something went wrong");
+        return;
+    }
+
+    window.location.href = '/dashboard/admin/capture-attendance?for=employee&display-ui=false';
+}
+
 getBtn.addEventListener('click', async (e) => {
     e.preventDefault();
     console.log("button clicked!");
@@ -11,21 +32,23 @@ getBtn.addEventListener('click', async (e) => {
         const res = await fetch('/dashboard/admin/check-employee-session');
         const data = await res.json();
 
-        if (data.status === 'active' || (data.status === 'not-active' && data.withinWindow === true)) {
-            const res = await fetch('/dashboard/admin/start-employee-session');
-            const data = await res.json();
-
-            if (data.status === 'ok') {
-                alert('Session Active! Proceed with the attendance.');
-            } else {
-                alert('Something went wrong.');
-            }
+        if (data.status === 'active') {
+            window.location.href = '/dashboard/admin/capture-attendance?for=employee&display-ui=false';
         }
-        else if (data.status === 'not-active' && data.withinWindow === false) {
-            contentsContainer2.style.display = 'flex',
+        else if (data.status === 'not-active' && data.withinWindow === true) {
+            await startSessionAndRedirect(false);
+        }
+        else if (data.status === 'not-active' && data.withinWindow === false && data.proceed === true) {
+            document.getElementById('scheduled-time').innerText = data.scheduleTime;
+            document.getElementById('current-time').innerText = data.currentTime;
+            document.getElementById('shift-type').innerText = data.shift;
+
+            contentsContainer2.style.display = 'flex';
             overlay2.style.display = 'flex';
         }
-
+        else {
+            alert(`No active session available. Check back during your shift window.`);
+        }
     } catch (err) {
         console.error(err);
         alert('Something went wrong.');
@@ -34,15 +57,11 @@ getBtn.addEventListener('click', async (e) => {
 
 continueBtn.addEventListener('click', async () => {
     try {
-        const res = await fetch('/dashboard/admin/start-employee-session?override=true');
-        const data = await res.json();
+        contentsContainer2.style.display = 'none';
+        overlay2.style.display = 'none';
 
-        if (data.status === 'ok') {
-            alert('Session Active! Proceed with the attendance.');
-        } else {
-            alert('Something went wrong.');
-        }
+        await startSessionAndRedirect(true);
     } catch {
         alert('Something went wrong.');
     }
-})
+});

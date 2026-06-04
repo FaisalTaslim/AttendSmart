@@ -1,4 +1,5 @@
 const Org = require('../../models/users/organization')
+const generateCode = require('../../utils/functions/generate-code');
 
 exports.orgList = async (req, res) => {
     try {
@@ -23,5 +24,23 @@ exports.orgList = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ success: false });
+    }
+};
+
+exports.sessionKey = async (req, res) => {
+    try {
+        const sessionKey = generateCode(8, "alphanumeric");
+
+        res.json({
+            success: true,
+            sessionKey
+        });
+
+    } catch (err) {
+        console.error(err);
+
+        res.status(500).json({
+            success: false
+        });
     }
 };

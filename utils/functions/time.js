@@ -17,9 +17,14 @@ function timeToMinutes(h, m) {
   return h * 60 + m;
 }
 
+function formatTime(h, m) {
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+}
+
 module.exports = {
   getMonthKey,
   fullweek,
   fullTime,
-  timeToMinutes
+  timeToMinutes,
+  formatTime,
 };

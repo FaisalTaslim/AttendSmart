@@ -1,0 +1,43 @@
+.overlay,
+.dashboard-contents {
+    display: none;
+}
+.start-session-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    box-sizing: border-box;
+    border-radius: 0.8rem;
+    width: min(100%, 760px);
+    max-height: calc(100dvh - 2rem);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.attendance-session-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+.fa-x {
+    border: 2px solid var(--border);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+.outer-group label,
+.session-note {
+    font-weight: var(--fw-bold);
+}
+.start-session-form fieldset,
+.start-session-form form,
+.start-session-form .outer-group {
+    min-width: 0;
+    max-width: 100%;
+}
+form {
+    padding: 1rem;
+    box-sizing: border-box;
+}
+#close-session:hover {cursor:pointer}
