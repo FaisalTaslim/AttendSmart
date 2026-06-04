@@ -44,5 +44,7 @@ exports.qrPage = async (req, res) => {
 }
 
 exports.scanner = async(req, res) => {
-    res.render('attendance/scanner');
+    const role = req.session.user.role;
+
+    res.render('attendance/scanner', {role});
 }

@@ -90,7 +90,7 @@ exports.startStudentSession = async (req, res) => {
       "session-code": sessionCode,
     });
 
-    return res.redirect(`/qr?${query.toString()}`);
+    return res.redirect(`/dashboard/employee/teacher/qr?${query.toString()}`);
   } catch (err) {
     console.error("startStudentSession transaction failed:", err);
     return renderTeacherDashboard(

@@ -5,7 +5,7 @@ const JOINED_COUNT = Number(sessionData.joinedCount || 0);
 
 async function refreshQR() {
   try {
-    const res = await fetch("/qr/generate-session-key");
+    const res = await fetch("/dashboard/employee/teacher/qr/generate-session-key");
     const data = await res.json();
 
     if (!data.success) return;

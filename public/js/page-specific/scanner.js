@@ -12,7 +12,7 @@ async function onScanSuccess(decodedText) {
   try {
     await html5QrCode.stop();
 
-    const res = await fetch("/dashboard/student/process-qr", {
+    const res = await fetch(`/dashboard/student/process-qr`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

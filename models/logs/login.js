@@ -18,7 +18,7 @@ const loginLog = new Schema({
     name: {type: String, required: true},
     role: {
         type: String,
-        enum: ['admin', 'employee', 'student', 'employee'],
+        enum: ['admin', 'employee', 'college-student', 'school-student', 'employee', 'teacher'],
         required: true
     },
     message: {type: String, required: true},

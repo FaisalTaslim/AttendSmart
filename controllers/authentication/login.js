@@ -132,7 +132,11 @@ exports.login = async (req, res) => {
             );
         }
 
-        return res.redirect(`/dashboard/${userRole}`);
+        if (userRole === 'admin') {
+            res.redirect('/dashboard/admin');
+        } else {
+            res.redirect(`/dashboard/student/${userRole}`)
+        }
 
     } catch (err) {
         console.error("Login Error:", err);

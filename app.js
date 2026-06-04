@@ -20,12 +20,14 @@ const authentication = require('./routes/auth');
 const faceApi = require('./routes/face-api');
 const admin = require('./routes/dashboard/admin');
 const teacher = require('./routes/dashboard/teacher');
+const student = require('./routes/dashboard/student');
 
 app.use('/', mainPages);
 app.use('/register', register);
 app.use("/auth", authentication);
 app.use('/face-api', faceApi);
 app.use('/dashboard/admin', admin);
+app.use('/dashboard/student', student);
 app.use('/dashboard/employee/teacher', teacher);
 
 app.use('/student', require('./routes/face .../recognition/student/send-otp'));
