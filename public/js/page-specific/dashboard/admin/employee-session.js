@@ -21,7 +21,7 @@ async function startSessionAndRedirect(override = false) {
         return;
     }
 
-    window.location.href = '/dashboard/admin/capture-attendance?for=employee&display-ui=false';
+    window.location.href = '/dashboard/admin/capture-attendance?for=employee';
 }
 
 getBtn.addEventListener('click', async (e) => {
@@ -33,7 +33,7 @@ getBtn.addEventListener('click', async (e) => {
         const data = await res.json();
 
         if (data.status === 'active') {
-            window.location.href = '/dashboard/admin/capture-attendance?for=employee&display-ui=false';
+            window.location.href = '/dashboard/admin/capture-attendance?for=employee';
         }
         else if (data.status === 'not-active' && data.withinWindow === true) {
             await startSessionAndRedirect(false);

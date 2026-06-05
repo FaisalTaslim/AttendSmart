@@ -26,6 +26,7 @@ async function onScanSuccess(decodedText) {
 
     if (data.success) {
       statusEl.innerText = "Attendance session joined successfully";
+      window.location.href = '/dashboard/admin/capture-attendance?for=student';
     } else {
       statusEl.innerText = data.message || "Failed";
       isProcessing = false;
@@ -41,9 +42,7 @@ async function onScanSuccess(decodedText) {
     }
   } catch (err) {
     console.error(err);
-
     statusEl.innerText = "Server error";
-
     isProcessing = false;
 
     await html5QrCode.start(

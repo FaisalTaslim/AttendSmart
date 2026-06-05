@@ -16,13 +16,11 @@ exports.captureAttendanceWindow = async (req, res) => {
     const isUser = req.query.for;
     const userModel = resolveUserModel(role);
     const user = await userModel.findOne({code: req.session.user.code});
-    const userType = req.query.for;
 
     res.render('dashboards/capture-attendance', 
         {
             popupMessage: null,
             popupType: null,
-            userType,
             isUser,
         }
     );

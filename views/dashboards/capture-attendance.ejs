@@ -1,182 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capture Attendance</title>
+    <link rel="stylesheet" href="/css/global/theme/palette-II.css" />
+    <link rel="stylesheet" href="/css/global/ui-components/font-family.css" />
+    <link rel="stylesheet" href="/css/global/ui-components/font-size.css" />
+    <link rel="stylesheet" href="/css/global/ui-components/font-family.css" />
+    <link rel="stylesheet" href="/css/global/ui-components/scrollbar.css" />
+    <link rel="stylesheet" href="/css/global/layout/main.css" />
+    <link rel="stylesheet" href="/css/global/layout/header.css" />
+    <link rel="stylesheet" href="/css/global/layout/footer.css" />
+    <link rel="stylesheet" href="/css/global/ui-components/popup.css" />
+    <link rel="stylesheet" href="/css/global/ui-components/forms.css" />
+    <link rel="stylesheet" href="/css/global/layout/g-dashboard.css" />
+    <link
+      rel="stylesheet"
+      href="/css/page-specific/dashboard-2/capture-attendance.css"
+    />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Capture Attendance</title>
-  <link rel="stylesheet" href="/css/global/theme/palette-II.css" />
-  <link rel="stylesheet" href="/css/global/ui-components/font-family.css" />
-  <link rel="stylesheet" href="/css/global/ui-components/font-size.css" />
-  <link rel="stylesheet" href="/css/global/ui-components/font-family.css" />
-  <link rel="stylesheet" href="/css/global/ui-components/scrollbar.css" />
-  <link rel="stylesheet" href="/css/global/layout/main.css" />
-  <link rel="stylesheet" href="/css/global/layout/header.css" />
-  <link rel="stylesheet" href="/css/global/layout/footer.css" />
-  <link rel="stylesheet" href="/css/global/ui-components/popup.css" />
-  <link rel="stylesheet" href="/css/global/ui-components/forms.css">
-  <link rel="stylesheet" href="/css/global/layout/g-dashboard.css" />
-  <link rel="stylesheet" href="/css/page-specific/dashboard-2/capture-attendance.css" />
+    <script
+      src="https://kit.fontawesome.com/f75c66b724.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
 
-  <script src="https://kit.fontawesome.com/f75c66b724.js" crossorigin="anonymous"></script>
-</head>
-
-<body>
-  <header>
-    <div class="logo">
-      <h1 class="mobile-hidden">AttendSmart</h1>
-    </div>
-
-    <nav class="nav-bar">
-      <a href="/" class="nav-links-property">Home</a>
-      <a href="/guidebook" class="nav-links-property">GuideBook</a>
-      <a href="/logout" class="nav-links-property">Logout</a>
-    </nav>
-
-    <nav class="mobile-nav-container">
-      <div class="nav-select">
-        <select id="mobile-nav">
-          <option value="" disabled selected>-- Navigate --</option>
-          <option value="/">Home</option>
-          <option value="/guidebook">GuideBook</option>
-          <option value="/auth/logout">Logout</option>
-        </select>
+  <body>
+    <header>
+      <div class="logo">
+        <h1 class="mobile-hidden">AttendSmart</h1>
       </div>
-    </nav>
-  </header>
 
-  <main>
-    <section class="user-dashboard capture-dashboard">
-      <div class="headings-and-status">
-        <div id="headings">
-          <div class="heading-texts">
-            <h3>Attendance capture</h3>
-            <h2>Live classroom capture, tuned for fast attendance checks</h2>
-            <p>
-              Start the camera, keep the frame steady, and watch recognition
-              metrics update in real time.
-            </p>
-          </div>
-          <div id="status" class="capture-status-stack" aria-live="polite">
-            <p class="status-chip status-chip-live">
-              <span id="status-dot" class="dot dot-off" aria-hidden="true"></span>
-              <span id="camera-status-text">Camera idle</span>
-            </p>
-            <p class="status-chip status-chip-time">
-              <i class="fa-regular fa-clock" aria-hidden="true"></i>
-              <span id="live-time">--:--:--</span>
-            </p>
-          </div>
+      <nav class="nav-bar">
+        <a href="/" class="nav-links-property">Home</a>
+        <a href="/guidebook" class="nav-links-property">GuideBook</a>
+        <a href="/logout" class="nav-links-property">Logout</a>
+      </nav>
+
+      <nav class="mobile-nav-container">
+        <div class="nav-select">
+          <select id="mobile-nav">
+            <option value="" disabled selected>-- Navigate --</option>
+            <option value="/">Home</option>
+            <option value="/guidebook">GuideBook</option>
+            <option value="/auth/logout">Logout</option>
+          </select>
         </div>
-      </div>
+      </nav>
+    </header>
 
-      <div class="capture-workbench">
-        <article class="capture-panel">
-          <div class="panel-head">
-            <div>
-              <p class="panel-kicker">Camera feed</p>
-              <h3>Live camera preview</h3>
+    <main>
+      <section class="user-dashboard capture-dashboard">
+        <div class="headings-and-status">
+          <div id="headings">
+            <div class="heading-texts">
+              <h3>Attendance capture</h3>
+              <h2>Live classroom capture, tuned for fast attendance checks</h2>
+              <p>
+                Start the camera, keep the frame steady, and watch recognition
+                metrics update in real time.
+              </p>
             </div>
-            <p class="panel-note">Keep faces centered and evenly lit</p>
-          </div>
-
-          <div class="video-stage">
-            <video id="live-camera" autoplay muted playsinline></video>
-            <div class="video-overlay" aria-hidden="true">
-              <div class="scan-frame"></div>
-              <p id="video-hint">Click "Start Camera" to begin preview.</p>
+            <div id="status" class="capture-status-stack" aria-live="polite">
+              <p class="status-chip status-chip-live">
+                <span
+                  id="status-dot"
+                  class="dot dot-off"
+                  aria-hidden="true"
+                ></span>
+                <span id="camera-status-text">Camera idle</span>
+              </p>
+              <p class="status-chip status-chip-time">
+                <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                <span id="live-time">--:--:--</span>
+              </p>
             </div>
           </div>
+        </div>
 
-          <div class="camera-control-buttons">
-            <button id="start-camera-btn" type="button" class="btn btn-primary">
-              <i class="fa-solid fa-video"></i> Start Camera
-            </button>
-            <button id="stop-camera-btn" type="button" class="btn btn-secondary" disabled>
-              <i class="fa-solid fa-video-slash"></i> Stop Camera
-            </button>
-          </div>
-
-          <div class="camera-capture-tips">
-            <p>
-              <i class="fa-solid fa-circle-info"></i> Avoid crowding too many
-              faces in one frame.
-            </p>
-            <p>
-              <i class="fa-solid fa-wand-magic-sparkles"></i> Strong, even
-              lighting improves recognition.
-            </p>
-          </div>
-        </article>
-      </div>
-    </section>
-    <section class="dashboard-contents">
-      <% if (isUser === 'student') { %>
-      <div class="overlay">
-        <div class="session-key-container">
-
-          <div class="session-key-header">
-            <i class="fa-solid fa-key"></i>
-            <h3>Verify Attendance Session</h3>
-          </div>
-
-          <p class="session-key-info">
-            You have successfully scanned the classroom QR code.
-            Enter the session key shown below to continue with attendance verification.
-          </p>
-
-          <div class="session-key-display">
-            <span>Your Session Key</span>
-            <div class="key-box" id="session-key-display">
-              A7K9P2
+        <div class="capture-workbench">
+          <article class="capture-panel">
+            <div class="panel-head">
+              <div>
+                <p class="panel-kicker">Camera feed</p>
+                <h3>Live camera preview</h3>
+              </div>
+              <p class="panel-note">Keep faces centered and evenly lit</p>
             </div>
+
+            <div class="video-stage">
+              <video id="live-camera" autoplay muted playsinline></video>
+              <div class="video-overlay" aria-hidden="true">
+                <div class="scan-frame"></div>
+                <p id="video-hint">Click "Start Camera" to begin preview.</p>
+              </div>
+            </div>
+
+            <div class="camera-control-buttons">
+              <button
+                id="start-camera-btn"
+                type="button"
+                class="btn btn-primary"
+              >
+                <i class="fa-solid fa-video"></i> Start Camera
+              </button>
+              <button
+                id="stop-camera-btn"
+                type="button"
+                class="btn btn-secondary"
+                disabled
+              >
+                <i class="fa-solid fa-video-slash"></i> Stop Camera
+              </button>
+            </div>
+
+            <div class="camera-capture-tips">
+              <p>
+                <i class="fa-solid fa-circle-info"></i> Avoid crowding too many
+                faces in one frame.
+              </p>
+              <p>
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Strong, even
+                lighting improves recognition.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+      <section class="dashboard-contents"></section>
+    </main>
+
+    <footer>
+      <div class="foot-content">
+        <div class="foot1">
+          <div class="useful-links">
+            <p><strong>Useful-links</strong></p>
+            <a href="/dashboard/employee/teacher" class="links foot-links"
+              >Teacher Dashboard</a
+            >
+            <a href="/guidebook" class="links foot-links">GuideBook</a>
           </div>
-
-          <form class="session-key-form">
-            <label for="session-key-input">
-              Enter Session Key
-            </label>
-
-            <input type="text" id="session-key-input" placeholder="Enter session key" autocomplete="off">
-
-            <button type="submit" class="verify-btn">
-              Verify & Continue
-            </button>
-          </form>
+          <div class="legal">
+            <p><strong>Legal</strong></p>
+            <a href="#" class="links foot-links">Terms & conditions</a>
+            <a href="#" class="links foot-links">Privacy Policy</a>
+          </div>
+        </div>
+        <div class="foot2">
+          <div class="contacts">
+            <p><strong>Capture Tips</strong></p>
+            <p>Use front camera only when rear camera framing is unstable.</p>
+            <p>Check unknown faces before final attendance submit.</p>
+          </div>
         </div>
       </div>
-      <%}%>
-    </section>
-  </main>
+    </footer>
 
-  <footer>
-    <div class="foot-content">
-      <div class="foot1">
-        <div class="useful-links">
-          <p><strong>Useful-links</strong></p>
-          <a href="/dashboard/employee/teacher" class="links foot-links">Teacher Dashboard</a>
-          <a href="/guidebook" class="links foot-links">GuideBook</a>
-        </div>
-        <div class="legal">
-          <p><strong>Legal</strong></p>
-          <a href="#" class="links foot-links">Terms & conditions</a>
-          <a href="#" class="links foot-links">Privacy Policy</a>
-        </div>
-      </div>
-      <div class="foot2">
-        <div class="contacts">
-          <p><strong>Capture Tips</strong></p>
-          <p>Use front camera only when rear camera framing is unstable.</p>
-          <p>Check unknown faces before final attendance submit.</p>
-        </div>
-      </div>
-    </div>
-  </footer>
+    <script src="/js/page-specific/dashboard/capture-attendance/capture-attendance.js"></script>
+    <script src="/js/global/UI/rearrange-footer.js"></script>
+    <script src="/js/face-api/core/config.js"></script>
+    <script src="/js/face-api/face-api.min.js"></script>
+    <script src="/js/face-api/core/load-models.js"></script>
+    <script>
+      async function test() {
+        await window.faceModelsReady;
 
-  <script src="/js/global/layout/mobile-nav.js"></script>
-  <script src="/js/global/UI/rearrange-footer.js"></script>
-  <script src="/js/face-api/face-api.min.js"></script>
-  <script src="/js/face-api/recognition/load-models.js"></script>
-</body>
+        setInterval(async () => {
+          const detections = await faceapi
+            .detectAllFaces(video, new faceapi.SsdMobilenetv1Options())
+            .withFaceLandmarks()
+            .withFaceDescriptors();
 
+          if (detections.length > 0) {
+            console.log("Descriptor length:", detections[0].descriptor.length);
+          }
+        }, 1000);
+      }
+      test();
+    </script>
+  </body>
 </html>

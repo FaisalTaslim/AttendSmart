@@ -2,8 +2,8 @@ exports.redirect = (req, res) => {
 
     const redirect = {
         'admin': '/dashboard/admin',
-        'school-student': '/dashboard/school-student',
-        'college-student': '/dashboard/college-student',
+        'school-student': '/dashboard/student/school-student',
+        'college-student': '/dashboard/student/college-student',
         'corporate': '/dashboard/employee/corporate',
         'teacher': '/dashboard/employee/teacher'
     }
