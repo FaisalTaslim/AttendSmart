@@ -71,6 +71,7 @@ async function markAttendance(userCode) {
           userCode,
           dept: window.capturePageData.dept,
           subject: window.capturePageData.subject,
+          key: window.capturePageData.key,
         }),
       },
     );

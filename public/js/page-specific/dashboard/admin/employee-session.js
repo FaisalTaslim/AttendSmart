@@ -33,7 +33,7 @@ getBtn.addEventListener('click', async (e) => {
         const data = await res.json();
 
         if (data.status === 'active') {
-            window.location.href = `/dashboard/admin/capture-attendance?for=employee&session=${data.sessionCode}`;
+            window.location.href = `/dashboard/admin/capture-attendance?for=employee&type=check-in&session=${data.sessionCode}`;
         }
         else if (data.status === 'not-active' && data.withinWindow === true) {
             await startSessionAndRedirect(false);

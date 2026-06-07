@@ -41,6 +41,7 @@ async function onScanSuccess(decodedText) {
         for: "student",
         type,
         session: qrData.sessionCode,
+        key: qrData.sessionKey,
       });
 
       if (modifySubject !== null) {
