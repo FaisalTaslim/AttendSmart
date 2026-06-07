@@ -79,11 +79,6 @@ exports.processQr = async (req, res) => {
       },
     );
 
-    req.session.attendance = {
-      sessionCode: parsed.sessionCode,
-      sessionKey: parsed.sessionKey,
-    };
-
     return res.json({
       success: true,
     });

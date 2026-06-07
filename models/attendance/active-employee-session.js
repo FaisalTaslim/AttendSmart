@@ -20,6 +20,11 @@ const activeSession = new Schema({
         required: true,
         enum: ['day', 'night']
     },
+    type: {
+        type: String,
+        required: true,
+        enum: ['check-in', 'check-out'],
+    },
     expiresAt: {
         type: Date,
         required: true,

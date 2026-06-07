@@ -26,7 +26,7 @@ async function onScanSuccess(decodedText) {
 
     if (data.success) {
       statusEl.innerText = "Attendance session joined successfully";
-      window.location.href = '/dashboard/admin/capture-attendance?for=student';
+      window.location.href = `/dashboard/admin/capture-attendance?for=student&session=${qrData.sessionCode}`;
     } else {
       statusEl.innerText = data.message || "Failed";
       isProcessing = false;

@@ -113,66 +113,98 @@ exports.startEmployeeSession = async (req, res) => {
   dbSession.startTransaction();
 
   try {
-    const userId = req.session.user.code;
+    const type = req.query.type;
     const override = req.query.override === "true";
 
-    const user = await returnUser(req);
-    const schedule = await returnSchedule(user.code);
+    if (type === "check-in") {
+      const userId = req.session.user.code;
 
-    const today = fullweek();
-    const { hours } = fullTime();
+      const user = await returnUser(req);
+      const schedule = await returnSchedule(user.code);
 
-    const shiftType = hours >= 6 && hours < 18 ? "day" : "night";
-    const shiftSchedule = schedule.week?.[today]?.[shiftType];
+      const today = fullweek();
+      const { hours } = fullTime();
 
-    if (!shiftSchedule) {
-      throw new Error("Shift schedule missing");
+      const shiftType = hours >= 6 && hours < 18 ? "day" : "night";
+      const shiftSchedule = schedule.week?.[today]?.[shiftType];
+
+      if (!shiftSchedule) {
+        throw new Error("Shift schedule missing");
+      }
+
+      const [h, m] = shiftSchedule.check_out.split(":").map(Number);
+
+      const expiresAt = new Date();
+      expiresAt.setHours(h);
+      expiresAt.setMinutes(m);
+      expiresAt.setSeconds(0);
+      expiresAt.setMilliseconds(0);
+
+      expiresAt.setMinutes(expiresAt.getMinutes() + (schedule.grace || 0));
+
+      const [created] = await activeSession.create(
+        [
+          {
+            org: user.org,
+            sessionCode: generateCode(6, "numeric"),
+            instigator: userId,
+            shift: shiftType,
+            type: "check-in",
+            expiresAt,
+          },
+        ],
+        { session: dbSession },
+      );
+      console.log("created\n", created);
+
+      await logSession.create(
+        [
+          {
+            org: user.org,
+            sessionCode: created.sessionCode,
+            instigator: userId,
+            shift: shiftType,
+          },
+        ],
+        { session: dbSession },
+      );
+
+      await dbSession.commitTransaction();
+      dbSession.endSession();
+
+      return res.json({
+        status: "ok",
+        session: created,
+        sessionCode: created.sessionCode,
+      });
     }
+    else {
+      const user = req.session.user.code;
+      const { hours } = fullTime();
+      const shiftType = hours >= 6 && hours < 18 ? "day" : "night";
+      const isActiveSession = await activeSession.findOne({org: user, shift: shiftType});
+      
+      if(!isActiveSession) {
+        return res.json({
+          status: "error",
+          message: "No active session found",
+        })
+      }
 
-    const [h, m] = shiftSchedule.check_out.split(":").map(Number);
-
-    const expiresAt = new Date();
-    expiresAt.setHours(h);
-    expiresAt.setMinutes(m);
-    expiresAt.setSeconds(0);
-    expiresAt.setMilliseconds(0);
-
-    expiresAt.setMinutes(expiresAt.getMinutes() + (schedule.grace || 0));
-
-    const [created] = await activeSession.create(
-      [
+      await activeSession.findOneAndUpdate(
+        {org: user, shift: shiftType},
         {
-          org: user.org,
-          sessionCode: generateCode(6, "numeric"),
-          instigator: userId,
-          shift: shiftType,
-          expiresAt,
-        },
-      ],
-      { session: dbSession }
-    );
-    console.log('created\n', created);
+          $set: {
+            type: 'check-out',
+          }
+        }
+      )
 
-    await logSession.create(
-      [
-        {
-          org: user.org,
-          sessionCode: created.sessionCode,
-          instigator: userId,
-          shift: shiftType,
-        },
-      ],
-      { session: dbSession }
-    );
-
-    await dbSession.commitTransaction();
-    dbSession.endSession();
-
-    return res.json({
-      status: "ok",
-      session: created,
-    });
-
+      return res.json({
+        status: 'ok',
+        message: 'session-type changed successfully!'
+      })
+    }
   } catch (err) {
     await dbSession.abortTransaction();
     dbSession.endSession();

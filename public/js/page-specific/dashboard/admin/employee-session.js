@@ -4,7 +4,7 @@ const contentsContainer2 = document.getElementsByClassName('dashboard-contents')
 const overlay2 = document.getElementsByClassName('overlay')[0];
 
 async function startSessionAndRedirect(override = false) {
-    const sessionRes = await fetch(`/dashboard/admin/start-employee-session${override ? '?override=true' : ''}`);
+    const sessionRes = await fetch(`/dashboard/admin/start-employee-session${override ? '?override=true' : ''}&type=check-in`);
     
     let sessionData;
     try {
@@ -21,7 +21,7 @@ async function startSessionAndRedirect(override = false) {
         return;
     }
 
-    window.location.href = '/dashboard/admin/capture-attendance?for=employee';
+    window.location.href = `/dashboard/admin/capture-attendance?for=employee&session=${sessionData.sessionCode}`;
 }
 
 getBtn.addEventListener('click', async (e) => {
@@ -33,7 +33,7 @@ getBtn.addEventListener('click', async (e) => {
         const data = await res.json();
 
         if (data.status === 'active') {
-            window.location.href = '/dashboard/admin/capture-attendance?for=employee';
+            window.location.href = `/dashboard/admin/capture-attendance?for=employee&session=${data.sessionCode}`;
         }
         else if (data.status === 'not-active' && data.withinWindow === true) {
             await startSessionAndRedirect(false);

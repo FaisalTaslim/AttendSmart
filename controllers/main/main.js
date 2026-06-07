@@ -14,6 +14,11 @@ exports.guidebook = async (req, res) => {
 exports.captureAttendanceWindow = async (req, res) => {
     const role = req.session.user.role;
     const isUser = req.query.for;
+    const type = req.query.type;
+    let dept = req.query.dept ?? null;
+    const sessionCode = req.query.session;
+
+
     const userModel = resolveUserModel(role);
     const user = await userModel.findOne({code: req.session.user.code});
 
@@ -22,6 +27,9 @@ exports.captureAttendanceWindow = async (req, res) => {
             popupMessage: null,
             popupType: null,
             isUser,
+            type,
+            dept,
+            sessionCode,
         }
     );
 }
