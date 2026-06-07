@@ -16,16 +16,12 @@ const {
 } = require("../../utils/functions/time");
 
 exports.markAttendance = async (req, res) => {
-  const dbSession = await mongoose.startSession();
   try {
-    dbSession.startTransaction();
-
     const { sessionCode, type, isUser, userCode, dept, subject, key } =
       req.body;
     const org = req.session.user.code;
 
     if (!sessionCode || !type || !isUser || !userCode) {
-      await dbSession.abortTransaction();
       return res.status(400).json({
         success: false,
         message: "Invalid request",
@@ -33,12 +29,10 @@ exports.markAttendance = async (req, res) => {
     }
 
     if (isUser === "employee") {
-      const userName = (
-        await Employee.findOne({ code: userCode }).session(dbSession)
-      )?.name;
+      const userName = (await Employee.findOne({ code: userCode }))?.name;
       const today = fullTime();
       const shiftType = today.hours >= 6 && today.hours < 18 ? "day" : "night";
-      const schedule = await Schedule.findOne({ org }).session(dbSession);
+      const schedule = await Schedule.findOne({ org });
       const week = fullweek();
 
       const shiftSchedule = schedule.week?.[week]?.[shiftType];
@@ -51,31 +45,34 @@ exports.markAttendance = async (req, res) => {
       );
 
       if (type === "check-in") {
-        await EmployeeHistory.findOneAndUpdate(
-          { org: org, sessionCode: sessionCode },
-          {
-            $push: {
-              history: {
-                code: userCode,
-                name: userName,
-                checkIn: today.now,
-                checkOut: null,
-                status:
-                  currentMinutes > startMinutes + grace ? "late" : "on-time",
+        let matchFoundAt = -1;
+        const history = await EmployeeHistory.findOne({ org, sessionCode });
+        const index = history.history.findIndex((h) => h.code === userCode);
+        matchFoundAt = index;
+
+        if (matchFoundAt < 0) {
+          await EmployeeHistory.findOneAndUpdate(
+            { org: org, sessionCode: sessionCode },
+            {
+              $push: {
+                history: {
+                  code: userCode,
+                  name: userName,
+                  checkIn: today.now,
+                  checkOut: null,
+                  status:
+                    currentMinutes > startMinutes + grace ? "late" : "on-time",
+                },
               },
             },
-          },
-        ).session(dbSession);
+          );
+        }
       } else if (type === "check-out") {
-        const history = await EmployeeHistory.findOne({
-          org,
-          sessionCode,
-        }).session(dbSession);
+        let history = await EmployeeHistory.findOne({ org, sessionCode });
 
         const index = history.history.findIndex((h) => h.code === userCode);
 
         if (index === -1) {
-          await dbSession.abortTransaction();
           return res.status(400).json({
             success: false,
             message: "User didn't check-in earlier.",
@@ -89,13 +86,21 @@ exports.markAttendance = async (req, res) => {
               [`history.${index}.checkOut`]: today.now,
             },
           },
-        ).session(dbSession);
+        );
+
+        const result = await EmployeeSummary.findOneAndUpdate(
+          { org: org, code: userCode, shift: shiftType, month: getMonthKey() },
+          {
+            $inc: {
+              attended: 1,
+            },
+          },
+          { new: true },
+        );
       }
     } else {
       const userModel = resolveUserModel(type);
-      const user = await userModel
-        .findOne({ code: userCode })
-        .session(dbSession);
+      const user = await userModel.findOne({ code: userCode });
 
       await StudentHistory.findOneAndUpdate(
         { org, sessionCode, subject, department: dept },
@@ -110,7 +115,7 @@ exports.markAttendance = async (req, res) => {
             },
           },
         },
-      ).session(dbSession);
+      );
 
       await StudentSummary.findOneAndUpdate(
         {
@@ -125,22 +130,18 @@ exports.markAttendance = async (req, res) => {
             attended: 1,
           },
         },
-      ).session(dbSession);
+      );
     }
 
-    await dbSession.commitTransaction();
     return res.json({
       success: true,
       message: "Attendance marked successfully",
     });
   } catch (err) {
-    await dbSession.abortTransaction();
     console.error("Attendance marking failed:", err);
     return res.status(500).json({
       success: false,
       message: err.message || "Attendance marking failed",
     });
-  } finally {
-    await dbSession.endSession();
   }
 };

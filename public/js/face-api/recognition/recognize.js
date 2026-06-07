@@ -1,8 +1,9 @@
 let faceMatcher;
 let attendanceMarked = false;
+let attendanceInProgress = false;
+
 const faceModelsReady = window.faceModelsReady || Promise.resolve();
 window.faceModelsReady = faceModelsReady;
-
 async function initializeRecognition() {
   await window.faceModelsReady;
 
@@ -32,7 +33,7 @@ async function initializeRecognition() {
 
 async function startRecognitionLoop() {
   const interval = setInterval(async () => {
-    if (attendanceMarked) {
+    if (attendanceMarked || attendanceInProgress) { // check both
       clearInterval(interval);
       return;
     }
@@ -46,12 +47,11 @@ async function startRecognitionLoop() {
 
     const match = faceMatcher.findBestMatch(detection.descriptor);
     console.log(match.toString());
-
     if (match.label === "unknown") return;
 
-    attendanceMarked = true;
+    attendanceInProgress = true; // lock before async call
+    clearInterval(interval);     // stop interval immediately
     await markAttendance(match.label);
-    clearInterval(interval);
   }, 1000);
 }
 
@@ -61,9 +61,7 @@ async function markAttendance(userCode) {
       `/face-api/mark-attendance?user=${window.capturePageData.isUser}`,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           sessionCode: window.capturePageData.sessionCode,
           type: window.capturePageData.type,
@@ -73,19 +71,19 @@ async function markAttendance(userCode) {
           subject: window.capturePageData.subject,
           key: window.capturePageData.key,
         }),
-      },
+      }
     );
-
     const data = await res.json();
     if (data.success) {
+      attendanceMarked = true;
       console.log("Attendance marked for:", userCode);
       stopCamera();
     } else {
-      attendanceMarked = false;
+      attendanceInProgress = false; // only unlock on clean failure
       console.error(data.message);
     }
   } catch (err) {
-    attendanceMarked = false;
+    attendanceInProgress = false;
     console.error(err);
   }
 }

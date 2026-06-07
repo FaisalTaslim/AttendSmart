@@ -24,6 +24,7 @@ async function returnSchedule(userCode) {
 }
 
 exports.checkEmployeeSession = async (req, res) => {
+  console.log('checkEmployeeSession called')
   try {
     const userId = req.session.user.code;
 
@@ -88,6 +89,7 @@ exports.checkEmployeeSession = async (req, res) => {
         status: "active",
         proceed: false,
         withinWindow: true,
+        sessionCode: activeSessionDoc.sessionCode
       });
     }
 
@@ -110,6 +112,7 @@ exports.checkEmployeeSession = async (req, res) => {
 };
 
 exports.startEmployeeSession = async (req, res) => {
+  console.log('startEmployeeSession called')
   const dbSession = await mongoose.startSession();
   dbSession.startTransaction();
 
@@ -148,7 +151,6 @@ exports.startEmployeeSession = async (req, res) => {
         expiresAt = new Date();
         expiresAt.setHours(expiresAt.getHours() + 1);
         expiresAt.setMinutes(expiresAt.getMinutes() + grace);
-
       } else {
         expiresAt.setMinutes(expiresAt.getMinutes() + grace);
       }
@@ -168,7 +170,8 @@ exports.startEmployeeSession = async (req, res) => {
       );
 
       const month = getMonthKey();
-      await EmployeeSummary.updateMany(
+      
+      const summary = await EmployeeSummary.updateMany(
         { org: user.code, shift: shiftType, month },
         { $inc: { total: 1 } },
         { session: dbSession },

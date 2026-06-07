@@ -1,7 +1,6 @@
 const resolveUserModel = require('../../utils/functions/resolve-user-models');
 
 exports.homepage = async (req, res) => {
-    console.log(req.session.user.role);
     res.render('index', {
         popupMessage: null,
         popupType: null
@@ -19,12 +18,13 @@ exports.captureAttendanceWindow = async (req, res) => {
     let subject = req.query.subject;
     let dept = req.query.dept ?? null;
     const sessionCode = req.query.session;
-    const key = req.query.key;
+    let key = req.query.key;
 
     const userModel = resolveUserModel(role);
     const user = await userModel.findOne({code: req.session.user.code});
 
     if (!subject) subject = null;
+    if(!key) key = null;
 
     res.render('dashboards/capture-attendance', 
         {
