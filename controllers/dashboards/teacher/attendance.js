@@ -2,7 +2,9 @@ const Org = require("../../../models/users/organization");
 const resolveUserModel = require("../../../utils/functions/resolve-user-models");
 const activeSession = require("../../../models/attendance/active-student-session");
 const logSession = require("../../../models/logs/student-attendance-history");
+const StudentSummary = require("../../../models/statistics/student-summary");
 const generateCode = require("../../../utils/functions/generate-code");
+const { getMonthKey } = require("../../../utils/functions/time");
 const mongoose = require("mongoose");
 
 async function renderTeacherDashboard(req, res, popupMessage, popupType) {
@@ -78,6 +80,13 @@ exports.startStudentSession = async (req, res) => {
             expiresAt,
           },
         ],
+        { session: dbSession },
+      );
+
+      const month = getMonthKey();
+      await StudentSummary.updateMany(
+        { org, department: dept, subject, month },
+        { $inc: { total: 1 } },
         { session: dbSession },
       );
 

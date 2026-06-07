@@ -1,16 +1,22 @@
 let faceMatcher;
 let attendanceMarked = false;
+const faceModelsReady = window.faceModelsReady || Promise.resolve();
+window.faceModelsReady = faceModelsReady;
 
 async function initializeRecognition() {
   await window.faceModelsReady;
 
   const url =
     window.capturePageData.isUser === "student"
-      ? `/face/fetch-data?user=student&dept=${window.capturePageData.dept}`
-      : `/face/fetch-data?user=employee`;
+      ? `/face-api/fetch-data?user=student&type=${window.capturePageData.type || ""}&dept=${window.capturePageData.dept || ""}`
+      : `/face-api/fetch-data?user=employee`;
 
   const res = await fetch(url);
   const data = await res.json();
+
+  if (!data.success) {
+    throw new Error(data.message || "Failed to load face data");
+  }
 
   const labeledDescriptors = data.users.map((user) => {
     return new faceapi.LabeledFaceDescriptors(
@@ -19,6 +25,7 @@ async function initializeRecognition() {
     );
   });
 
+  console.log('labelled descriptors', labeledDescriptors);
   faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.5);
   startRecognitionLoop();
 }
@@ -51,7 +58,7 @@ async function startRecognitionLoop() {
 async function markAttendance(userCode) {
   try {
     const res = await fetch(
-      `/face/mark-attendance?user=${window.capturePageData.isUser}`,
+      `/face-api/mark-attendance?user=${window.capturePageData.isUser}`,
       {
         method: "POST",
         headers: {
@@ -62,6 +69,8 @@ async function markAttendance(userCode) {
           type: window.capturePageData.type,
           isUser: window.capturePageData.isUser,
           userCode,
+          dept: window.capturePageData.dept,
+          subject: window.capturePageData.subject,
         }),
       },
     );
@@ -80,7 +89,7 @@ async function markAttendance(userCode) {
   }
 }
 
-window.faceModelsReady
+faceModelsReady
   .then(() => {
     initializeRecognition();
   })

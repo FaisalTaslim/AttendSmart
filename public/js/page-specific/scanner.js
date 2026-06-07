@@ -2,6 +2,7 @@ const statusEl = document.getElementById("status");
 
 let isProcessing = false;
 let type;
+let modifySubject;
 
 async function onScanSuccess(decodedText) {
   if (isProcessing) return;
@@ -10,6 +11,7 @@ async function onScanSuccess(decodedText) {
   statusEl.innerText = "QR detected...";
 
   try {
+    const qrData = JSON.parse(decodedText);
     await html5QrCode.stop();
 
     const res = await fetch(`/dashboard/student/process-qr`, {
@@ -27,10 +29,29 @@ async function onScanSuccess(decodedText) {
     if (data.success) {
       statusEl.innerText = "Attendance session joined successfully";
 
-      if(qrData.subject === '') type = 'school-student';
-      else type = 'college-student';
-      
-      window.location.href = `/dashboard/admin/capture-attendance?for=student&type=${type}&session=${qrData.sessionCode}`;
+      if (!qrData.subject) {
+        type = "school-student";
+        modifySubject = null;
+      } else {
+        type = "college-student";
+        modifySubject = qrData.subject;
+      }
+
+      const params = new URLSearchParams({
+        for: "student",
+        type,
+        session: qrData.sessionCode,
+      });
+
+      if (modifySubject !== null) {
+        params.set("subject", modifySubject);
+      }
+
+      if (qrData.dept) {
+        params.set("dept", qrData.dept);
+      }
+
+      window.location.href = `/dashboard/admin/capture-attendance?${params.toString()}`;
     } else {
       statusEl.innerText = data.message || "Failed";
       isProcessing = false;
@@ -41,7 +62,7 @@ async function onScanSuccess(decodedText) {
           fps: 10,
           qrbox: 250,
         },
-        onScanSuccess
+        onScanSuccess,
       );
     }
   } catch (err) {
@@ -55,7 +76,7 @@ async function onScanSuccess(decodedText) {
         fps: 10,
         qrbox: 250,
       },
-      onScanSuccess
+      onScanSuccess,
     );
   }
 }
@@ -68,5 +89,5 @@ html5QrCode.start(
     fps: 10,
     qrbox: 250,
   },
-  onScanSuccess
+  onScanSuccess,
 );

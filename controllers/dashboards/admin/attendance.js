@@ -4,6 +4,7 @@ const resolveUserModel = require("../../../utils/functions/resolve-user-models")
 const activeSession = require("../../../models/attendance/active-employee-session");
 const logSession = require("../../../models/logs/employee-attendance-history");
 const Schedule = require("../../../models/schedule/schedule");
+const EmployeeSummary = require("../../../models/statistics/employee-summary");
 const {
   timeToMinutes,
   getMonthKey,
@@ -134,18 +135,28 @@ exports.startEmployeeSession = async (req, res) => {
 
       const [h, m] = shiftSchedule.check_out.split(":").map(Number);
 
-      const expiresAt = new Date();
+      let expiresAt = new Date();
+
       expiresAt.setHours(h);
       expiresAt.setMinutes(m);
       expiresAt.setSeconds(0);
       expiresAt.setMilliseconds(0);
 
-      expiresAt.setMinutes(expiresAt.getMinutes() + (schedule.grace || 0));
+      const grace = schedule.grace || 0;
+
+      if (expiresAt <= new Date()) {
+        expiresAt = new Date();
+        expiresAt.setHours(expiresAt.getHours() + 1);
+        expiresAt.setMinutes(expiresAt.getMinutes() + grace);
+
+      } else {
+        expiresAt.setMinutes(expiresAt.getMinutes() + grace);
+      }
 
       const [created] = await activeSession.create(
         [
           {
-            org: user.org,
+            org: user.code,
             sessionCode: generateCode(6, "numeric"),
             instigator: userId,
             shift: shiftType,
@@ -155,12 +166,18 @@ exports.startEmployeeSession = async (req, res) => {
         ],
         { session: dbSession },
       );
-      console.log("created\n", created);
+
+      const month = getMonthKey();
+      await EmployeeSummary.updateMany(
+        { org: user.code, shift: shiftType, month },
+        { $inc: { total: 1 } },
+        { session: dbSession },
+      );
 
       await logSession.create(
         [
           {
-            org: user.org,
+            org: user.code,
             sessionCode: created.sessionCode,
             instigator: userId,
             shift: shiftType,
@@ -177,33 +194,35 @@ exports.startEmployeeSession = async (req, res) => {
         session: created,
         sessionCode: created.sessionCode,
       });
-    }
-    else {
+    } else {
       const user = req.session.user.code;
       const { hours } = fullTime();
       const shiftType = hours >= 6 && hours < 18 ? "day" : "night";
-      const isActiveSession = await activeSession.findOne({org: user, shift: shiftType});
-      
-      if(!isActiveSession) {
+      const isActiveSession = await activeSession.findOne({
+        org: user,
+        shift: shiftType,
+      });
+
+      if (!isActiveSession) {
         return res.json({
           status: "error",
           message: "No active session found",
-        })
+        });
       }
 
       await activeSession.findOneAndUpdate(
-        {org: user, shift: shiftType},
+        { org: user, shift: shiftType },
         {
           $set: {
-            type: 'check-out',
-          }
-        }
-      )
+            type: "check-out",
+          },
+        },
+      );
 
       return res.json({
-        status: 'ok',
-        message: 'session-type changed successfully!'
-      })
+        status: "ok",
+        message: "session-type changed successfully!",
+      });
     }
   } catch (err) {
     await dbSession.abortTransaction();

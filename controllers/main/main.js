@@ -1,6 +1,7 @@
 const resolveUserModel = require('../../utils/functions/resolve-user-models');
 
 exports.homepage = async (req, res) => {
+    console.log(req.session.user.role);
     res.render('index', {
         popupMessage: null,
         popupType: null
@@ -15,9 +16,13 @@ exports.captureAttendanceWindow = async (req, res) => {
     const role = req.session.user.role;
     const isUser = req.query.for;
     const type = req.query.type;
+    let subject = req.query.subject;
+    if (!subject || subject === "null") {
+        subject = null;
+    }
+
     let dept = req.query.dept ?? null;
     const sessionCode = req.query.session;
-
 
     const userModel = resolveUserModel(role);
     const user = await userModel.findOne({code: req.session.user.code});
@@ -30,6 +35,7 @@ exports.captureAttendanceWindow = async (req, res) => {
             type,
             dept,
             sessionCode,
+            subject,
         }
     );
 }
