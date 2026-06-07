@@ -11,7 +11,7 @@ const studentAttendanceHistory = new Schema({
         required: true,
     },
     instigator: {type: String, required: true},
-    subject: {type: String, required: true},
+    subject: {type: String},
     department: {type: String, required: true},
     history: [
         {

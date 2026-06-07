@@ -1,3 +1,4 @@
+const Org = require("../../../models/users/organization");
 const resolveUserModel = require("../../../utils/functions/resolve-user-models");
 const activeSession = require("../../../models/attendance/active-student-session");
 const logSession = require("../../../models/logs/student-attendance-history");
@@ -13,21 +14,13 @@ async function renderTeacherDashboard(req, res, popupMessage, popupType) {
     popupType,
     isFaceUploaded: user?.setup?.faceUploaded,
     isSetupDone: user?.setup?.done,
+    workPlace: user.workPlace,
   });
 }
 
 exports.startStudentSession = async (req, res) => {
   const { org, dept, majors, minors, optionals } = req.body;
-  const subject = majors ?? minors ?? optionals;
-
-  if (!subject) {
-    return renderTeacherDashboard(
-      req,
-      res,
-      "No subjects selected",
-      "error",
-    );
-  }
+  let subject = majors ?? minors ?? optionals;
 
   const dbSession = await mongoose.startSession();
   let user;
@@ -42,6 +35,26 @@ exports.startStudentSession = async (req, res) => {
 
       if (!user) {
         throw new Error("Authenticated user not found in database");
+      }
+
+      if (!subject) {
+        const orgDoc = await Org.findOne(
+          { code: org },
+          { attendanceMethod: 1 },
+        );
+
+        const attendanceType = orgDoc?.attendanceMethod;
+
+        if (user.workPlace === "school" && attendanceType === "one-time")
+          subject = null;
+        else {
+          return renderTeacherDashboard(
+            req,
+            res,
+            "No subjects selected",
+            "error",
+          );
+        }
       }
 
       await activeSession.deleteMany(

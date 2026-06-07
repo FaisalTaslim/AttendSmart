@@ -3,6 +3,7 @@ const resolveUserModel = require('../../../utils/functions/resolve-user-models')
 exports.display = async (req, res) => {
     const userModel = resolveUserModel(req.session.user.role);
     const user = await userModel.findOne({code: req.session.user.code});
+    const workPlace = user.workPlace;
     const isSetupDone = user.setup.done;
     const isFaceUploaded = user.setup.faceUploaded;
 
@@ -12,6 +13,7 @@ exports.display = async (req, res) => {
             popupType: null,
             isFaceUploaded,
             isSetupDone,
+            workPlace,
         }
     );
 }

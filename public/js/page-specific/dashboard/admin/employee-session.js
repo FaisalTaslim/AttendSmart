@@ -21,7 +21,7 @@ async function startSessionAndRedirect(override = false) {
         return;
     }
 
-    window.location.href = `/dashboard/admin/capture-attendance?for=employee&session=${sessionData.sessionCode}`;
+    window.location.href = `/dashboard/admin/capture-attendance?for=employee&type=check-in&session=${sessionData.sessionCode}`;
 }
 
 getBtn.addEventListener('click', async (e) => {

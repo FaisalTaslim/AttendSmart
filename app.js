@@ -24,14 +24,10 @@ const student = require('./routes/dashboard/student');
 
 app.use('/', mainPages);
 app.use('/register', register);
-app.use("/auth", authentication);
+app.use('/auth', authentication);
 app.use('/face-api', faceApi);
 app.use('/dashboard/admin', admin);
 app.use('/dashboard/student', student);
 app.use('/dashboard/employee/teacher', teacher);
-
-app.use('/student', require('./routes/face .../recognition/student/send-otp'));
-app.use('/student', require('./routes/face .../recognition/student/mark-attendance'));
-app.use('/student', require('./routes/face .../recognition/student/fetch-face-data'));
 
 module.exports = app;

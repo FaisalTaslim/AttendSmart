@@ -50,7 +50,6 @@ const employeeSchema = new Schema({
         },
         token: {
             type: String,
-            unique: true
         },
         expiresAt: {
             type: Date
