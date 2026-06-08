@@ -148,33 +148,29 @@
     </section>
     <section class="dashboard-contents">
       <div class="overlay">
-        <div class="session-fallback">
-          <div class="fallback-header">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            <h3>Outside Scheduled Session Time</h3>
-          </div>
-          <p class="fallback-text">
-            This attendance session is being started outside the configured schedule window.
-          </p>
-          <div class="session-details">
-            <div class="detail-row">
-              <span>Scheduled</span>
-              <b id="scheduled-time"></b>
+        <div class="session-form">
+          <button id="fallback-cancel">Go Back</button>
+          <form action="/dashboard/admin/start-employee-session" method="POST">
+
+            <div class="outer-group">
+              <label>Shift</label>
+              <select name="shift" required>
+                <option value="day">Day</option>
+                <option value="night">Night</option>
+              </select>
+
             </div>
-            <div class="detail-row">
-              <span>Current Time</span>
-              <b id="current-time"></b>
+            <div class="outer-group">
+              <label>Type</label>
+              <select name="type" required>
+                <option value="check-in">Check-in</option>
+                <option value="check-out">Check-out</option>
+              </select>
             </div>
-            <div class="detail-row">
-              <span>Shift</span>
-              <b id="shift-type"></b>
-            </div>
-          </div>
-          <p class="fallback-text">This session will expire in 60 minutes.</p>
-          <div class="fallback-actions">
-            <button class="cancel-btn" id="fallback-cancel">Cancel</button>
-            <button class="continue-btn" id="continue-btn">Continue Anyway</button>
-          </div>
+
+            <button type="submit">Start Session</button>
+
+          </form>
         </div>
       </div>
     </section>

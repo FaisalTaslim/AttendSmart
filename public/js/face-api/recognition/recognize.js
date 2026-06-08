@@ -4,7 +4,9 @@ let attendanceInProgress = false;
 
 const faceModelsReady = window.faceModelsReady || Promise.resolve();
 window.faceModelsReady = faceModelsReady;
+
 async function initializeRecognition() {
+  console.log("initializeRecognition()");
   await window.faceModelsReady;
 
   const url =
@@ -26,36 +28,35 @@ async function initializeRecognition() {
     );
   });
 
-  console.log('labelled descriptors', labeledDescriptors);
+  console.log("labelled descriptors", labeledDescriptors);
   faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.5);
   startRecognitionLoop();
 }
 
 async function startRecognitionLoop() {
-  const interval = setInterval(async () => {
-    if (attendanceMarked || attendanceInProgress) { // check both
-      clearInterval(interval);
+  if (attendanceMarked || attendanceInProgress) return;
+
+  const detection = await faceapi
+    .detectSingleFace(video)
+    .withFaceLandmarks()
+    .withFaceDescriptor();
+
+  if (detection) {
+    const match = faceMatcher.findBestMatch(detection.descriptor);
+
+    if (match.label !== "unknown") {
+      attendanceInProgress = true;
+      await markAttendance(match.label);
       return;
     }
+  }
 
-    const detection = await faceapi
-      .detectSingleFace(video)
-      .withFaceLandmarks()
-      .withFaceDescriptor();
-
-    if (!detection) return;
-
-    const match = faceMatcher.findBestMatch(detection.descriptor);
-    console.log(match.toString());
-    if (match.label === "unknown") return;
-
-    attendanceInProgress = true; // lock before async call
-    clearInterval(interval);     // stop interval immediately
-    await markAttendance(match.label);
-  }, 1000);
+  setTimeout(startRecognitionLoop, 1000);
 }
 
 async function markAttendance(userCode) {
+  console.log("markAttendance()");
+
   try {
     const res = await fetch(
       `/face-api/mark-attendance?user=${window.capturePageData.isUser}`,
@@ -71,7 +72,7 @@ async function markAttendance(userCode) {
           subject: window.capturePageData.subject,
           key: window.capturePageData.key,
         }),
-      }
+      },
     );
     const data = await res.json();
     if (data.success) {
@@ -79,7 +80,7 @@ async function markAttendance(userCode) {
       console.log("Attendance marked for:", userCode);
       stopCamera();
     } else {
-      attendanceInProgress = false; // only unlock on clean failure
+      attendanceInProgress = false;
       console.error(data.message);
     }
   } catch (err) {

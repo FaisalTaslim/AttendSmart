@@ -11,10 +11,7 @@ const activeSession = new Schema({
         required: true,
         unique: true,
     },
-    instigator: {
-        type: String,
-        required: true
-    },
+    instigator: {type: String, required: true},
     shift: {
         type: String,
         required: true,
@@ -32,6 +29,8 @@ const activeSession = new Schema({
     }
 
 }, { timestamps: true });
+
+activeSession.index({ org: 1, shift: 1 }, { unique: true });
 
 module.exports = mongoose.model(
     'activeEmployeeSessions', activeSession, 'activeEmployeeSessions'

@@ -37,6 +37,11 @@ async function startCamera() {
 
     startBtn.disabled = true;
     stopBtn.disabled = false;
+
+    attendanceMarked = false;
+    attendanceInProgress = false;
+
+    initializeRecognition();
   } catch (err) {
     console.error(err);
 

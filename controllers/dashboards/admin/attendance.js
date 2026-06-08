@@ -23,123 +23,48 @@ async function returnSchedule(userCode) {
   return await Schedule.findOne({ org: userCode });
 }
 
-exports.checkEmployeeSession = async (req, res) => {
-  console.log('checkEmployeeSession called')
-  try {
-    const userId = req.session.user.code;
-
-    const user = await returnUser(req);
-    const schedule = await returnSchedule(user.code);
-
-    if (!schedule) {
-      return res.json({
-        status: "not-active",
-        proceed: false,
-        withinWindow: false,
-      });
-    }
-
-    const today = fullweek();
-    const todaySchedule = schedule.week?.[today];
-
-    if (!todaySchedule) {
-      return res.json({
-        status: "not-active",
-        proceed: false,
-        withinWindow: false,
-        message: "No schedule for today",
-      });
-    }
-
-    const { hours, minutes, now } = fullTime();
-    const currentMinutes = timeToMinutes(hours, minutes);
-
-    const shiftType = hours >= 6 && hours < 18 ? "day" : "night";
-    const shiftSchedule = todaySchedule?.[shiftType];
-
-    if (!shiftSchedule) {
-      return res.json({
-        status: "error",
-        message: "Shift not defined",
-      });
-    }
-
-    const [startH, startM] = shiftSchedule?.check_in.split(":").map(Number);
-    const [endH, endM] = shiftSchedule?.check_out.split(":").map(Number);
-
-    const grace = schedule.grace || 0;
-
-    const startMinutes = timeToMinutes(startH, startM) - grace;
-    const endMinutes = timeToMinutes(endH, endM) + grace;
-
-    let isWithinWindow;
-
-    if (startMinutes <= endMinutes) {
-      isWithinWindow =
-        currentMinutes >= startMinutes && currentMinutes <= endMinutes;
-    } else {
-      isWithinWindow =
-        currentMinutes >= startMinutes || currentMinutes <= endMinutes;
-    }
-
-    const activeSessionDoc = await activeSession.findOne({ org: user.org });
-
-    if (activeSessionDoc) {
-      return res.json({
-        status: "active",
-        proceed: false,
-        withinWindow: true,
-        sessionCode: activeSessionDoc.sessionCode
-      });
-    }
-
-    return res.json({
-      status: "not-active",
-      proceed: true,
-      withinWindow: isWithinWindow,
-      scheduleTime: `${formatTime(startH, startM)} - ${formatTime(endH, endM)}`,
-      currentTime: formatTime(now.getHours(), now.getMinutes()),
-      shift: shiftType,
-    });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({
-      status: "error",
-      message: err.message,
-      stack: err.stack,
-    });
-  }
-};
-
 exports.startEmployeeSession = async (req, res) => {
-  console.log('startEmployeeSession called')
   const dbSession = await mongoose.startSession();
   dbSession.startTransaction();
 
+  const { shift, type } = req.body;
+  const org = req.session.user.code;
+
   try {
-    const type = req.query.type;
-    const override = req.query.override === "true";
+    let schedule;
+    let expiresAt;
 
-    if (type === "check-in") {
-      const userId = req.session.user.code;
+    if (type == "check-in") {
+      const sessionIsActive = await activeSession.findOne({
+        org,
+        shift,
+        type: "check-in",
+      });
 
-      const user = await returnUser(req);
-      const schedule = await returnSchedule(user.code);
+      if (sessionIsActive) {
+        return res.render("dashboards/capture-attendance", {
+          popupType: "success",
+          popupMessage: "Active Session Found! Redirected to the page!",
+          isUser: "employee",
+          type: "check-in",
+          dept: null,
+          sessionCode: sessionIsActive.sessionCode,
+          subject: null,
+          key: null,
+        });
+      }
+
+      schedule = await returnSchedule(org);
 
       const today = fullweek();
       const { hours } = fullTime();
+      const shiftSchedule = schedule.week?.[today]?.[shift];
 
-      const shiftType = hours >= 6 && hours < 18 ? "day" : "night";
-      const shiftSchedule = schedule.week?.[today]?.[shiftType];
-
-      if (!shiftSchedule) {
-        throw new Error("Shift schedule missing");
-      }
+      if (!shiftSchedule) throw new Error("Shift schedule missing");
 
       const [h, m] = shiftSchedule.check_out.split(":").map(Number);
 
-      let expiresAt = new Date();
-
+      expiresAt = new Date();
       expiresAt.setHours(h);
       expiresAt.setMinutes(m);
       expiresAt.setSeconds(0);
@@ -155,24 +80,19 @@ exports.startEmployeeSession = async (req, res) => {
         expiresAt.setMinutes(expiresAt.getMinutes() + grace);
       }
 
-      const [created] = await activeSession.create(
-        [
-          {
-            org: user.code,
-            sessionCode: generateCode(6, "numeric"),
-            instigator: userId,
-            shift: shiftType,
-            type: "check-in",
-            expiresAt,
-          },
-        ],
-        { session: dbSession },
-      );
+      const activeSessionDoc = {
+        org,
+        sessionCode: generateCode(6, "numeric"),
+        shift,
+        type: "check-in",
+        instigator: req.session.user.code,
+        expiresAt,
+      };
 
-      const month = getMonthKey();
-      
-      const summary = await EmployeeSummary.updateMany(
-        { org: user.code, shift: shiftType, month },
+      await activeSession.create([activeSessionDoc], { session: dbSession });
+
+      await EmployeeSummary.updateMany(
+        { org, shift, month: getMonthKey() },
         { $inc: { total: 1 } },
         { session: dbSession },
       );
@@ -180,10 +100,10 @@ exports.startEmployeeSession = async (req, res) => {
       await logSession.create(
         [
           {
-            org: user.code,
-            sessionCode: created.sessionCode,
-            instigator: userId,
-            shift: shiftType,
+            org,
+            sessionCode: activeSessionDoc.sessionCode,
+            instigator: org,
+            shift: shift,
           },
         ],
         { session: dbSession },
@@ -192,50 +112,68 @@ exports.startEmployeeSession = async (req, res) => {
       await dbSession.commitTransaction();
       dbSession.endSession();
 
-      return res.json({
-        status: "ok",
-        session: created,
-        sessionCode: created.sessionCode,
+      return res.render("dashboards/capture-attendance", {
+        popupType: "success",
+        popupMessage: "Session started successfully",
+        isUser: "employee",
+        type,
+        dept: null,
+        sessionCode: activeSessionDoc.sessionCode,
+        subject: null,
+        key: null,
       });
     } else {
-      const user = req.session.user.code;
       const { hours } = fullTime();
       const shiftType = hours >= 6 && hours < 18 ? "day" : "night";
-      const isActiveSession = await activeSession.findOne({
-        org: user,
-        shift: shiftType,
-      });
+      const sessionIsActive = await activeSession.findOne({ org, shift });
 
-      if (!isActiveSession) {
-        return res.json({
-          status: "error",
-          message: "No active session found",
+      if (!sessionIsActive) {
+        return res.render("dashboards/admin", {
+          popupType: "error",
+          popupMessage: "No active Session",
+          orgType: returnUser()?.orgType,
+          isSubjectsUploaded: returnUser()?.setup.subjectsUploaded,
+          isScheduleUploaded: returnUser()?.setup.scheduleUploaded,
+          isSetupDone: returnUser()?.setup.done,
         });
       }
 
-      await activeSession.findOneAndUpdate(
-        { org: user, shift: shiftType },
-        {
-          $set: {
-            type: "check-out",
+      if (sessionIsActive.type === "check-in") {
+        await activeSession.findOneAndUpdate(
+          { org, shift },
+          {
+            $set: {
+              type: "check-out",
+            },
           },
-        },
-      );
+        );
+      }
 
-      return res.json({
-        status: "ok",
-        message: "session-type changed successfully!",
+      return res.render("dashboards/capture-attendance", {
+        popupType: "success",
+        popupMessage: "Session started successfully",
+        isUser: "employee",
+        type,
+        dept: null,
+        sessionCode: sessionIsActive.sessionCode,
+        subject: null,
+        key: null,
       });
+
+      await dbSession.commitTransaction();
+      dbSession.endSession();
     }
   } catch (err) {
     await dbSession.abortTransaction();
     dbSession.endSession();
 
-    console.error(err);
-
-    return res.status(500).json({
-      status: "error",
-      message: err.message,
+    return res.render("dashboards/admin", {
+      popupType: "error",
+      popupMessage: "No active Session",
+      orgType: returnUser()?.orgType,
+      isSubjectsUploaded: returnUser()?.setup.subjectsUploaded,
+      isScheduleUploaded: returnUser()?.setup.scheduleUploaded,
+      isSetupDone: returnUser()?.setup.done,
     });
   }
 };

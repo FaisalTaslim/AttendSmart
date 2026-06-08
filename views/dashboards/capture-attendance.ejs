@@ -22,6 +22,11 @@
 </head>
 
 <body>
+  <% if (popupMessage) { %>
+  <div id="popup" class="popup <%= popupType %> show">
+    <%= popupMessage %>
+  </div>
+  <% } %>
   <header>
     <div class="logo">
       <h1 class="mobile-hidden">AttendSmart</h1>

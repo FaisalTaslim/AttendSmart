@@ -6,7 +6,6 @@ const dashboard = require('../../controllers/dashboards/index');
 
 router.get('/', dashboard.admin.display);
 router.get('/capture-attendance', main.display.captureAttendanceWindow);
-router.get('/check-employee-session', admin.attendance.checkEmployeeSession);
-router.get('/start-employee-session', admin.attendance.startEmployeeSession);
+router.post('/start-employee-session', admin.attendance.startEmployeeSession);
 
 module.exports = router;

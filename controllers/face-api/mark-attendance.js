@@ -17,9 +17,42 @@ const {
 
 exports.markAttendance = async (req, res) => {
   try {
-    const { sessionCode, type, isUser, userCode, dept, subject, key } =
-      req.body;
-    const org = req.session.user.code;
+    const { sessionCode, type, isUser, userCode, dept, subject, key } = req.body;
+    let history;
+    let index;
+
+    async function returnEmployeeHistory(org, sessionCode) {
+      const result = await EmployeeHistory.findOne({
+        org,
+        sessionCode,
+      });
+
+      if (!result) {
+        throw new Error("Employee history not found");
+      }
+
+      return result;
+    }
+
+    function returnIndex(history) {
+      const result = history.history.findIndex((h) => h.code === userCode);
+
+      if (result >= 0) {
+        return result;
+      } else {
+        return -1;
+      }
+    }
+
+    async function returnStudentHistory(org, sessionCode) {
+      const result = await StudentHistory.findOne({ org, sessionCode, subject, department: dept });
+
+      if (!result) {
+        throw new Error("Student history not found");
+      }
+
+      return result;
+    }
 
     if (!sessionCode || !type || !isUser || !userCode) {
       return res.status(400).json({
@@ -29,6 +62,7 @@ exports.markAttendance = async (req, res) => {
     }
 
     if (isUser === "employee") {
+      const org = req.session.user.code;
       const userName = (await Employee.findOne({ code: userCode }))?.name;
       const today = fullTime();
       const shiftType = today.hours >= 6 && today.hours < 18 ? "day" : "night";
@@ -46,9 +80,8 @@ exports.markAttendance = async (req, res) => {
 
       if (type === "check-in") {
         let matchFoundAt = -1;
-        const history = await EmployeeHistory.findOne({ org, sessionCode });
-        const index = history.history.findIndex((h) => h.code === userCode);
-        matchFoundAt = index;
+        history = await returnEmployeeHistory(org, sessionCode);
+        index = returnIndex(history);
 
         if (matchFoundAt < 0) {
           await EmployeeHistory.findOneAndUpdate(
@@ -68,15 +101,29 @@ exports.markAttendance = async (req, res) => {
           );
         }
       } else if (type === "check-out") {
-        let history = await EmployeeHistory.findOne({ org, sessionCode });
-
-        const index = history.history.findIndex((h) => h.code === userCode);
+        history = await returnEmployeeHistory(org, sessionCode);
+        let index = returnIndex(history);
 
         if (index === -1) {
           return res.status(400).json({
             success: false,
             message: "User didn't check-in earlier.",
           });
+        }
+        else {
+          const checkOut = history.history[index].checkOut;
+
+          if (checkOut === null) {
+            await EmployeeSummary.findOneAndUpdate(
+              { org: org, code: userCode, shift: shiftType, month: getMonthKey() },
+              {
+                $inc: {
+                  attended: 1,
+                },
+              },
+              { new: true },
+            );
+          }
         }
 
         await EmployeeHistory.findOneAndUpdate(
@@ -86,51 +133,57 @@ exports.markAttendance = async (req, res) => {
               [`history.${index}.checkOut`]: today.now,
             },
           },
-        );
-
-        const result = await EmployeeSummary.findOneAndUpdate(
-          { org: org, code: userCode, shift: shiftType, month: getMonthKey() },
-          {
-            $inc: {
-              attended: 1,
-            },
-          },
-          { new: true },
+          { new: true }
         );
       }
     } else {
       const userModel = resolveUserModel(type);
       const user = await userModel.findOne({ code: userCode });
+      const org = user.org;
 
-      await StudentHistory.findOneAndUpdate(
-        { org, sessionCode, subject, department: dept },
-        {
-          $push: {
-            history: {
-              code: userCode,
-              sessionKey: key,
-              name: user.name,
-              date: fullTime()?.now,
-              isMarked: true,
+      history = await returnStudentHistory(org, sessionCode);
+      index = returnIndex(history);
+
+      if (index === -1) {
+        await StudentHistory.findOneAndUpdate(
+          { org, sessionCode, subject, department: dept },
+          {
+            $push: {
+              history: {
+                code: userCode,
+                sessionKey: key,
+                name: user.name,
+                date: fullTime()?.now,
+                isMarked: false,
+              },
             },
           },
-        },
-      );
+        );
+      }
 
-      await StudentSummary.findOneAndUpdate(
-        {
-          org,
-          code: userCode,
-          department: dept,
-          subject,
-          month: getMonthKey(),
-        },
-        {
-          $inc: {
-            attended: 1,
-          },
-        },
-      );
+      history = await returnStudentHistory(org, sessionCode);
+      index = returnIndex(history);
+
+      if (index >= 0) {
+        const isMarked = history.history[index].isMarked;
+
+        if (!isMarked) {
+          await StudentSummary.findOneAndUpdate(
+            { org: org, code: userCode, subject: subject, department: dept },
+            {
+              $inc: {
+                attended: 1,
+              },
+            },
+            { new: true },
+          );
+        }
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: "couldn't retrieve student history.",
+        });
+      }
     }
 
     return res.json({
@@ -144,4 +197,4 @@ exports.markAttendance = async (req, res) => {
       message: err.message || "Attendance marking failed",
     });
   }
-};
+}
