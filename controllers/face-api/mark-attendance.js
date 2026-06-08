@@ -177,6 +177,16 @@ exports.markAttendance = async (req, res) => {
             },
             { new: true },
           );
+
+          await StudentHistory.findOneAndUpdate(
+            { org, sessionCode, subject, department: dept },
+            {
+              $set: {
+                [`history.${index}.isMarked`]: true,
+              },
+            },
+            { new: true },
+          );
         }
       } else {
         return res.status(400).json({

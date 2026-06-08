@@ -6,10 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="/css/page-specific/attendance/scanner.css">
+  <link rel="stylesheet" href="/css/global/ui-components/popup.css">
 </head>
 
 <body>
-
+  <% if (popupMessage) { %>
+  <div id="popup" class="popup <%= popupType %> show">
+    <%= popupMessage %>
+  </div>
+  <% } %>
   <div class="scanner-container">
     <h2>Scan Attendance QR</h2>
 
@@ -22,9 +27,7 @@
 
   <script src="https://unpkg.com/html5-qrcode"></script>
   <script src="/js/page-specific/scanner.js"></script>
-  <script>
-    window.role = <%- JSON.stringify(role) %>;
-  </script>
+  <script src="/js/global/UI/popup.js"></script>
 </body>
 
 </html>

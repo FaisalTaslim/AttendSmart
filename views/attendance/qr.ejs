@@ -6,13 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Attendance QR</title>
   <link rel="stylesheet" href="/css/page-specific/attendance/qr.css">
+  <link rel="stylesheet" href="/css/global/ui-components/popup.css">
+
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 </head>
 
 <body>
-
+  <% if (popupMessage) { %>
+  <div id="popup" class="popup <%= popupType %> show">
+    <%= popupMessage %>
+  </div>
+  <% } %>
   <div class="card">
     <div class="header">
       <div class="header-left">
@@ -37,7 +43,7 @@
     <div class="meta">
       <div class="meta-item">
         <div class="key">Instructor</div>
-        <div class="val"><%= instructor %></div>
+        <div class="val"><%= instigatorName %></div>
       </div>
       <div class="meta-item">
         <div class="key">Joined</div>
@@ -72,15 +78,17 @@
   </div>
   <script>
     window.__SESSION_DATA__ = <%- JSON.stringify({
-    sessionCode: sessionCode || "",
-    sessionMins: sessionMins || 15,
-    joinedCount: 0,
-    instructor: instructor || "",
-    subject: subject || "",
-    dept: dept || "",
+      instigator: instigator || '',
+      instigatorName: instigatorName || '',
+      subject: subject ?? null,
+      dept: dept ?? null,
+      sessionCode: sessionCode || '',
+      sessionMins: sessionMins || 15,
+      joinedCount: 0,
   }) %>;
   </script>
   <script src="/js/page-specific/qr.js"></script>
+  <script src="/js/global/UI/popup.js"></script>
 </body>
 
 </html>

@@ -1,8 +1,6 @@
 const statusEl = document.getElementById("status");
 
 let isProcessing = false;
-let type;
-let modifySubject;
 
 async function onScanSuccess(decodedText) {
   if (isProcessing) return;
@@ -29,32 +27,18 @@ async function onScanSuccess(decodedText) {
     if (data.success) {
       statusEl.innerText = "Attendance session joined successfully";
 
-      if (!qrData.subject) {
-        type = "school-student";
-        modifySubject = null;
-      } else {
-        type = "college-student";
-        modifySubject = qrData.subject;
-      }
-
       const params = new URLSearchParams({
-        for: "student",
-        type,
-        session: qrData.sessionCode,
-        key: qrData.sessionKey,
+        for: data.isUser,
+        type: data.type,
+        session: data.sessionCode,
+        key: data.sessionKey,
+        subject: data.subject,
+        dept: data.dept,
       });
-
-      if (modifySubject !== null) {
-        params.set("subject", modifySubject);
-      }
-
-      if (qrData.dept) {
-        params.set("dept", qrData.dept);
-      }
 
       window.location.href = `/dashboard/admin/capture-attendance?${params.toString()}`;
     } else {
-      statusEl.innerText = data.message || "Failed";
+      statusEl.innerText = data.message || "process failed";
       isProcessing = false;
 
       await html5QrCode.start(

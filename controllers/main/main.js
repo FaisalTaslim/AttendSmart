@@ -1,62 +1,69 @@
-const resolveUserModel = require('../../utils/functions/resolve-user-models');
+const resolveUserModel = require("../../utils/functions/resolve-user-models");
+const generateCode = require("../../utils/functions/generate-code");
 
 exports.homepage = async (req, res) => {
-    res.render('index', {
-        popupMessage: null,
-        popupType: null
-    });
-}
+  res.render("index", {
+    popupMessage: null,
+    popupType: null,
+  });
+};
 
 exports.guidebook = async (req, res) => {
-    res.render('guidebook')
-}
+  res.render("guidebook");
+};
 
 exports.captureAttendanceWindow = async (req, res) => {
-    const role = req.session.user.role;
-    const isUser = req.query.for;
-    const type = req.query.type;
-    let subject = req.query.subject;
-    let dept = req.query.dept ?? null;
-    const sessionCode = req.query.session;
-    let key = req.query.key;
+  const role = req.session.user.role;
+  const isUser = req.query.for;
+  const type = req.query.type;
+  let subject = req.query.subject;
+  let dept = req.query.dept ?? null;
+  const sessionCode = req.query.session;
+  let key = req.query.key;
 
-    const userModel = resolveUserModel(role);
-    const user = await userModel.findOne({code: req.session.user.code});
+  const userModel = resolveUserModel(role);
+  const user = await userModel.findOne({ code: req.session.user.code });
 
-    if (!subject) subject = null;
-    if(!key) key = null;
+  if (!subject) subject = null;
+  if (!key) key = null;
 
-    res.render('dashboards/capture-attendance', 
-        {
-            popupMessage: null,
-            popupType: null,
-            isUser,
-            type,
-            dept,
-            sessionCode,
-            subject,
-            key,
-        }
-    );
-}
+  res.render("dashboards/capture-attendance", {
+    popupMessage: null,
+    popupType: null,
+    isUser,
+    type,
+    dept,
+    sessionCode,
+    subject,
+    key,
+  });
+};
 
 exports.qrPage = async (req, res) => {
-  const instigator = req.query.instigator;
-  const subject = req.query.subject;
-  const dept = req.query.dept;
-  const sessionCode = req.query['session-code'];
+  const userModel = resolveUserModel(req.session.user.role);
+  const user = await userModel.findOne({ code: req.session.user.code });
+  const instigator = req.session.user.code;
+  const instigatorName = user.name;
+  let subject,
+    dept,
+    sessionCode = null;
 
-    res.render('attendance/qr', {
-        instructor: instigator,
-        subject,
-        dept,
-        sessionCode,
-        sessionMins: 15,
-    });
-}
+  res.render("attendance/qr", {
+    instigator: req.session.user.code,
+    instigatorName,
+    subject,
+    dept,
+    sessionCode,
+    sessionMins: 15,
+  });
+};
 
-exports.scanner = async(req, res) => {
-    const role = req.session.user.role;
+exports.scanner = async (req, res) => {
+  const role = req.session.user.role;
 
-    res.render('attendance/scanner', {role});
-}
+  res.render("attendance/scanner", {
+    role,
+    popupMessage: null,
+    popupType: null,
+  });
+};

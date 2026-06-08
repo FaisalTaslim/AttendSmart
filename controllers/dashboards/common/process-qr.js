@@ -4,9 +4,14 @@ const resolveUserModel = require("../../../utils/functions/resolve-user-models")
 const mongoose = require("mongoose");
 
 exports.processQr = async (req, res) => {
+  const session = await mongoose.startSession();
+
   try {
     const Model = resolveUserModel(req.session.user.role);
     const user = await Model.findOne({ code: req.session.user.code });
+    const role = req.session.user.role;
+    let dept;
+
     if (!user) {
       return res.json({
         success: false,
@@ -15,11 +20,10 @@ exports.processQr = async (req, res) => {
     }
 
     const { qrData } = req.body;
-
     if (!qrData) {
       return res.json({
         success: false,
-        message: "QR data missing",
+        message: "QR data not found",
       });
     }
 
@@ -33,20 +37,22 @@ exports.processQr = async (req, res) => {
     if (!isActiveSession) {
       return res.json({
         success: false,
-        message: "Session not found",
+        message: 'Session not found or expired! Contact your teacher',
       });
     }
 
     const isAlreadyJoined = isActiveSession.joined.some(
-      (data) => data.code === user.code,
+      (d) => d.code === user.code
     );
 
     if (isAlreadyJoined) {
       return res.json({
         success: false,
-        message: "User already joined",
-      });
+        message: "You have already joined this session! Proceed to attendance marking!",
+      })
     }
+
+    session.startTransaction();
 
     await activeSession.findOneAndUpdate(
       { org: user.org, sessionCode: parsed.sessionCode },
@@ -62,6 +68,7 @@ exports.processQr = async (req, res) => {
           },
         },
       },
+      { session }
     );
 
     await logSession.findOneAndUpdate(
@@ -77,17 +84,33 @@ exports.processQr = async (req, res) => {
           },
         },
       },
+      { session }
     );
+
+    if(role === 'school-student') dept=user.standard;
+    else dept=user.dept;
+
+    await session.commitTransaction();
 
     return res.json({
       success: true,
-    });
+      message: 'Attendance session joined successfully',
+      isUser: 'student',
+      type: role,
+      sessionCode: parsed.sessionCode,
+      dept,
+      subject: parsed.subject,
+      key: parsed.sessionKey,
+    })
+
   } catch (err) {
-    console.error(err);
+    await session.abortTransaction();
 
     return res.json({
       success: false,
-      message: "Invalid QR",
-    });
+      message: 'Something went wrong!',
+    })
+  } finally {
+    session.endSession();
   }
 };

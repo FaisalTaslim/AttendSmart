@@ -25,12 +25,6 @@ const activeStudentSession = new Schema({
             type: Date,
             default: Date.now
         },
-        attendanceMarked: Boolean,
-
-        attendanceMarkedAt: {
-            type: Date,
-            default: null
-        },
         _id: false
     }],
     expiresAt: {

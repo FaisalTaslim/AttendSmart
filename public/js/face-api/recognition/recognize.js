@@ -18,7 +18,7 @@ async function initializeRecognition() {
   const data = await res.json();
 
   if (!data.success) {
-    throw new Error(data.message || "Failed to load face data");
+    throw new Error(data.message || "Failed to load face data"); 
   }
 
   const labeledDescriptors = data.users.map((user) => {

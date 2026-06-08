@@ -23,6 +23,7 @@ async function renderTeacherDashboard(req, res, popupMessage, popupType) {
 exports.startStudentSession = async (req, res) => {
   const { org, dept, majors, minors, optionals } = req.body;
   let subject = majors ?? minors ?? optionals;
+  console.log(subject);
 
   const dbSession = await mongoose.startSession();
   let user;
@@ -58,14 +59,45 @@ exports.startStudentSession = async (req, res) => {
           );
         }
       }
+      else {
+        const orgDoc = await Org.findOne(
+          { code: org },
+          { attendanceMethod: 1 },
+        );
+        const attendanceType = orgDoc?.attendanceMethod;
 
-      await activeSession.deleteMany(
-        { org, department: dept, subject },
-        { session: dbSession },
-      );
+        if(subject && attendanceType === "one-time") {
+          return renderTeacherDashboard(
+            req,
+            res,
+            'Subject must be null for your attendanceType!',
+            "error"
+          )
+        }
+      }
 
-      sessionCode = generateCode(10, "alphanumeric");
+      sessionCode = generateCode(10, "numeric");
       const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+
+      const isActiveSession = await activeSession.findOne({
+        org,
+        dept,
+        instigator: user.code,
+        subject,
+      });
+
+      if (isActiveSession) {
+        return res.render("attendance/qr", {                                                                                  
+          popupType: "success",
+          popupMessage: "Session already exists! Redirected to the page!",
+          instigatorName: user.name,
+          instigator: user.code,
+          subject,
+          dept,
+          sessionCode,
+          sessionMins: 15,
+        });
+      }
 
       await activeSession.create(
         [
@@ -73,7 +105,7 @@ exports.startStudentSession = async (req, res) => {
             org,
             sessionCode,
             code: user.code,
-            instigator: user.name,
+            instigator: user.code,
             department: dept,
             joined: [],
             subject,
@@ -84,18 +116,26 @@ exports.startStudentSession = async (req, res) => {
       );
 
       const month = getMonthKey();
-      await StudentSummary.updateMany(
+
+      console.log(org, dept, subject, month);
+
+      const result = await StudentSummary.updateMany(
         { org, department: dept, subject, month },
-        { $inc: { total: 1 } },
+        {
+          $inc: {
+            total: 1,
+          },
+        },
         { session: dbSession },
       );
+      console.log(result);
 
       await logSession.create(
         [
           {
             org,
             sessionCode,
-            instigator: user.name,
+            instigator: user.code,
             subject,
             department: dept,
             history: [],
@@ -103,16 +143,19 @@ exports.startStudentSession = async (req, res) => {
         ],
         { session: dbSession },
       );
-    });
 
-    const query = new URLSearchParams({
-      instigator: user.name,
-      subject,
-      dept,
-      "session-code": sessionCode,
+      
+      return res.render("attendance/qr", {
+        popupType: "success",
+        popupMessage: "Session started successfully!",
+        instigatorName: user.name,
+        instigator: user.code,
+        subject,
+        dept,
+        sessionCode,
+        sessionMins: 15,
+      });
     });
-
-    return res.redirect(`/dashboard/employee/teacher/qr?${query.toString()}`);
   } catch (err) {
     console.error("startStudentSession transaction failed:", err);
     return renderTeacherDashboard(
