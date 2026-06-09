@@ -72,7 +72,8 @@
         <section class="card">
           <h3>Attendance</h3>
           <p id='start-session-btn'>Start Session</p>
-          <p>Edit Attendance & Summary</p>
+          <p id="student-summary-btn">Student Summary</p>
+          <p id="employee-summary-btn">Employee Summary</p>
           <p>Download Reports</p>
         </section>
         <section class="card">
@@ -175,7 +176,7 @@
         </div>
 
         <div class="login-logs" id="login-logs">
-          <button id="login-log-go-back">Go Back</button>
+          <button id="login-logs-cancel-btn">Go Back</button>
           <div class="log-table-header">
             <h2><i class="ti ti-login"></i> Login logs</h2>
           </div>
@@ -216,7 +217,7 @@
         </div>
 
         <div class="register-logs" id="register-logs">
-          <button id="registerlog-cancel-btn">Go Back</button>
+          <button id="register-logs-cancel-btn">Go Back</button>
           <div class="log-table-header">
             <h2>Registration logs</h2>
           </div>
@@ -475,6 +476,105 @@
             </tbody>
           </table>
         </div>
+
+        <div class="student-summary-log" id="student-summary-log">
+          <button id="student-summary-cancel-btn">Go Back</button>
+          <div class="log-table-header">
+            <h2>Student attendance summary</h2>
+          </div>
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Code</th>
+                <th>Department</th>
+                <th>Month</th>
+                <th>Subjects</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (studentSummaryGrouped && studentSummaryGrouped.length > 0) { %>
+              <% studentSummaryGrouped.forEach((student, i) => { %>
+              <tr class="session-row" onclick="toggleHistoryRow('std-summary-<%= i %>')">
+                <td data-label=""><span class="expand-icon" id="std-summary-icon-<%= i %>">▶</span></td>
+                <td data-label="Name"><span class="name-text"><%= student.name %></span></td>
+                <td data-label="Code"><span class="id-text"><%= student.code %></span></td>
+                <td data-label="Department"><span class="role-pill"><%= student.department %></span></td>
+                <td data-label="Month"><span class="time-text"><%= student.month %></span></td>
+                <td data-label="Subjects"><span class="badge badge-success"><%= student.subjects.length %></span></td>
+              </tr>
+              <tr class="history-detail-row" id="std-summary-<%= i %>" style="display: none;">
+                <td colspan="6">
+                  <% student.subjects.forEach(sub => { %>
+                  <p class="history-entry-text">
+                    <span class="name-text"><%= sub.subject %></span>
+                    <span class="msg-text"> — attended </span>
+                    <span class="name-text"><%= sub.attended %></span>
+                    <span class="msg-text"> of </span>
+                    <span class="name-text"><%= sub.total %></span>
+                    <span class="msg-text"> classes — </span>
+                    <span class="badge <%= sub.percentage >= 75 ? 'badge-success' : sub.percentage >= 50 ? 'badge-warning' : 'badge-danger' %>">
+                      <%= sub.percentage %>%
+                    </span>
+                  </p>
+                  <% }) %>
+                </td>
+              </tr>
+              <% }) %>
+              <% } else { %>
+              <tr>
+                <td colspan="6" style="text-align:center; color: var(--text-muted);">No summary data yet.</td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="employee-summary-log" id="employee-summary-log">
+          <button id="employee-summary-cancel-btn">Go Back</button>
+          <div class="log-table-header">
+            <h2>Employee attendance summary</h2>
+          </div>
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Code</th>
+                <th>Designation</th>
+                <th>Shift</th>
+                <th>Month</th>
+                <th>Attended</th>
+                <th>Total</th>
+                <th>Percentage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (employeeSummary && employeeSummary.length > 0) { %>
+              <% employeeSummary.forEach(entry => { %>
+              <tr>
+                <td data-label="Name"><span class="name-text"><%= entry.name %></span></td>
+                <td data-label="Code"><span class="id-text"><%= entry.code %></span></td>
+                <td data-label="Department"><span class="role-pill"><%= entry.department %></span></td>
+                <td data-label="Shift"><span class="role-pill"><%= entry.shift %></span></td>
+                <td data-label="Month"><span class="time-text"><%= entry.month %></span></td>
+                <td data-label="Attended"><span class="name-text"><%= entry.attended %></span></td>
+                <td data-label="Total"><span class="msg-text"><%= entry.total %></span></td>
+                <td data-label="Percentage">
+                  <span class="badge <%= entry.percentage >= 75 ? 'badge-success' : entry.percentage >= 50 ? 'badge-warning' : 'badge-danger' %>">
+                    <%= entry.percentage %>%
+                  </span>
+                </td>
+              </tr>
+              <% }) %>
+              <% } else { %>
+              <tr>
+                <td colspan="8" style="text-align:center; color: var(--text-muted);">No summary data yet.</td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
   </main>
@@ -517,15 +617,18 @@
     <p class="copyright">&copy2026 AttendSmart. All Rights Reserved.</p>
   </footer>
 
+  <script src="/js/page-specific/dashboard/admin/display-containers.js"></script>
   <script src="/js/page-specific/dashboard/admin/disable-containers.js"></script>
   <script src="/js/page-specific/dashboard/admin/upload-csv.js"></script>
-  <script src="/js/page-specific/dashboard/admin/employee-session.js"></script>
   <script src="/js/global/UI/popup.js"></script>
   <script>
     function toggleHistoryRow(id) {
       const row = document.getElementById(id);
       const index = id.split('-').pop();
-      const prefix = id.startsWith('std') ? 'std-history-icon-' : 'emp-history-icon-';
+      let prefix;
+      if (id.startsWith('emp')) prefix = 'emp-history-icon-';
+      else if (id.startsWith('std-history')) prefix = 'std-history-icon-';
+      else if (id.startsWith('std-summary')) prefix = 'std-summary-icon-';
       const icon = document.getElementById(prefix + index);
       const isHidden = row.style.display === 'none';
       row.style.display = isHidden ? 'table-row' : 'none';

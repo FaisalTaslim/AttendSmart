@@ -4,6 +4,8 @@ const ActiveEmployeeSession = require("../../models/attendance/active-employee-s
 const ActiveStudentSession = require("../../models/attendance/active-student-session");
 const EmployeeHistory = require("../../models/logs/employee-attendance-history");
 const StudentHistory = require("../../models/logs/student-attendance-history");
+const StudentSummary = require("../../models/statistics/student-summary");
+const EmployeeSummary = require("../../models/statistics/employee-summary");
 
 function normalizeTexts(text) {
   return text
@@ -22,6 +24,8 @@ module.exports = async function getAdminRenderData(user, overrides = {}) {
     activeStudentSessions,
     employeeHistory,
     studentHistory,
+    studentSummary,
+    employeeSummary,
   ] = await Promise.all([
     LoginLogs.find({ org: code }).sort({ createdAt: -1 }),
     RegisterLogs.find({ org: code }).sort({ createdAt: -1 }),
@@ -29,7 +33,36 @@ module.exports = async function getAdminRenderData(user, overrides = {}) {
     ActiveStudentSession.find({ org: code }),
     EmployeeHistory.find({ org: code }).sort({ createdAt: -1 }),
     StudentHistory.find({ org: code }).sort({ createdAt: -1 }),
+    StudentSummary.find({ org: code }),
+    EmployeeSummary.find({ org: code }),
   ]);
+
+  const rawSummary = studentSummary.map((entry) => ({
+    ...entry._doc,
+    name: normalizeTexts(entry.name),
+    percentage: entry.total > 0 ? Math.round((entry.attended / entry.total) * 100) : 0,
+  }));
+
+  const summaryMap = {};
+  rawSummary.forEach((entry) => {
+    if (!summaryMap[entry.code]) {
+      summaryMap[entry.code] = {
+        code: entry.code,
+        name: entry.name,
+        department: entry.department,
+        month: entry.month,
+        subjects: [],
+      };
+    }
+    summaryMap[entry.code].subjects.push({
+      subject: entry.subject || '—',
+      attended: entry.attended,
+      total: entry.total,
+      percentage: entry.percentage,
+    });
+  });
+
+  const studentSummaryGrouped = Object.values(summaryMap);
 
   return {
     popupMessage: null,
@@ -62,6 +95,12 @@ module.exports = async function getAdminRenderData(user, overrides = {}) {
         isMarked: entry.isMarked,
       })),
     })),
-    ...overrides,  // lets you override popupMessage, popupType etc per call
+    employeeSummary: employeeSummary.map((entry) => ({
+      ...entry._doc,
+      name: normalizeTexts(entry.name),
+      percentage: entry.total > 0 ? Math.round((entry.attended / entry.total) * 100) : 0,
+    })),
+    studentSummaryGrouped,
+    ...overrides,
   };
 };

@@ -1,43 +1,27 @@
-const overlay = document.getElementsByClassName('overlay')[0];
-const sessionFormCancel = document.getElementById('sessionform-cancel');
-const loginLogCancel = document.getElementById('login-log-go-back');
-const registerLogCancel = document.getElementById('registerlog-cancel-btn');
-const activeEmployeeLogCancel = document.getElementById('active-employee-cancel-btn');
-const activeStudentLogCancel = document.getElementById('active-student-cancel-btn');
-const employeeHistoryLogCancel = document.getElementById('employee-history-cancel-btn');
-const studentHistoryLogCancel = document.getElementById('student-history-cancel-btn');
+const cancelBtns = [
+  document.getElementById("sessionform-cancel"),
+  document.getElementById("login-logs-cancel-btn"),
+  document.getElementById("register-logs-cancel-btn"),
+  document.getElementById("active-employee-cancel-btn"),
+  document.getElementById("active-student-cancel-btn"),
+  document.getElementById("employee-history-cancel-btn"),
+  document.getElementById("student-history-cancel-btn"),
+  document.getElementById("student-summary-cancel-btn"),
+  document.getElementById("employee-summary-cancel-btn"),
+  document.getElementById("account-info-cancel-btn"),
+];
 
-sessionFormCancel.addEventListener('click', () => {
-    sessionForm.style.display = 'none';
-    overlay.style.display = 'none';
+const hideOverlay = () => {
+  overlay.style.display = "none";
+  document.querySelectorAll(
+    ".session-form, .login-logs, .register-logs, .active-employee-session-log, .active-student-session-log, .employee-attendance-history-log, .student-attendance-history-log, .student-summary-log, .employee-summary-log, .account-info-card"
+  ).forEach((el) => (el.style.display = "none"));
+};
+
+cancelBtns.forEach((btn) => {
+  if (btn) btn.addEventListener("click", hideOverlay);
 });
 
-loginLogCancel.addEventListener('click', () => {
-    loginLog.style.display = 'none';
-    overlay.style.display = 'none';
-})
-
-registerLogCancel.addEventListener('click', () => {
-    registerLog.style.display = 'none';
-    overlay.style.display = 'none';
-})
-
-activeEmployeeLogCancel.addEventListener('click', () => {
-    activeEmployeeSession.style.display = 'none';
-    overlay.style.display = 'none';
-})
-
-activeStudentLogCancel.addEventListener('click', () => {
-    activeStudentSession.style.display = 'none';
-    overlay.style.display = 'none';
+overlay.addEventListener("click", (e) => {
+  if (e.target === overlay) hideOverlay();
 });
-
-employeeHistoryLogCancel.addEventListener('click', () => {
-    employeeHistory.style.display = 'none';
-    overlay.style.display = 'none';
-})
-
-studentHistoryLogCancel.addEventListener('click', () => {
-    studentHistory.style.display = 'none';
-    overlay.style.display = 'none';
-})
