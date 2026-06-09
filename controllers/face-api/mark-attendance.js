@@ -83,7 +83,7 @@ exports.markAttendance = async (req, res) => {
         history = await returnEmployeeHistory(org, sessionCode);
         index = returnIndex(history);
 
-        if (matchFoundAt < 0) {
+        if (matchFoundAt >= 0) {
           await EmployeeHistory.findOneAndUpdate(
             { org: org, sessionCode: sessionCode },
             {

@@ -15,7 +15,6 @@ const {
 const generateCode = require("../../../utils/functions/generate-code");
 
 async function returnUser(req) {
-  console.log(req);
   const Model = resolveUserModel(req.session.user.role);
   return await Model.findOne({ code: req.session.user.code });
 }
@@ -109,7 +108,7 @@ exports.startEmployeeSession = async (req, res) => {
         ],
         { session: dbSession },
       );
-
+      
       await dbSession.commitTransaction();
       dbSession.endSession();
 
@@ -170,7 +169,7 @@ exports.startEmployeeSession = async (req, res) => {
     return res.render("dashboards/admin", {
       popupType: "error",
       popupMessage: "No active Session",
-      orgType: await returnUser(req)?.orgType,
+      orgType: (await returnUser(req))?.orgType,
       isSubjectsUploaded: (await returnUser(req))?.setup?.subjectsUploaded,
       isScheduleUploaded: (await returnUser(req))?.setup?.scheduleUploaded,
       isSetupDone: (await returnUser(req))?.setup?.done,
