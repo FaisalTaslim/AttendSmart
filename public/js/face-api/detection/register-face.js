@@ -1,7 +1,6 @@
 const faceInput = document.getElementById("face");
 
 faceInput.addEventListener("change", async () => {
-
   await window.faceModelsReady;
 
   if (!faceInput.files.length) return;

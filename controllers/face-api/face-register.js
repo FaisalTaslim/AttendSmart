@@ -41,7 +41,7 @@ exports.registerFace = async (req, res) => {
                 $push: {
                     "faceData.descriptors": {
                         $each: descriptorList,
-                        $slice: -5
+                        $slice: -10
                     }
                 },
                 $set: { 

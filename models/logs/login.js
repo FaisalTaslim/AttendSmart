@@ -1,30 +1,38 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const loginLog = new Schema({
+const loginLog = new Schema(
+  {
     type: {
-        type: String,
-        enum: ['failed', 'success'],
-        required: true,
+      type: String,
+      enum: ["failed", "success"],
+      required: true,
     },
     org: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     id: {
-        type: String, 
-        required: true
+      type: String,
+      required: true,
     },
-    name: {type: String, required: true},
+    name: { type: String, required: true },
     role: {
-        type: String,
-        enum: ['admin', 'employee', 'college-student', 'school-student', 'employee', 'teacher'],
-        required: true
+      type: String,
+      enum: [
+        "admin",
+        "employee",
+        "college-student",
+        "school-student",
+        "employee",
+        "teacher",
+      ],
+      required: true,
     },
-    message: {type: String, required: true},
+    message: { type: String, required: true },
+  },
+  { timestamps: true },
+);
 
-
-}, { timestamps: true });
-
-const login = mongoose.model('LoginLog', loginLog, 'LoginLog');
+const login = mongoose.model("LoginLog", loginLog, "LoginLog");
 module.exports = login;
