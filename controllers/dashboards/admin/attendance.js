@@ -13,6 +13,7 @@ const {
   formatTime,
 } = require("../../../utils/functions/time");
 const generateCode = require("../../../utils/functions/generate-code");
+const getAdminRenderData = require("../../../utils/render-dashboards/admin-render-data");
 
 async function returnUser(req) {
   const Model = resolveUserModel(req.session.user.role);
@@ -108,7 +109,7 @@ exports.startEmployeeSession = async (req, res) => {
         ],
         { session: dbSession },
       );
-      
+
       await dbSession.commitTransaction();
       dbSession.endSession();
 
@@ -166,13 +167,12 @@ exports.startEmployeeSession = async (req, res) => {
     await dbSession.abortTransaction();
     dbSession.endSession();
 
-    return res.render("dashboards/admin", {
+    const user = await returnUser(req);
+    const data = await getAdminRenderData(user, {
       popupType: "error",
-      popupMessage: "No active Session",
-      orgType: (await returnUser(req))?.orgType,
-      isSubjectsUploaded: (await returnUser(req))?.setup?.subjectsUploaded,
-      isScheduleUploaded: (await returnUser(req))?.setup?.scheduleUploaded,
-      isSetupDone: (await returnUser(req))?.setup?.done,
+      popupMessage: "No active session",
     });
+    
+    return res.render("dashboards/admin", data);
   }
 };

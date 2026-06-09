@@ -65,7 +65,7 @@
         </div>
         <div id="status">
           <p>Setup: completed</p>
-          <button>Account info</button>
+          <button id="account-info-btn">Account info</button>
         </div>
       </div>
       <div class="dashboard-navigation">
@@ -92,11 +92,12 @@
         </section>
         <section class="card">
           <h3>Audit Log</h3>
-          <p>Login logs</p>
-          <p>Regiser logs</p>
-          <p>Support logs</p>
-          <p>Session logs</p>
-          <p>Attendance History logs</p>
+          <p id="login-logs-btn">Login Logs</p>
+          <p id="register-logs-btn">Registration Logs</p>
+          <p id="active-employee-session-btn">Active Employee Session Logs</p>
+          <p id="active-student-session-btn">Active Student Session Logs</p>
+          <p id="employee-attendance-history-btn">Employee Attendance History Logs</p>
+          <p id="student-attendance-history-btn">Student Attendance History Logs</p>
         </section>
       </div>
       <%if (!isSetupDone) { %>
@@ -148,8 +149,8 @@
     </section>
     <section class="dashboard-contents">
       <div class="overlay">
-        <div class="session-form">
-          <button id="fallback-cancel">Go Back</button>
+        <div class="session-form" id="session-form">
+          <button id="sessionform-cancel">Go Back</button>
           <form action="/dashboard/admin/start-employee-session" method="POST">
 
             <div class="outer-group">
@@ -171,6 +172,308 @@
             <button type="submit">Start Session</button>
 
           </form>
+        </div>
+
+        <div class="login-logs" id="login-logs">
+          <button id="login-log-go-back">Go Back</button>
+          <div class="log-table-header">
+            <h2><i class="ti ti-login"></i> Login logs</h2>
+          </div>
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Name</th>
+                <th>User ID</th>
+                <th>Role</th>
+                <th>Message</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (loginLog && loginLog.length > 0) { %>
+              <% loginLog.forEach(log => { %>
+              <tr>
+                <td data-label="Status">
+                  <span class="badge badge-<%= log.type === 'success' ? 'success' : 'danger' %>">
+                    <%= log.type %>
+                  </span>
+                </td>
+                <td data-label="Name"><span class="name-text"><%= log.name %></span></td>
+                <td data-label="User ID"><span class="id-text"><%= log.id %></span></td>
+                <td data-label="Role"><span class="role-pill"><%= log.role %></span></td>
+                <td data-label="Message"><span class="msg-text"><%= log.message %></span></td>
+                <td data-label="Time"><span class="time-text"><%= new Date(log.createdAt).toLocaleString() %></span></td>
+              </tr>
+              <% }) %>
+              <% } else { %>
+              <tr>
+                <td colspan="6" style="text-align:center; color: var(--color-text-secondary);">No login activity yet.</td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="register-logs" id="register-logs">
+          <button id="registerlog-cancel-btn">Go Back</button>
+          <div class="log-table-header">
+            <h2>Registration logs</h2>
+          </div>
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Name</th>
+                <th>User ID</th>
+                <th>Role</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Message</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (registerLog && registerLog.length > 0) { %>
+              <% registerLog.forEach(log => { %>
+              <tr>
+                <td data-label="Status">
+                  <span class="badge badge-<%= log.type === 'success' ? 'success' : 'danger' %>">
+                    <%= log.type %>
+                  </span>
+                </td>
+                <td data-label="Name"><span class="name-text"><%= log.name %></span></td>
+                <td data-label="User ID"><span class="id-text"><%= log.id %></span></td>
+                <td data-label="Role"><span class="role-pill"><%= log.role %></span></td>
+                <td data-label="Email"><span class="msg-text"><%= log.email %></span></td>
+                <td data-label="Contact"><span class="msg-text"><%= log.contact %></span></td>
+                <td data-label="Message"><span class="msg-text"><%= log.message %></span></td>
+                <td data-label="Time"><span class="time-text"><%= new Date(log.createdAt).toLocaleString() %></span></td>
+              </tr>
+              <% }) %>
+              <% } else { %>
+              <tr>
+                <td colspan="8" style="text-align:center; color: var(--text-muted);">No registration activity yet.</td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="active-employee-session-log" id="active-employee-session-log">
+          <button id="active-employee-cancel-btn">Go Back</button>
+          <div class="log-table-header">
+            <h2>Active employee sessions</h2>
+          </div>
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th>Session Code</th>
+                <th>Shift</th>
+                <th>Type</th>
+                <th>Started At</th>
+                <th>Expires At</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (activeEmployeeSessions && activeEmployeeSessions.length > 0) { %>
+              <% activeEmployeeSessions.forEach(session => { %>
+              <tr>
+                <td data-label="Session Code">
+                  <span class="id-text"><%= session.sessionCode %></span>
+                </td>
+                <td data-label="Shift">
+                  <span class="role-pill"><%= session.shift %></span>
+                </td>
+                <td data-label="Type">
+                  <span class="badge <%= session.type === 'check-in' ? 'badge-success' : 'badge-warning' %>">
+                    <%= session.type %>
+                  </span>
+                </td>
+                <td data-label="Started At">
+                  <span class="time-text"><%= new Date(session.createdAt).toLocaleString() %></span>
+                </td>
+                <td data-label="Expires At">
+                  <span class="time-text"><%= new Date(session.expiresAt).toLocaleString() %></span>
+                </td>
+              </tr>
+              <% }) %>
+              <% } else { %>
+              <tr>
+                <td colspan="5" style="text-align:center; color: var(--text-muted);">No active sessions.</td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="active-student-session-log" id="active-student-session-log">
+          <button id="active-student-cancel-btn">Go Back</button>
+          <div class="log-table-header">
+            <h2>Active student sessions</h2>
+          </div>
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th>Session Code</th>
+                <th>Department</th>
+                <th>Subject</th>
+                <th>Joined</th>
+                <th>Started At</th>
+                <th>Expires At</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (activeStudentSessions && activeStudentSessions.length > 0) { %>
+              <% activeStudentSessions.forEach(session => { %>
+              <tr>
+                <td data-label="Session Code">
+                  <span class="id-text"><%= session.sessionCode %></span>
+                </td>
+                <td data-label="Department">
+                  <span class="role-pill"><%= session.department %></span>
+                </td>
+                <td data-label="Subject">
+                  <span class="msg-text"><%= session.subject || '—' %></span>
+                </td>
+                <td data-label="Joined">
+                  <span class="badge badge-success"><%= session.joined.length %> joined</span>
+                </td>
+                <td data-label="Started At">
+                  <span class="time-text"><%= new Date(session.createdAt).toLocaleString() %></span>
+                </td>
+                <td data-label="Expires At">
+                  <span class="time-text"><%= new Date(session.expiresAt).toLocaleString() %></span>
+                </td>
+              </tr>
+              <% }) %>
+              <% } else { %>
+              <tr>
+                <td colspan="6" style="text-align:center; color: var(--text-muted);">No active sessions.</td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="employee-attendance-history-log" id="employee-attendance-history-log">
+          <button id="employee-history-cancel-btn">Go Back</button>
+          <div class="log-table-header">
+            <h2>Employee attendance history</h2>
+          </div>
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Session Code</th>
+                <th>Shift</th>
+                <th>Employees</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (employeeHistory && employeeHistory.length > 0) { %>
+              <% employeeHistory.forEach((session, i) => { %>
+
+              <tr class="session-row" onclick="toggleHistoryRow('emp-history-<%= i %>')">
+                <td data-label=""><span class="expand-icon" id="emp-history-icon-<%= i %>">▶</span></td>
+                <td data-label="Session Code"><span class="id-text"><%= session.sessionCode %></span></td>
+                <td data-label="Shift"><span class="role-pill"><%= session.shift %></span></td>
+                <td data-label="Employees"><span class="badge badge-success"><%= session.history.length %></span></td>
+                <td data-label="Date"><span class="time-text"><%= new Date(session.createdAt).toLocaleString() %></span></td>
+              </tr>
+
+              <tr class="history-detail-row" id="emp-history-<%= i %>" style="display: none;">
+                <td colspan="5">
+                  <% if (session.history.length === 0) { %>
+                  <p class="msg-text">No entries for this session.</p>
+                  <% } else { %>
+                  <% session.history.forEach(entry => { %>
+                  <p class="history-entry-text nav-links-property">
+                    <span class="name-text"><%= entry.name %></span>
+                    <span class="msg-text"> with code </span>
+                    <span class="id-text"><%= entry.code %></span>
+                    <span class="msg-text"> checked in at </span>
+                    <span class="time-text"><%= entry.checkIn ? new Date(entry.checkIn).toLocaleString() : '—' %></span>
+                    <% if (entry.checkOut) { %>
+                    <span class="msg-text"> and checked out at </span>
+                    <span class="time-text"><%= new Date(entry.checkOut).toLocaleString() %></span>
+                    <% } else { %>
+                    <span class="badge badge-warning" style="margin-left: 4px;">no checkout</span>
+                    <% } %>
+                  </p>
+                  <% }) %>
+                  <% } %>
+                </td>
+              </tr>
+
+              <% }) %>
+              <% } else { %>
+              <tr>
+                <td colspan="5" style="text-align:center; color: var(--text-muted);">No attendance history yet.</td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="student-attendance-history-log" id="student-attendance-history-log">
+          <button id='student-history-cancel-btn'>Go Back</button>
+          <div class="log-table-header">
+            <h2>Student attendance history</h2>
+          </div>
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Session Code</th>
+                <th>Subject</th>
+                <th>Department</th>
+                <th>Students</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (studentHistory && studentHistory.length > 0) { %>
+              <% studentHistory.forEach((session, i) => { %>
+              <tr class="session-row" onclick="toggleHistoryRow('std-history-<%= i %>')">
+                <td data-label=""><span class="expand-icon" id="std-history-icon-<%= i %>">▶</span></td>
+                <td data-label="Session Code"><span class="id-text"><%= session.sessionCode %></span></td>
+                <td data-label="Subject"><span class="msg-text"><%= session.subject || '—' %></span></td>
+                <td data-label="Department"><span class="role-pill"><%= session.department %></span></td>
+                <td data-label="Students"><span class="badge badge-success"><%= session.history.length %></span></td>
+                <td data-label="Date"><span class="time-text"><%= new Date(session.createdAt).toLocaleString() %></span></td>
+              </tr>
+              <tr class="history-detail-row" id="std-history-<%= i %>" style="display: none;">
+                <td colspan="6">
+                  <% if (session.history.length === 0) { %>
+                  <p class="msg-text">No entries for this session.</p>
+                  <% } else { %>
+                  <% session.history.forEach(entry => { %>
+                  <p class="history-entry-text">
+                    <span class="name-text"><%= entry.name %></span>
+                    <span class="msg-text"> with code </span>
+                    <span class="id-text"><%= entry.code %></span>
+                    <span class="msg-text"> attended on </span>
+                    <span class="time-text"><%= entry.date ? new Date(entry.date).toLocaleString() : '—' %></span>
+                    <% if (entry.isMarked) { %>
+                    <span class="badge badge-success" style="margin-left: 4px;">marked</span>
+                    <% } else { %>
+                    <span class="badge badge-warning" style="margin-left: 4px;">not marked</span>
+                    <% } %>
+                  </p>
+                  <% }) %>
+                  <% } %>
+                </td>
+              </tr>
+              <% }) %>
+              <% } else { %>
+              <tr>
+                <td colspan="6" style="text-align:center; color: var(--text-muted);">No attendance history yet.</td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
@@ -214,10 +517,21 @@
     <p class="copyright">&copy2026 AttendSmart. All Rights Reserved.</p>
   </footer>
 
-  <script src="/js/page-specific/dashboard/admin/remove-fallback-container.js"></script>
+  <script src="/js/page-specific/dashboard/admin/disable-containers.js"></script>
   <script src="/js/page-specific/dashboard/admin/upload-csv.js"></script>
   <script src="/js/page-specific/dashboard/admin/employee-session.js"></script>
   <script src="/js/global/UI/popup.js"></script>
+  <script>
+    function toggleHistoryRow(id) {
+      const row = document.getElementById(id);
+      const index = id.split('-').pop();
+      const prefix = id.startsWith('std') ? 'std-history-icon-' : 'emp-history-icon-';
+      const icon = document.getElementById(prefix + index);
+      const isHidden = row.style.display === 'none';
+      row.style.display = isHidden ? 'table-row' : 'none';
+      icon.textContent = isHidden ? '▼' : '▶';
+    }
+  </script>
 
 </body>
 

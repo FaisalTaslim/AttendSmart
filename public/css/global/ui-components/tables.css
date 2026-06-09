@@ -1,79 +1,122 @@
 :root {
-    --table-radius: 0.6rem;
-    --table-border: 1px solid rgba(var(--accent-rgb), 0.12);
-    --table-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
-    --table-head-bg: rgba(var(--accent-rgb), 0.08);
-    --table-row-divider: rgba(var(--accent-rgb), 0.08);
-    --table-hover-bg: rgba(var(--accent-rgb), 0.06);
-    --table-zebra-bg: rgba(var(--accent-rgb), 0.02);
+  --table-radius: 0.75rem;
+  --table-border: 1px solid var(--border);
+  --table-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+  --table-head-bg: linear-gradient(135deg, rgba(37, 99, 235, 0.06), rgba(147, 51, 234, 0.06));
+  --table-row-divider: rgba(0, 0, 0, 0.05);
+  --table-hover-bg: rgba(37, 99, 235, 0.04);
+  --table-zebra-bg: rgba(0, 0, 0, 0.015);
 }
 
 table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    background: var(--bg-card, var(--bg-secondary));
-    border: var(--table-border);
-    border-radius: var(--table-radius);
-    box-shadow: var(--table-shadow);
-    font-size: 0.85rem;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #ffffff;
+  border: var(--table-border);
+  border-radius: var(--table-radius);
+  box-shadow: var(--table-shadow);
+  font-size: 0.85rem;
+  overflow: hidden;
 }
 
 table caption {
-    padding: 0.6rem 0.8rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text-secondary);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
 }
 
 table thead {
-    background: var(--table-head-bg);
+  background: var(--table-head-bg);
+  position: relative;
+}
+
+table thead::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0.8rem;
+  right: 0.8rem;
+  height: 1px;
+  background: linear-gradient(90deg, #2563eb, #9333ea);
+  opacity: 0.25;
 }
 
 table th {
-    padding: 0.6rem 0.8rem;
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    border-bottom: 1px solid var(--table-row-divider);
-    color: var(--accent);
+  padding: 0.75rem 0.8rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  border-bottom: none;
+  text-align: left; 
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 }
 
 table td {
-    padding: 0.6rem 0.8rem;
-    border-bottom: 1px solid var(--table-row-divider);
-    color: var(--text-primary);
-    line-height: 1.3;
-    transition: background 0.15s ease;
+  padding: 0.65rem 0.8rem;
+  border-bottom: 1px solid var(--table-row-divider);
+  color: var(--text-primary);
+  line-height: 1.4;
+  transition: background 0.15s ease;
 }
 
 table tbody tr:nth-child(even) {
-    background: var(--table-zebra-bg);
+  background: var(--table-zebra-bg);
+}
+
+table tbody tr {
+  transition: background 0.15s ease, transform 0.1s ease;
 }
 
 table tbody tr:hover td {
-    background: var(--table-hover-bg);
+  background: var(--table-hover-bg);
 }
 
 table tr:last-child td {
-    border-bottom: none;
+  border-bottom: none;
 }
+
+/* ── Accent left bar on hover ──────────────────────── */
+table tbody tr td:first-child {
+  position: relative;
+}
+
+table tbody tr td:first-child::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20%;
+  height: 60%;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--gradient-accent);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+table tbody tr:hover td:first-child::before {
+  opacity: 1;
+}
+
+table thead th:first-child { border-radius: var(--table-radius) 0 0 0; }
+table thead th:last-child  { border-radius: 0 var(--table-radius) 0 0; }
+table tbody tr:last-child td:first-child { border-radius: 0 0 0 var(--table-radius); }
+table tbody tr:last-child td:last-child  { border-radius: 0 0 var(--table-radius) 0; }
 
 .table-scroll {
-    width: 100%;
-    overflow-x: auto;
-    border-radius: var(--table-radius);
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--table-radius);
 }
 
-/* Even tighter on small screens */
 @media (max-width: 768px) {
-    table {
-        font-size: 0.78rem;
-    }
-
-    table th,
-    table td {
-        padding: 0.5rem 0.65rem;
-    }
+  table { font-size: 0.78rem; }
+  table th,
+  table td { padding: 0.5rem 0.65rem; }
 }

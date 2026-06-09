@@ -1,4 +1,6 @@
-.dashboard-contents {display: flex;}
+.dashboard-contents {
+  display: flex;
+}
 .session-form {
   width: 360px;
   max-width: 90%;
@@ -7,12 +9,13 @@
   padding: 24px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 16px;
 
   animation: popIn 0.2s ease-out;
 }
+
 @keyframes popIn {
   from {
     transform: scale(0.95);
@@ -21,5 +24,236 @@
   to {
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+.login-logs,
+.register-logs,
+.active-employee-session-log,
+.active-student-session-log,
+.employee-attendance-history-log,
+.student-attendance-history-log {
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+  width: min(100%, 1120px);
+  max-width: 100%;
+  min-width: 0;
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 1.5rem;
+  background: var(--card-bg, #fff);
+  border-radius: 12px;
+  border: 1px solid var(--border-color, #e5e7eb);
+  box-sizing: border-box;
+}
+.log-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.log-table-header h2 {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary, #111);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.log-table .col-status {
+  width: 100px;
+}
+.log-table .col-name {
+  width: 160px;
+}
+.log-table .col-id {
+  width: 120px;
+}
+.log-table .col-role {
+  width: 90px;
+}
+.log-table .col-msg {
+  width: auto;
+}
+.log-table .col-time {
+  width: 140px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.badge-success {
+  background: #dcfce7;
+  color: #166534;
+}
+.badge-danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.badge-warning {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.name-text {
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.id-text {
+  font-family: monospace;
+  font-size: 11px;
+  color: var(--text-muted, #6b7280);
+  overflow-wrap: anywhere;
+}
+
+.role-pill {
+  font-size: 11px;
+  color: var(--text-muted, #6b7280);
+  background: var(--pill-bg, #f3f4f6);
+  border: 1px solid var(--border-color, #e5e7eb);
+  padding: 2px 8px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.msg-text {
+  color: var(--text-muted, #6b7280);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.time-text {
+  color: var(--text-muted, #6b7280);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.session-row {
+  cursor: pointer;
+  user-select: none;
+}
+
+.session-row:hover td {
+  background: var(--table-hover-bg, rgba(37, 99, 235, 0.04));
+}
+
+.expand-icon {
+  font-size: 10px;
+  color: var(--text-muted, #9ca3af);
+  transition: transform 0.2s ease;
+}
+
+.history-detail-row td {
+  padding: 0;
+  border-bottom: 2px solid var(--table-row-divider);
+}
+
+.history-entry-text {
+  padding: 0.4rem 1rem;
+  border-bottom: 1px solid var(--table-row-divider);
+  line-height: 1.6;
+}
+
+.history-entry-text:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .overlay {
+    padding: 0.75rem;
+    align-items: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .login-logs,
+  .register-logs,
+  .active-employee-session-log,
+  .active-student-session-log,
+  .employee-attendance-history-log,
+  .student-attendance-history-log {
+    width: 100%;
+    padding: 1rem;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .log-table thead {
+    display: none;
+  }
+
+  .log-table,
+  .log-table tbody,
+  .log-table tr,
+  .log-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .log-table tbody tr {
+    margin-bottom: 0.85rem;
+    padding: 0.25rem 0.85rem;
+    box-sizing: border-box;
+  }
+
+  .log-table td {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.9rem;
+    padding: 0.7rem 0;
+    box-sizing: border-box;
+  }
+
+  .log-table td::before {
+    content: attr(data-label);
+    flex: 0 0 38%;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted, #6b7280);
+  }
+
+  .log-table td[colspan] {
+    display: block;
+    text-align: center;
+    padding: 1rem 0;
+  }
+
+  .log-table td[colspan]::before {
+    content: none;
+  }
+
+  .time-text {
+    white-space: normal;
+    text-align: right;
+  }
+  .msg-text {
+    text-align: right;
+  }
+
+  .history-entry-text {
+    text-align: left;
+  }
+
+  .history-entry-text span {
+    text-align: left;
   }
 }
