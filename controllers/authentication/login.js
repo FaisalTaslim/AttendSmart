@@ -133,7 +133,7 @@ exports.login = async (req, res) => {
         }
 
         if (userRole === 'admin') {
-            res.redirect('/dashboard/admin');
+            res.redirect('/dashboard');
         } else {
             res.redirect(`/dashboard/student/${userRole}`)
         }

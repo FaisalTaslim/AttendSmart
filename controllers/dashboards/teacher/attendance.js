@@ -23,7 +23,6 @@ async function renderTeacherDashboard(req, res, popupMessage, popupType) {
 exports.startStudentSession = async (req, res) => {
   const { org, dept, majors, minors, optionals } = req.body;
   let subject = majors ?? minors ?? optionals;
-  console.log(subject);
 
   const dbSession = await mongoose.startSession();
   let user;
@@ -107,7 +106,6 @@ exports.startStudentSession = async (req, res) => {
             code: user.code,
             instigator: user.code,
             department: dept,
-            joined: [],
             subject,
             expiresAt,
           },
@@ -116,8 +114,6 @@ exports.startStudentSession = async (req, res) => {
       );
 
       const month = getMonthKey();
-
-      console.log(org, dept, subject, month);
 
       const result = await StudentSummary.updateMany(
         { org, department: dept, subject, month },
@@ -128,7 +124,6 @@ exports.startStudentSession = async (req, res) => {
         },
         { session: dbSession },
       );
-      console.log(result);
 
       await logSession.create(
         [

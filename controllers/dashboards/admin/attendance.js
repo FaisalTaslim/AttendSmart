@@ -124,7 +124,6 @@ exports.startEmployeeSession = async (req, res) => {
       });
     } else {
       const { hours } = fullTime();
-      const shiftType = hours >= 6 && hours < 18 ? "day" : "night";
       const sessionIsActive = await activeSession.findOne({ org, shift });
 
       if (!sessionIsActive) {
