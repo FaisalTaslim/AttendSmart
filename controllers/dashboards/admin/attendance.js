@@ -52,6 +52,7 @@ exports.startEmployeeSession = async (req, res) => {
           sessionCode: sessionIsActive.sessionCode,
           subject: null,
           key: null,
+          shift,
         });
       }
 
@@ -122,6 +123,7 @@ exports.startEmployeeSession = async (req, res) => {
         sessionCode: activeSessionDoc.sessionCode,
         subject: null,
         key: null,
+        shift,
       });
     } else {
       const { hours } = fullTime();
@@ -158,6 +160,7 @@ exports.startEmployeeSession = async (req, res) => {
         sessionCode: sessionIsActive.sessionCode,
         subject: null,
         key: null,
+        shift,
       });
 
       await dbSession.commitTransaction();

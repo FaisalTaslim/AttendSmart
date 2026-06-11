@@ -13,13 +13,15 @@ exports.guidebook = async (req, res) => {
 };
 
 exports.captureAttendanceWindow = async (req, res) => {
-  const role = req.session.user.role;
-  const isUser = req.query.for;
-  const type = req.query.type;
-  let subject = req.query.subject;
-  let dept = req.query.dept ?? null;
-  const sessionCode = req.query.session;
-  let key = req.query.key;
+  const {
+    isUser = null,
+    type = null,
+    dept = null,
+    sessionCode = null,
+    subject = null,
+    key = null,
+    shift = null,
+  } = {};
 
   const userModel = resolveUserModel(role);
   const user = await userModel.findOne({ code: req.session.user.code });

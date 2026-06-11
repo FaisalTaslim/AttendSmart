@@ -17,9 +17,10 @@ const {
 
 exports.markAttendance = async (req, res) => {
   try {
-    const { sessionCode, type, isUser, userCode, dept, subject, key } = req.body;
+    const { sessionCode, type, isUser, userCode, dept, subject, key, shift } =
+      req.body;
     let history;
-    let index;
+    let index = -1;
 
     async function returnEmployeeHistory(org, sessionCode) {
       const result = await EmployeeHistory.findOne({
@@ -45,7 +46,12 @@ exports.markAttendance = async (req, res) => {
     }
 
     async function returnStudentHistory(org, sessionCode) {
-      const result = await StudentHistory.findOne({ org, sessionCode, subject, department: dept });
+      const result = await StudentHistory.findOne({
+        org,
+        sessionCode,
+        subject,
+        department: dept,
+      });
 
       if (!result) {
         throw new Error("Student history not found");
@@ -64,12 +70,12 @@ exports.markAttendance = async (req, res) => {
     if (isUser === "employee") {
       const org = req.session.user.code;
       const userName = (await Employee.findOne({ code: userCode }))?.name;
+
       const today = fullTime();
-      const shiftType = today.hours >= 6 && today.hours < 18 ? "day" : "night";
       const schedule = await Schedule.findOne({ org });
       const week = fullweek();
 
-      const shiftSchedule = schedule.week?.[week]?.[shiftType];
+      const shiftSchedule = schedule.week?.[week]?.[shift];
       const grace = schedule.grace || 0;
 
       const currentMinutes = timeToMinutes(today.hours, today.minutes);
@@ -78,14 +84,16 @@ exports.markAttendance = async (req, res) => {
         shiftSchedule.check_in.split(":")[1],
       );
 
+      // IMPORTANT
+      const shiftType = today.hours >= 6 && today.hours < 18 ? "day" : "night";
+
       if (type === "check-in") {
-        let matchFoundAt = -1;
         history = await returnEmployeeHistory(org, sessionCode);
         index = returnIndex(history);
 
-        if (matchFoundAt >= 0) {
+        if (index < 0) {
           await EmployeeHistory.findOneAndUpdate(
-            { org: org, sessionCode: sessionCode },
+            { org, sessionCode },
             {
               $push: {
                 history: {
@@ -102,7 +110,7 @@ exports.markAttendance = async (req, res) => {
         }
       } else if (type === "check-out") {
         history = await returnEmployeeHistory(org, sessionCode);
-        let index = returnIndex(history);
+        index = returnIndex(history);
 
         if (index === -1) {
           return res.status(400).json({
@@ -110,21 +118,34 @@ exports.markAttendance = async (req, res) => {
             message: "User didn't check-in earlier.",
           });
         }
-        else {
-          const checkOut = history.history[index].checkOut;
 
-          if (checkOut === null) {
-            await EmployeeSummary.findOneAndUpdate(
-              { org: org, code: userCode, shift: shiftType, month: getMonthKey() },
-              {
-                $inc: {
-                  attended: 1,
-                },
-              },
-              { new: true },
-            );
-          }
+        const existingEntry = history.history[index];
+
+        if (existingEntry.checkOut !== null) {
+          return res.json({
+            success: true,
+            message: "Attendance already marked",
+          });
         }
+
+        const summaryResult = await EmployeeSummary.findOneAndUpdate(
+          {
+            org,
+            code: userCode,
+            shift: shiftType,
+            month: getMonthKey(),
+          },
+          {
+            $inc: {
+              attended: 1,
+            },
+          },
+          {
+            new: true,
+          },
+        );
+
+        console.log("Summary update:", summaryResult);
 
         await EmployeeHistory.findOneAndUpdate(
           { org, sessionCode },
@@ -133,7 +154,9 @@ exports.markAttendance = async (req, res) => {
               [`history.${index}.checkOut`]: today.now,
             },
           },
-          { new: true }
+          {
+            new: true,
+          },
         );
       }
     } else {
@@ -207,4 +230,4 @@ exports.markAttendance = async (req, res) => {
       message: err.message || "Attendance marking failed",
     });
   }
-}
+};
