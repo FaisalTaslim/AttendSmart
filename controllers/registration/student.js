@@ -37,7 +37,7 @@ exports.register_clg = async (req, res) => {
       throw new Error("INVALID_EMAIL_DOMAIN");
 
     const existing = await CollegeStudent.findOne(
-      { email: email.toLowerCase().trim(), isDeleted: false },
+      { name: name.toLowerCase().trim(), roll: roll.trim(),isDeleted: false },
       null,
       { session },
     );

@@ -40,7 +40,8 @@ module.exports = async function getAdminRenderData(user, overrides = {}) {
   const rawSummary = studentSummary.map((entry) => ({
     ...entry._doc,
     name: normalizeTexts(entry.name),
-    percentage: entry.total > 0 ? Math.round((entry.attended / entry.total) * 100) : 0,
+    percentage:
+      entry.total > 0 ? Math.round((entry.attended / entry.total) * 100) : 0,
   }));
 
   const summaryMap = {};
@@ -55,15 +56,21 @@ module.exports = async function getAdminRenderData(user, overrides = {}) {
       };
     }
     summaryMap[entry.code].subjects.push({
-      subject: entry.subject || '—',
+      subject: entry.subject || "—",
       attended: entry.attended,
       total: entry.total,
       percentage: entry.percentage,
     });
   });
 
-  const studentSummaryGrouped = Object.values(summaryMap);
-
+  const studentSummaryGrouped = Object.values(summaryMap).map((student) => ({
+    ...student,
+    overallPercentage:
+      student.totalClasses > 0
+        ? Math.round((student.totalAttended / student.totalClasses) * 100)
+        : 0,
+  }));
+  
   return {
     popupMessage: null,
     popupType: null,
@@ -71,8 +78,14 @@ module.exports = async function getAdminRenderData(user, overrides = {}) {
     isSetupDone: user.setup.done,
     isSubjectsUploaded: user.setup.subjectsUploaded,
     isScheduleUploaded: user.setup.scheduleUploaded,
-    loginLog: loginLog.map((l) => ({ ...l._doc, name: normalizeTexts(l.name) })),
-    registerLog: registerLog.map((l) => ({ ...l._doc, name: normalizeTexts(l.name) })),
+    loginLog: loginLog.map((l) => ({
+      ...l._doc,
+      name: normalizeTexts(l.name),
+    })),
+    registerLog: registerLog.map((l) => ({
+      ...l._doc,
+      name: normalizeTexts(l.name),
+    })),
     activeEmployeeSessions,
     activeStudentSessions,
     employeeHistory: employeeHistory.map((session) => ({
@@ -98,7 +111,8 @@ module.exports = async function getAdminRenderData(user, overrides = {}) {
     employeeSummary: employeeSummary.map((entry) => ({
       ...entry._doc,
       name: normalizeTexts(entry.name),
-      percentage: entry.total > 0 ? Math.round((entry.attended / entry.total) * 100) : 0,
+      percentage:
+        entry.total > 0 ? Math.round((entry.attended / entry.total) * 100) : 0,
     })),
     studentSummaryGrouped,
     ...overrides,

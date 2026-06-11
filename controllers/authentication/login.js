@@ -124,11 +124,7 @@ exports.login = async (req, res) => {
 
       req.session.user.employeeType = employeeType;
 
-      return res.redirect(
-        employeeType === "corporate"
-          ? "/dashboard/employee/corporate"
-          : "/dashboard/employee/teacher",
-      );
+      return res.redirect('/dashboard');
     }
 
     res.redirect("/dashboard");
