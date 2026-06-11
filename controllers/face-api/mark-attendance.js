@@ -162,6 +162,13 @@ exports.markAttendance = async (req, res) => {
     } else {
       const userModel = resolveUserModel(type);
       const user = await userModel.findOne({ code: userCode });
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+
       const org = user.org;
 
       history = await returnStudentHistory(org, sessionCode);
