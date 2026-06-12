@@ -1,3 +1,5 @@
+// scanner.js
+
 const statusEl = document.getElementById("status");
 
 let isProcessing = false;
@@ -10,6 +12,9 @@ async function onScanSuccess(decodedText) {
 
   try {
     const qrData = JSON.parse(decodedText);
+    console.log("QR Data");
+    console.log(qrData);
+
     await html5QrCode.stop();
 
     const res = await fetch(`/dashboard/student/process-qr`, {
@@ -23,15 +28,16 @@ async function onScanSuccess(decodedText) {
     });
 
     const data = await res.json();
+    console.log(data);
 
     if (data.success) {
       statusEl.innerText = "Attendance session joined successfully";
 
       const params = new URLSearchParams({
-        for: data.isUser,
+        isUser: data.isUser,
         type: data.type,
-        session: data.sessionCode,
-        key: data.sessionKey,
+        sessionCode: data.sessionCode,
+        key: data.key,
         subject: data.subject,
         dept: data.dept,
       });

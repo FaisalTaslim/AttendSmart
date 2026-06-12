@@ -3,24 +3,34 @@ const SESSION_CODE = sessionData.sessionCode || "";
 const SESSION_MINS = Number(sessionData.sessionMins || 15);
 const JOINED_COUNT = Number(sessionData.joinedCount || 0);
 
+const qrContainer = document.getElementById("qrcode");
+qrContainer.innerHTML = `<p style="text-align:center;padding:2rem;">Loading QR...</p>`;
+
 async function refreshQR() {
   try {
-    const res = await fetch("/dashboard/employee/teacher/qr/generate-session-key");
+    const res = await fetch(
+      "/dashboard/employee/teacher/qr/generate-session-key",
+    );
     const data = await res.json();
-
     if (!data.success) return;
+
+    if (!SESSION_CODE) {
+      console.error(
+        "SESSION_CODE is empty — session data not injected correctly",
+      );
+      return;
+    }
 
     const payload = JSON.stringify({
       sessionCode: SESSION_CODE,
       sessionKey: data.sessionKey,
-      subject: sessionData.subject || "",
-      dept: sessionData.dept || "",
+      subject: sessionData.subject ?? null,
+      dept: sessionData.dept ?? null,
     });
 
-    const qrContainer = document.getElementById("qrcode");
+    console.log("QR payload:", payload);
 
     qrContainer.innerHTML = "";
-
     new QRCode(qrContainer, {
       text: payload,
       width: 200,
@@ -29,12 +39,10 @@ async function refreshQR() {
       colorLight: "#ffffff",
       correctLevel: QRCode.CorrectLevel.M,
     });
-
   } catch (err) {
     console.error("Failed to refresh QR:", err);
   }
 }
-
 refreshQR();
 setInterval(refreshQR, 5000);
 
@@ -78,7 +86,6 @@ const tick = setInterval(() => {
     document.querySelector(".badge").style.color = "#aaa";
   }
 }, 1000);
-
 
 const copyBtn = document.getElementById("copy-btn");
 copyBtn.addEventListener("click", () => {

@@ -25,78 +25,51 @@ exports.startStudentSession = async (req, res) => {
   let subject = majors ?? minors ?? optionals;
 
   const dbSession = await mongoose.startSession();
+  dbSession.startTransaction();
+
   let user;
   let sessionCode;
+  let alreadyExisted = false;
 
   try {
-    await dbSession.withTransaction(async () => {
-      const userModel = resolveUserModel(req.session.user.role);
-      user = await userModel
-        .findOne({ code: req.session.user.code })
-        .session(dbSession);
+    const userModel = resolveUserModel(req.session.user.role);
+    user = await userModel.findOne({ code: req.session.user.code }, null, {
+      session: dbSession,
+    });
 
-      if (!user) {
-        throw new Error("Authenticated user not found in database");
+    if (!user) throw new Error("Unauthorized access! User not found!");
+
+    const orgDoc = await Org.findOne(
+      { code: org },
+      { attendanceMethod: 1 },
+      { session: dbSession },
+    );
+    const attendanceType = orgDoc?.attendanceMethod;
+
+    if (!subject) {
+      if (user.workPlace === "school" && attendanceType === "one-time") {
+        subject = null;
+      } else {
+        throw new Error("No subjects selected");
       }
-
-      if (!subject) {
-        const orgDoc = await Org.findOne(
-          { code: org },
-          { attendanceMethod: 1 },
-        );
-
-        const attendanceType = orgDoc?.attendanceMethod;
-
-        if (user.workPlace === "school" && attendanceType === "one-time")
-          subject = null;
-        else {
-          return renderTeacherDashboard(
-            req,
-            res,
-            "No subjects selected",
-            "error",
-          );
-        }
+    } else {
+      if (attendanceType === "one-time") {
+        throw new Error("Subject must be null for your attendanceType!");
       }
-      else {
-        const orgDoc = await Org.findOne(
-          { code: org },
-          { attendanceMethod: 1 },
-        );
-        const attendanceType = orgDoc?.attendanceMethod;
+    }
 
-        if(subject && attendanceType === "one-time") {
-          return renderTeacherDashboard(
-            req,
-            res,
-            'Subject must be null for your attendanceType!',
-            "error"
-          )
-        }
-      }
+    const existing = await activeSession.findOne(
+      { org, department: dept, instigator: user.code, subject },
+      null,
+      { session: dbSession },
+    );
 
+    if (existing) {
+      sessionCode = existing.sessionCode;
+      alreadyExisted = true;
+    } else {
       sessionCode = generateCode(10, "numeric");
       const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
-
-      const isActiveSession = await activeSession.findOne({
-        org,
-        dept,
-        instigator: user.code,
-        subject,
-      });
-
-      if (isActiveSession) {
-        return res.render("attendance/qr", {                                                                                  
-          popupType: "success",
-          popupMessage: "Session already exists! Redirected to the page!",
-          instigatorName: user.name,
-          instigator: user.code,
-          subject,
-          dept,
-          sessionCode,
-          sessionMins: 15,
-        });
-      }
 
       await activeSession.create(
         [
@@ -114,14 +87,9 @@ exports.startStudentSession = async (req, res) => {
       );
 
       const month = getMonthKey();
-
-      const result = await StudentSummary.updateMany(
+      await StudentSummary.updateMany(
         { org, department: dept, subject, month },
-        {
-          $inc: {
-            total: 1,
-          },
-        },
+        { $inc: { total: 1 } },
         { session: dbSession },
       );
 
@@ -138,27 +106,35 @@ exports.startStudentSession = async (req, res) => {
         ],
         { session: dbSession },
       );
+    }
 
-      
-      return res.render("attendance/qr", {
-        popupType: "success",
-        popupMessage: "Session started successfully!",
-        instigatorName: user.name,
-        instigator: user.code,
-        subject,
-        dept,
-        sessionCode,
-        sessionMins: 15,
-      });
+    await dbSession.commitTransaction();
+
+    return res.render("attendance/qr", {
+      popupType: "success",
+      popupMessage: alreadyExisted
+        ? "Session already exists! Redirected to the page!"
+        : "Session started successfully!",
+      instigatorName: user.name,
+      instigator: user.code,
+      subject,
+      dept,
+      sessionCode,
+      sessionMins: 15,
     });
   } catch (err) {
-    console.error("startStudentSession transaction failed:", err);
-    return renderTeacherDashboard(
-      req,
-      res,
-      "Failed to start session. Please try again.",
-      "error",
-    );
+    await dbSession.abortTransaction();
+    console.error("startStudentSession failed:", err);
+
+    const knownErrors = [
+      "No subjects selected",
+      "Subject must be null for your attendanceType!",
+    ];
+    const message = knownErrors.includes(err.message)
+      ? err.message
+      : "Failed to start session. Please try again.";
+
+    return renderTeacherDashboard(req, res, message, "error");
   } finally {
     dbSession.endSession();
   }

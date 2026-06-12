@@ -13,21 +13,11 @@ exports.guidebook = async (req, res) => {
 };
 
 exports.captureAttendanceWindow = async (req, res) => {
-  const {
-    isUser = null,
-    type = null,
-    dept = null,
-    sessionCode = null,
-    subject = null,
-    key = null,
-    shift = null,
-  } = {};
+  const { isUser = null, type = null, dept = null, sessionCode = null, subject = null, key = null, shift = null } = req.query;
 
-  const userModel = resolveUserModel(role);
+  const userModel = resolveUserModel(req.session.user.role);
   const user = await userModel.findOne({ code: req.session.user.code });
 
-  if (!subject) subject = null;
-  if (!key) key = null;
 
   res.render("dashboards/capture-attendance", {
     popupMessage: null,
@@ -38,6 +28,7 @@ exports.captureAttendanceWindow = async (req, res) => {
     sessionCode,
     subject,
     key,
+    shift,
   });
 };
 

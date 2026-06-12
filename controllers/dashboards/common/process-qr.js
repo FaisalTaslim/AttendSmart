@@ -28,6 +28,7 @@ exports.processQr = async (req, res) => {
     }
 
     const parsed = JSON.parse(qrData);
+    console.log("parsed QR payload:", JSON.stringify(parsed));
 
     const isActiveSession = await activeSession.findOne({
       org: user.org,
@@ -37,19 +38,21 @@ exports.processQr = async (req, res) => {
     if (!isActiveSession) {
       return res.json({
         success: false,
-        message: 'Session not found or expired! Contact your teacher',
+        message: "Session not found or expired! Contact your teacher",
       });
     }
 
     const isAlreadyJoined = isActiveSession.joined.some(
-      (d) => d.code === user.code
+      (d) => d.code === user.code,
     );
+    console.log(isAlreadyJoined);
 
     if (isAlreadyJoined) {
       return res.json({
         success: false,
-        message: "You have already joined this session! Proceed to attendance marking!",
-      })
+        message:
+          "You have already joined this session! Proceed to attendance marking!",
+      });
     }
 
     session.startTransaction();
@@ -68,7 +71,7 @@ exports.processQr = async (req, res) => {
           },
         },
       },
-      { session }
+      { session },
     );
 
     await logSession.findOneAndUpdate(
@@ -84,32 +87,32 @@ exports.processQr = async (req, res) => {
           },
         },
       },
-      { session }
+      { session },
     );
 
-    if(role === 'school-student') dept=user.standard;
-    else dept=user.dept;
+    if (role === "school-student") dept = user.standard;
+    else dept = user.dept;
 
     await session.commitTransaction();
 
+    console.log(parsed.sessionKey);
     return res.json({
       success: true,
-      message: 'Attendance session joined successfully',
-      isUser: 'student',
+      message: "Attendance session joined successfully",
+      isUser: "student",
       type: role,
       sessionCode: parsed.sessionCode,
       dept,
       subject: parsed.subject,
       key: parsed.sessionKey,
-    })
-
+    });
   } catch (err) {
     await session.abortTransaction();
 
     return res.json({
       success: false,
-      message: 'Something went wrong!',
-    })
+      message: "Something went wrong!",
+    });
   } finally {
     session.endSession();
   }
