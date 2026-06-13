@@ -1,4 +1,4 @@
-.popup {
+.popup, .message {
     position: fixed;
     top: 5vh;
     left: 50%;
@@ -23,20 +23,24 @@
 
     animation: popupSlide 0.3s ease;
 }
+.message {display: none}
 
-.popup.success {
+.popup.success,
+.message.success {
     background: #e8fff1;
     color: #137a43;
     border: 1px solid #8de0b3;
 }
 
-.popup.error {
+.popup.error,
+.message.error {
     background: #ffeaea;
     color: #b42323;
     border: 1px solid #ffb3b3;
 }
 
-.popup.warning {
+.popup.warning,
+.message.warning {
     background: #fff8e6;
     color: #9a6700;
     border: 1px solid #f5d27a;
