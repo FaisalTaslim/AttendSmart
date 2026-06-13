@@ -56,6 +56,11 @@ const employeeSchema = new Schema(
         type: Date,
       },
     },
+    approvalStatus: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
+    },
     onLeave: { type: Boolean, required: true, default: false },
     isDeleted: { type: Boolean, default: false },
     isSuspended: { type: Boolean, default: false },

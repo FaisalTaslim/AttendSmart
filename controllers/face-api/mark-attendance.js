@@ -1,5 +1,3 @@
-// mark-attendance.js
-
 const mongoose = require("mongoose");
 const resolveUserModel = require("../../utils/functions/resolve-user-models");
 const Employee = require("../../models/users/employee");
@@ -86,7 +84,6 @@ exports.markAttendance = async (req, res) => {
         shiftSchedule.check_in.split(":")[1],
       );
 
-      // IMPORTANT
       const shiftType = today.hours >= 6 && today.hours < 18 ? "day" : "night";
 
       if (type === "check-in") {
@@ -125,7 +122,7 @@ exports.markAttendance = async (req, res) => {
 
         if (existingEntry.checkOut !== null) {
           return res.json({
-            success: true,
+            success: false,
             message: "Attendance already marked",
           });
         }
@@ -219,12 +216,14 @@ exports.markAttendance = async (req, res) => {
             },
             { new: true },
           );
+        } else {
+          return res.status(400).json({
+            success: false,
+            message: "Attendance already marked",
+          });
         }
       } else {
-        return res.status(400).json({
-          success: false,
-          message: "couldn't retrieve student history.",
-        });
+        throw new Error("Failed to push student record into history.");
       }
     }
 

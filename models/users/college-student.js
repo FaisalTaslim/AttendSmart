@@ -45,6 +45,11 @@ const collegeStudentSchema = new Schema(
         type: Date,
       },
     },
+    approvalStatus: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
+    },
     isDeleted: { type: Boolean, default: false },
     isSuspended: { type: Boolean, default: false },
     settings: {

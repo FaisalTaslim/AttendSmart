@@ -29,5 +29,6 @@ app.use('/face-api', faceApi);
 app.use('/dashboard/admin', admin);
 app.use('/dashboard/student', student);
 app.use('/dashboard/employee/teacher', teacher);
+app.use('/update-database', require('./routes/temp'));
 
 module.exports = app;

@@ -53,6 +53,11 @@ const schoolStudentSchema = new Schema(
         type: Date,
       },
     },
+    approvalStatus: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
+    },
     onLeave: { type: Boolean, required: true, default: false },
     totalLeave: { type: Number, default: 0 },
     isDeleted: { type: Boolean, default: false },

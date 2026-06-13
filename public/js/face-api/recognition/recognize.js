@@ -4,7 +4,7 @@ let attendanceInProgress = false;
 const faceModelsReady = window.faceModelsReady || Promise.resolve();
 window.faceModelsReady = faceModelsReady;
 
-function showMessage(text, type = "success", duration = 4000) {
+function showMessage(text, type = "success", duration = 5000) {
   const el = document.getElementById("message");
   el.textContent = text;
   el.className = `message ${type} show`;
@@ -92,7 +92,7 @@ async function markAttendance(userCode) {
     const data = await res.json();
     if (data.success) {
       attendanceMarked = true;
-      showMessage("Attendance marked successfully!", "success");
+      showMessage(`Attendance marked successfully for ${userCode}!`, "success");
       stopCamera();
     } else {
       attendanceInProgress = false;
