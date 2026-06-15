@@ -5,7 +5,6 @@ const CollegeStudent = require("../../models/users/college-student");
 const SchoolStudent = require("../../models/users/school-student");
 const Summary = require("../../models/statistics/student-summary");
 const RegisterLog = require("../../models/logs/register");
-const OrgLog = require("../../models/logs/logs");
 const generateCode = require("../../utils/functions/generate-code");
 const crypto = require("crypto");
 const {

@@ -220,7 +220,30 @@
           <button id="register-logs-cancel-btn">Go Back</button>
           <div class="log-table-header">
             <h2>Registration logs</h2>
+            <p class="badge badge-success">Total: <span id="register-log-count"><%= registerLog.length %></span></p>
           </div>
+
+          <div class="outer-group">
+            <input type="text" id="register-search" placeholder="Search by name, ID, or email..." />
+            <select id="register-role-filter">
+              <option value="">All roles</option>
+              <option value="admin">Admin</option>
+              <option value="teacher">Teacher</option>
+              <option value="student">Student</option>
+            </select>
+            <select id="register-status-filter">
+              <option value="">All statuses</option>
+              <option value="success">Success</option>
+              <option value="failed">Failed</option>
+            </select>
+            <select id="register-approval-filter">
+              <option value="">All approval statuses</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+              <option value="pending">Pending</option>
+            </select>
+          </div>
+
           <table class="log-table">
             <thead>
               <tr>
@@ -232,12 +255,13 @@
                 <th>Contact</th>
                 <th>Message</th>
                 <th>Time</th>
+                <th>Approval Status</th>
               </tr>
             </thead>
             <tbody>
               <% if (registerLog && registerLog.length > 0) { %>
               <% registerLog.forEach(log => { %>
-              <tr>
+              <tr data-name="<%= log.name.toLowerCase() %>" data-id="<%= log.id.toLowerCase() %>" data-email="<%= log.email.toLowerCase() %>" data-role="<%= log.role %>" data-status="<%= log.type %>" data-approval="<%= log.approvalStatus || '' %>">
                 <td data-label="Status">
                   <span class="badge badge-<%= log.type === 'success' ? 'success' : 'danger' %>">
                     <%= log.type %>
@@ -250,11 +274,24 @@
                 <td data-label="Contact"><span class="msg-text"><%= log.contact %></span></td>
                 <td data-label="Message"><span class="msg-text"><%= log.message %></span></td>
                 <td data-label="Time"><span class="time-text"><%= new Date(log.createdAt).toLocaleString() %></span></td>
+                <td data-label="Approval Status">
+                  <% if (log.approvalStatus === 'approved' && log.type === 'success') { %>
+                  <span class="badge badge-success">Approved</span>
+                  <% } else if (log.approvalStatus === 'rejected' || log.type === 'failed') { %>
+                  <span class="badge badge-danger">Rejected</span>
+                  <% } else if (log.approvalStatus === 'pending') { %>
+                  <form action="/register/admin/approve-user?code=<%= log.code %>&role=<%= log.role %>" method="POST">
+                    <button type="submit">Approve</button>
+                  </form>
+                  <% } else { %>
+                  <span class="badge badge-success">--/--</span>
+                  <% } %>
+                </td>
               </tr>
               <% }) %>
               <% } else { %>
               <tr>
-                <td colspan="8" style="text-align:center; color: var(--text-muted);">No registration activity yet.</td>
+                <td colspan="9" style="text-align:center; color: var(--text-muted);">No registration activity yet.</td>
               </tr>
               <% } %>
             </tbody>
@@ -621,6 +658,7 @@
   <script src="/js/page-specific/dashboard/admin/disable-containers.js"></script>
   <script src="/js/page-specific/dashboard/admin/upload-csv.js"></script>
   <script src="/js/global/UI/popup.js"></script>
+  <script src="/js/page-specific/dashboard/admin/search-filter-registerlog.js"></script>
   <script>
     function toggleHistoryRow(id) {
       const row = document.getElementById(id);

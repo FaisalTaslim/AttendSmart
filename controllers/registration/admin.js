@@ -8,6 +8,8 @@ const {
 } = require("../../utils/emails/send-registration-emails");
 const verifyDomains = require("../../utils/emails/verify-domains");
 const mongoose = require("mongoose");
+const resolveUserModels = require('../../utils/functions/resolve-user-models');
+const getAdminRenderData = require('../../utils/render-dashboards/admin-render-data');
 
 exports.adm = async (req, res) => {
   const session = await mongoose.startSession();
@@ -88,6 +90,7 @@ exports.adm = async (req, res) => {
               email: email.toLowerCase().trim(),
               contact,
               message: "Another admin added successfully!",
+              approvalStatus: null,
             },
           },
         },
@@ -206,5 +209,68 @@ exports.adm = async (req, res) => {
       popupMessage: err.message || "Registration failed. Please try again.",
       popupType: "error",
     });
+  }
+};
+
+exports.approveUser = async (req, res) => {
+  try {
+    const { code: userCode, role: userRole } = req.query;
+    const adminCode = req.session.user.code;
+
+    const admin = await Org.findOne({ code: adminCode });
+
+    const renderError = (message) => {
+      const data = getAdminRenderData(admin);
+
+      return res.render("/dashboards/admin", {
+        ...data,
+        popupType: "error",
+        popupMessage: message,
+      });
+    };
+
+    let Model;
+
+    switch (userRole) {
+      case "employee":
+        Model = resolveUserModels("employee");
+        break;
+
+      case "student":
+        if (admin.type === "college") {
+          Model = resolveUserModels("college-student");
+        } else if (admin.type === "school") {
+          Model = resolveUserModels("school-student");
+        } else {
+          return renderError(
+            "Failed to verify! Invalid Organization Type!"
+          );
+        }
+        break;
+
+      default:
+        return renderError(
+          "Failed to verify! Invalid User Role!"
+        );
+    }
+
+    const user = await Model.findOne({
+      org: adminCode,
+      code: userCode,
+    });
+
+    if (!user) {
+      return renderError(
+        "Failed to verify! User not found!"
+      );
+    }
+
+    user.approvedStatus = "approved";
+    await user.save();
+
+    return res.redirect("/dashboard/admin");
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send("Internal Server Error");
   }
 };
