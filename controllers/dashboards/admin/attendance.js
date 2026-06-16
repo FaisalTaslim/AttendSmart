@@ -13,7 +13,6 @@ const {
   formatTime,
 } = require("../../../utils/functions/time");
 const generateCode = require("../../../utils/functions/generate-code");
-const getAdminRenderData = require("../../../utils/render-dashboards/admin-render-data");
 
 async function returnUser(req) {
   const Model = resolveUserModel(req.session.user.role);
@@ -22,6 +21,33 @@ async function returnUser(req) {
 
 async function returnSchedule(userCode) {
   return await Schedule.findOne({ org: userCode });
+}
+
+async function renderCaptureAttendance(
+  popupType,
+  popupMessage,
+  user,
+  type,
+  dept,
+  sessionCode,
+  subject,
+  key,
+  shift,
+  res,
+) {
+  const params = new URLSearchParams({
+    "popup-type": "success",
+    "popup-message": popupMessage,
+    user,
+    type,
+    dept,
+    sessionCode,
+    subject,
+    key,
+    shift,
+  });
+
+  res.redirect(`/dashboard/admin/capture-attendance?${params}`);
 }
 
 exports.startEmployeeSession = async (req, res) => {
@@ -43,17 +69,18 @@ exports.startEmployeeSession = async (req, res) => {
       });
 
       if (sessionIsActive) {
-        return res.render("dashboards/capture-attendance", {
-          popupType: "success",
-          popupMessage: "Active Session Found! Redirected to the page!",
-          isUser: "employee",
-          type: "check-in",
-          dept: null,
-          sessionCode: sessionIsActive.sessionCode,
-          subject: null,
-          key: null,
+        return renderCaptureAttendance(
+          "success",
+          "Active Session Found! Redirected to the page!",
+          "employee",
+          "check-in",
+          null,
+          sessionIsActive.sessionCode,
+          null,
+          null,
           shift,
-        });
+          res,
+        );
       }
 
       schedule = await returnSchedule(org);
@@ -114,30 +141,29 @@ exports.startEmployeeSession = async (req, res) => {
       await dbSession.commitTransaction();
       dbSession.endSession();
 
-      return res.render("dashboards/capture-attendance", {
-        popupType: "success",
-        popupMessage: "Session started successfully",
-        isUser: "employee",
-        type,
-        dept: null,
-        sessionCode: activeSessionDoc.sessionCode,
-        subject: null,
-        key: null,
+      return renderCaptureAttendance(
+        "success",
+        "Active Session Found! Redirected to the page!",
+        "employee",
+        "check-in",
+        null,
+        activeSessionDoc.sessionCode,
+        null,
+        null,
         shift,
-      });
+        res,
+      );
     } else {
       const { hours } = fullTime();
       const sessionIsActive = await activeSession.findOne({ org, shift });
 
       if (!sessionIsActive) {
-        return res.render("dashboards/admin", {
-          popupType: "error",
-          popupMessage: "No active Session",
-          orgType: await returnUser(req)?.orgType,
-          isSubjectsUploaded: (await returnUser(req))?.setup?.subjectsUploaded,
-          isScheduleUploaded: (await returnUser(req))?.setup?.scheduleUploaded,
-          isSetupDone: (await returnUser(req))?.setup?.done,
+        const params = new URLSearchParams({
+          "popup-type": "error",
+          "popup-message": "No Active Session!",
         });
+
+        res.redirect(`/dashboard/admin?${params}`);
       }
 
       if (sessionIsActive.type === "check-in") {
@@ -151,31 +177,31 @@ exports.startEmployeeSession = async (req, res) => {
         );
       }
 
-      return res.render("dashboards/capture-attendance", {
-        popupType: "success",
-        popupMessage: "Session started successfully",
-        isUser: "employee",
-        type,
-        dept: null,
-        sessionCode: sessionIsActive.sessionCode,
-        subject: null,
-        key: null,
+      return renderCaptureAttendance(
+        "success",
+        "Active Session Found! Redirected to the page!",
+        "employee",
+        "check-in",
+        null,
+        sessionIsActive.sessionCode,
+        null,
+        null,
         shift,
-      });
+        res,
+      );
 
       await dbSession.commitTransaction();
-      dbSession.endSession();
     }
   } catch (err) {
     await dbSession.abortTransaction();
-    dbSession.endSession();
 
-    const user = await returnUser(req);
-    const data = await getAdminRenderData(user, {
-      popupType: "error",
-      popupMessage: "No active session",
+    const params = new URLSearchParams({
+      "popup-type": "error",
+      "popup-message": `${err}`,
     });
-    
-    return res.render("dashboards/admin", data);
+
+    res.redirect(`/dashboard/admin?${params}`);
+  } finally {
+    dbSession.endSession();
   }
 };

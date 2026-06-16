@@ -1,0 +1,54 @@
+@startuml
+skinparam DefaultFontSize 14
+skinparam ArrowThickness 2
+skinparam ActivityBorderThickness 2
+title <b>Employee Attendance Session Creation</b>
+
+start
+
+:<b>Admin Login</b>;
+:<b>Click "Start Session"</b>;
+:<b>Select Shift and Session Type</b>;
+:<b>Submit Form</b>;
+:<b>Receive {org, shift, type}</b>;
+
+if (<b>Session Type?</b>) then (Check-In)
+
+  :<b>Check Existing Active Session</b>;
+  if (<b>Active Session Exists?</b>) then (Yes)
+    :<b>Display Error Message</b>;
+    stop
+  else (No)
+    :<b>Retrieve Organization Schedule</b>;
+    :<b>Calculate Expiry Time</b>;
+    :<b>Generate Session Code</b>;
+    :<b>Create Active Session</b>;
+    :<b>Update Attendance Summary</b>;
+    :<b>Create Session History Log</b>;
+
+    if (<b>Transaction Successful?</b>) then (Yes)
+      :<b>Open Attendance Capture Window</b>;
+      stop
+    else (No)
+      :<b>Display Error Message</b>;
+      stop
+    endif
+  endif
+
+else (Check-Out)
+
+  :<b>Retrieve Active Session</b>;
+  if (<b>Active Session Found?</b>) then (Yes)
+    if (<b>Current Type = Check-In?</b>) then (Yes)
+      :<b>Update Session Type to Check-Out</b>;
+    endif
+    :<b>Open Attendance Capture Window</b>;
+    stop
+  else (No)
+    :<b>Display Error Message</b>;
+    stop
+  endif
+
+endif
+
+@enduml

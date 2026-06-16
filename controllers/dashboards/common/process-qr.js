@@ -45,7 +45,6 @@ exports.processQr = async (req, res) => {
     const isAlreadyJoined = isActiveSession.joined.some(
       (d) => d.code === user.code,
     );
-    console.log(isAlreadyJoined);
 
     if (isAlreadyJoined) {
       return res.json({

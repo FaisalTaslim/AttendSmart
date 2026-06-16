@@ -1,0 +1,52 @@
+@startuml
+skinparam DefaultFontSize 14
+skinparam ArrowThickness 2
+skinparam ActivityBorderThickness 2
+title <b>Student Attendance Marking Flow</b>
+
+(B)
+
+:<b>Resolve Model (SchoolStudent / CollegeStudent)</b>;
+:<b>Fetch Student by userCode</b>;
+
+if (<b>Student Found?</b>) then (Yes)
+else (No)
+  :<b>Return 404 "User not found"</b>;
+  stop
+endif
+
+:<b>Get org from user.org</b>;
+:<b>Fetch StudentHistory</b>\n<b>{org, sessionCode, subject, department}</b>;
+
+if (<b>History Found?</b>) then (Yes)
+else (No)
+  :<b>Throw "Student history not found"</b>;
+  stop
+endif
+
+if (<b>userCode Found in History?</b>) then (Yes)
+else (No)
+  :<b>Push New History Entry</b>\n<b>{code, sessionKey, name, date, isMarked: false}</b>;
+endif
+
+:<b>Re-fetch StudentHistory and Re-search Index</b>;
+
+if (<b>Index Found?</b>) then (Yes)
+
+  if (<b>isMarked == false?</b>) then (Yes)
+    :<b>Increment StudentSummary.attended</b>;
+    :<b>Set history[index].isMarked = true</b>;
+  else (No)
+    :<b>Return 400 "Attendance already marked"</b>;
+    stop
+  endif
+
+else (No)
+  :<b>Throw "Failed to push student record into history"</b>;
+  stop
+endif
+
+(C)
+detach
+
+@enduml

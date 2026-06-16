@@ -1,0 +1,52 @@
+@startuml
+skinparam DefaultFontSize 14
+skinparam ArrowThickness 2
+skinparam ActivityBorderThickness 2
+title <b>Student QR Code Scan - Mark Attendance</b>
+
+start
+
+:<b>Student Logs Into Account</b>;
+:<b>Click "Mark Attendance"</b>\n<b>(Redirect to /scanner)</b>;
+:<b>QR Code Scanner Page Opens</b>;
+:<b>Scan QR Code</b>\n<b>(Teacher's Device / Display)</b>;
+:<b>Parse QR Data into JS Object</b>;
+
+if (<b>Active Session Exists?</b>) then (No)
+
+  :<b>Display "Failed" Message</b>;
+  stop
+
+else (Yes)
+
+  if (<b>Student Already Joined?</b>) then (Yes)
+
+    :<b>Redirect to</b>\n<b>/dashboard/admin/capture-attendance</b>;
+    stop
+
+  else (No)
+
+    :<b>Find Active Session Document</b>;
+    :<b>Push Student Details</b>\n<b>{markedAttendance: false}</b>\n<b>into ActiveSession.joined[]</b>;
+    :<b>Find studentAttendanceHistory</b>\n<b>Document</b>;
+    :<b>Push Student Details</b>\n<b>{isMarked: false}</b>\n<b>into history[]</b>;
+
+    if (<b>role == "school-student"?</b>) then (Yes)
+      :<b>dept = user.standard</b>;
+    else (No)
+      :<b>dept = user.dept</b>;
+    endif
+
+    if (<b>data.success?</b>) then (Yes)
+      :<b>Redirect to</b>\n<b>/dashboard/capture-attendance</b>;
+      stop
+    else (No)
+      :<b>Display "Failed" Message</b>;
+      stop
+    endif
+
+  endif
+
+endif
+
+@enduml

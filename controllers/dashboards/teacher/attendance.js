@@ -122,6 +122,7 @@ exports.startStudentSession = async (req, res) => {
       sessionCode,
       sessionMins: 15,
     });
+    
   } catch (err) {
     await dbSession.abortTransaction();
     console.error("startStudentSession failed:", err);

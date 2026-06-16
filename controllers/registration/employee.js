@@ -14,9 +14,8 @@ const { getMonthKey } = require("../../utils/functions/time");
 
 exports.register_emp = async (req, res) => {
   const session = await mongoose.startSession();
-  session.startTransaction();
   const month = getMonthKey();
-  let code;
+  let code = null;
 
   const {
     org,
@@ -31,13 +30,31 @@ exports.register_emp = async (req, res) => {
     confirmPassword,
   } = req.body;
 
-  const verificationToken = crypto.randomBytes(20).toString("hex");
-  const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
-
   try {
+    if (
+      !org ||
+      !name ||
+      !employeeId ||
+      !designation ||
+      !workPlace ||
+      !shift ||
+      !contact ||
+      !email ||
+      !password
+    ) {
+      throw new Error("MISSING_FIELDS");
+    }
+
     if (password !== confirmPassword || !verifyDomains(email.toLowerCase())) {
       throw new Error("SUSPICIOUS_ACTIVITY");
     }
+
+    const orgDoc = await Org.findOne({ code: org });
+    if (!orgDoc) {
+      throw new Error("ORG_NOT_FOUND");
+    }
+
+    session.startTransaction();
 
     const existingEmployee = await Employee.findOne({
       org,
@@ -52,7 +69,16 @@ exports.register_emp = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    code = generateCode(6, "numeric");
+
+    let codeExists = true;
+    while (codeExists) {
+      code = generateCode(6, "numeric");
+      const check = await Employee.findOne({ code }).session(session);
+      if (!check) codeExists = false;
+    }
+
+    const verificationToken = crypto.randomBytes(20).toString("hex");
+    const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
     const [employee] = await Employee.create(
       [
@@ -102,7 +128,7 @@ exports.register_emp = async (req, res) => {
       [
         {
           type: "success",
-          org: org,
+          org,
           name: name.toLowerCase().trim(),
           id: employeeId.toLowerCase().trim(),
           role: "employee",
@@ -125,35 +151,44 @@ exports.register_emp = async (req, res) => {
       null,
     );
 
-    return res.render("index", {
-      popupMessage: "Check your email to verify your account!",
-      popupType: "info",
+    const params = new URLSearchParams({
+      "popup-type": "warning",
+      "popup-message": "Check your email to verify your account!",
     });
+
+    return res.redirect(`/?${params}`);
   } catch (err) {
-    await session.abortTransaction();
+    if (session.inTransaction()) {
+      await session.abortTransaction();
+    }
     session.endSession();
 
     await RegisterLog.create({
       type: "failed",
-      org: org || "null",
-      name: name || "null",
-      id: employeeId?.trim().toLowerCase() || "null",
+      org: org || null,
+      name: name?.toLowerCase().trim() || null,
+      id: employeeId?.toLowerCase().trim() || null,
       role: "employee",
-      email: email?.toLowerCase().trim() || "null",
-      contact: contact || "null",
+      email: email?.toLowerCase().trim() || null,
+      contact: contact || null,
       message: err.message,
     });
 
-    let message = "Registration failed. Please try again.";
+    const ERROR_MESSAGES = {
+      MISSING_FIELDS: "Please fill in all required fields.",
+      SUSPICIOUS_ACTIVITY: "Suspicious activity detected! Failed to register.",
+      ORG_NOT_FOUND: "Invalid organization code.",
+      ACCOUNT_EXISTS: "Employee already registered",
+    };
 
-    if (err.message === "SUSPICIOUS_ACTIVITY")
-      message = "Suspicious activity detected! Failed to register.";
-    if (err.message === "ACCOUNT_EXISTS")
-      message = "Employee already registered";
-
-    return res.render("index", {
-      popupMessage: message,
-      popupType: "error",
+    const message =
+      ERROR_MESSAGES[err.message] || "Registration failed. Please try again.";
+      
+    const params = new URLSearchParams({
+      "popup-type": "error",
+      "popup-message": message,
     });
+
+    return res.redirect(`/?${params}`);
   }
 };

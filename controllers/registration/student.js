@@ -13,44 +13,117 @@ const {
 const { getMonthKey } = require("../../utils/functions/time");
 const verifyDomains = require("../../utils/emails/verify-domains");
 
+class AppError extends Error {
+  constructor(code) {
+    super(code);
+    this.code = code;
+  }
+}
+
+const ERROR_MESSAGES = {
+  MISSING_FIELDS: "Please fill in all required fields.",
+  PASSWORD_MISMATCH: "Password mismatch!",
+  INVALID_EMAIL_DOMAIN: "Use organization email only.",
+  ACCOUNT_EXISTS: "Account already exists.",
+  ORG_NOT_FOUND: "Organization not found.",
+  NO_SUBJECTS: "Please select at least one subject.",
+};
+
+const FALLBACK_MESSAGE = "Registration failed. Please try again.";
+
+async function createSummaries({
+  attendanceType,
+  org,
+  code,
+  name,
+  department,
+  subjects,
+  month,
+  session,
+}) {
+  if (attendanceType === "subject-wise") {
+    const summaries = subjects.map((subject) => ({
+      org,
+      code,
+      name,
+      department,
+      subject,
+      month,
+    }));
+
+    await Summary.insertMany(summaries, { session });
+  } else if (attendanceType === "one-time") {
+    await Summary.create(
+      [
+        {
+          org,
+          code,
+          name,
+          department,
+          subject: null,
+          month,
+        },
+      ],
+      { session },
+    );
+  }
+}
+
 exports.register_clg = async (req, res) => {
   const session = await mongoose.startSession();
-  session.startTransaction();
-
   const month = getMonthKey();
 
   const { name, roll, dept, contact, email, org, password, confirmPassword } =
     req.body;
-
   const { majors = [], minors = [], optionals = [] } = req.body;
 
-  let code;
-  let subjects = [];
-
-  const verificationToken = crypto.randomBytes(20).toString("hex");
-  const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
+  let code = null;
 
   try {
-    if (password !== confirmPassword) throw new Error("PASSWORD_MISMATCH");
-    if (!verifyDomains(email.toLowerCase()))
-      throw new Error("INVALID_EMAIL_DOMAIN");
+    if (!name || !roll || !dept || !contact || !email || !org || !password) {
+      throw new AppError("MISSING_FIELDS");
+    }
+
+    if (password !== confirmPassword) throw new AppError("PASSWORD_MISMATCH");
+    if (!verifyDomains(email.toLowerCase())) {
+      throw new AppError("INVALID_EMAIL_DOMAIN");
+    }
+
+    const subjects = [...majors, ...minors, ...optionals]
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    if (subjects.length === 0) throw new AppError("NO_SUBJECTS");
+
+    const orgDoc = await Org.findOne({ code: org });
+    if (!orgDoc) throw new AppError("ORG_NOT_FOUND");
+
+    session.startTransaction();
 
     const existing = await CollegeStudent.findOne(
-      { name: name.toLowerCase().trim(), roll: roll.trim(),isDeleted: false },
+      {
+        org,
+        name: name.toLowerCase().trim(),
+        roll: roll.trim(),
+        isDeleted: false,
+      },
       null,
       { session },
     );
 
-    if (existing) throw new Error("ACCOUNT_EXISTS");
-
-    subjects = [...majors, ...minors, ...optionals]
-      .map((s) => s.trim())
-      .filter(Boolean);
-
-    if (subjects.length === 0) throw new Error("NO_SUBJECTS");
+    if (existing) throw new AppError("ACCOUNT_EXISTS");
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    code = generateCode(6, "numeric");
+
+    let codeExists = true;
+    while (codeExists) {
+      code = generateCode(6, "numeric");
+      const check = await CollegeStudent.findOne({ code }).session(session);
+      if (!check) codeExists = false;
+    }
+
+    const verificationToken = crypto.randomBytes(20).toString("hex");
+    const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
     const [student] = await CollegeStudent.create(
       [
@@ -58,7 +131,7 @@ exports.register_clg = async (req, res) => {
           org,
           code,
           name: name.toLowerCase().trim(),
-          roll,
+          roll: roll.trim(),
           dept,
           contact,
           email: email.toLowerCase().trim(),
@@ -81,43 +154,24 @@ exports.register_clg = async (req, res) => {
       { session },
     );
 
-    const attendanceType = (await Org.findOne({ code: org }).session(session))
-      ?.attendanceMethod;
-
-    if (attendanceType === "subject-wise") {
-      const summaries = subjects.map((subject) => ({
-        org: org,
-        code,
-        name: name.toLowerCase().trim(),
-        department: dept,
-        subject: subject,
-        month,
-      }));
-
-      await Summary.insertMany(summaries, { session });
-    } else if (attendanceType === "one-time") {
-      await Summary.create(
-        [
-          {
-            org: org,
-            code: student.code,
-            name: student.name,
-            department: student.dept,
-            subject: null,
-            month,
-          },
-        ],
-        { session },
-      );
-    }
+    await createSummaries({
+      attendanceType: orgDoc.attendanceMethod,
+      org,
+      code,
+      name: student.name,
+      department: dept,
+      subjects,
+      month,
+      session,
+    });
 
     await RegisterLog.create(
       [
         {
           type: "success",
-          org: org,
+          org,
           name: name.toLowerCase().trim(),
-          id: roll,
+          id: roll.trim(),
           role: "student",
           email: email.toLowerCase().trim(),
           contact,
@@ -138,39 +192,37 @@ exports.register_clg = async (req, res) => {
       "college-student",
     );
 
-    return res.render("index", {
-      popupMessage: "Check your email!",
-      popupType: "info",
+    const params = new URLSearchParams({
+      "popup-type": "warning",
+      "popup-message": "Check your email!",
     });
+
+    return res.redirect(`/?${params}`);
   } catch (err) {
-    await session.abortTransaction();
+    if (session.inTransaction()) {
+      await session.abortTransaction();
+    }
     session.endSession();
 
     await RegisterLog.create({
       type: "failed",
-      org: org || "null",
-      name: name || "null",
-      id: roll || "null",
-      role: "student",
-      email: email?.toLowerCase().trim() || "null",
-      contact: contact || "null",
+      org: org || null,
+      name: name?.toLowerCase().trim() || null,
+      id: roll?.trim() || null,
+      role: student,
+      email: email?.toLowerCase().trim() || null,
+      contact: contact || null,
       message: err.message,
     });
 
-    let message = "Registration failed. Please try again.";
+    const message = ERROR_MESSAGES[err.code] || FALLBACK_MESSAGE;
 
-    if (err.message === "PASSWORD_MISMATCH") message = "Password mismatch!";
-    if (err.message === "INVALID_EMAIL_DOMAIN")
-      message = "Use organization email only";
-    if (err.message === "ACCOUNT_EXISTS") message = "Account already exists";
-    if (err.message === "ORG_NOT_FOUND") message = "Organization not found";
-    if (err.message === "NO_SUBJECTS")
-      message = "Failed registration. Try again!";
-
-    return res.render("index", {
-      popupMessage: message,
-      popupType: "error",
+    const params = new URLSearchParams({
+      "popup-type": "error",
+      "popup-message": message,
     });
+
+    return res.redirect(`/?${params}`);
   }
 };
 
@@ -189,44 +241,65 @@ exports.register_sch = async (req, res) => {
     password,
     confirmPassword,
   } = req.body;
-
   const { majors = [], minors = [], optionals = [] } = req.body;
 
-  const verificationToken = crypto.randomBytes(20).toString("hex");
-  const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
-  let code;
-
-  session.startTransaction();
+  let code = null;
 
   try {
-    let subjects = [];
+    if (
+      !org ||
+      !name ||
+      !roll ||
+      !standard ||
+      !stream ||
+      !contact ||
+      !email ||
+      !password
+    ) {
+      throw new AppError("MISSING_FIELDS");
+    }
 
-    if (password !== confirmPassword) throw new Error("PASSWORD_MISMATCH");
-    if (!verifyDomains(email.toLowerCase()))
-      throw new Error("INVALID_EMAIL_DOMAIN");
+    if (password !== confirmPassword) throw new AppError("PASSWORD_MISMATCH");
+    if (!verifyDomains(email.toLowerCase())) {
+      throw new AppError("INVALID_EMAIL_DOMAIN");
+    }
+
+    const subjects = [...majors, ...minors, ...optionals]
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    if (subjects.length === 0) throw new AppError("NO_SUBJECTS");
+
+    const orgDoc = await Org.findOne({ code: org });
+    if (!orgDoc) throw new AppError("ORG_NOT_FOUND");
+
+    session.startTransaction();
 
     const existing = await SchoolStudent.findOne(
       {
+        org,
         name: name.toLowerCase().trim(),
-        roll: roll.trim(),
-        standard: standard,
+        roll: roll.trim().toLowerCase(),
+        standard: standard.trim(),
         isDeleted: false,
       },
       null,
       { session },
     );
 
-    if (existing) throw new Error("ACCOUNT_EXISTS");
+    if (existing) throw new AppError("ACCOUNT_EXISTS");
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    subjects = [...majors, ...minors, ...optionals]
-      .map((s) => s.trim())
-      .filter(Boolean);
+    let codeExists = true;
+    while (codeExists) {
+      code = generateCode(6, "numeric");
+      const check = await SchoolStudent.findOne({ code }).session(session);
+      if (!check) codeExists = false;
+    }
 
-    if (subjects.length === 0) throw new Error("NO_SUBJECTS");
-
-    code = generateCode(6, "numeric");
+    const verificationToken = crypto.randomBytes(20).toString("hex");
+    const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
     const [student] = await SchoolStudent.create(
       [
@@ -258,41 +331,22 @@ exports.register_sch = async (req, res) => {
       { session },
     );
 
-    const attendanceType = (await Org.findOne({ code: org }, null, { session }))
-      ?.attendanceMethod;
-
-    if (attendanceType === "subject-wise") {
-      const summaries = subjects.map((subject) => ({
-        org,
-        code,
-        name: name.toLowerCase().trim(),
-        department: standard,
-        subject: subject,
-        month,
-      }));
-
-      await Summary.insertMany(summaries, { session });
-    } else if (attendanceType === "one-time") {
-      await Summary.create(
-        [
-          {
-            org,
-            code,
-            name: name.toLowerCase().trim(),
-            department: standard,
-            subject: null,
-            month,
-          },
-        ],
-        { session },
-      );
-    }
+    await createSummaries({
+      attendanceType: orgDoc.attendanceMethod,
+      org,
+      code,
+      name: student.name,
+      department: standard,
+      subjects,
+      month,
+      session,
+    });
 
     await RegisterLog.create(
       [
         {
           type: "success",
-          org: org,
+          org,
           name: name.toLowerCase().trim(),
           id: roll.trim(),
           role: "student",
@@ -315,41 +369,36 @@ exports.register_sch = async (req, res) => {
       "school-student",
     );
 
-    return res.render("index", {
-      popupMessage: "Check your email!",
-      popupType: "info",
+    const params = new URLSearchParams({
+      "popup-type": "warning",
+      "popup-message": "Check your email!",
     });
+
+    return res.redirect(`/?${params}`);
   } catch (err) {
-    await session.abortTransaction();
+    if (session.inTransaction()) {
+      await session.abortTransaction();
+    }
     session.endSession();
 
-    await RegisterLog.create(
-      [
-        {
-          type: "failed",
-          org: org,
-          name: name?.toLowerCase().trim() || "null",
-          id: roll?.trim() || "null",
-          role: "student",
-          email: email?.toLowerCase().trim() || "null",
-          contact: contact || "null",
-          message: "Student registration failed!",
-        },
-      ],
-      { session },
-    );
-
-    let message = "Registration failed. Please try again.";
-
-    if (err.message === "PASSWORD_MISMATCH") message = "Password mismatch!";
-    if (err.message === "INVALID_EMAIL_DOMAIN")
-      message = "Use organization email only";
-    if (err.message === "ACCOUNT_EXISTS") message = "Account already exists";
-    if (err.message === "ORG_NOT_FOUND") message = "Organization not found";
-
-    return res.render("index", {
-      popupMessage: message,
-      popupType: "error",
+    await RegisterLog.create({
+      type: "failed",
+      org: org || null,
+      name: name?.toLowerCase().trim() || null,
+      id: roll?.trim() || null,
+      role: "student",
+      email: email?.toLowerCase().trim() || null,
+      contact: contact || null,
+      message: err.message,
     });
+
+    const message = ERROR_MESSAGES[err.code] || FALLBACK_MESSAGE;
+
+    const params = new URLSearchParams({
+      "popup-type": "error",
+      "popup-message": message,
+    });
+
+    return res.redirect(`/?${params}`);
   }
 };

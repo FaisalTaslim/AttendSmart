@@ -1,0 +1,53 @@
+@startuml
+skinparam DefaultFontSize 14
+skinparam ArrowThickness 2
+skinparam ActivityBorderThickness 2
+title <b>Face Recognition Attendance - Main Flow</b>
+
+start
+
+:<b>capture-attendance.ejs Page Loads</b>;
+:<b>Pre-load Face Recognition Models</b>;
+:<b>Pre-fetch Registered Face Descriptors</b>;
+:<b>User Clicks "Start Camera"</b>;
+:<b>Capture Live Video Feed</b>;
+
+if (<b>Single Face Detected?</b>) then (Yes)
+
+  :<b>Compare Face With Stored Descriptors</b>;
+
+  if (<b>Face Recognized?</b>) then (Yes)
+    :<b>Send Attendance Request To Backend</b>;
+  else (No)
+    :<b>Display "Unknown Face Detected"</b>;
+    stop
+  endif
+
+else (No)
+
+  :<b>Don't Proceed (Multiple Faces)</b>;
+  stop
+
+endif
+
+:<b>Backend Receives Request</b>;
+
+if (<b>Required Parameters Present?</b>) then (Yes)
+else (No)
+  :<b>Terminate - Return Error</b>;
+  stop
+endif
+
+if (<b>isUser?</b>) then (Employee)
+
+  (A)
+  detach
+
+else (Student)
+
+  (B)
+  detach
+
+endif
+
+@enduml

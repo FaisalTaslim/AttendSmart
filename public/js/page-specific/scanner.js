@@ -34,6 +34,8 @@ async function onScanSuccess(decodedText) {
       statusEl.innerText = "Attendance session joined successfully";
 
       const params = new URLSearchParams({
+        popupType: 'success',
+        popupMessage: data.message,
         isUser: data.isUser,
         type: data.type,
         sessionCode: data.sessionCode,

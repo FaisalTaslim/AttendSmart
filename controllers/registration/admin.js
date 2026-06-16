@@ -8,37 +8,34 @@ const {
 } = require("../../utils/emails/send-registration-emails");
 const verifyDomains = require("../../utils/emails/verify-domains");
 const mongoose = require("mongoose");
-const resolveUserModels = require('../../utils/functions/resolve-user-models');
-const getAdminRenderData = require('../../utils/render-dashboards/admin-render-data');
+const resolveUserModels = require("../../utils/functions/resolve-user-models");
 
 exports.adm = async (req, res) => {
   const session = await mongoose.startSession();
-  let setup;
-  let code;
-  let successMessage = "Registration successful! Please verify your email.";
-  const {
-    admin,
-    organization,
-    branch,
-    address,
-    type,
-    website,
-    attendanceMethod,
-    confirmPassword,
-    termsCheck,
-  } = req.body;
-
-  const adminData = admin?.[0];
-  const { name, adminId, contact, email, password } = adminData;
-  -session.startTransaction();
+  let code = null;
+  let name, adminId, contact, email;
 
   try {
-    if (
-      !adminData ||
-      !termsCheck ||
-      !password ||
-      password !== confirmPassword
-    ) {
+    const {
+      admin,
+      organization,
+      branch,
+      address,
+      type,
+      website,
+      attendanceMethod,
+      confirmPassword,
+      termsCheck,
+    } = req.body;
+
+    const adminData = admin?.[0];
+
+    if (!adminData) throw new Error("Missing admin details.");
+
+    ({ name, adminId, contact, email } = adminData);
+    const { password } = adminData;
+
+    if (!termsCheck || !password ||password !== confirmPassword ||!name ||!adminId ||!contact ||!email ||!organization ||!branch ||!type) {
       throw new Error("Suspicious behavior detected! Missing required fields!");
     }
 
@@ -46,10 +43,14 @@ exports.adm = async (req, res) => {
       throw new Error("Please use your organization domain to register.");
     }
 
+    session.startTransaction();
+
+    const hashedPassword = await bcrypt.hash(password, 12);
     const existingOrg = await Org.findOne({ org: organization }).session(
       session,
     );
-    const hashedPassword = await bcrypt.hash(password, 12);
+
+    let successMessage;
 
     if (existingOrg) {
       const adminExists = existingOrg.admin?.some(
@@ -57,8 +58,7 @@ exports.adm = async (req, res) => {
       );
 
       if (adminExists) {
-        successMessage =
-          "Admin already exists. Added another admin successfully!";
+        throw new Error("Admin already exists for this organization.");
       }
 
       await Org.findOneAndUpdate(
@@ -97,7 +97,8 @@ exports.adm = async (req, res) => {
         { upsert: true, session },
       );
 
-      successMessage = "Registration successful! You can now log in.";
+      successMessage =
+        "Admin already exists. Added another admin successfully!";
     } else {
       let codeExists = true;
 
@@ -110,19 +111,10 @@ exports.adm = async (req, res) => {
       const token = crypto.randomBytes(32).toString("hex");
       const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-      if (type == "corporate") {
-        setup = {
-          subjectsUploaded: true,
-          scheduleUploaded: false,
-          done: false,
-        };
-      } else {
-        setup = {
-          subjectsUploaded: false,
-          scheduleUploaded: false,
-          done: false,
-        };
-      }
+      const setup =
+        type === "corporate"
+          ? { subjectsUploaded: true, scheduleUploaded: false, done: false }
+          : { subjectsUploaded: false, scheduleUploaded: false, done: false };
 
       await Org.create(
         [
@@ -144,15 +136,9 @@ exports.adm = async (req, res) => {
                 password: hashedPassword,
               },
             ],
-            settings: {
-              theme: "light",
-            },
-            verification: {
-              status: "pending",
-              token,
-              expiresAt,
-            },
-            setup: setup,
+            settings: { theme: "light" },
+            verification: { status: "pending", token, expiresAt },
+            setup,
           },
         ],
         { session },
@@ -181,17 +167,24 @@ exports.adm = async (req, res) => {
         "admin",
         null,
       );
+
+      successMessage =
+        "Registration Successful! Please check your email to verify your account.";
     }
 
     await session.commitTransaction();
     session.endSession();
 
-    return res.render("index", {
-      popupMessage: successMessage,
-      popupType: "success",
+    const params = new URLSearchParams({
+      "popup-type": "success",
+      "popup-message": successMessage,
     });
+
+    return res.redirect(`/?${params}`);
   } catch (err) {
-    await session.abortTransaction();
+    if (session.inTransaction()) {
+      await session.abortTransaction();
+    }
     session.endSession();
 
     await RegisterLog.create({
@@ -205,10 +198,12 @@ exports.adm = async (req, res) => {
       message: err.message,
     });
 
-    return res.render("index", {
-      popupMessage: err.message || "Registration failed. Please try again.",
-      popupType: "error",
+    const params = new URLSearchParams({
+      "popup-type": "error",
+      "popup-message": err.message || "Registration failed. Please try again.",
     });
+
+    return res.redirect(`/?${params}`);
   }
 };
 
@@ -216,18 +211,15 @@ exports.approveUser = async (req, res) => {
   try {
     const { code: userCode, role: userRole } = req.query;
     const adminCode = req.session.user.code;
-
     const admin = await Org.findOne({ code: adminCode });
 
-    const renderError = (message) => {
-      const data = getAdminRenderData(admin);
-
-      return res.render("/dashboards/admin", {
-        ...data,
-        popupType: "error",
-        popupMessage: message,
+    if (!admin) {
+      const params = new URLSearchParams({
+        "popup-type": "error",
+        "popup-message": "Error: Organization not found!",
       });
-    };
+      return res.redirect(`/dashboard/admin?${params}`);
+    }
 
     let Model;
 
@@ -242,35 +234,51 @@ exports.approveUser = async (req, res) => {
         } else if (admin.type === "school") {
           Model = resolveUserModels("school-student");
         } else {
-          return renderError(
-            "Failed to verify! Invalid Organization Type!"
-          );
+          const params = new URLSearchParams({
+            "popup-type": "error",
+            "popup-message": "Error: Invalid Organization Type!",
+          });
+          return res.redirect(`/dashboard/admin?${params}`);
         }
         break;
 
-      default:
-        return renderError(
-          "Failed to verify! Invalid User Role!"
-        );
+      default: {
+        const params = new URLSearchParams({
+          "popup-type": "error",
+          "popup-message": "Error: Invalid User Role!",
+        });
+        return res.redirect(`/dashboard/admin?${params}`);
+      }
     }
 
-    const user = await Model.findOne({
-      org: adminCode,
-      code: userCode,
+    const updatedUser = await Model.findOneAndUpdate(
+      { org: adminCode, code: userCode },
+      { approvalStatus: "approved" },
+      { new: true },
+    );
+
+    if (!updatedUser) {
+      const params = new URLSearchParams({
+        "popup-type": "error",
+        "popup-message": "Error: Invalid User!",
+      });
+      return res.redirect(`/dashboard/admin?${params}`);
+    }
+
+    const params = new URLSearchParams({
+      "popup-type": "success",
+      "popup-message": "User approved successfully",
     });
 
-    if (!user) {
-      return renderError(
-        "Failed to verify! User not found!"
-      );
-    }
-
-    user.approvedStatus = "approved";
-    await user.save();
-
-    return res.redirect("/dashboard/admin");
+    return res.redirect(`/dashboard/admin?${params}`);
   } catch (err) {
     console.error(err);
-    return res.status(500).send("Internal Server Error");
+
+    const params = new URLSearchParams({
+      "popup-type": "error",
+      "popup-message": "Error: Internal Server Error!",
+    });
+
+    return res.redirect(`/dashboard/admin?${params}`);
   }
 };

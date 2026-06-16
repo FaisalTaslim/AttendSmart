@@ -1,0 +1,21 @@
+@startuml
+skinparam DefaultFontSize 14
+skinparam ArrowThickness 2
+skinparam ActivityBorderThickness 2
+title <b>Final Response and Error Handling</b>
+
+(C)
+
+:<b>Return 200</b>\n<b>{success: true, message: "Attendance marked successfully"}</b>;
+stop
+
+note right
+  <b>Global Error Handling (wraps entire process):</b>
+  Any thrown error from earlier steps
+  (missing history, missing schedule, DB
+  failure, etc.) is caught here.
+  Logged server-side, then:
+  Return 500 {success: false, message: err.message}
+end note
+
+@enduml

@@ -1,0 +1,62 @@
+@startuml
+skinparam DefaultFontSize 14
+skinparam ArrowThickness 2
+skinparam ActivityBorderThickness 2
+title <b>Employee Attendance Marking Flow</b>
+
+(A)
+
+:<b>Get org from req.session.user.code</b>;
+:<b>Fetch Employee Name by userCode</b>;
+:<b>Get Current Date/Time and Weekday</b>;
+:<b>Fetch org Schedule and Shift Details</b>;
+:<b>Get Grace Period (default 0)</b>;
+:<b>Compute currentMinutes and startMinutes</b>;
+:<b>Determine shiftType (day / night)</b>;
+
+if (<b>type == "check-in"?</b>) then (Yes)
+
+  :<b>Fetch EmployeeHistory {org, sessionCode}</b>;
+
+  if (<b>History Found?</b>) then (Yes)
+  else (No)
+    :<b>Throw "Employee history not found"</b>;
+    stop
+  endif
+
+  if (<b>userCode Already Checked In?</b>) then (Yes)
+  else (No)
+    :<b>Determine Status (late / on-time)</b>;
+    :<b>Push New History Entry</b>\n<b>{code, name, checkIn, checkOut: null, status}</b>;
+  endif
+
+else (No - Check-Out)
+
+  :<b>Fetch EmployeeHistory {org, sessionCode}</b>;
+
+  if (<b>History Found?</b>) then (Yes)
+  else (No)
+    :<b>Throw "Employee history not found"</b>;
+    stop
+  endif
+
+  if (<b>userCode Found in History?</b>) then (Yes)
+  else (No)
+    :<b>Return 400 "User didn't check-in earlier"</b>;
+    stop
+  endif
+
+  if (<b>checkOut Already Set?</b>) then (Yes)
+    :<b>Return "Attendance already marked"</b>;
+    stop
+  else (No)
+    :<b>Increment EmployeeSummary.attended</b>;
+    :<b>Update EmployeeHistory.checkOut = now</b>;
+  endif
+
+endif
+
+(C)
+detach
+
+@enduml

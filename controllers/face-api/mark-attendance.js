@@ -8,6 +8,7 @@ const StudentSummary = require("../../models/statistics/student-summary");
 const EmployeeHistory = require("../../models/logs/employee-attendance-history");
 const StudentHistory = require("../../models/logs/student-attendance-history");
 const Schedule = require("../../models/schedule/schedule");
+const activeSession = require("../../models/attendance/active-employee-session");
 const {
   fullTime,
   fullweek,
@@ -69,7 +70,35 @@ exports.markAttendance = async (req, res) => {
 
     if (isUser === "employee") {
       const org = req.session.user.code;
-      const userName = (await Employee.findOne({ code: userCode }))?.name;
+      const employee = await Employee.findOne({ code: userCode });
+
+      if (!employee) {
+        return res.status(404).json({
+          success: false,
+          message: "Employee not found",
+        });
+      }
+
+      const userName = employee.name;
+
+      const activeSessionDoc = await activeSession.findOne({
+        org,
+        sessionCode,
+      });
+
+      if (!activeSessionDoc) {
+        return res.status(404).json({
+          success: false,
+          message: "Attendance session not found",
+        });
+      }
+
+      if (employee.shift !== shift) {
+        return res.status(400).json({
+          success: false,
+          message: `Employee belongs to ${employee.shift} shift but this session is for ${activeSessionDoc.shift} shift.`,
+        });
+      }
 
       const today = fullTime();
       const schedule = await Schedule.findOne({ org });
@@ -83,8 +112,6 @@ exports.markAttendance = async (req, res) => {
         shiftSchedule.check_in.split(":")[0],
         shiftSchedule.check_in.split(":")[1],
       );
-
-      const shiftType = today.hours >= 6 && today.hours < 18 ? "day" : "night";
 
       if (type === "check-in") {
         history = await returnEmployeeHistory(org, sessionCode);
@@ -131,7 +158,7 @@ exports.markAttendance = async (req, res) => {
           {
             org,
             code: userCode,
-            shift: shiftType,
+            shift: shift,
             month: getMonthKey(),
           },
           {

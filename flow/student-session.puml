@@ -1,0 +1,59 @@
+@startuml
+skinparam DefaultFontSize 14
+skinparam ArrowThickness 2
+skinparam ActivityBorderThickness 2
+title <b>Student Attendance Session Creation</b>
+
+start
+
+:<b>Teacher Login</b>;
+:<b>Click "Start Session"</b>;
+:<b>Select Organization,\nDepartment and Subject</b>;
+:<b>Submit Form</b>;
+:<b>Receive Session Details</b>;
+:<b>Determine Subject</b>;
+
+if (<b>Subject Available?</b>) then (Yes)
+
+  if (<b>Attendance Type = One-Time?</b>) then (Yes)
+    :<b>Display Error Message</b>;
+    stop
+  endif
+
+else (No)
+
+  if (<b>School AND One-Time Attendance?</b>) then (Yes)
+  else (No)
+    :<b>Display Error Message</b>;
+    stop
+  endif
+
+endif
+
+:<b>Generate Session Code</b>;
+:<b>Set Session Expiry Time</b>;
+:<b>Check Existing Active Session</b>;
+
+if (<b>Active Session Exists?</b>) then (Yes)
+
+  :<b>Display Existing QR Session</b>;
+  stop
+
+else (No)
+
+  :<b>Create Active Session</b>;
+  :<b>Update Attendance Summary</b>;
+  :<b>Create Session History Log</b>;
+
+  if (<b>Transaction Successful?</b>) then (Yes)
+    :<b>Generate QR Code</b>;
+    :<b>Display QR On Dashboard</b>;
+    stop
+  else (No)
+    :<b>Display Error Message</b>;
+    stop
+  endif
+
+endif
+
+@enduml
