@@ -1,202 +1,139 @@
-const bcrypt = require("bcrypt");
-const Org = require("../../models/users/organization");
-const RegisterLog = require("../../models/logs/register");
-const generateCode = require("../../utils/functions/generate-code");
-const crypto = require("crypto");
-const {
-  sendVerificationEmail,
-} = require("../../utils/emails/send-registration-emails");
-const verifyDomains = require("../../utils/emails/verify-domains");
-const mongoose = require("mongoose");
-const resolveUserModels = require("../../utils/functions/resolve-user-models");
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const validateFields = require("../../utils/validate-form-fields");
+const returnOrg = require('../../services/fetch/returnOrg');
+const generateCode = require('../../utils/functions/generate-code');
+const crypto = require('crypto');
+const resolveUserModels = require('../../utils/functions/resolve-user-models');
+
+const { createRegisterLog } = require('../../services/create/logs');
+const { createOrg } = require('../../services/create/users');
+const { updateAdmin } = require('../../services/update/users');
+const { sendVerificationEmail, } = require('../../utils/emails/send-registration-emails');
 
 exports.adm = async (req, res) => {
   const session = await mongoose.startSession();
-  let code = null;
-  let name, adminId, contact, email;
+
+  let code = null, data;
+  const { admin, organization, branch, address, type, website, attendanceMethod, confirmPassword, termsCheck } = req.body;
+  const adminData = admin?.[0];
+  const { name, adminId, contact, email, password } = adminData;
 
   try {
-    const {
-      admin,
-      organization,
-      branch,
-      address,
-      type,
-      website,
-      attendanceMethod,
-      confirmPassword,
-      termsCheck,
-    } = req.body;
+    if (password !== confirmPassword) throw new Error('Password mismatch!');
 
-    const adminData = admin?.[0];
+    const hashedPassword = await bcrypt.hash(password, 12);
 
-    if (!adminData) throw new Error("Missing admin details.");
-
-    ({ name, adminId, contact, email } = adminData);
-    const { password } = adminData;
-
-    if (!termsCheck || !password ||password !== confirmPassword ||!name ||!adminId ||!contact ||!email ||!organization ||!branch ||!type) {
-      throw new Error("Suspicious behavior detected! Missing required fields!");
+    const adm = {
+      name: name.toLowerCase().trim(),
+      adminId: adminId.toLowerCase().trim(),
+      contact,
+      email: email.toLowerCase().trim(),
+      password: hashedPassword,
     }
 
-    if (!verifyDomains(email)) {
-      throw new Error("Please use your organization domain to register.");
-    }
+    if (!validateFields(Object.values(req.body)) || !validateFields(Object.values(adminData)))
+      throw new Error('Suspicious activity detected! Fill in all required fields!');
 
     session.startTransaction();
 
-    const hashedPassword = await bcrypt.hash(password, 12);
-    const existingOrg = await Org.findOne({ org: organization }).session(
-      session,
-    );
+    const existing = await returnOrg({ code: organization, branch });
 
-    let successMessage;
-
-    if (existingOrg) {
-      const adminExists = existingOrg.admin?.some(
-        (existing) => existing.email === email || existing.adminId === adminId,
-      );
-
-      if (adminExists) {
-        throw new Error("Admin already exists for this organization.");
+    if (existing) {
+      if (admin?.some((a) => a.email === email || a.adminId === adminId)) {
+        throw new Error('Admin already exists! Login with your ID and password');
       }
+      else {
+        await updateAdmin(existing.code, adm, 'pushAdmin', session);
 
-      await Org.findOneAndUpdate(
-        { _id: existingOrg._id },
-        {
-          $push: {
-            admin: {
-              name: name.toLowerCase().trim(),
-              adminId: adminId.toLowerCase().trim(),
-              contact,
-              email: email.toLowerCase().trim(),
-              password: hashedPassword,
-            },
-          },
-        },
-        { session },
-      );
+        data = {
+          type: 'success',
+          org: existing.code,
+          name: name,
+          role: 'admin',
+          id: adminId,
+          email: email,
+          contact,
+          message: 'Another admin added successfully!',
+          approvalStatus: null,
+        }
 
-      await RegisterLog.findOneAndUpdate(
-        { org: existingOrg.code },
-        {
-          $push: {
-            register: {
-              type: "success",
-              org: existingOrg.code,
-              name: name.toLowerCase().trim(),
-              role: "admin",
-              id: adminId.toLowerCase().trim(),
-              email: email.toLowerCase().trim(),
-              contact,
-              message: "Another admin added successfully!",
-              approvalStatus: null,
-            },
-          },
-        },
-        { upsert: true, session },
-      );
-
-      successMessage =
-        "Admin already exists. Added another admin successfully!";
-    } else {
-      let codeExists = true;
-
-      while (codeExists) {
+        await createRegisterLog(data, session);
+      }
+    }
+    else {
+      while (true) {
         code = generateCode(6, "numeric");
-        const check = await Org.findOne({ code }).session(session);
-        if (!check) codeExists = false;
+        const exists = await returnOrg({ code });
+        if (!exists) break;
       }
 
-      const token = crypto.randomBytes(32).toString("hex");
-      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+      const token = crypto.randomBytes(32).toString('hex');
 
       const setup =
-        type === "corporate"
+        type === 'corporate'
           ? { subjectsUploaded: true, scheduleUploaded: false, done: false }
           : { subjectsUploaded: false, scheduleUploaded: false, done: false };
 
-      await Org.create(
-        [
-          {
-            code,
-            org: organization,
-            branch: branch.toLowerCase().trim(),
-            type,
-            address,
-            website,
-            attendanceMethod: null,
-            agreement: true,
-            admin: [
-              {
-                name: name.toLowerCase().trim(),
-                adminId: adminId.toLowerCase().trim(),
-                contact,
-                email: email.toLowerCase().trim(),
-                password: hashedPassword,
-              },
-            ],
-            settings: { theme: "light" },
-            verification: { status: "pending", token, expiresAt },
-            setup,
-          },
-        ],
-        { session },
-      );
-
-      await RegisterLog.create(
-        [
-          {
-            type: "success",
-            org: code,
-            name: name.toLowerCase().trim(),
-            id: adminId.toLowerCase().trim(),
-            role: "admin",
-            email: email.toLowerCase().trim(),
-            contact,
-            message: "Admin Registered successfully!",
-          },
-        ],
-        { session },
-      );
-
-      await sendVerificationEmail(
-        email.toLowerCase().trim(),
-        token,
+      data = {
         code,
-        "admin",
-        null,
-      );
+        org: organization.toLowerCase().trim(),
+        branch: branch.toLowerCase().trim(),
+        type,
+        address: address.toLowerCase().trim(),
+        website,
+        attendanceMethod: (type === 'corporate') ? null : attendanceMethod,
+        agreement: true,
+        adm,
+        setup,
+      }
 
-      successMessage =
-        "Registration Successful! Please check your email to verify your account.";
+      const createdOrg = await createOrg(data, session);
+
+      data = {
+        type: 'success',
+        org: code,
+        name,
+        id: adminId,
+        role: 'admin',
+        email,
+        contact,
+        message: 'admin registered successfully!',
+        approvalStatus: null,
+      }
+
+      await createRegisterLog(data, session);
+
+      await sendVerificationEmail(email, token, code, 'admin', null);
+
+      await session.commitTransaction();
+      session.endSession();
+
+      const params = new URLSearchParams({
+        "popup-type": 'success',
+        "popup-message": 'All Set!! Verify your org! We have sent you a mail.',
+      });
+
+      return res.redirect(`/?${params}`);
     }
-
-    await session.commitTransaction();
-    session.endSession();
-
-    const params = new URLSearchParams({
-      "popup-type": "success",
-      "popup-message": successMessage,
-    });
-
-    return res.redirect(`/?${params}`);
   } catch (err) {
     if (session.inTransaction()) {
       await session.abortTransaction();
     }
     session.endSession();
 
-    await RegisterLog.create({
-      type: "failed",
-      org: code || "null",
-      name: name?.toLowerCase().trim() || "null",
-      id: adminId?.toLowerCase().trim() || "null",
-      role: "admin",
-      email: email?.toLowerCase().trim() || "null",
-      contact: contact || "null",
-      message: err.message,
-    });
+    data = {
+      type: 'failed',
+      org: code ?? null,
+      name: name ?? null,
+      id: adminId ?? null,
+      role: 'admin',
+      email: email ?? null,
+      contact,
+      message: err.message
+    }
+
+    await createRegisterLog(data);
 
     const params = new URLSearchParams({
       "popup-type": "error",
@@ -204,81 +141,5 @@ exports.adm = async (req, res) => {
     });
 
     return res.redirect(`/?${params}`);
-  }
-};
-
-exports.approveUser = async (req, res) => {
-  try {
-    const { code: userCode, role: userRole } = req.query;
-    const adminCode = req.session.user.code;
-    const admin = await Org.findOne({ code: adminCode });
-
-    if (!admin) {
-      const params = new URLSearchParams({
-        "popup-type": "error",
-        "popup-message": "Error: Organization not found!",
-      });
-      return res.redirect(`/dashboard/admin?${params}`);
-    }
-
-    let Model;
-
-    switch (userRole) {
-      case "employee":
-        Model = resolveUserModels("employee");
-        break;
-
-      case "student":
-        if (admin.type === "college") {
-          Model = resolveUserModels("college-student");
-        } else if (admin.type === "school") {
-          Model = resolveUserModels("school-student");
-        } else {
-          const params = new URLSearchParams({
-            "popup-type": "error",
-            "popup-message": "Error: Invalid Organization Type!",
-          });
-          return res.redirect(`/dashboard/admin?${params}`);
-        }
-        break;
-
-      default: {
-        const params = new URLSearchParams({
-          "popup-type": "error",
-          "popup-message": "Error: Invalid User Role!",
-        });
-        return res.redirect(`/dashboard/admin?${params}`);
-      }
-    }
-
-    const updatedUser = await Model.findOneAndUpdate(
-      { org: adminCode, code: userCode },
-      { approvalStatus: "approved" },
-      { new: true },
-    );
-
-    if (!updatedUser) {
-      const params = new URLSearchParams({
-        "popup-type": "error",
-        "popup-message": "Error: Invalid User!",
-      });
-      return res.redirect(`/dashboard/admin?${params}`);
-    }
-
-    const params = new URLSearchParams({
-      "popup-type": "success",
-      "popup-message": "User approved successfully",
-    });
-
-    return res.redirect(`/dashboard/admin?${params}`);
-  } catch (err) {
-    console.error(err);
-
-    const params = new URLSearchParams({
-      "popup-type": "error",
-      "popup-message": "Error: Internal Server Error!",
-    });
-
-    return res.redirect(`/dashboard/admin?${params}`);
   }
 };

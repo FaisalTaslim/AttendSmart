@@ -1,6 +1,7 @@
 let faceMatcher;
 let attendanceMarked = false;
 let attendanceInProgress = false;
+let unknownFaceDetected = false;
 const faceModelsReady = window.faceModelsReady || Promise.resolve();
 window.faceModelsReady = faceModelsReady;
 
@@ -47,10 +48,12 @@ async function initializeRecognition() {
 
 async function startRecognitionLoop() {
   if (attendanceMarked || attendanceInProgress) return;
+
   const detections = await faceapi
     .detectAllFaces(video)
     .withFaceLandmarks()
     .withFaceDescriptors();
+
   if (detections.length > 1) {
     showMessage(
       "Multiple faces detected. Please keep only one face in the frame.",
@@ -59,17 +62,30 @@ async function startRecognitionLoop() {
     stopCamera();
     return;
   }
+
   if (detections.length === 1) {
     const match = faceMatcher.findBestMatch(detections[0].descriptor);
+
     if (match.label !== "unknown") {
       attendanceInProgress = true;
+      unknownFaceDetected = false;
       await markAttendance(match.label);
       return;
     }
+
+    if (!unknownFaceDetected) {
+      unknownFaceDetected = true;
+      showMessage(
+        "Face not recognized. User is not registered in the system.",
+        "error",
+      );
+    }
+  } else {
+    unknownFaceDetected = false;
   }
+
   setTimeout(startRecognitionLoop, 1000);
 }
-
 async function markAttendance(userCode) {
   try {
     const res = await fetch(
@@ -109,5 +125,8 @@ faceModelsReady
     initializeRecognition();
   })
   .catch((err) => {
-    showMessage("Face recognition models failed to load. Please refresh.", "error");
+    showMessage(
+      "Face recognition models failed to load. Please refresh.",
+      "error",
+    );
   });

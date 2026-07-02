@@ -170,6 +170,7 @@ exports.register_clg = async (req, res) => {
         {
           type: "success",
           org,
+          code,
           name: name.toLowerCase().trim(),
           id: roll.trim(),
           role: "student",
@@ -207,6 +208,7 @@ exports.register_clg = async (req, res) => {
     await RegisterLog.create({
       type: "failed",
       org: org || null,
+      code: code || null,
       name: name?.toLowerCase().trim() || null,
       id: roll?.trim() || null,
       role: student,
@@ -347,6 +349,7 @@ exports.register_sch = async (req, res) => {
         {
           type: "success",
           org,
+          code,
           name: name.toLowerCase().trim(),
           id: roll.trim(),
           role: "student",
@@ -384,6 +387,7 @@ exports.register_sch = async (req, res) => {
     await RegisterLog.create({
       type: "failed",
       org: org || null,
+      code: code || null,
       name: name?.toLowerCase().trim() || null,
       id: roll?.trim() || null,
       role: "student",

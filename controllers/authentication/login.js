@@ -48,9 +48,11 @@ const loginAsUser = async (res, req, { code, userRole, password }) => {
     code,
     isDeleted: false,
     isSuspended: false,
+    "verification.status": "verified",
+    approvalStatus: "approved",
   });
 
-  if (!user || user.verification.status !== "verified") {
+  if (!user) {
     return { error: "Invalid or unverified user" };
   }
 
@@ -109,6 +111,7 @@ exports.login = async (req, res) => {
         console.error("Session save error:", err);
         return sendError(res, "Something went wrong during login");
       }
+
       return res.redirect("/dashboard");
     });
   } catch (err) {

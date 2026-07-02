@@ -129,6 +129,7 @@ exports.register_emp = async (req, res) => {
         {
           type: "success",
           org,
+          code,
           name: name.toLowerCase().trim(),
           id: employeeId.toLowerCase().trim(),
           role: "employee",
@@ -166,6 +167,7 @@ exports.register_emp = async (req, res) => {
     await RegisterLog.create({
       type: "failed",
       org: org || null,
+      code: code || null,
       name: name?.toLowerCase().trim() || null,
       id: employeeId?.toLowerCase().trim() || null,
       role: "employee",

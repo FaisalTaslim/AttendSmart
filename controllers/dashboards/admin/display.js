@@ -18,6 +18,7 @@ function normalizeText(string = "") {
     .trim();
 }
 
+
 async function returnLoginLog(user) {
   const loginLog = await LoginLogs.find({ org: user.code }).lean();
   return loginLog.map((log) => {
@@ -69,7 +70,7 @@ async function returnStudentSummary(user) {
   const studentSummary = await StudentSummary.find({ org: user.code }).lean();
 
   const rawSummary = studentSummary.map((entry) => ({
-    ...entry._doc,
+    ...entry,
     name: normalizeText(entry.name),
     percentage:
       entry.total > 0 ? Math.round((entry.attended / entry.total) * 100) : 0,
@@ -77,8 +78,9 @@ async function returnStudentSummary(user) {
 
   const summaryMap = {};
   rawSummary.forEach((entry) => {
-    if (!summaryMap[entry.code]) {
-      summaryMap[entry.code] = {
+    const key = `${entry.code}-${entry.month}`;
+    if (!summaryMap[key]) {
+      summaryMap[key] = {
         code: entry.code,
         name: entry.name,
         department: entry.department,
@@ -86,7 +88,7 @@ async function returnStudentSummary(user) {
         subjects: [],
       };
     }
-    summaryMap[entry.code].subjects.push({
+    summaryMap[key].subjects.push({
       subject: entry.subject || "—",
       attended: entry.attended,
       total: entry.total,
@@ -94,13 +96,21 @@ async function returnStudentSummary(user) {
     });
   });
 
-  return Object.values(summaryMap).map((student) => ({
-    ...student,
-    overallPercentage:
-      student.totalClasses > 0
-        ? Math.round((student.totalAttended / student.totalClasses) * 100)
-        : 0,
-  }));
+  return Object.values(summaryMap).map((student) => {
+    const totalAttended = student.subjects.reduce(
+      (sum, s) => sum + (s.attended || 0),
+      0,
+    );
+    const totalClasses = student.subjects.reduce(
+      (sum, s) => sum + (s.total || 0),
+      0,
+    );
+    return {
+      ...student,
+      overallPercentage:
+        totalClasses > 0 ? Math.round((totalAttended / totalClasses) * 100) : 0,
+    };
+  });
 }
 
 async function returnEmployeeSummary(user) {

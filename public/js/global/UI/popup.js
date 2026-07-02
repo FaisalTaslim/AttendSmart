@@ -9,5 +9,5 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
       popup.style.display = "none";
     }, 300);
-  }, 3000);
+  }, 10000);
 });

@@ -14,7 +14,7 @@ const registerLogSchema = new Schema(
       required: true,
     },
     id: {type: String, required: true,},
-    code: {type: String},
+    code: {type: String, required: true},
 
     role: {
       type: String,
