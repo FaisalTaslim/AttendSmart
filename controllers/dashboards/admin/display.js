@@ -1,4 +1,4 @@
-const resolveUserModel = require("../../../utils/functions/resolve-user-models");
+const resolveUserModel = require("../../../utils/resolve-user-models");
 const LoginLogs = require("../../../models/logs/login");
 const RegisterLogs = require("../../../models/logs/register");
 const ActiveEmployeeSession = require("../../../models/attendance/active-employee-session");

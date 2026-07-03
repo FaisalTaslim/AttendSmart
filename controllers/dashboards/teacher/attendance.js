@@ -1,10 +1,10 @@
 const Org = require("../../../models/users/organization");
-const resolveUserModel = require("../../../utils/functions/resolve-user-models");
+const resolveUserModel = require("../../../utils/resolve-user-models");
 const activeSession = require("../../../models/attendance/active-student-session");
 const logSession = require("../../../models/logs/student-attendance-history");
 const StudentSummary = require("../../../models/statistics/student-summary");
-const generateCode = require("../../../utils/functions/generate-code");
-const { getMonthKey } = require("../../../utils/functions/time");
+const generateCode = require("../../../utils/generate-code");
+const { getMonthKey } = require("../../../utils/time");
 const mongoose = require("mongoose");
 
 async function renderTeacherDashboard(req, res, popupMessage, popupType) {

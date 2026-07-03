@@ -1,5 +1,5 @@
 const Org = require('../../models/users/organization')
-const generateCode = require('../../utils/functions/generate-code');
+const generateCode = require('../../utils/generate-code');
 
 exports.orgList = async (req, res) => {
     try {

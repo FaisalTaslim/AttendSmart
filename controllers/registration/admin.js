@@ -1,110 +1,128 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const validateFields = require("../../utils/validate-form-fields");
-const returnOrg = require('../../services/fetch/returnOrg');
-const generateCode = require('../../utils/functions/generate-code');
 const crypto = require('crypto');
-const resolveUserModels = require('../../utils/functions/resolve-user-models');
 
-const { createRegisterLog } = require('../../services/create/logs');
-const { createOrg } = require('../../services/create/users');
+const validateFields = require('../../utils/validate-fields');
+const generateCode = require('../../utils/generate-code');
+const lowercase = require('../../utils/lowercase');
+
+const { returnOrg } = require('../../services/fetch/users');
 const { updateAdmin } = require('../../services/update/users');
-const { sendVerificationEmail, } = require('../../utils/emails/send-registration-emails');
+const { registerLog } = require('../../services/create/logs');
+const { createOrg } = require('../../services/create/users');
+const { sendVerificationEmail } = require('../../services/emails/send-registration-emails');
+
+
+function verifyRequest(req, org) {
+  const verify = {
+    'invalidFields': (validateFields(Object.values(req.body)) && validateFields(Object.values(req.body.admin[0]))),
+    'passwordMismatch': (req.body.admin[0].password === req.body.confirmPassword),
+  }
+
+  try {
+    let result = () => {
+      for (const key in verify) {
+        if (!verify[key]) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    if (result() == false) {
+      throw new Error('Incorrect Password or missing fields! Try agian later!');
+    }
+  } catch (err) {
+    throw err;
+  }
+}
 
 exports.adm = async (req, res) => {
   const session = await mongoose.startSession();
 
-  let code = null, data;
-  const { admin, organization, branch, address, type, website, attendanceMethod, confirmPassword, termsCheck } = req.body;
-  const adminData = admin?.[0];
-  const { name, adminId, contact, email, password } = adminData;
+  const l = { code: null, data: null, verify: null, existing: null, exists: null, orgDoc: null, adminData: null, adm: null, setup: null, lowercased: null };
+
+  l.adminData = {
+    name: req.body.admin[0].name,
+    adminId: req.body.admin[0].adminId,
+    contact: req.body.admin[0].contact,
+    email: req.body.admin[0].email,
+  }
+
+  adm = lowercase(adminData);
 
   try {
-    if (password !== confirmPassword) throw new Error('Password mismatch!');
-
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    const adm = {
-      name: name.toLowerCase().trim(),
-      adminId: adminId.toLowerCase().trim(),
-      contact,
-      email: email.toLowerCase().trim(),
-      password: hashedPassword,
-    }
-
-    if (!validateFields(Object.values(req.body)) || !validateFields(Object.values(adminData)))
-      throw new Error('Suspicious activity detected! Fill in all required fields!');
+    l.existing = await returnOrg({ org: req.body.organization, branch: req.body.branch });
+    verifyRequest(req, l.existing);
 
     session.startTransaction();
 
-    const existing = await returnOrg({ code: organization, branch });
-
     if (existing) {
-      if (admin?.some((a) => a.email === email || a.adminId === adminId)) {
+      if (existing.admin?.some((a) => a.email === email || a.adminId === adminId)) {
         throw new Error('Admin already exists! Login with your ID and password');
       }
-      else {
-        await updateAdmin(existing.code, adm, 'pushAdmin', session);
 
-        data = {
-          type: 'success',
-          org: existing.code,
-          name: name,
-          role: 'admin',
-          id: adminId,
-          email: email,
-          contact,
-          message: 'Another admin added successfully!',
-          approvalStatus: null,
-        }
+      await updateAdmin(existing.code, adm, 'pushAdmin', session);
 
-        await createRegisterLog(data, session);
+      data = {
+        type: 'success',
+        org: l.existing.code,
+        name: adm.name,
+        role: 'admin',
+        id: adm.adminId,
+        email: adm.email,
+        contact,
+        message: 'Another admin added successfully!',
+        approvalStatus: null,
       }
+
+      await registerLog(data, session);
     }
     else {
       while (true) {
-        code = generateCode(6, "numeric");
-        const exists = await returnOrg({ code });
-        if (!exists) break;
+        l.code = generateCode(6, "numeric");
+        l.exists = await returnOrg({ code: l.code });
+        if (!l.exists) break;
       }
 
       const token = crypto.randomBytes(32).toString('hex');
 
-      const setup =
-        type === 'corporate'
+      setup =
+        req.body.type === 'corporate'
           ? { subjectsUploaded: true, scheduleUploaded: false, done: false }
           : { subjectsUploaded: false, scheduleUploaded: false, done: false };
 
       data = {
-        code,
-        org: organization.toLowerCase().trim(),
-        branch: branch.toLowerCase().trim(),
-        type,
-        address: address.toLowerCase().trim(),
-        website,
-        attendanceMethod: (type === 'corporate') ? null : attendanceMethod,
+        org: req.body.organization,
+        branch: req.body.branch,
+        address: req.body.address,
+        type: req.body.type,
+        website: req.body.website,
+        attendanceMethod: (type === 'corporate') ? null : req.body.attendanceMethod,
         agreement: true,
-        adm,
-        setup,
+        setup: req.body.setup,
       }
+      lowercased = lowercase(data);
+      lowercased.admin = adm;
 
-      const createdOrg = await createOrg(data, session);
+
+      const createdOrg = await createOrg(lowercased, session);
 
       data = {
         type: 'success',
-        org: code,
-        name,
-        id: adminId,
+        org: l.code,
+        name: adm.name,
+        id: adm.adminId,
         role: 'admin',
-        email,
-        contact,
+        email: adm.email,
+        contact: adm.contact,
         message: 'admin registered successfully!',
         approvalStatus: null,
       }
 
-      await createRegisterLog(data, session);
+      await registerLog(data, session);
 
-      await sendVerificationEmail(email, token, code, 'admin', null);
+      await sendVerificationEmail(adm.email, token, l.code, 'admin', null);
 
       await session.commitTransaction();
       session.endSession();
@@ -124,16 +142,16 @@ exports.adm = async (req, res) => {
 
     data = {
       type: 'failed',
-      org: code ?? null,
-      name: name ?? null,
-      id: adminId ?? null,
+      org: l.code ?? null,
+      name: adm.name ?? null,
+      id: adm.adminId ?? null,
       role: 'admin',
-      email: email ?? null,
-      contact,
+      email: adm.email ?? null,
+      contact: adm.contact ?? null,
       message: err.message
     }
 
-    await createRegisterLog(data);
+    await registerLog(data);
 
     const params = new URLSearchParams({
       "popup-type": "error",

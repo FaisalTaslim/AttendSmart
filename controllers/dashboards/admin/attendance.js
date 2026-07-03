@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const session = require("express-session");
-const resolveUserModel = require("../../../utils/functions/resolve-user-models");
+const resolveUserModel = require("../../../utils/resolve-user-models");
 const activeSession = require("../../../models/attendance/active-employee-session");
 const logSession = require("../../../models/logs/employee-attendance-history");
 const Schedule = require("../../../models/schedule/schedule");
@@ -11,8 +11,8 @@ const {
   fullweek,
   fullTime,
   formatTime,
-} = require("../../../utils/functions/time");
-const generateCode = require("../../../utils/functions/generate-code");
+} = require("../../../utils/time");
+const generateCode = require("../../../utils/generate-code");
 
 async function returnUser(req) {
   const Model = resolveUserModel(req.session.user.role);

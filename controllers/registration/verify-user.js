@@ -1,5 +1,5 @@
-const resolveUserModel = require("../../utils/functions/resolve-user-models");
-const { sendRegistrationMail } = require("../../utils/emails/send-registration-emails");
+const resolveUserModel = require("../../utils/resolve-user-models");
+const { sendRegistrationMail } = require("../../services/emails/send-registration-emails");
 
 exports.verify = async (req, res) => {
   try {

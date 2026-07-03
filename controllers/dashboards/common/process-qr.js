@@ -1,6 +1,6 @@
 const activeSession = require("../../../models/attendance/active-student-session");
 const logSession = require("../../../models/logs/student-attendance-history");
-const resolveUserModel = require("../../../utils/functions/resolve-user-models");
+const resolveUserModel = require("../../../utils/resolve-user-models");
 const mongoose = require("mongoose");
 
 exports.processQr = async (req, res) => {

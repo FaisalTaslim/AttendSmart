@@ -1,4 +1,4 @@
-const resolveUserModel = require('../../../utils/functions/resolve-user-models');
+const resolveUserModel = require('../../../utils/resolve-user-models');
 
 exports.display = async (req, res) => {
     const userModel = resolveUserModel(req.session.user.role);

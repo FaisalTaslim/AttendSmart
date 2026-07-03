@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const Org = require("../../models/users/organization");
-const resolveUserModel = require("../../utils/functions/resolve-user-models");
+const resolveUserModel = require("../../utils/resolve-user-models");
 const LoginLog = require("../../models/logs/login");
 
 const logLogin = async ({ type, org, id, name, role, message }) => {

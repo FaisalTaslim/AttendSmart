@@ -1,4 +1,4 @@
-function normalizeString(string) {
+function normalizeStrings(string) {
     return (string
         .toLowerCase() + " ")
         .split(' ')
@@ -9,4 +9,4 @@ function normalizeString(string) {
         .trim();
 }
 
-module.exports = normalizeString;
+module.exports = normalizeStrings;

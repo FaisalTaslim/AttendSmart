@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const upload = require("../utils/file-parsing/multer");
+const upload = require("../utils/multer");
 const register = require('../controllers/registration/index');
 const authorize = require('../middleware/authorize-access');
 

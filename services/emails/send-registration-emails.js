@@ -1,5 +1,5 @@
 const transporter = require("../../config/mailer");
-const normalizeString = require("../functions/normalize-strings");
+const normalizeString = require("../../utils/normalize-strings");
 
 async function sendRegistrationMail(to, userName, uniqueId, role = "Student") {
   const htmlContent = `

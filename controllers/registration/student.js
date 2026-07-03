@@ -5,13 +5,10 @@ const CollegeStudent = require("../../models/users/college-student");
 const SchoolStudent = require("../../models/users/school-student");
 const Summary = require("../../models/statistics/student-summary");
 const RegisterLog = require("../../models/logs/register");
-const generateCode = require("../../utils/functions/generate-code");
+const generateCode = require("../../utils/generate-code");
 const crypto = require("crypto");
-const {
-  sendVerificationEmail,
-} = require("../../utils/emails/send-registration-emails");
-const { getMonthKey } = require("../../utils/functions/time");
-const verifyDomains = require("../../utils/emails/verify-domains");
+const {sendVerificationEmail} = require("../../services/emails/send-registration-emails");
+const { getMonthKey } = require("../../utils/time");
 
 class AppError extends Error {
   constructor(code) {

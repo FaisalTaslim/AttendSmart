@@ -1,4 +1,4 @@
-const resolveUserModel = require("../../utils/functions/resolve-user-models");
+const resolveUserModel = require("../../utils/resolve-user-models");
 
 exports.registerFace = async (req, res) => {
   try {

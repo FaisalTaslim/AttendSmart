@@ -1,6 +1,6 @@
 const RegisterLog = require("../../models/logs/register");
 
-async function createRegisterLog(data, session) {
+async function registerLog(data, session) {
     if (typeof data !== "object" || data === null) {
         throw new Error("Invalid data sent!");
     }
@@ -8,4 +8,4 @@ async function createRegisterLog(data, session) {
     return RegisterLog.create([data], { session });
 }
 
-module.exports = { createRegisterLog };
+module.exports = { registerLog };

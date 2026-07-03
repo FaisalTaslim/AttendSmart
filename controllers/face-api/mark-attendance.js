@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const resolveUserModel = require("../../utils/functions/resolve-user-models");
+const resolveUserModel = require("../../utils/resolve-user-models");
 const Employee = require("../../models/users/employee");
 const SchoolStudent = require("../../models/users/school-student");
 const CollegeStudent = require("../../models/users/college-student");
@@ -14,7 +14,7 @@ const {
   fullweek,
   timeToMinutes,
   getMonthKey,
-} = require("../../utils/functions/time");
+} = require("../../utils//time");
 
 exports.markAttendance = async (req, res) => {
   try {

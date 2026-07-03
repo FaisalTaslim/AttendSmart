@@ -1,5 +1,5 @@
 const Org = require("../../models/users/organization");
-const resolveUserModel = require("../../utils/functions/resolve-user-models");
+const resolveUserModel = require("../../utils/resolve-user-models");
 
 async function updateAdmin(code, data, service, session) {
   try {

@@ -1,82 +1,47 @@
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
-const Org = require("../../models/users/organization");
+const validateFields = require("../../utils/validate-fields");
+const { returnOrg, returnEmployee } = require('../../services/fetch/users');
+
 const Employee = require("../../models/users/employee");
 const EmployeeSummary = require("../../models/statistics/employee-summary");
 const RegisterLog = require("../../models/logs/register");
-const generateCode = require("../../utils/functions/generate-code");
+const generateCode = require("../../utils/generate-code");
 const crypto = require("crypto");
 const {
   sendVerificationEmail,
-} = require("../../utils/emails/send-registration-emails");
-const verifyDomains = require("../../utils/emails/verify-domains");
-const { getMonthKey } = require("../../utils/functions/time");
+} = require("../../services/emails/send-registration-emails");
+const { getMonthKey } = require("../../utils/time");
+
 
 exports.register_emp = async (req, res) => {
   const session = await mongoose.startSession();
   const month = getMonthKey();
-  let code = null;
 
-  const {
-    org,
-    name,
-    employeeId,
-    designation,
-    workPlace,
-    shift,
-    contact,
-    email,
-    password,
-    confirmPassword,
-  } = req.body;
+  while (true) {
+    code = generateCode(6, "numeric");
+    const exists = await returnEmployee({ code });
+    if (!exists) break;
+  }
+  
+  let code;
+  const orgDoc = await returnOrg({ code: org });
+  const existingEmployee = await returnEmployee({ code });
+
+  const { org, name, employeeId, designation, workPlace, shift, contact, email, password, confirmPassword } = req.body;
 
   try {
-    if (
-      !org ||
-      !name ||
-      !employeeId ||
-      !designation ||
-      !workPlace ||
-      !shift ||
-      !contact ||
-      !email ||
-      !password
-    ) {
-      throw new Error("MISSING_FIELDS");
-    }
-
-    if (password !== confirmPassword || !verifyDomains(email.toLowerCase())) {
-      throw new Error("SUSPICIOUS_ACTIVITY");
-    }
-
-    const orgDoc = await Org.findOne({ code: org });
-    if (!orgDoc) {
-      throw new Error("ORG_NOT_FOUND");
-    }
+    if ((!validateFields(Object.values(req.body)) || !validateFields({orgDoc}) && (password !== confirmPassword)))
+      throw new Error('Incorrect Password or missing fields! Try agian later!');
 
     session.startTransaction();
 
-    const existingEmployee = await Employee.findOne({
-      org,
-      name: name.toLowerCase().trim(),
-      employeeId: employeeId.toLowerCase().trim(),
-      email: email.toLowerCase().trim(),
-      isDeleted: false,
-    }).session(session);
 
     if (existingEmployee) {
       throw new Error("ACCOUNT_EXISTS");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    let codeExists = true;
-    while (codeExists) {
-      code = generateCode(6, "numeric");
-      const check = await Employee.findOne({ code }).session(session);
-      if (!check) codeExists = false;
-    }
-
     const verificationToken = crypto.randomBytes(20).toString("hex");
     const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
@@ -185,7 +150,7 @@ exports.register_emp = async (req, res) => {
 
     const message =
       ERROR_MESSAGES[err.message] || "Registration failed. Please try again.";
-      
+
     const params = new URLSearchParams({
       "popup-type": "error",
       "popup-message": message,
