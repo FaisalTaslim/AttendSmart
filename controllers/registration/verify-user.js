@@ -1,53 +1,74 @@
 const resolveUserModel = require("../../utils/resolve-user-models");
+const CollegeStudent = require('../../models/users/college-student');
+const SchoolStudent = require('../../models/users/school-student');
+const Employee = require('../../models/users/employee');
+const Org = require('../../models/users/organization');
+
 const { sendRegistrationMail } = require("../../services/emails/send-registration-emails");
+const validateFields = require('../../utils/validate-fields');
 
-exports.verify = async (req, res) => {
-  try {
-    console.log("Hitting verify user route");
+function verifyRequest(req) {
+  const verify = {
+    invalidFields: validateFields(Object.values(req.params)),
+  };
 
-    const { token, role, code, secondary_role } = req.params;
-    const actualRole = role === "student" ? secondary_role : role;
+  if (!Object.values(verify).every(Boolean)) {
+    throw new Error("Missing Fields!");
+  }
+}
 
-    const Model = resolveUserModel(actualRole);
+async function processData(req) {
+  const { token, code } = req.query;
 
-    if (!Model) {
-      return res.render("confirmation-pages/register_link_error");
-    }
-
-    const user = await Model.findOne({
+  return {
+    search: {
       code,
       "verification.token": token,
       "verification.status": "pending",
       "verification.expiresAt": { $gt: new Date() },
-    });
+    },
+
+    verification: {
+      status: "verified",
+      token: null,
+      expiresAt: null,
+    },
+  };
+}
+exports.verify = async (req, res) => {
+  try {
+    verifyRequest(req);
+
+    const data = await processData(req);
+
+    const role =
+      req.params.role === "student"
+        ? req.params.secondary_role
+        : req.params.role;
+
+    const Model = resolveUserModel(role);
+
+    const user = await Model.findOneAndUpdate(
+      data.search,
+      {
+        $set: {
+          verification: data.verification,
+        },
+      },
+      {
+        new: true,
+      }
+    );
 
     if (!user) {
       return res.render("confirmation-pages/register_link_error");
     }
 
-    let userName;
-    let email;
-    let mailRole;
-
-    if (actualRole === "admin") {
-      userName = user.admin[user.admin.length-1].name;
-      email = user.admin[user.admin.length-1].email;
-      mailRole = "Admin";
-    } else {
-      userName = user.name;
-      email = user.email;
-
-      if (actualRole === "employee") {mailRole = "Employee";} 
-      else {mailRole = "Student";}
-    }
-
-    await sendRegistrationMail(email, userName, code, mailRole);
-
-    user.verification.status = "verified";
-    user.verification.token = null;
-    user.verification.expiresAt = null;
-
-    await user.save();
+    await sendRegistrationMail(
+      req.query.to,
+      user.code,
+      role
+    );
 
     return res.render("confirmation-pages/register");
   } catch (err) {

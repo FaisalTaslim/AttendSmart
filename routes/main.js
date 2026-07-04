@@ -4,7 +4,11 @@ const main = require('../controllers/main/index');
 const dashboard = require('../controllers/dashboards/index');
 const authorize = require('../middleware/authorize-access');
 
-router.get('/', main.display.homepage);
+router.get('/', (req, res) => {
+  res.redirect('/app');
+});
+
+router.get('/app', main.display.homepage);
 router.get('/guidebook', authorize('admin', 'college-student', 'school-student', 'employee'), main.display.guidebook);
 router.get("/list", main.fetch.orgList);
 router.get('/scanner', authorize('school-student', 'college-student'), main.display.scanner);

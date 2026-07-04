@@ -1,6 +1,7 @@
 const resolveUserModel = require("../../utils/resolve-user-models");
 const generateCode = require("../../utils/generate-code");
 
+
 exports.homepage = async (req, res) => {
   let popupType = req.query["popup-type"] ?? null;
   let popupMessage = req.query["popup-message"] ?? null;

@@ -1,161 +1,154 @@
-const bcrypt = require("bcrypt");
-const mongoose = require("mongoose");
-const validateFields = require("../../utils/validate-fields");
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const { getMonthKey } = require('../../utils/time');
+
+const validateFields = require('../../utils/validate-fields');
+const generateCode = require('../../utils/generate-code');
+
 const { returnOrg, returnEmployee } = require('../../services/fetch/users');
+const { createEmployee } = require('../../services/create/users');
+const { registerLog } = require('../../services/create/logs');
+const { createEmployeeSummary } = require('../../services/create/summary');
+const { sendVerificationEmail } = require('../../services/emails/send-registration-emails');
 
-const Employee = require("../../models/users/employee");
-const EmployeeSummary = require("../../models/statistics/employee-summary");
-const RegisterLog = require("../../models/logs/register");
-const generateCode = require("../../utils/generate-code");
-const crypto = require("crypto");
-const {
-  sendVerificationEmail,
-} = require("../../services/emails/send-registration-emails");
-const { getMonthKey } = require("../../utils/time");
+function verifyRequest(req) {
+  const verify = {
+    invalidFields: validateFields(Object.values(req.body)),
+    passwordMatches: req.body.password === req.body.confirmPassword,
+  };
 
+  if (!Object.values(verify).every(Boolean)) {
+    throw new Error('Incorrect password or missing fields!');
+  }
+}
+
+async function processData(req) {
+  const {
+    org,
+    name,
+    employeeId,
+    designation,
+    workPlace,
+    shift,
+    contact,
+    email,
+    password,
+    termsCheck,
+  } = req.body;
+  let state = { code: null, exists: null};
+  let data = {user: null, summary: null};
+
+  while (true) {
+    state.code = generateCode(6, 'numeric');
+    state.exists = await returnOrg({ code: state.code });
+    if (!state.exists) break;
+  }
+
+  data.user = {
+    org,
+    code: state.code,
+    name: name.toLowerCase().trim(),
+    employeeId: employeeId.toLowerCase().trim(),
+    designation: designation.toLowerCase().trim(),
+    workPlace,
+    shift,
+    contact,
+    email: email.toLowerCase().trim(),
+    verification: {
+      status: 'pending',
+      token: crypto.randomBytes(32).toString('hex'),
+      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    },
+    password: await bcrypt.hash(password, 10),
+    termsCheck: (termsCheck) ? 'accepted' : 'rejected',
+  };
+
+  data.summary = {
+    org,
+    code: state.code,
+    name: name.toLowerCase().trim(),
+    department: designation.toLowerCase().trim(),
+    shift,
+    month: getMonthKey(),
+  }
+
+  return data;
+}
 
 exports.register_emp = async (req, res) => {
   const session = await mongoose.startSession();
-  const month = getMonthKey();
+  session.startTransaction();
 
-  while (true) {
-    code = generateCode(6, "numeric");
-    const exists = await returnEmployee({ code });
-    if (!exists) break;
-  }
-  
-  let code;
-  const orgDoc = await returnOrg({ code: org });
-  const existingEmployee = await returnEmployee({ code });
-
-  const { org, name, employeeId, designation, workPlace, shift, contact, email, password, confirmPassword } = req.body;
+  let object = { log: null , params: null};
+  const data = await processData(req);
 
   try {
-    if ((!validateFields(Object.values(req.body)) || !validateFields({orgDoc}) && (password !== confirmPassword)))
-      throw new Error('Incorrect Password or missing fields! Try agian later!');
+    if (verifyRequest(req)) {
+      if (await returnEmployee({ employeeId: data.user.employeeId }))
+        throw new Error('Employee exists! Login to your account!');
 
-    session.startTransaction();
+      await createEmployee(data.user, session);
+      await createEmployeeSummary(data.summary, session);
 
+      object.log = {
+        type: 'success',
+        org: data.user.org,
+        code: data.user.code,
+        name: data.user.name,
+        id: data.user.employeeId,
+        role: 'employee',
+        email: data.user.email,
+        contact: data.user.contact,
+        message: 'Successfull!!',
+      };
 
-    if (existingEmployee) {
-      throw new Error("ACCOUNT_EXISTS");
+      await registerLog(object.log, session);
+      await session.commitTransaction();
+
+      await sendVerificationEmail(
+        data.user.email,
+        data.user.verification.token,
+        data.user.code,
+        'employee',
+        null,
+      );
+
+      object.params = new URLSearchParams({
+          "popup-type": "warning",
+          "popup-message": "Check your email to verify your account!",
+        });
+
+      return res.redirect(`/?${params}`);
+
     }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const verificationToken = crypto.randomBytes(20).toString("hex");
-    const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
-
-    const [employee] = await Employee.create(
-      [
-        {
-          org,
-          code,
-          name: name.toLowerCase().trim(),
-          employeeId: employeeId.toLowerCase().trim(),
-          designation: designation.toLowerCase().trim(),
-          workPlace,
-          shift,
-          contact,
-          email: email.toLowerCase().trim(),
-          verification: {
-            status: "pending",
-            token: verificationToken,
-            expiresAt: tokenExpiry,
-          },
-          setup: {
-            faceUploaded: false,
-          },
-          settings: {
-            theme: "light",
-          },
-          password: hashedPassword,
-          termsCheck: "accepted",
-        },
-      ],
-      { session },
-    );
-
-    await EmployeeSummary.create(
-      [
-        {
-          org,
-          code,
-          name: name.toLowerCase().trim(),
-          department: designation.toLowerCase().trim(),
-          shift,
-          month,
-        },
-      ],
-      { session },
-    );
-
-    await RegisterLog.create(
-      [
-        {
-          type: "success",
-          org,
-          code,
-          name: name.toLowerCase().trim(),
-          id: employeeId.toLowerCase().trim(),
-          role: "employee",
-          email: email.toLowerCase().trim(),
-          contact,
-          message: "Employee registered successfully!",
-        },
-      ],
-      { session },
-    );
-
-    await session.commitTransaction();
-    session.endSession();
-
-    await sendVerificationEmail(
-      email.toLowerCase().trim(),
-      verificationToken,
-      employee.code,
-      "employee",
-      null,
-    );
-
-    const params = new URLSearchParams({
-      "popup-type": "warning",
-      "popup-message": "Check your email to verify your account!",
-    });
-
-    return res.redirect(`/?${params}`);
   } catch (err) {
     if (session.inTransaction()) {
       await session.abortTransaction();
     }
-    session.endSession();
 
-    await RegisterLog.create({
-      type: "failed",
-      org: org || null,
-      code: code || null,
-      name: name?.toLowerCase().trim() || null,
-      id: employeeId?.toLowerCase().trim() || null,
-      role: "employee",
-      email: email?.toLowerCase().trim() || null,
-      contact: contact || null,
+    object.log = {
+      type: 'failed',
+      org: data.user.org ?? null,
+      code: data.user.code ?? null,
+      name: data.user.name ?? null,
+      id: data.user.employeeId ?? null,
+      role: 'employee',
+      email: data.user.email ?? null,
+      contact: data.user.contact ?? null,
       message: err.message,
-    });
-
-    const ERROR_MESSAGES = {
-      MISSING_FIELDS: "Please fill in all required fields.",
-      SUSPICIOUS_ACTIVITY: "Suspicious activity detected! Failed to register.",
-      ORG_NOT_FOUND: "Invalid organization code.",
-      ACCOUNT_EXISTS: "Employee already registered",
     };
 
-    const message =
-      ERROR_MESSAGES[err.message] || "Registration failed. Please try again.";
+    await registerLog(object.log, session);
 
-    const params = new URLSearchParams({
+    object.params = new URLSearchParams({
       "popup-type": "error",
-      "popup-message": message,
+      "popup-message": err.message || "Registration failed. Please try again.",
     });
 
     return res.redirect(`/?${params}`);
+
+  } finally {
+    await session.endSession();
   }
 };

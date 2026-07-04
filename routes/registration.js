@@ -8,8 +8,7 @@ router.post("/admin", register.admin.adm);
 router.post("/admin/subjects/upload", authorize('admin'), upload.single("subjectsCsv"), register.uploadCsv.uploadSubjects);
 router.post("/admin/schedule/upload", authorize('admin'), upload.single("scheduleCsv"), register.uploadCsv.uploadSchedule);
 
-router.post("/student/college", register.student.register_clg);
-router.post("/student/school", register.student.register_sch);
+router.post("/student", register.student.registerStudent);
 
 router.post("/employee", register.employee.register_emp);
 
