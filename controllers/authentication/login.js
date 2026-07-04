@@ -1,131 +1,101 @@
 const bcrypt = require("bcrypt");
-const Org = require("../../models/users/organization");
 const resolveUserModel = require("../../utils/resolve-user-models");
-const LoginLog = require("../../models/logs/login");
+const validateFields = require("../../utils/validate-fields");
 
-const logLogin = async ({ type, org, id, name, role, message }) => {
-  try {
-    await LoginLog.create({ type, org, id, name, role, message });
-  } catch (err) {
-    console.error("Log error:", err);
+const { loginLog } = require("../../services/create/logs");
+
+function verifyRequest(req) {
+  const verify = {
+    invalidFields: validateFields(Object.values(req.body)),
+  };
+
+  if (!Object.values(verify).every(Boolean)) {
+    throw new Error('Incorrect password or missing fields!');
   }
-};
+}
 
-const sendError = (res, message) =>
-  res.render("index", { popupMessage: message, popupType: "error" });
+function processData(req) {
+  const object = { search: null };
 
-const resolveUserId = (user) =>
-  user?.adminId || user?.employeeId || user?.roll || user?.code || "null";
-
-const loginAsAdmin = async (res, req, { code, password }) => {
-  const org = await Org.findOne({ code, isDeleted: false, isSuspended: false });
-
-  if (!org || org.verification.status !== "verified") {
-    return { error: "Invalid or unverified organization" };
-  }
-
-  const results = await Promise.all(
-    org.admin.map((admin) =>
-      bcrypt
-        .compare(password, admin.password)
-        .then((match) => ({ match, admin })),
-    ),
-  );
-  const found = results.find((r) => r.match);
-
-  if (!found) {
-    return { error: "Invalid credentials" };
-  }
-
-  return { user: found.admin, orgCode: org.code };
-};
-
-const loginAsUser = async (res, req, { code, userRole, password }) => {
-  const Model = resolveUserModel(userRole);
-  if (!Model) return { error: "Invalid role" };
-
-  const user = await Model.findOne({
-    code,
-    isDeleted: false,
+  object.search = {
+    code: req.body.code,
     isSuspended: false,
-    "verification.status": "verified",
-    approvalStatus: "approved",
-  });
+    isDeleted: false,
+    "verification.status": 'verified',
+  };
 
-  if (!user) {
-    return { error: "Invalid or unverified user" };
-  }
-
-  const match = await bcrypt.compare(password, user.password);
-  if (!match) return { error: "Invalid credentials" };
-
-  return { user, orgCode: user.org };
-};
+  return object.search;
+}
 
 exports.login = async (req, res) => {
-  const { code, userRole, password } = req.body;
-
-  if (!code || !userRole || !password) {
-    return sendError(res, "All fields are required");
-  }
-
-  let user = null;
-  let orgCode = null;
+  let state = { Model: null, authorize: null };
+  let object = { user: null, search: null, log: null, params: null };
+  const { code, role, password } = req.body;
 
   try {
-    const result =
-      userRole === "admin"
-        ? await loginAsAdmin(res, req, { code, password })
-        : await loginAsUser(res, req, { code, userRole, password });
+    verifyRequest(req);
+    state.Model = resolveUserModel(role);
+    object.search = processData(req);
+    object.user = await state.Model.findOne(object.search);
 
-    if (result.error) {
-      return sendError(res, result.error);
+    if (!object.user) throw new Error('User not Found');
+
+    if (role === "admin") {
+      for (const admin of object.user.admin) {
+        if (await bcrypt.compare(password, admin.password)) {
+          state.authorize = admin;
+          break;
+        }
+      }
+      if (!state.authorize) throw new Error('Incorrect password');
+    } else {
+      state.authorize = await bcrypt.compare(password, object.user.password);
+      if (!state.authorize) throw new Error('Incorrect password');
     }
 
-    ({ user, orgCode } = result);
-
-    await logLogin({
-      type: "success",
-      org: orgCode,
-      id: resolveUserId(user),
-      name: user.name,
-      role: userRole,
-      message: "Logged in successfully!",
-    });
-
-    req.session.user = {
-      code: userRole === "admin" ? code : user.code,
-      name: user.name,
-      email: user.email,
-      role: userRole,
+    object.log = {
+      type: 'success',
+      org: role === 'admin' ? code : object.user.org,
+      id: code,
+      name: role === 'admin' ? state.authorize.name : object.user.name,
+      role,
+      message: 'Logged in successfully!',
     };
 
-    if (userRole === "employee") {
-      const orgData = await Org.findOne({ code: orgCode }).select("type");
-      req.session.user.employeeType =
-        orgData?.type === "corporate" ? "corporate" : "teacher";
-    }
+    await loginLog(object.log);
 
-    req.session.save((err) => {
-      if (err) {
-        console.error("Session save error:", err);
-        return sendError(res, "Something went wrong during login");
-      }
+    req.session.user = {
+      code,
+      name: role === 'admin' ? state.authorize.name : object.user.name,
+      role,
+    };
 
-      return res.redirect("/dashboard");
+    await new Promise((resolve, reject) => {
+      req.session.save((err) => {
+        if (err) reject(err);
+        else resolve();
+      });
     });
+
+    res.redirect('/dashboard');
+
   } catch (err) {
-    console.error("Login Error:", err);
+    object.log = {
+      type: 'failed',
+      org: object.user?.org ?? null,
+      id: code,
+      name: object.user?.name ?? null,
+      role: role ?? null,
+      message: err.message ?? 'Login failed',
+    };
 
-    await logLogin({
-      type: "failed",
-      org: orgCode || "null",
-      id: resolveUserId(user),
-      name: user?.name || "null",
-      role: userRole || "null",
-      message: err.message || "Login failed",
+    if (role !== 'admin') await loginLog(object.log);
+
+    object.params = new URLSearchParams({
+      "popup-type": 'error',
+      "popup-message": err.message || 'Registration failed. Please try again.',
     });
 
-    return sendError(res, "Something went wrong during login");
+    return res.redirect(`/app?${object.params}`);
   }
 };
