@@ -1,65 +1,57 @@
-const resolveUserModel = require("../../utils/resolve-user-models");
+const resolveUserModel = require('../../utils/resolve-user-models');
+const validateFields = require('../../utils/validate-fields');
+
+async function verifyRequest(req, Model) {
+  const verify = {
+    invalidFields: validateFields(Object.values(req.body)),
+    authorization: validateFields(Object.values(req.session.user)),
+    isValidUser: await Model.findOne({code: req.session.user.code, isDeleted: false, isSuspended: false, 'verification.status': 'verified'}),
+  };
+
+  if (!Object.values(verify).every(Boolean)) {
+    throw new Error('Face Not Recognized or Invalid User!');
+  }
+
+  return verify.isValidUser;
+}
 
 exports.registerFace = async (req, res) => {
+  const { descriptors } = req.body;
+  let state = {user: null, descriptorList: [], invalidDescriptor: null};
+  
   try {
-    const user = req.session.user;
+    state.user = req.session.user;
+    const Model = resolveUserModel(state.user.role);
 
-    if (!user || !user.code || !user.role)
-      return res.status(401).json({ error: "Unauthorized" });
+    state.user = await verifyRequest(req, Model);
+    
+    state.descriptorList = descriptors;
+    state.invalidDescriptor = state.descriptorList.find((d) => !Array.isArray(d) || d.length !== 128 || !d.every((n) => typeof n === 'number'));
 
-    const Model = resolveUserModel(user.role);
-
-    if (!Model) {
-      return res.status(400).json({ error: "Unsupported user role" });
-    }
-
-    const { descriptor, descriptors } = req.body;
-
-    let descriptorList = [];
-
-    if (Array.isArray(descriptors)) {
-      descriptorList = descriptors;
-    } else if (Array.isArray(descriptor)) {
-      descriptorList = [descriptor];
-    } else {
-      return res.status(400).json({ error: "Invalid face descriptor format" });
-    }
-
-    const invalidDescriptor = descriptorList.find(
-      (d) =>
-        !Array.isArray(d) ||
-        d.length !== 128 ||
-        !d.every((n) => typeof n === "number"),
-    );
-
-    if (invalidDescriptor) {
-      return res
-        .status(400)
-        .json({ error: "Each face descriptor must be 128 numeric values" });
-    }
+    if (state.invalidDescriptor) throw new Error('Invalid request! Every descriptor must be an array of 128 index');
 
     await Model.updateOne(
-      { code: user.code },
+      { code: state.user.code },
       {
         $push: {
-          "faceData.descriptors": {
-            $each: descriptorList,
+          'faceData.descriptors': {
+            $each: state.descriptorList,
             $slice: -10,
           },
         },
         $set: {
-          "setup.faceUploaded": true,
-          "setup.done": true,
+          'setup.faceUploaded': true,
+          'setup.done': true,
         },
       },
     );
 
     return res.json({
       success: true,
-      message: "Face registered successfully",
+      message: 'Face registered successfully',
     });
   } catch (err) {
-    console.error("❌ Face register error:", err);
-    return res.status(500).json({ error: "Face registration failed" });
+    console.error('❌ Face register error:', err);
+    return res.status(500).json({ error: 'Face registration failed' });
   }
 };

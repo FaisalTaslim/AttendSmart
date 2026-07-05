@@ -3,7 +3,7 @@ exports.logout = (req, res) => {
         if (err) {
             console.error("Logout error:", err);
             return res.render("index", {
-                popupMessage: "Error logging out. Please try again.",
+                popupMessage: "Error logging out. Please try again later.",
                 popupType: "error"
             });
         }
