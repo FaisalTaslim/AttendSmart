@@ -51,7 +51,6 @@ exports.registerFace = async (req, res) => {
       message: 'Face registered successfully',
     });
   } catch (err) {
-    console.error('❌ Face register error:', err);
     return res.status(500).json({ error: 'Face registration failed' });
   }
 };
