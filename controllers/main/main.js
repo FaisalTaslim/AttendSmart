@@ -17,25 +17,9 @@ exports.guidebook = async (req, res) => {
 };
 
 exports.captureAttendanceWindow = async (req, res) => {
-  const { user: isUser = null, type = null, dept = null, sessionCode = null, subject = null, key = null, shift = null } = req.query;
-  let popupType = req.query["popup-type"] ?? null;
-  let popupMessage = req.query["popup-message"] ?? null;
-
-  const userModel = resolveUserModel(req.session.user.role);
-  const user = await userModel.findOne({ code: req.session.user.code });
-
-
-  res.render("dashboards/capture-attendance", {
-    popupMessage,
-    popupType,
-    isUser,
-    type,
-    dept,
-    sessionCode,
-    subject,
-    key,
-    shift,
-  });
+  const renderData = req.query;
+  
+  res.render("dashboards/capture-attendance", renderData);
 };
 
 exports.qrPage = async (req, res) => {

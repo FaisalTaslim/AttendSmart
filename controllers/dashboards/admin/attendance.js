@@ -2,16 +2,10 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const resolveUserModel = require("../../../utils/resolve-user-models");
 const activeSession = require("../../../models/attendance/active-employee-session");
-const logSession = require("../../../models/logs/employee-attendance-history");
 const Schedule = require("../../../models/schedule/schedule");
+const logSession = require("../../../models/logs/employee-attendance-history");
 const EmployeeSummary = require("../../../models/statistics/employee-summary");
-const {
-  timeToMinutes,
-  getMonthKey,
-  fullweek,
-  fullTime,
-  formatTime,
-} = require("../../../utils/time");
+const {timeToMinutes, getMonthKey, fullweek, fullTime, formatTime} = require("../../../utils/time");
 const generateCode = require("../../../utils/generate-code");
 
 async function returnUser(req) {
@@ -154,7 +148,6 @@ exports.startEmployeeSession = async (req, res) => {
         res,
       );
     } else {
-      const { hours } = fullTime();
       const sessionIsActive = await activeSession.findOne({ org, shift });
 
       if (!sessionIsActive) {
