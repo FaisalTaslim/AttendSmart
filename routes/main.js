@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const index = require('./index');
+const index = require('./0.index');
 const authorize = require('../middleware/authorize-access');
 
 router.get('/', index.page.home.display);

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const upload = require("../utils/multer");
-const index = require('./index');
+const index = require('./0.index');
 const authorize = require('../middleware/authorize-access');
 
 router.post('/register-face', authorize('employee', 'school-student', 'college-student'), index.upload.registerFace.request);
