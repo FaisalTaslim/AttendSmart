@@ -36,7 +36,7 @@
     </div>
 
     <nav class="nav-bar">
-      <a href="/" class="nav-links-property">Home</a>
+      <a href="/app" class="nav-links-property">Home</a>
       <a href="/auth/logout" class="nav-links-property">Logout</a>
       <a href="/guidebook" class="nav-links-property">GuideBook</a>
     </nav>
@@ -105,7 +105,7 @@
       <div class="setup-uploads">
         <h2>Complete the setup</h2>
         <p>
-          Read the <a href="/guideboook" class="link">guide</a> before you submit these csv files. Also feel free
+          Read the <a href="/app/guideboook" class="link">guide</a> before you submit these csv files. Also feel free
           to reach out for <a href="/" class="link">support</a> if you need any help.
         </p>
         <div class="upload-container">
@@ -152,7 +152,7 @@
       <div class="overlay">
         <div class="session-form" id="session-form">
           <button id="sessionform-cancel">Go Back</button>
-          <form action="/dashboard/admin/start-employee-session" method="POST">
+          <form action="/attendance/start-employee-session" method="POST">
 
             <div class="outer-group">
               <label>Shift</label>

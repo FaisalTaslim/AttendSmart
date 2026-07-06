@@ -64,7 +64,7 @@ async function processFace(file) {
 
 
 async function uploadDescriptors(descriptors, failedCount) {
-  const res = await fetch("/face-api/register-face", {
+  const res = await fetch("/uploads/register-face", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

@@ -9,7 +9,7 @@ qrContainer.innerHTML = `<p style="text-align:center;padding:2rem;">Loading QR..
 async function refreshQR() {
   try {
     const res = await fetch(
-      "/dashboard/employee/teacher/qr/generate-session-key",
+      "/fetch/generate-session-key",
     );
     const data = await res.json();
     if (!data.success) return;

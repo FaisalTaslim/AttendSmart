@@ -28,8 +28,8 @@ async function initializeRecognition() {
   await window.faceModelsReady;
   const url =
     window.capturePageData.isUser === "student"
-      ? `/face-api/fetch-data?user=student&type=${window.capturePageData.type || ""}&dept=${window.capturePageData.dept || ""}`
-      : `/face-api/fetch-data?user=employee`;
+      ? `/fetch/face-data?user=student&type=${window.capturePageData.type || ""}&dept=${window.capturePageData.dept || ""}`
+      : `/fetch/face-data?user=employee`;
   const res = await fetch(url);
   const data = await res.json();
   if (!data.success) {
@@ -89,7 +89,7 @@ async function startRecognitionLoop() {
 async function markAttendance(userCode) {
   try {
     const res = await fetch(
-      `/face-api/mark-attendance?user=${window.capturePageData.isUser}`,
+      `/attendance/mark-attendance?user=${window.capturePageData.isUser}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

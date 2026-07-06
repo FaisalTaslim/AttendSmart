@@ -1,4 +1,4 @@
-const activeEmployeeSession = require("../../../models/attendance/active-employee-session");
+const activeEmployeeSession = require("../../models/attendance/active-employee-session");
 
 async function updateActiveEmployeeSession(obj, data, session) {
   try {

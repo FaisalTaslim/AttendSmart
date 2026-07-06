@@ -22,7 +22,7 @@ function resetSelect(select, placeholder, multiple = false) {
 
 async function loadOrganizationsForType(type) {
     try {
-        const res = await fetch("/register/get-org-list");
+        const res = await fetch("/fetch/org-data");
         const data = await res.json();
 
         if (!data.success) return;

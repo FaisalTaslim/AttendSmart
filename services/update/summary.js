@@ -1,4 +1,4 @@
-const EmployeeSummary = require("../../../models/statistics/employee-summary");
+const EmployeeSummary = require("../../models/statistics/employee-summary");
 
 async function updateEmployeeSummary(obj, data, session) {
   try {

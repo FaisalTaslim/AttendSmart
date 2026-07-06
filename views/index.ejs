@@ -38,12 +38,12 @@
     </div>
     <nav class="nav-bar nav-select">
       <% if (isAuthenticated) { %>
-      <a href="/dashboard" class="nav-links-property">Dashboard</a>
+      <a href="/app/dashboard" class="nav-links-property">Dashboard</a>
       <a href="/auth/logout" class="nav-links-property">Logout</a>
-      <a href="/guidebook" class="nav-links-property">GuideBook</a>
+      <a href="/app/guidebook" class="nav-links-property">GuideBook</a>
       <% } else { %>
       <p class="nav-links-property login-page-btn">Login</p>
-      <a href="/guidebook" class="nav-links-property">GuideBook</a>
+      <a href="/app/guidebook" class="nav-links-property">GuideBook</a>
       <% } %>
     </nav>
     <nav class="mobile-nav-container nav-select">
@@ -421,7 +421,7 @@
 
             <details>
               <summary>How do I reset my password?</summary>
-              <p class="fontSize">Go to the <a href="/login" class="links" target="_blank">Login
+              <p class="fontSize">Go to the <a href="/app" class="links" target="_blank">Login
                   Page</a>
                 and click on “Forgot Password.” You’ll receive a
                 reset link on your
@@ -648,9 +648,14 @@
       <div class="foot1">
         <div class="useful-links">
           <p><strong>Useful-links</strong></p>
-          <a href="#register" class="links foot-links" target="_blank">Register</a>
-          <a href="#support-forms" class="links foot-links" target="_blank">Support</a>
-          <a href="/dashboard" class="links foot-links" target="_blank">Dashboard</a>
+          <% if (isAuthenticated) { %>
+          <a href="/app/dashboard" class="nav-links-property">Dashboard</a>
+          <a href="/auth/logout" class="nav-links-property">Logout</a>
+          <a href="/app/guidebook" class="nav-links-property">GuideBook</a>
+          <% } else { %>
+          <p class="nav-links-property login-page-btn">Login</p>
+          <a href="/app/guidebook" class="nav-links-property">GuideBook</a>
+          <% } %>
         </div>
         <div class="legal">
           <p><strong>Legal</strong></p>

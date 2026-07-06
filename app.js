@@ -16,19 +16,17 @@ app.use(setLocals);
 
 const mainPages = require('./routes/main');
 const register = require('./routes/registration');
+const uploads = require('./routes/uploads');
 const authentication = require('./routes/auth');
-const faceApi = require('./routes/face-api');
-const admin = require('./routes/dashboard/admin');
-const teacher = require('./routes/dashboard/teacher');
-const student = require('./routes/dashboard/student');
+const attendance = require('./routes/attendance');
+const fetch = require('./routes/fetch');
 
-app.use('/', mainPages);
+app.get('/', async (req, res) => {res.redirect('/app')});
+app.use('/app', mainPages);
 app.use('/register', register);
+app.use('/uploads', uploads);
 app.use('/auth', authentication);
-app.use('/face-api', faceApi);
-app.use('/dashboard/admin', admin);
-app.use('/dashboard/student', student);
-app.use('/dashboard/employee/teacher', teacher);
-app.use('/update-database', require('./routes/temp'));
+app.use('/attendance', attendance);
+app.use('/fetch', fetch);
 
 module.exports = app;

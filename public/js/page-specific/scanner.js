@@ -17,7 +17,7 @@ async function onScanSuccess(decodedText) {
 
     await html5QrCode.stop();
 
-    const res = await fetch(`/dashboard/student/process-qr`, {
+    const res = await fetch(`/attendance//process-qr`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ async function onScanSuccess(decodedText) {
         dept: data.dept,
       });
 
-      window.location.href = `/dashboard/admin/capture-attendance?${params.toString()}`;
+      window.location.href = `/app/capture-attendance?${params.toString()}`;
     } else {
       statusEl.innerText = data.message || "process failed";
       isProcessing = false;

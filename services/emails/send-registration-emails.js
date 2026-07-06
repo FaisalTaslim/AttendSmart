@@ -117,7 +117,7 @@ async function sendVerificationEmail(
   secondary_role = null,
 ) {
   const params = new URLSearchParams({ token, code, role, secondary_role });
-  const link = `http://localhost:3000/register/verify?${params}`;
+  const link = `http://localhost:3000/auth/verify?${params}`;
 
   await transporter.sendMail({
     from: `"AttendSmart" <${process.env.EMAIL_USER}>`,

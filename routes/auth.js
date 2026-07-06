@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const authentication = require("../controllers/authentication/index.js");
+const index = require('./index.js');
 
-router.post("/login", authentication.in.login);
-router.get("/logout", authentication.out.logout);
-router.post("/logout", authentication.out.logout);
+router.get('/verify', index.verify.account.request);
+router.post("/login", index.verify.login.request);
+router.post("/logout", index.verify.logout.request);
 
 module.exports = router;

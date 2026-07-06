@@ -119,7 +119,7 @@ exports.request = async (req, res) => {
           "popup-message": "Check your email to verify your account!",
         });
 
-      return res.redirect(`/?${params}`);
+      return res.redirect(`/app?${params}`);
 
     }
   } catch (err) {
@@ -146,7 +146,7 @@ exports.request = async (req, res) => {
       "popup-message": err.message || "Registration failed. Please try again.",
     });
 
-    return res.redirect(`/?${params}`);
+    return res.redirect(`/app?${params}`);
 
   } finally {
     await session.endSession();

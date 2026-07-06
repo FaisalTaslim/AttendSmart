@@ -105,7 +105,7 @@
       <div class="setup-uploads">
         <h2>Complete the setup</h2>
         <p>
-          Read the <a href="/guidebook#face-upload" class="link">guide</a> before you upload
+          Read the <a href="/app/guidebook#face-upload" class="link">guide</a> before you upload
           the image
         </p>
         <div class="upload-container">
@@ -140,8 +140,8 @@
 
           <p class="attendance-session-info">Select the organization, departments and subject for which attendance will be taken.</p>
 
-          <% if(workPlace === 'college') {%>
-      <form action="/dashboard/employee/teacher/start-student-session" method="POST">
+      <% if(workPlace === 'college') {%>
+      <form action="/attendance/start-student-session" method="POST">
         <fieldset>
           <legend>Organization details</legend>
 
@@ -166,7 +166,7 @@
         <button>Submit</button>
       </form>
       <%} else {%>
-      <form action="/dashboard/employee/teacher/start-student-session" method="POST">
+      <form action="/attendance/start-student-session" method="POST">
         <fieldset>
           <legend>Organization details</legend>
 

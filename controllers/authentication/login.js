@@ -27,7 +27,7 @@ function processData(req) {
   return object.search;
 }
 
-exports.login = async (req, res) => {
+exports.request = async (req, res) => {
   let state = { Model: null, authorize: null };
   let object = { user: null, search: null, log: null, params: null };
   const { code, role, password } = req.body;

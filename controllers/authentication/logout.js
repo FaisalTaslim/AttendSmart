@@ -1,4 +1,4 @@
-exports.logout = (req, res) => {
+exports.request = (req, res) => {
     req.session.destroy(err => {
         if (err) {
             console.error("Logout error:", err);
@@ -10,6 +10,6 @@ exports.logout = (req, res) => {
 
         res.clearCookie('connect.sid');
 
-        return res.redirect('/');
+        return res.redirect('/app');
     });
 };
