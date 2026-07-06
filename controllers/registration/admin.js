@@ -81,7 +81,7 @@ async function processData(req) {
   return data;
 }
 
-exports.adm = async (req, res) => {
+exports.request = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 

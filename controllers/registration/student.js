@@ -99,7 +99,7 @@ async function processData(req, type) {
   return { user, summary };
 }
 
-exports.registerStudent = async (req, res) => {
+exports.request = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 

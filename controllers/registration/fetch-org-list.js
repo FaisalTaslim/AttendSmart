@@ -1,6 +1,6 @@
 const Org = require("../../models/users/organization");
 
-exports.fetch = async (req, res) => {
+exports.request = async (req, res) => {
   try {
     const { type } = req.query;
     const allowedTypes = new Set(["school", "college", "corporate"]);

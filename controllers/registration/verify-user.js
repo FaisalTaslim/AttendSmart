@@ -1,15 +1,11 @@
 const resolveUserModel = require("../../utils/resolve-user-models");
-const CollegeStudent = require('../../models/users/college-student');
-const SchoolStudent = require('../../models/users/school-student');
-const Employee = require('../../models/users/employee');
-const Org = require('../../models/users/organization');
 
 const { sendRegistrationMail } = require("../../services/emails/send-registration-emails");
 const validateFields = require('../../utils/validate-fields');
 
 function verifyRequest(req) {
   const verify = {
-    invalidFields: validateFields(Object.values(req.params)),
+    invalidFields: validateFields(Object.values(req.query)),
   };
 
   if (!Object.values(verify).every(Boolean)) {
@@ -17,7 +13,7 @@ function verifyRequest(req) {
   }
 }
 
-async function processData(req) {
+function processData(req) {
   const { token, code } = req.query;
 
   return {
@@ -35,16 +31,16 @@ async function processData(req) {
     },
   };
 }
-exports.verify = async (req, res) => {
+exports.request = async (req, res) => {
   try {
     verifyRequest(req);
 
-    const data = await processData(req);
+    const data = processData(req);
 
     const role =
-      req.params.role === "student"
-        ? req.params.secondary_role
-        : req.params.role;
+      req.query.role === "student"
+        ? req.query.secondary_role
+        : req.query.role;
 
     const Model = resolveUserModel(role);
 

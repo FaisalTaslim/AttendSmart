@@ -76,7 +76,7 @@ async function processData(req) {
   return data;
 }
 
-exports.register_emp = async (req, res) => {
+exports.request = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
