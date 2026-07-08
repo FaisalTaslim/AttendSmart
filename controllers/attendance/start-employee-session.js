@@ -8,11 +8,12 @@ const { createActiveEmployeeSession } = require('../../services/create/attendanc
 const { employeeActiveSessionLog } = require('../../services/create/logs');
 const { updateEmployeeSummary } = require('../../services/update/summary');
 const { updateActiveEmployeeSession } = require('../../services/update/attendance');
+const validateFields = require("../../utils/validate-fields");
 
-async function verifyRequest(req, shiftOfSchdule) {
+function verifyRequest(req, shiftOfSchedule) {
   const verify = {
     invalidFields: validateFields(Object.values(req.body)),
-    isShiftOfSchdule: validateFields(Object.values(shiftOfSchdule)),
+    isShiftOfSchedule: (shiftOfSchedule) ? true : false,
   };
 
   if (!Object.values(verify).every(Boolean)) {
@@ -21,9 +22,13 @@ async function verifyRequest(req, shiftOfSchdule) {
 }
 
 function renderCameraPage(params, sessionCode, res) {
-  if(sessionCode) params.sessionCode = sessionCode;
+  if (sessionCode) {
+    params.sessionCode = sessionCode;
+  }
 
-  res.redirect(`/app/capture-attendance?${params}`);
+  const query = new URLSearchParams(params);
+
+  res.redirect(`/app/capture-attendance?${query.toString()}`);
 }
 
 function getSessionExpiry(checkOutTime, grace = 0) {
@@ -61,8 +66,8 @@ function createSessionPayload(org, shift, type, expiresAt) {
     };
 
     object.params = {
-      "popup-type": 'success',
-      "popup-message": 'Successful!!',
+      "popupType": 'success',
+      "popupMessage": 'Successful!!',
       user: 'employee',
       type,
       sessionCode: sessionCode,
@@ -86,12 +91,12 @@ exports.request = async (req, res) => {
     object.schedule = await returnSchedule({ org: state.org });
     object.shiftOfSchedule = object.schedule.week?.[state.today]?.[shift];
 
-    verifyRequest(req, state.shiftOfSchedule);
+    verifyRequest(req, object.shiftOfSchedule);
 
     object.activeSession = await returnActiveEmployeeSession({org: state.org, shift: shift});
 
     if (type === 'check-in') {
-      state.expiresAt = getSessionExpiry(object.shiftOfSchedule.checkout, object.schedule.grace,);
+      state.expiresAt = getSessionExpiry(object.shiftOfSchedule.check_out, object.schedule.grace,);
       object.data = createSessionPayload(state.org, shift, 'check-in', state.expiresAt,);
       
       if (object.activeSession) {
@@ -103,7 +108,7 @@ exports.request = async (req, res) => {
             { org: state.org, shift: shift },
             { type: 'check-in' },
             session,
-          );
+          );+
 
           await session.commitTransaction();
           return renderCameraPage(object.data.params, object.activeSession.sessionCode, res);
@@ -112,13 +117,14 @@ exports.request = async (req, res) => {
 
       await createActiveEmployeeSession(object.data.sessionDocument, session);
 
-      await updateEmployeeSummary(
+      const summary = await updateEmployeeSummary(
         { org: state.org, shift: shift, month: getMonthKey() },
         { total: 1 },
         session,
       );
+      
 
-      await activeEmployeeSessionLog(object.data.log, session);
+      await employeeActiveSessionLog(object.data.log, session);
       
       await session.commitTransaction();
       return renderCameraPage(object.data.params, null, res);
@@ -126,12 +132,14 @@ exports.request = async (req, res) => {
     } else {
       if (!object.activeSession) {
         const params = new URLSearchParams({
-          "popup-type": 'error',
-          "popup-message": 'No Active Session!',
+          "popupType": 'error',
+          "popupMessage": 'No Active Session!',
         });
 
         return res.redirect(`/app/admin?${params}`);
       }
+
+      object.data = createSessionPayload(state.org, shift, 'check-out', object.activeSession.expiresAt,);
 
       if(object.activeSession.type === 'check-in') {
         await updateActiveEmployeeSession(
@@ -143,13 +151,18 @@ exports.request = async (req, res) => {
         await session.commitTransaction();
         return renderCameraPage(object.data.params, object.activeSession.sessionCode, res);
       }
+      else {
+        return renderCameraPage(object.data.params, object.activeSession.sessionCode, res);
+      }
     }
   } catch(err) {
-    await session.abortTransaction();
+    if (session.inTransaction()) {
+        await session.abortTransaction();
+    }
 
     const params = new URLSearchParams({
-      "popup-type": 'error',
-      "popup-message": err.message,
+      "popupType": 'error',
+      "popupMessage": err.message,
     });
 
     res.redirect(`/app/admin?${params}`);

@@ -1,268 +1,213 @@
 const mongoose = require("mongoose");
 const resolveUserModel = require("../../utils/resolve-user-models");
-const Employee = require("../../models/users/employee");
-const SchoolStudent = require("../../models/users/school-student");
-const CollegeStudent = require("../../models/users/college-student");
-const EmployeeSummary = require("../../models/statistics/employee-summary");
-const StudentSummary = require("../../models/statistics/student-summary");
-const EmployeeHistory = require("../../models/logs/employee-attendance-history");
-const StudentHistory = require("../../models/logs/student-attendance-history");
-const Schedule = require("../../models/schedule/schedule");
-const activeSession = require("../../models/attendance/active-employee-session");
+const validateFields = require("../../utils/validate-fields");
+const { fullTime, fullweek, timeToMinutes, getMonthKey, } = require("../../utils/time");
+
 const {
-  fullTime,
-  fullweek,
-  timeToMinutes,
-  getMonthKey,
-} = require("../../utils/time");
+  returnEmployeeAttendanceHistory,
+  returnStudentAttendanceHistory,
+  returnIndex,
+} = require("../../services/fetch/logs");
+
+const {
+  returnActiveStudentSession,
+  returnActiveEmployeeSession,
+  returnSchedule,
+} = require("../../services/fetch/attendance");
+
+const { updateEmployeeSummary, updateStudentSummary } = require('../../services/update/summary');
+const { returnEmployeeSummary, returnStudentSummary, } = require('../../services/fetch/summary');
+const { updateEmployeeAttendanceHistory, updateStudentAttendanceHistory } = require('../../services/update/logs');
+
+
+function verifyRequest(req, activeSession, history, fetchedUser, summary) {
+  if (!validateFields(Object.values(req.body)) || !validateFields(Object.values(activeSession)) || !validateFields(Object.values(history)) || !validateFields(Object.values(summary))) {
+    throw new Error('Missing Required Data for Processing!');
+  }
+
+  if (req.user === 'employee' && (fetchedUser.shift !== activeSession.shift))
+    throw new Error(`Employee doesn't belong to ${activeSession.shift} shift`);
+
+  const index = returnIndex(history, fetchedUser?.code);
+
+  if (index < 0) {
+    if (req.user === 'employee' && req.type === 'check-out') throw new Error('User Did not Check-in Earlier. Check-out forbidden!');
+    else throw new Error('User Did not scan QR code  before! Attendance forbidden!');
+  }
+
+  return true;
+}
+
+async function processData(req) {
+  let object = { fetchedUser: null, activeSession: null, history: null, summary: null };
+  let state = { Model: null };
+  let org, sessionCode;
+
+  state.Model =
+    req.body.user === "employee"
+      ? resolveUserModel(req.body.user)
+      : resolveUserModel(req.body.type);
+
+  object.fetchedUser = await state.Model.findOne({ code: req.body.code });
+  org = object.fetchedUser.org;
+  sessionCode = req.body.sessionCode;
+
+  object.activeSession =
+    req.body.user === "employee"
+      ? await returnActiveEmployeeSession({ org, sessionCode })
+      : await returnActiveStudentSession({ org, sessionCode });
+
+  object.history =
+    req.body.user === 'employee'
+      ? await returnEmployeeAttendanceHistory({ org, sessionCode })
+      : await returnStudentAttendanceHistory({ org, sessionCode, subject: req.body.subject, department: req.body.dept });
+
+  object.summary =
+    req.body.user === 'employee'
+      ? await returnEmployeeSummary({ org, code: req.body.code, shift: req.body.shift, month: getMonthKey() })
+      : await returnStudentSummary({ org, code: req.body.code, subject: req.body.subject, department: req.body.dept, month: getMonthKey() });
+
+  verifyRequest(req.body, object.activeSession, object.history, object.fetchedUser, object.summary);
+
+  return object;
+}
 
 exports.request = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
-    const { sessionCode, type, isUser, userCode, dept, subject, key, shift } =
-      req.body;
-    let history;
-    let index = -1;
+    let object = { data: null, schedule: null };
+    let state = { index: null };
+    object.data = await processData(req.body);
 
-    async function returnEmployeeHistory(org, sessionCode) {
-      const result = await EmployeeHistory.findOne({
-        org,
-        sessionCode,
-      });
+    const { sessionCode, type, user, code, dept, subject, key, shift } = req.body;
+    const currentMinutes = timeToMinutes(
+      fullTime().hours,
+      fullTime().minutes,
+    );
 
-      if (!result) {
-        throw new Error("Employee history not found");
-      }
+    object.schedule = await returnSchedule({ org: object.fetchedUser.org })
 
-      return result;
-    }
+    const startMinutes = timeToMinutes(
+      object.schedule?.
+        [fullweek()]
+        ?.[fullWeek()]?.[shift]?.check_in?.split(":")[0],
 
-    function returnIndex(history) {
-      const result = history.history.findIndex((h) => h.code === userCode);
+      object.schedule?.
+        [fullweek()]
+        ?.[fullWeek()]?.[shift]?.check_in?.split(":")[1],
+    );
 
-      if (result >= 0) {
-        return result;
-      } else {
-        return -1;
-      }
-    }
+    const history = object.data.history;
+    state.index = returnIndex(object.data.history, code);
 
-    async function returnStudentHistory(org, sessionCode) {
-      const result = await StudentHistory.findOne({
-        org,
-        sessionCode,
-        subject,
-        department: dept,
-      });
-
-      if (!result) {
-        throw new Error("Student history not found");
-      }
-
-      return result;
-    }
-
-    if (!sessionCode || !type || !isUser || !userCode) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid request",
-      });
-    }
-
-    if (isUser === "employee") {
-      const org = req.session.user.code;
-      const employee = await Employee.findOne({ code: userCode });
-
-      if (!employee) {
-        return res.status(404).json({
-          success: false,
-          message: "Employee not found",
-        });
-      }
-
-      const userName = employee.name;
-
-      const activeSessionDoc = await activeSession.findOne({
-        org,
-        sessionCode,
-      });
-
-      if (!activeSessionDoc) {
-        return res.status(404).json({
-          success: false,
-          message: "Attendance session not found",
-        });
-      }
-
-      if (employee.shift !== shift) {
-        return res.status(400).json({
-          success: false,
-          message: `Employee belongs to ${employee.shift} shift but this session is for ${activeSessionDoc.shift} shift.`,
-        });
-      }
-
-      const today = fullTime();
-      const schedule = await Schedule.findOne({ org });
-      const week = fullweek();
-
-      const shiftSchedule = schedule.week?.[week]?.[shift];
-      const grace = schedule.grace || 0;
-
-      const currentMinutes = timeToMinutes(today.hours, today.minutes);
-      const startMinutes = timeToMinutes(
-        shiftSchedule.check_in.split(":")[0],
-        shiftSchedule.check_in.split(":")[1],
-      );
-
+    if (user === 'employee') {
       if (type === "check-in") {
-        history = await returnEmployeeHistory(org, sessionCode);
-        index = returnIndex(history);
-
-        if (index < 0) {
-          await EmployeeHistory.findOneAndUpdate(
-            { org, sessionCode },
+        if (state.index < 0) {
+          await updateEmployeeAttendanceHistory(
+            { org: object.data.fetchedUser.org, sessionCode },
             {
-              $push: {
-                history: {
-                  code: userCode,
-                  name: userName,
-                  checkIn: today.now,
-                  checkOut: null,
-                  status:
-                    currentMinutes > startMinutes + grace ? "late" : "on-time",
-                },
+              history: {
+                code: code,
+                name: object.data.fetchedUser.name,
+                checkIn: new Date(),
+                checkOut: null,
+                status:
+                  (currentMinutes > (startMinutes + object.schedule.grace)) ? "late" : "on-time",
               },
             },
+            'push',
+            session
           );
         }
-      } else if (type === "check-out") {
-        history = await returnEmployeeHistory(org, sessionCode);
-        index = returnIndex(history);
-
-        if (index === -1) {
-          return res.status(400).json({
-            success: false,
-            message: "User didn't check-in earlier.",
-          });
-        }
-
-        const existingEntry = history.history[index];
-
-        if (existingEntry.checkOut !== null) {
+      }
+      else if (type === "check-out") {
+        if (history.history[state.index]?.checkOut !== null) {
           return res.json({
             success: false,
             message: "Attendance already marked",
           });
         }
 
-        const summaryResult = await EmployeeSummary.findOneAndUpdate(
-          {
-            org,
-            code: userCode,
-            shift: shift,
-            month: getMonthKey(),
-          },
-          {
-            $inc: {
-              attended: 1,
-            },
-          },
-          {
-            new: true,
-          },
+        await updateEmployeeSummary(
+          { org: object.data.fetchedUser.org, code: code, shift: shift, month: getMonthKey() },
+          { attended: 1 },
+          'one',
+          session
         );
 
-        console.log("Summary update:", summaryResult);
-
-        await EmployeeHistory.findOneAndUpdate(
-          { org, sessionCode },
+        await updateEmployeeAttendanceHistory(
+          { org: object.data.fetchedUser.org, sessionCode },
           {
-            $set: {
-              [`history.${index}.checkOut`]: today.now,
-            },
+            [`history.${state.index}.checkOut`]: new Date()
           },
-          {
-            new: true,
-          },
+          "set",
+          session
         );
-      }
-    } else {
-      const userModel = resolveUserModel(type);
-      const user = await userModel.findOne({ code: userCode });
-      if (!user) {
-        return res.status(404).json({
-          success: false,
-          message: "User not found",
-        });
-      }
-
-      const org = user.org;
-
-      history = await returnStudentHistory(org, sessionCode);
-      index = returnIndex(history);
-
-      if (index === -1) {
-        await StudentHistory.findOneAndUpdate(
-          { org, sessionCode, subject, department: dept },
-          {
-            $push: {
-              history: {
-                code: userCode,
-                sessionKey: key,
-                name: user.name,
-                date: fullTime()?.now,
-                isMarked: false,
-              },
-            },
-          },
-        );
-      }
-
-      history = await returnStudentHistory(org, sessionCode);
-      index = returnIndex(history);
-
-      if (index >= 0) {
-        const isMarked = history.history[index].isMarked;
-
-        if (!isMarked) {
-          await StudentSummary.findOneAndUpdate(
-            { org: org, code: userCode, subject: subject, department: dept },
-            {
-              $inc: {
-                attended: 1,
-              },
-            },
-            { new: true },
-          );
-
-          await StudentHistory.findOneAndUpdate(
-            { org, sessionCode, subject, department: dept },
-            {
-              $set: {
-                [`history.${index}.isMarked`]: true,
-              },
-            },
-            { new: true },
-          );
-        } else {
-          return res.status(400).json({
-            success: false,
-            message: "Attendance already marked",
-          });
-        }
-      } else {
-        throw new Error("Failed to push student record into history.");
       }
     }
+    else {
+      /**if (returnIndex(data.history, code) === -1) {
+        await updateStudenAttendanceHistory(
+          { org: data.fetchedUser?.org, sessionCode: sessionCode, subject: subject, department: dept },
+          {
+            history: {
+              code: code,
+              sessionKey: key,
+              name: data.fetchedUser?.name,
+              date: new Date(),
+              isMarked: false,
+            },
+          },
+          'push',
+          session
+        );
+      }**/
+
+      const isMarked = history.history[state.index].isMarked;
+
+      if (!isMarked) {
+        await updateStudentSummary(
+          { org: object.data.fetchedUser.org, code: code, subject: subject, department: dept },
+          { attended: 1 },
+          'one',
+          session
+        );
+
+        await updateStudentAttendanceHistory(
+          { org: object.data.fetchedUser.org, sessionCode: sessionCode, subject: subject, department: dept },
+          {
+            [`history.${state.index}.isMarked`]: true,
+          },
+          'set',
+          session
+        );
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: "Attendance already marked",
+        });
+      }
+    }
+
+    await session.commitTransaction();
 
     return res.json({
       success: true,
       message: "Attendance marked successfully",
     });
+
   } catch (err) {
-    console.error("Attendance marking failed:", err);
+    if (session.inTransaction()) {
+      await session.abortTransaction();
+    }
+
     return res.status(500).json({
       success: false,
       message: err.message || "Attendance marking failed",
     });
+  } finally {
+    session.endSession();
   }
 };

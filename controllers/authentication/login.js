@@ -77,7 +77,7 @@ exports.request = async (req, res) => {
       });
     });
 
-    res.redirect('/dashboard');
+    res.redirect('/app/dashboard');
 
   } catch (err) {
     object.log = {

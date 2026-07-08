@@ -86,7 +86,7 @@ async function startRecognitionLoop() {
 
   setTimeout(startRecognitionLoop, 1000);
 }
-async function markAttendance(userCode) {
+async function markAttendance(code) {
   try {
     const res = await fetch(
       `/attendance/mark-attendance?user=${window.capturePageData.isUser}`,
@@ -96,8 +96,8 @@ async function markAttendance(userCode) {
         body: JSON.stringify({
           sessionCode: window.capturePageData.sessionCode,
           type: window.capturePageData.type,
-          isUser: window.capturePageData.isUser,
-          userCode,
+          user: window.capturePageData.user,
+          code,
           dept: window.capturePageData.dept,
           subject: window.capturePageData.subject,
           key: window.capturePageData.key,

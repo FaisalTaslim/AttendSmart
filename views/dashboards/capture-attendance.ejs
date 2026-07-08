@@ -152,14 +152,14 @@
   <script src="/js/face-api/recognition/recognize.js"></script>
   <script>
     window.capturePageData = {
-      isUser: <%- JSON.stringify(isUser) %>,
-      type: <%- JSON.stringify(type) %>,
-      dept: <%- JSON.stringify(dept) %>,
-      sessionCode: <%- JSON.stringify(sessionCode) %>,
-      key: <%- JSON.stringify(key) %>,
-      subject: <%- JSON.stringify(subject) %>,
-      shift: <%- JSON.stringify(shift) %>
-    }
+    user: <%- JSON.stringify(typeof isUser === "undefined" ? null : user) %>,
+    type: <%- JSON.stringify(typeof type === "undefined" ? null : type) %>,
+    dept: <%- JSON.stringify(typeof dept === "undefined" ? null : dept) %>,
+    sessionCode: <%- JSON.stringify(typeof sessionCode === "undefined" ? null : sessionCode) %>,
+    key: <%- JSON.stringify(typeof key === "undefined" ? null : key) %>,
+    subject: <%- JSON.stringify(typeof subject === "undefined" ? null : subject) %>,
+    shift: <%- JSON.stringify(typeof shift === "undefined" ? null : shift) %>
+};
   </script>
 </body>
 
