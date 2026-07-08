@@ -1,10 +1,11 @@
 exports.display = (req, res) => {
+  console.log(req.session.user.role);
   const redirect = {
     admin: '/app/admin',
     "school-student": '/app/school-student',
     "college-student": '/app/college-student',
     corporate: '/app/employee/corporate',
-    teacher: '/app//employee/teacher',
+    teacher: '/app/employee/teacher',
   };
 
   let targetRoute;

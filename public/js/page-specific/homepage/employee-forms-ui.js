@@ -1,7 +1,7 @@
 const orgSelect3 = document.querySelector("#orgSelect3");
 const workPlaceSelect = document.querySelector("#workPlaceSelect");
 
-if (!orgSelect3 || !workPlaceSelect) {
+if (!orgSelect3 || !workPlaceSelect) { // This check is good, let's keep it.
     console.warn("[employee-forms-ui] Missing expected form elements; script disabled.");
 } else {
 

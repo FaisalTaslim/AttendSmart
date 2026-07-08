@@ -1,7 +1,4 @@
-// scanner.js
-
 const statusEl = document.getElementById("status");
-
 let isProcessing = false;
 
 async function onScanSuccess(decodedText) {
@@ -12,12 +9,10 @@ async function onScanSuccess(decodedText) {
 
   try {
     const qrData = JSON.parse(decodedText);
-    console.log("QR Data");
-    console.log(qrData);
 
     await html5QrCode.stop();
 
-    const res = await fetch(`/attendance//process-qr`, {
+    const res = await fetch(`/attendance/process-qr`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,15 +23,14 @@ async function onScanSuccess(decodedText) {
     });
 
     const data = await res.json();
-    console.log(data);
 
     if (data.success) {
       statusEl.innerText = "Attendance session joined successfully";
 
       const params = new URLSearchParams({
-        popupType: 'success',
+        popupType: "success",
         popupMessage: data.message,
-        isUser: data.isUser,
+        user: data.user,
         type: data.type,
         sessionCode: data.sessionCode,
         key: data.key,
@@ -59,8 +53,7 @@ async function onScanSuccess(decodedText) {
       );
     }
   } catch (err) {
-    console.error(err);
-    statusEl.innerText = "Server error";
+    statusEl.innerText = err.message;
     isProcessing = false;
 
     await html5QrCode.start(

@@ -26,226 +26,248 @@
 
 <body>
   <% if (popupMessage) { %>
-  <div id="popup" class="popup <%= popupType %> show">
-    <%= popupMessage %>
-  </div>
-  <% } %>
-  <header>
-    <div class="logo">
-      <h1 class="mobile-hidden gradient-text">AttendSmart</h1>
+    <div id="popup" class="popup <%= popupType %> show">
+      <%= popupMessage %>
     </div>
-
-    <nav class="nav-bar">
-      <a href="/" class="nav-links-property">Home</a>
-      <a href="/auth/logout" class="nav-links-property">Logout</a>
-      <a href="/guidebook" class="nav-links-property">GuideBook</a>
-    </nav>
-
-    <nav class="mobile-nav-container">
-      <div class="nav-select outer-group">
-        <select id="mobile-nav">
-          <option value="" disabled selected>-- Navigate --</option>
-          <option value="/">Home</option>
-          <option value="/auth/logout">Logout</option>
-          <option value="/guidebook">GuideBook</option>
-        </select>
-      </div>
-    </nav>
-  </header>
-  <main>
-    <section class="user-dashboard">
-      <div class="headings-and-status">
-        <div id="headings">
-          <h3>Employee Dashboard</h3>
-          <h2>
-            Manage classes, attendance, students, and reports in one place
-          </h2>
-          <p>
-            All teaching workflows are grouped into responsive cards for
-            faster daily operations.
-          </p>
+    <% } %>
+      <header>
+        <div class="logo">
+          <h1 class="mobile-hidden gradient-text">AttendSmart</h1>
         </div>
-        <div id="status">
-          <p>Setup: completed</p>
-          <button>Account info</button>
-        </div>
-      </div>
-      <div class="dashboard-navigation">
-        <section class="card">
-          <h3>Attendance</h3>
-          <p id="start-session">Start Session</p>
-          <p>Mark Attendance</p>
-          <p>Attendance Summary</p>
-          <p>Download Reports</p>
-        </section>
-        <section class="card">
-          <h3>Class Management</h3>
-          <p>Take Attendance</p>
-          <p>Edit Attendance Records</p>
-          <p>Manage Subjects</p>
-        </section>
-        <section class="card">
-          <h3>Student Performance</h3>
-          <p>Attendance Reports</p>
-          <p>Download Reports</p>
-        </section>
-        <section class="card">
-          <h3>Communication</h3>
-          <p>Post Notices</p>
-          <p>Respond to Support Requests</p>
-        </section>
-        <section class="card">
-          <h3>Manage Account</h3>
-          <p>Edit Profile</p>
-          <p>Change Password</p>
-          <p>Update Contact Information</p>
-        </section>
-      </div>
-      <% if (!isSetupDone) { %>
-      <div class="setup-uploads">
-        <h2>Complete the setup</h2>
-        <p>
-          Read the <a href="/app/guidebook#face-upload" class="link">guide</a> before you upload
-          the image
-        </p>
-        <div class="upload-container">
-          <div class="upload-card">
-            <form id="faceForm" enctype="multipart/form-data">
-              <input type="file" id="face" name="faceImage" accept="image/png, image/jpeg" multiple hidden>
 
-              <label for="face" class="upload-label">
-                <div class="upload-content">
-                  <div class="upload-icon"><i class="fa-solid fa-camera"></i></div>
-                  <p class="upload-title">Upload your clear face image</p>
-                  <p class="upload-subtitle">PNG or JPG • One face per image</p>
+        <nav class="nav-bar">
+          <a href="/" class="nav-links-property">Home</a>
+          <a href="/auth/logout" class="nav-links-property">Logout</a>
+          <a href="/guidebook" class="nav-links-property">GuideBook</a>
+        </nav>
+
+        <nav class="mobile-nav-container">
+          <div class="nav-select outer-group">
+            <select id="mobile-nav">
+              <option value="" disabled selected>-- Navigate --</option>
+              <option value="/">Home</option>
+              <option value="/auth/logout">Logout</option>
+              <option value="/guidebook">GuideBook</option>
+            </select>
+          </div>
+        </nav>
+      </header>
+      <main>
+        <section class="user-dashboard">
+          <div class="headings-and-status">
+            <div id="headings">
+              <h3>Employee Dashboard</h3>
+              <h2>
+                Manage classes, attendance, students, and reports in one place
+              </h2>
+              <p>
+                All teaching workflows are grouped into responsive cards for
+                faster daily operations.
+              </p>
+            </div>
+            <div id="status">
+              <p>Setup: completed</p>
+              <button>Account info</button>
+            </div>
+          </div>
+          <div class="dashboard-navigation">
+            <section class="card">
+              <h3>Attendance</h3>
+              <p id="start-session">Start Session</p>
+              <p>Mark Attendance</p>
+              <p>Attendance Summary</p>
+              <p>Download Reports</p>
+            </section>
+            <section class="card">
+              <h3>Class Management</h3>
+              <p>Take Attendance</p>
+              <p>Edit Attendance Records</p>
+              <p>Manage Subjects</p>
+            </section>
+            <section class="card">
+              <h3>Student Performance</h3>
+              <p>Attendance Reports</p>
+              <p>Download Reports</p>
+            </section>
+            <section class="card">
+              <h3>Communication</h3>
+              <p>Post Notices</p>
+              <p>Respond to Support Requests</p>
+            </section>
+            <section class="card">
+              <h3>Manage Account</h3>
+              <p>Edit Profile</p>
+              <p>Change Password</p>
+              <p>Update Contact Information</p>
+            </section>
+          </div>
+          <% if (!isSetupDone) { %>
+            <div class="setup-uploads">
+              <h2>Complete the setup</h2>
+              <p>
+                Read the <a href="/app/guidebook#face-upload" class="link">guide</a> before you upload
+                the image
+              </p>
+              <div class="upload-container">
+                <div class="upload-card">
+                  <form id="faceForm" enctype="multipart/form-data">
+                    <input type="file" id="face" name="faceImage" accept="image/png, image/jpeg" multiple hidden>
+
+                    <label for="face" class="upload-label">
+                      <div class="upload-content">
+                        <div class="upload-icon"><i class="fa-solid fa-camera"></i></div>
+                        <p class="upload-title">Upload your clear face image</p>
+                        <p class="upload-subtitle">PNG or JPG • One face per image</p>
+                      </div>
+                    </label>
+                  </form>
+
+                  <p class="tip">
+                    <b>Note:</b> maximum of 10 images will be processed, regardless of how much you upload.
+                  </p>
                 </div>
-              </label>
-            </form>
+              </div>
+            </div>
+            <%}%>
+        </section>
+        <section class="dashboard-contents">
+          <div class="overlay" id="overlay1">
+            <div class="start-session-form">
+              <div class="attendance-session-header">
+                <h3>Start Attendance Session</h3>
+                <i class="fa-solid fa-x" id="close-session"></i>
+              </div>
 
-            <p class="tip">
-              <b>Note:</b> maximum of 10 images will be processed, regardless of how much you upload.
-            </p>
+              <p class="attendance-session-info">Select the organization, departments and subject for which attendance
+                will be taken.</p>
+
+              <% if(workPlace ==='college' ) {%>
+                <form action="/attendance/start-student-session" method="POST">
+                  <fieldset>
+                    <legend>Organization details</legend>
+
+                    <div class="outer-group">
+                      <select name="org" id="orgSelect" required>
+                        <option value="" selected disabled>
+                          -- Select Organization --
+                        </option>
+                        <% organizations.filter(org=> org.type === "college").forEach(org => { %>
+                          <option value="<%= org.code %>">
+                            <%= org.org %> - <%= org.branch %>
+                          </option>
+                          <% }) %>
+                      </select>
+                    </div>
+                  </fieldset>
+                  <div class="outer-group">
+                    <label for="flood-department">Select Departments</label>
+                    <select name="dept" id="flood-department" required>
+                    </select>
+                  </div>
+                  <fieldset>
+                    <legend>Subject Details</legend>
+
+                    <div class="outer-group">
+                      <select name="majors" id="majorSelect1"></select>
+                      <select name="minors" id="minorSelect1"></select>
+                      <select name="optionals" id="optionalSelect1"></select>
+                    </div>
+                  </fieldset>
+                  <button>Submit</button>
+                </form>
+                <%} else {%>
+                  <form action="/attendance/start-student-session" method="POST">
+                    <fieldset>
+                      <legend>Organization details</legend>
+
+                      <div class="outer-group">
+                        <select name="org" id="orgSelect2" required>
+                          <option value="" selected disabled>
+                            -- Select Organization --
+                          </option>
+
+                          <% organizations.filter(org=> org.type === "school").forEach(org => { %>
+                            <option value="<%= org.code %>">
+                              <%= org.org %> - <%= org.branch %>
+                            </option>
+                            <% }) %>
+                        </select>
+                      </div>
+                    </fieldset>
+                    <div class="outer-group">
+                      <label for="flood-department">Select Classes</label>
+                      <select name="dept" id="flood-class" required>
+                      </select>
+                    </div>
+                    <fieldset>
+                      <legend>Subject Details</legend>
+
+                      <div class="outer-group">
+                        <select name="majors" id="MajorSelect2"></select>
+                        <select name="minors" id="MinorSelect2"></select>
+                        <select name="optionals" id="OptionalSelect2"></select>
+                      </div>
+                    </fieldset>
+                    <button>Submit</button>
+                  </form>
+                  <%}%>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer>
+        <div class="foot-content">
+          <div class="foot1">
+            <div class="useful-links">
+              <p><strong>Useful-links</strong></p>
+              <a href="#register" class="links foot-links" target="_blank">Register</a>
+              <a href="#support-forms" class="links foot-links" target="_blank">Support</a>
+              <a href="/dashboard" class="links foot-links" target="_blank">Dashboard</a>
+            </div>
+            <div class="legal">
+              <p><strong>Legal</strong></p>
+              <a href="#" class="links foot-links" target="_blank">Terms & conditions</a>
+              <a href="#" class="links foot-links" target="_blank">Privacy Policy</a>
+              <a href="#" class="links foot-links" target="_blank">Refund Policy</a>
+            </div>
+          </div>
+          <div class="foot2">
+            <div class="socials">
+              <p><strong>Socials</strong></p>
+              <a href="#" class="links foot-links" target="_blank">
+                <i class="fa-brands fa-instagram"></i> | @faisal_9542
+              </a>
+              <a href="#" class="links foot-links" target="_blank">
+                <i class="fa-brands fa-discord"></i> | @famaeoxiaa
+              </a>
+              <a href="#" class="links foot-links" target="_blank">
+                <i class="fa-brands fa-github"></i> | @FaisalTaslim
+              </a>
+            </div>
+            <div class="contacts">
+              <p><strong>Contacts</strong></p>
+              <p><i class="fa-solid fa-phone"></i> | +91 7449925137</p>
+              <p>
+                <i class="fa-solid fa-envelope"></i> | mailto:
+                faisaltaslim79@gmail.com
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-      <%}%>
-    </section>
-    <section class="dashboard-contents">
-      <div class="overlay" id="overlay1">
-        <div class="start-session-form">
-          <div class="attendance-session-header">
-            <h3>Start Attendance Session</h3>
-            <i class="fa-solid fa-x" id="close-session"></i>
-          </div>
+        <p class="copyright">&copy2026 AttendSmart. All Rights Reserved.</p>
+      </footer>
 
-          <p class="attendance-session-info">Select the organization, departments and subject for which attendance will be taken.</p>
-
-      <% if(workPlace === 'college') {%>
-      <form action="/attendance/start-student-session" method="POST">
-        <fieldset>
-          <legend>Organization details</legend>
-
-          <div class="outer-group">
-            <select name="org" id="orgSelect" required></select>
-          </div>
-        </fieldset>
-        <div class="outer-group">
-          <label for="flood-department">Select Departments</label>
-          <select name="dept" id="flood-department" required>
-          </select>
-        </div>
-        <fieldset>
-          <legend>Subject Details</legend>
-
-          <div class="outer-group">
-            <select name="majors" id="majorSelect1"></select>
-            <select name="minors" id="minorSelect1"></select>
-            <select name="optionals" id="optionalSelect1"></select>
-          </div>
-        </fieldset>
-        <button>Submit</button>
-      </form>
-      <%} else {%>
-      <form action="/attendance/start-student-session" method="POST">
-        <fieldset>
-          <legend>Organization details</legend>
-
-          <div class="outer-group">
-            <select name="org" id="orgSelect2" required></select>
-          </div>
-        </fieldset>
-        <div class="outer-group">
-          <label for="flood-department">Select Classes</label>
-          <select name="dept" id="flood-class" required>
-          </select>
-        </div>
-        <fieldset>
-          <legend>Subject Details</legend>
-
-          <div class="outer-group">
-            <select name="majors" id="MajorSelect2"></select>
-            <select name="minors" id="MinorSelect2"></select>
-            <select name="optionals" id="OptionalSelect2"></select>
-          </div>
-        </fieldset>
-        <button>Submit</button>
-      </form>
-      <%}%>
-        </div>
-      </div>
-    </section>
-  </main>
-  <footer>
-    <div class="foot-content">
-      <div class="foot1">
-        <div class="useful-links">
-          <p><strong>Useful-links</strong></p>
-          <a href="#register" class="links foot-links" target="_blank">Register</a>
-          <a href="#support-forms" class="links foot-links" target="_blank">Support</a>
-          <a href="/dashboard" class="links foot-links" target="_blank">Dashboard</a>
-        </div>
-        <div class="legal">
-          <p><strong>Legal</strong></p>
-          <a href="#" class="links foot-links" target="_blank">Terms & conditions</a>
-          <a href="#" class="links foot-links" target="_blank">Privacy Policy</a>
-          <a href="#" class="links foot-links" target="_blank">Refund Policy</a>
-        </div>
-      </div>
-      <div class="foot2">
-        <div class="socials">
-          <p><strong>Socials</strong></p>
-          <a href="#" class="links foot-links" target="_blank">
-            <i class="fa-brands fa-instagram"></i> | @faisal_9542
-          </a>
-          <a href="#" class="links foot-links" target="_blank">
-            <i class="fa-brands fa-discord"></i> | @famaeoxiaa
-          </a>
-          <a href="#" class="links foot-links" target="_blank">
-            <i class="fa-brands fa-github"></i> | @FaisalTaslim
-          </a>
-        </div>
-        <div class="contacts">
-          <p><strong>Contacts</strong></p>
-          <p><i class="fa-solid fa-phone"></i> | +91 7449925137</p>
-          <p>
-            <i class="fa-solid fa-envelope"></i> | mailto:
-            faisaltaslim79@gmail.com
-          </p>
-        </div>
-      </div>
-    </div>
-    <p class="copyright">&copy2026 AttendSmart. All Rights Reserved.</p>
-  </footer>
-
-  <script src="/js/global/UI/popup.js"></script>
-  <script type="module" src="/js/page-specific/homepage/college-forms-ui.js"></script>
-  <script src="/js/page-specific/dashboard/teacher-employee/school-forms-ui.js"></script>
-  <script src="/js/page-specific/dashboard/teacher-employee/display-student-session-ui.js"></script>
-  <script src="/js/global/UI/rearrange-footer.js"></script>
-    <script src="/js/face-api/face-api.min.js"></script>
-    <script src="/js/face-api/core/config.js"></script>
-    <script src="/js/face-api/core/load-models.js"></script>
-    <script src="/js/face-api/detection/register-face.js"></script>
+      <script src="/js/global/UI/popup.js"></script>
+      <script src="/js/global/UI/rearrange-footer.js"></script>
+      <script src="/js/face-api/face-api.min.js"></script>
+      <script src="/js/face-api/core/config.js"></script>
+      <script src="/js/face-api/core/load-models.js"></script>
+      <script src="/js/face-api/detection/register-face.js"></script>
+      <script src="/js/page-specific/dashboard/employee/display-student-session-ui.js"></script>
+      <script>
+        window.organizations = <%- JSON.stringify(organizations) %>
+      </script>
+      <script src="/js/page-specific/dashboard/employee/school-forms-ui.js"></script>
 </body>
 
 </html>

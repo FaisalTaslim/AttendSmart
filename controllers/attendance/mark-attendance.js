@@ -20,54 +20,88 @@ const { returnEmployeeSummary, returnStudentSummary, } = require('../../services
 const { updateEmployeeAttendanceHistory, updateStudentAttendanceHistory } = require('../../services/update/logs');
 
 
-function verifyRequest(req, activeSession, history, fetchedUser, summary) {
-  if (!validateFields(Object.values(req.body)) || !validateFields(Object.values(activeSession)) || !validateFields(Object.values(history)) || !validateFields(Object.values(summary))) {
-    throw new Error('Missing Required Data for Processing!');
+function verifyRequest(body, activeSession, history, fetchedUser, summary) {
+  if (body.user === 'employee') {
+    const verify = validateFields([
+      body.code,
+      body.sessionCode,
+      body.shift,
+      body.type,
+      body.user,
+    ]);
+
+    if (!verify) { throw new Error('Missing Required Data for Processing!'); }
+  }
+  else {
+    console.log(body);
+    const verify = validateFields([
+      body.code,
+      body.sessionCode,
+      body.dept,
+      body.subject,
+      body.type,
+      body.user,
+    ]);
+
+    if (!verify) { throw new Error('Missing Required Data for Processing!'); }
   }
 
-  if (req.user === 'employee' && (fetchedUser.shift !== activeSession.shift))
+  if ((!activeSession) || !history || !summary) {
+    throw new Error('Missing Documents for Processing!');
+  }
+
+  if (body.user === 'employee' && (fetchedUser?.shift !== activeSession.shift))
     throw new Error(`Employee doesn't belong to ${activeSession.shift} shift`);
 
   const index = returnIndex(history, fetchedUser?.code);
 
   if (index < 0) {
-    if (req.user === 'employee' && req.type === 'check-out') throw new Error('User Did not Check-in Earlier. Check-out forbidden!');
-    else throw new Error('User Did not scan QR code  before! Attendance forbidden!');
+    if (body.user === "employee") {
+      if (body.type === "check-out") {
+        throw new Error(
+          "User did not check-in earlier. Check-out forbidden!"
+        );
+      }
+    } else {
+      throw new Error(
+        "User did not scan QR code before! Attendance forbidden!"
+      );
+    }
   }
 
   return true;
 }
 
-async function processData(req) {
+async function processData(body) {
   let object = { fetchedUser: null, activeSession: null, history: null, summary: null };
   let state = { Model: null };
   let org, sessionCode;
 
   state.Model =
-    req.body.user === "employee"
-      ? resolveUserModel(req.body.user)
-      : resolveUserModel(req.body.type);
+    body.user === "employee"
+      ? resolveUserModel(body.user)
+      : resolveUserModel(body.type);
 
-  object.fetchedUser = await state.Model.findOne({ code: req.body.code });
-  org = object.fetchedUser.org;
-  sessionCode = req.body.sessionCode;
+  object.fetchedUser = await state.Model.findOne({ code: body.code });
+  org = object.fetchedUser?.org;
+  sessionCode = body.sessionCode;
 
   object.activeSession =
-    req.body.user === "employee"
+    body.user === "employee"
       ? await returnActiveEmployeeSession({ org, sessionCode })
       : await returnActiveStudentSession({ org, sessionCode });
 
   object.history =
-    req.body.user === 'employee'
+    body.user === 'employee'
       ? await returnEmployeeAttendanceHistory({ org, sessionCode })
-      : await returnStudentAttendanceHistory({ org, sessionCode, subject: req.body.subject, department: req.body.dept });
+      : await returnStudentAttendanceHistory({ org, sessionCode, subject: body.subject, department: body.dept });
 
   object.summary =
-    req.body.user === 'employee'
-      ? await returnEmployeeSummary({ org, code: req.body.code, shift: req.body.shift, month: getMonthKey() })
-      : await returnStudentSummary({ org, code: req.body.code, subject: req.body.subject, department: req.body.dept, month: getMonthKey() });
+    body.user === 'employee'
+      ? await returnEmployeeSummary({ org, code: body.code, shift: body.shift, month: getMonthKey() }, 'one')
+      : await returnStudentSummary({ org, code: body.code, subject: body.subject, department: body.dept, month: getMonthKey() }, 'one');
 
-  verifyRequest(req.body, object.activeSession, object.history, object.fetchedUser, object.summary);
+  verifyRequest(body, object.activeSession, object.history, object.fetchedUser, object.summary);
 
   return object;
 }
@@ -82,25 +116,27 @@ exports.request = async (req, res) => {
     object.data = await processData(req.body);
 
     const { sessionCode, type, user, code, dept, subject, key, shift } = req.body;
+
     const currentMinutes = timeToMinutes(
       fullTime().hours,
       fullTime().minutes,
     );
 
-    object.schedule = await returnSchedule({ org: object.fetchedUser.org })
+    object.schedule = await returnSchedule({ org: object.data.fetchedUser.org })
 
     const startMinutes = timeToMinutes(
       object.schedule?.
-        [fullweek()]
-        ?.[fullWeek()]?.[shift]?.check_in?.split(":")[0],
+        week
+        ?.[fullweek()]?.[shift]?.check_in?.split(":")[0],
 
       object.schedule?.
-        [fullweek()]
-        ?.[fullWeek()]?.[shift]?.check_in?.split(":")[1],
+        week
+        ?.[fullweek()]?.[shift]?.check_in?.split(":")[1],
     );
 
     const history = object.data.history;
     state.index = returnIndex(object.data.history, code);
+    console.log(user);
 
     if (user === 'employee') {
       if (type === "check-in") {
@@ -148,33 +184,16 @@ exports.request = async (req, res) => {
       }
     }
     else {
-      /**if (returnIndex(data.history, code) === -1) {
-        await updateStudenAttendanceHistory(
-          { org: data.fetchedUser?.org, sessionCode: sessionCode, subject: subject, department: dept },
-          {
-            history: {
-              code: code,
-              sessionKey: key,
-              name: data.fetchedUser?.name,
-              date: new Date(),
-              isMarked: false,
-            },
-          },
-          'push',
-          session
-        );
-      }**/
-
       const isMarked = history.history[state.index].isMarked;
 
       if (!isMarked) {
         await updateStudentSummary(
-          { org: object.data.fetchedUser.org, code: code, subject: subject, department: dept },
+          { org: object.data.fetchedUser.org, code: code, month: getMonthKey(), subject: subject, department: dept },
           { attended: 1 },
           'one',
           session
         );
-
+        
         await updateStudentAttendanceHistory(
           { org: object.data.fetchedUser.org, sessionCode: sessionCode, subject: subject, department: dept },
           {
@@ -183,6 +202,7 @@ exports.request = async (req, res) => {
           'set',
           session
         );
+
       } else {
         return res.status(400).json({
           success: false,

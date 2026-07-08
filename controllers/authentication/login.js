@@ -28,7 +28,7 @@ function processData(req) {
 }
 
 exports.request = async (req, res) => {
-  let state = { Model: null, authorize: null };
+  let state = { Model: null, authorize: null, employeeType: null };
   let object = { user: null, search: null, log: null, params: null };
   const { code, role, password } = req.body;
 
@@ -37,6 +37,10 @@ exports.request = async (req, res) => {
     state.Model = resolveUserModel(role);
     object.search = processData(req);
     object.user = await state.Model.findOne(object.search);
+    
+    if(role === 'employee') {
+      state.employeeType = (object.user?.workPlace === 'school' || object.user?.workPlace === 'college') ? 'teacher' : 'corporate';
+    }
 
     if (!object.user) throw new Error('User not Found');
 
@@ -68,6 +72,7 @@ exports.request = async (req, res) => {
       code,
       name: role === 'admin' ? state.authorize.name : object.user.name,
       role,
+      employeeType: state.employeeType,
     };
 
     await new Promise((resolve, reject) => {

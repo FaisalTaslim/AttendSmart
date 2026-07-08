@@ -183,9 +183,16 @@
             <fieldset>
               <legend>Organization details</legend>
 
-              <div class="outer-group">
-                <select name="org" id="orgSelect" required></select>
-              </div>
+              <select name="org" id="orgSelect" required>
+                <option value="" selected disabled>
+                  -- Select Organization --
+                </option>
+                <% organizations.filter(org=> org.type === "college").forEach(org => { %>
+                <option value="<%= org.code %>">
+                  <%= org.org %> - <%= org.branch %>
+                </option>
+                <% }) %>
+              </select>
             </fieldset>
 
             <fieldset>
@@ -244,9 +251,17 @@
             <fieldset>
               <legend>Organization details</legend>
 
-              <div class="outer-group">
-                <select name="org" id="orgSelect2" required></select>
-              </div>
+              <select name="org" id="orgSelect2" required>
+                <option value="" selected disabled>
+                  -- Select Organization --
+                </option>
+
+                <% organizations.filter(org=> org.type === "school").forEach(org => { %>
+                <option value="<%= org.code %>">
+                  <%= org.org %> - <%= org.branch %>
+                </option>
+                <% }) %>
+              </select>
             </fieldset>
 
             <fieldset>
@@ -312,9 +327,17 @@
             <fieldset>
               <legend>Organization details</legend>
 
-              <div class="outer-group">
-                <select name="org" id="orgSelect3" required></select>
-              </div>
+              <select name="org" id="orgSelect3" required>
+                <option value="" selected disabled>
+                  -- Select Organization --
+                </option>
+
+                <% organizations.forEach(org => { %>
+                <option value="<%= org.code %>">
+                  <%= org.org %> - <%= org.branch %>
+                </option>
+                <% }) %>
+              </select>
             </fieldset>
 
             <fieldset>
@@ -690,9 +713,10 @@
   <script src="/js/global/UI/rearrange-footer.js"></script>
   <script src="/js/page-specific/homepage/functions.js"></script>
   <script src="/js/global/UI/popup.js"></script>
-  <script type="module" src="/js/page-specific/homepage/college-forms-ui.js"></script>
-  <script type="module" src="/js/page-specific/homepage/school-forms-ui.js"></script>
-  <script type="module" src="/js/page-specific/homepage/employee-forms-ui.js"></script>
+  <script>
+    window.organizations = <%- JSON.stringify(organizations) %>;
+  </script>
+  <script src="/js/page-specific/homepage/registration-ui.js"></script>
 </body>
 
 </html>

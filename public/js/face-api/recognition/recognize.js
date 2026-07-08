@@ -27,9 +27,10 @@ function showMessage(text, type = "success", duration = 5000) {
 async function initializeRecognition() {
   await window.faceModelsReady;
   const url =
-    window.capturePageData.isUser === "student"
+    window.capturePageData.user === "student"
       ? `/fetch/face-data?user=student&type=${window.capturePageData.type || ""}&dept=${window.capturePageData.dept || ""}`
       : `/fetch/face-data?user=employee`;
+
   const res = await fetch(url);
   const data = await res.json();
   if (!data.success) {
@@ -72,14 +73,6 @@ async function startRecognitionLoop() {
       await markAttendance(match.label);
       return;
     }
-
-    if (!unknownFaceDetected) {
-      unknownFaceDetected = true;
-      showMessage(
-        "Face not recognized. User is not registered in the system.",
-        "error",
-      );
-    }
   } else {
     unknownFaceDetected = false;
   }
@@ -88,27 +81,24 @@ async function startRecognitionLoop() {
 }
 async function markAttendance(code) {
   try {
-    const res = await fetch(
-      `/attendance/mark-attendance?user=${window.capturePageData.isUser}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sessionCode: window.capturePageData.sessionCode,
-          type: window.capturePageData.type,
-          user: window.capturePageData.user,
-          code,
-          dept: window.capturePageData.dept,
-          subject: window.capturePageData.subject,
-          key: window.capturePageData.key,
-          shift: window.capturePageData.shift,
-        }),
-      },
-    );
+    const res = await fetch(`/attendance/mark-attendance`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        sessionCode: window.capturePageData.sessionCode,
+        type: window.capturePageData.type,
+        user: window.capturePageData.user,
+        code,
+        dept: window.capturePageData.dept,
+        subject: window.capturePageData.subject,
+        key: window.capturePageData.key,
+        shift: window.capturePageData.shift,
+      }),
+    });
     const data = await res.json();
     if (data.success) {
       attendanceMarked = true;
-      showMessage(`Attendance marked successfully for ${userCode}!`, "success");
+      showMessage(`Attendance marked successfully for ${code}!`, "success");
       stopCamera();
     } else {
       attendanceInProgress = false;

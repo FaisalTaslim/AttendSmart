@@ -13,6 +13,7 @@ exports.request = async (req, res) => {
         branch: 1,
         code: 1,
         subjects: 1,
+        type: 1,
         _id: 0,
       },
     );

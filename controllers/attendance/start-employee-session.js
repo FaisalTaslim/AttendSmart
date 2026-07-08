@@ -120,6 +120,7 @@ exports.request = async (req, res) => {
       const summary = await updateEmployeeSummary(
         { org: state.org, shift: shift, month: getMonthKey() },
         { total: 1 },
+        'many',
         session,
       );
       
@@ -159,6 +160,9 @@ exports.request = async (req, res) => {
     if (session.inTransaction()) {
         await session.abortTransaction();
     }
+
+    console.error(err);
+    console.error(err.stack);
 
     const params = new URLSearchParams({
       "popupType": 'error',

@@ -7,12 +7,12 @@ const activeStudentSession = new Schema(
       type: String,
       required: true,
     },
+    code: { type: String, required: true },
     sessionCode: {
       type: String,
       required: true,
       unique: true,
     },
-    code: { type: String, required: true },
     instigator: { type: String, required: true },
     subject: {
       type: String,

@@ -23,144 +23,144 @@
 
 <body>
   <% if (popupMessage) { %>
-  <div id="popup" class="popup <%= popupType %> show">
-    <%= popupMessage %>
-  </div>
-  <% } %>
-  <div id="message" class="message"></div>
-  <header>
-    <div class="logo">
-      <h1 class="mobile-hidden">AttendSmart</h1>
+    <div id="popup" class="popup <%= popupType %> show">
+      <%= popupMessage %>
     </div>
-
-    <nav class="nav-bar">
-      <a href="/" class="nav-links-property">Home</a>
-      <a href="/guidebook" class="nav-links-property">GuideBook</a>
-      <a href="/logout" class="nav-links-property">Logout</a>
-    </nav>
-
-    <nav class="mobile-nav-container">
-      <div class="nav-select">
-        <select id="mobile-nav">
-          <option value="" disabled selected>-- Navigate --</option>
-          <option value="/">Home</option>
-          <option value="/guidebook">GuideBook</option>
-          <option value="/auth/logout">Logout</option>
-        </select>
-      </div>
-    </nav>
-  </header>
-
-  <main>
-    <section class="user-dashboard capture-dashboard">
-      <div class="headings-and-status">
-        <div id="headings">
-          <div class="heading-texts">
-            <h3>Attendance capture</h3>
-            <h2>Live classroom capture, tuned for fast attendance checks</h2>
-            <p>
-              Start the camera, keep the frame steady, and watch recognition
-              metrics update in real time.
-            </p>
-          </div>
-          <div id="status" class="capture-status-stack" aria-live="polite">
-            <p class="status-chip status-chip-live">
-              <span id="status-dot" class="dot dot-off" aria-hidden="true"></span>
-              <span id="camera-status-text">Camera idle</span>
-            </p>
-            <p class="status-chip status-chip-time">
-              <i class="fa-regular fa-clock" aria-hidden="true"></i>
-              <span id="live-time">--:--:--</span>
-            </p>
-          </div>
+    <% } %>
+      <div id="message" class="message"></div>
+      <header>
+        <div class="logo">
+          <h1 class="mobile-hidden">AttendSmart</h1>
         </div>
-      </div>
 
-      <div class="capture-workbench">
-        <article class="capture-panel">
-          <div class="panel-head">
-            <div>
-              <p class="panel-kicker">Camera feed</p>
-              <h3>Live camera preview</h3>
-            </div>
-            <p class="panel-note">Keep faces centered and evenly lit</p>
+        <nav class="nav-bar">
+          <a href="/" class="nav-links-property">Home</a>
+          <a href="/guidebook" class="nav-links-property">GuideBook</a>
+          <a href="/logout" class="nav-links-property">Logout</a>
+        </nav>
+
+        <nav class="mobile-nav-container">
+          <div class="nav-select">
+            <select id="mobile-nav">
+              <option value="" disabled selected>-- Navigate --</option>
+              <option value="/">Home</option>
+              <option value="/guidebook">GuideBook</option>
+              <option value="/auth/logout">Logout</option>
+            </select>
           </div>
+        </nav>
+      </header>
 
-          <div class="video-stage">
-            <video id="live-camera" autoplay muted playsinline></video>
-            <div class="video-overlay" aria-hidden="true">
-              <div class="scan-frame"></div>
-              <p id="video-hint">Click "Start Camera" to begin preview.</p>
+      <main>
+        <section class="user-dashboard capture-dashboard">
+          <div class="headings-and-status">
+            <div id="headings">
+              <div class="heading-texts">
+                <h3>Attendance capture</h3>
+                <h2>Live classroom capture, tuned for fast attendance checks</h2>
+                <p>
+                  Start the camera, keep the frame steady, and watch recognition
+                  metrics update in real time.
+                </p>
+              </div>
+              <div id="status" class="capture-status-stack" aria-live="polite">
+                <p class="status-chip status-chip-live">
+                  <span id="status-dot" class="dot dot-off" aria-hidden="true"></span>
+                  <span id="camera-status-text">Camera idle</span>
+                </p>
+                <p class="status-chip status-chip-time">
+                  <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                  <span id="live-time">--:--:--</span>
+                </p>
+              </div>
             </div>
           </div>
 
-          <div class="camera-control-buttons">
-            <button id="start-camera-btn" type="button" class="btn btn-primary">
-              <i class="fa-solid fa-video"></i> Start Camera
-            </button>
-            <button id="stop-camera-btn" type="button" class="btn btn-secondary" disabled>
-              <i class="fa-solid fa-video-slash"></i> Stop Camera
-            </button>
+          <div class="capture-workbench">
+            <article class="capture-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="panel-kicker">Camera feed</p>
+                  <h3>Live camera preview</h3>
+                </div>
+                <p class="panel-note">Keep faces centered and evenly lit</p>
+              </div>
+
+              <div class="video-stage">
+                <video id="live-camera" autoplay muted playsinline></video>
+                <div class="video-overlay" aria-hidden="true">
+                  <div class="scan-frame"></div>
+                  <p id="video-hint">Click "Start Camera" to begin preview.</p>
+                </div>
+              </div>
+
+              <div class="camera-control-buttons">
+                <button id="start-camera-btn" type="button" class="btn btn-primary">
+                  <i class="fa-solid fa-video"></i> Start Camera
+                </button>
+                <button id="stop-camera-btn" type="button" class="btn btn-secondary" disabled>
+                  <i class="fa-solid fa-video-slash"></i> Stop Camera
+                </button>
+              </div>
+
+              <div class="camera-capture-tips">
+                <p>
+                  <i class="fa-solid fa-circle-info"></i> Avoid crowding too many
+                  faces in one frame.
+                </p>
+                <p>
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> Strong, even
+                  lighting improves recognition.
+                </p>
+              </div>
+            </article>
           </div>
+        </section>
+        <section class="dashboard-contents"></section>
+      </main>
 
-          <div class="camera-capture-tips">
-            <p>
-              <i class="fa-solid fa-circle-info"></i> Avoid crowding too many
-              faces in one frame.
-            </p>
-            <p>
-              <i class="fa-solid fa-wand-magic-sparkles"></i> Strong, even
-              lighting improves recognition.
-            </p>
+      <footer>
+        <div class="foot-content">
+          <div class="foot1">
+            <div class="useful-links">
+              <p><strong>Useful-links</strong></p>
+              <a href="/dashboard/employee/teacher" class="links foot-links">Teacher Dashboard</a>
+              <a href="/guidebook" class="links foot-links">GuideBook</a>
+            </div>
+            <div class="legal">
+              <p><strong>Legal</strong></p>
+              <a href="#" class="links foot-links">Terms & conditions</a>
+              <a href="#" class="links foot-links">Privacy Policy</a>
+            </div>
           </div>
-        </article>
-      </div>
-    </section>
-    <section class="dashboard-contents"></section>
-  </main>
+          <div class="foot2">
+            <div class="contacts">
+              <p><strong>Capture Tips</strong></p>
+              <p>Use front camera only when rear camera framing is unstable.</p>
+              <p>Check unknown faces before final attendance submit.</p>
+            </div>
+          </div>
+        </div>
+      </footer>
 
-  <footer>
-    <div class="foot-content">
-      <div class="foot1">
-        <div class="useful-links">
-          <p><strong>Useful-links</strong></p>
-          <a href="/dashboard/employee/teacher" class="links foot-links">Teacher Dashboard</a>
-          <a href="/guidebook" class="links foot-links">GuideBook</a>
-        </div>
-        <div class="legal">
-          <p><strong>Legal</strong></p>
-          <a href="#" class="links foot-links">Terms & conditions</a>
-          <a href="#" class="links foot-links">Privacy Policy</a>
-        </div>
-      </div>
-      <div class="foot2">
-        <div class="contacts">
-          <p><strong>Capture Tips</strong></p>
-          <p>Use front camera only when rear camera framing is unstable.</p>
-          <p>Check unknown faces before final attendance submit.</p>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <script src="/js/global/UI/popup.js"></script>
-  <script src="/js/page-specific/capture-attendance.js"></script>
-  <script src="/js/global/UI/rearrange-footer.js"></script>
-  <script src="/js/face-api/core/config.js"></script>
-  <script src="/js/face-api/face-api.min.js"></script>
-  <script src="/js/face-api/core/load-models.js"></script>
-  <script src="/js/face-api/recognition/recognize.js"></script>
-  <script>
-    window.capturePageData = {
-    user: <%- JSON.stringify(typeof isUser === "undefined" ? null : user) %>,
-    type: <%- JSON.stringify(typeof type === "undefined" ? null : type) %>,
-    dept: <%- JSON.stringify(typeof dept === "undefined" ? null : dept) %>,
-    sessionCode: <%- JSON.stringify(typeof sessionCode === "undefined" ? null : sessionCode) %>,
-    key: <%- JSON.stringify(typeof key === "undefined" ? null : key) %>,
-    subject: <%- JSON.stringify(typeof subject === "undefined" ? null : subject) %>,
-    shift: <%- JSON.stringify(typeof shift === "undefined" ? null : shift) %>
-};
-  </script>
+      <script src="/js/global/UI/popup.js"></script>
+      <script src="/js/page-specific/capture-attendance.js"></script>
+      <script src="/js/global/UI/rearrange-footer.js"></script>
+      <script src="/js/face-api/core/config.js"></script>
+      <script src="/js/face-api/face-api.min.js"></script>
+      <script src="/js/face-api/core/load-models.js"></script>
+      <script>
+        window.capturePageData = {
+          user: <%- JSON.stringify(typeof user === "undefined" ? null : user) %>,
+          type: <%- JSON.stringify(typeof type === "undefined" ? null : type) %>,
+          dept: <%- JSON.stringify(typeof dept === "undefined" ? null : dept) %>,
+          sessionCode: <%- JSON.stringify(typeof sessionCode === "undefined" ? null : sessionCode) %>,
+          key: <%- JSON.stringify(typeof key === "undefined" ? null : key) %>,
+          subject: <%- JSON.stringify(typeof subject === "undefined" ? null : subject) %>,
+          shift: <%- JSON.stringify(typeof shift === "undefined" ? null : shift) %>
+        };
+      </script>
+      <script src="/js/face-api/recognition/recognize.js?v=17"></script>
 </body>
 
 </html>
