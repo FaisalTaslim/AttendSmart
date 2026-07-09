@@ -101,6 +101,13 @@ async function processData(body) {
       ? await returnEmployeeSummary({ org, code: body.code, shift: body.shift, month: getMonthKey() }, 'one')
       : await returnStudentSummary({ org, code: body.code, subject: body.subject, department: body.dept, month: getMonthKey() }, 'one');
 
+  console.log({
+    fetchedUser: !!object.fetchedUser,
+    activeSession: !!object.activeSession,
+    history: !!object.history,
+    summary: !!object.summary,
+  });
+
   verifyRequest(body, object.activeSession, object.history, object.fetchedUser, object.summary);
 
   return object;
@@ -193,7 +200,7 @@ exports.request = async (req, res) => {
           'one',
           session
         );
-        
+
         await updateStudentAttendanceHistory(
           { org: object.data.fetchedUser.org, sessionCode: sessionCode, subject: subject, department: dept },
           {

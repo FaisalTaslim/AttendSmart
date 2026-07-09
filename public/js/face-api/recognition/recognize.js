@@ -25,6 +25,7 @@ function showMessage(text, type = "success", duration = 5000) {
 }
 
 async function initializeRecognition() {
+  alert('hitting initialize recognition');
   await window.faceModelsReady;
   const url =
     window.capturePageData.user === "student"
@@ -48,12 +49,15 @@ async function initializeRecognition() {
 }
 
 async function startRecognitionLoop() {
+  alert('starting recognition loop');
   if (attendanceMarked || attendanceInProgress) return;
 
   const detections = await faceapi
     .detectAllFaces(video)
     .withFaceLandmarks()
     .withFaceDescriptors();
+
+  alert(`Faces detected: ${detections.length}`);
 
   if (detections.length > 1) {
     showMessage(
@@ -66,6 +70,8 @@ async function startRecognitionLoop() {
 
   if (detections.length === 1) {
     const match = faceMatcher.findBestMatch(detections[0].descriptor);
+    alert(`Matched: ${match.label}`);
+    alert(`Distance: ${match.distance}`);
 
     if (match.label !== "unknown") {
       attendanceInProgress = true;
@@ -80,6 +86,7 @@ async function startRecognitionLoop() {
   setTimeout(startRecognitionLoop, 1000);
 }
 async function markAttendance(code) {
+  alert('hitting mark attendance route');
   try {
     const res = await fetch(`/attendance/mark-attendance`, {
       method: "POST",
@@ -96,6 +103,7 @@ async function markAttendance(code) {
       }),
     });
     const data = await res.json();
+    alert('data', data);
     if (data.success) {
       attendanceMarked = true;
       showMessage(`Attendance marked successfully for ${code}!`, "success");
