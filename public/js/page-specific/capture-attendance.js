@@ -1,4 +1,6 @@
 const video = document.getElementById("live-camera");
+const canvas = document.getElementById("face-canvas");
+const ctx = canvas.getContext("2d");
 
 const startBtn = document.getElementById("start-camera-btn");
 const stopBtn = document.getElementById("stop-camera-btn");
@@ -30,6 +32,16 @@ async function startCamera() {
     video.playsInline = true;
 
     await video.play();
+    
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    faceapi.matchDimensions(canvas, {
+      width: video.videoWidth,
+      height: video.videoHeight,
+    });
+
+    // ---------------------
 
     statusText.textContent = "Camera active";
     statusDot.classList.remove("dot-off");
@@ -43,19 +55,7 @@ async function startCamera() {
 
     initializeRecognition();
   } catch (err) {
-    console.error(err);
-
-    if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
-      stream = null;
-    }
-
-    video.srcObject = null;
-    statusText.textContent = "Camera access denied";
-    videoHint.textContent = "Unable to access camera";
-    statusDot.classList.add("dot-off");
-    startBtn.disabled = false;
-    stopBtn.disabled = true;
+    throw err;
   }
 }
 

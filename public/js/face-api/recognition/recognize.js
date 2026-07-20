@@ -1,7 +1,7 @@
 let faceMatcher;
 let attendanceMarked = false;
 let attendanceInProgress = false;
-let unknownFaceDetected = false;
+
 const faceModelsReady = window.faceModelsReady || Promise.resolve();
 window.faceModelsReady = faceModelsReady;
 
@@ -24,9 +24,16 @@ function showMessage(text, type = "success", duration = 5000) {
   }, duration);
 }
 
+// Returns true while the camera stream is actually live, so the
+// recognition loop can stop cleanly once the user hits "Stop Camera".
+function isCameraActive() {
+  return Boolean(video && video.srcObject && !video.paused);
+}
+
 async function initializeRecognition() {
   alert('hitting initialize recognition');
   await window.faceModelsReady;
+
   const url =
     window.capturePageData.user === "student"
       ? `/fetch/face-data?user=student&type=${window.capturePageData.type || ""}&dept=${window.capturePageData.dept || ""}`
@@ -34,16 +41,19 @@ async function initializeRecognition() {
 
   const res = await fetch(url);
   const data = await res.json();
+
   if (!data.success) {
     showMessage(data.message || "Failed to load face data.", "error");
     return;
   }
+
   const labeledDescriptors = data.users.map((user) => {
     return new faceapi.LabeledFaceDescriptors(
       user.code,
       user.descriptors.map((descriptor) => new Float32Array(descriptor)),
     );
   });
+
   faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.5);
   startRecognitionLoop();
 }
@@ -51,6 +61,7 @@ async function initializeRecognition() {
 async function startRecognitionLoop() {
   alert('starting recognition loop');
   if (attendanceMarked || attendanceInProgress) return;
+  if (!isCameraActive()) return;
 
   const detections = await faceapi
     .detectAllFaces(video)
@@ -58,6 +69,32 @@ async function startRecognitionLoop() {
     .withFaceDescriptors();
 
   alert(`Faces detected: ${detections.length}`);
+
+  const resized = faceapi.resizeResults(detections, {
+    width: video.videoWidth,
+    height: video.videoHeight,
+  });
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw a box + label for every detected face in this pass.
+  resized.forEach((detection) => {
+    const box = detection.detection.box;
+    const match = faceMatcher.findBestMatch(detection.descriptor);
+    const color = match.label === "unknown" ? "#ef4444" : "#22c55e";
+
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = color;
+    ctx.strokeRect(box.x, box.y, box.width, box.height);
+
+    ctx.font = "16px Inter";
+    ctx.fillStyle = color;
+    ctx.fillText(
+      match.label === "unknown" ? "Unknown" : match.label,
+      box.x,
+      box.y - 10,
+    );
+  });
 
   if (detections.length > 1) {
     showMessage(
@@ -75,16 +112,14 @@ async function startRecognitionLoop() {
 
     if (match.label !== "unknown") {
       attendanceInProgress = true;
-      unknownFaceDetected = false;
       await markAttendance(match.label);
       return;
     }
-  } else {
-    unknownFaceDetected = false;
   }
 
   setTimeout(startRecognitionLoop, 1000);
 }
+
 async function markAttendance(code) {
   alert('hitting mark attendance route');
   try {
@@ -102,8 +137,10 @@ async function markAttendance(code) {
         shift: window.capturePageData.shift,
       }),
     });
+
     const data = await res.json();
-    alert('data', data);
+    alert(`data: ${JSON.stringify(data)}`);
+
     if (data.success) {
       attendanceMarked = true;
       showMessage(`Attendance marked successfully for ${code}!`, "success");
@@ -118,13 +155,9 @@ async function markAttendance(code) {
   }
 }
 
-faceModelsReady
-  .then(() => {
-    initializeRecognition();
-  })
-  .catch((err) => {
-    showMessage(
-      "Face recognition models failed to load. Please refresh.",
-      "error",
-    );
-  });
+faceModelsReady.then(initializeRecognition).catch((err) => {
+  showMessage(
+    "Face recognition models failed to load. Please refresh.",
+    "error",
+  );
+});
