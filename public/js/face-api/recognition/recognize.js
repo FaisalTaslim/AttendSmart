@@ -97,10 +97,11 @@ async function startRecognitionLoop() {
   });
 
   if (detections.length > 1) {
-    showMessage(
-      "Multiple faces detected. Please keep only one face in the frame.",
-      "warning",
-    );
+    // showMessage(
+    //   "Multiple faces detected. Please keep only one face in the frame.",
+    //   "warning",
+    // );
+    alert("Cannot proceed. Multiple Faces detected. Keep one face at a time.")
     stopCamera();
     return;
   }
@@ -143,11 +144,15 @@ async function markAttendance(code) {
 
     if (data.success) {
       attendanceMarked = true;
-      showMessage(`Attendance marked successfully for ${code}!`, "success");
+      // showMessage(`Attendance marked successfully for ${code}!`, "success");
+      await new Promise(resolve => setTimeout(resolve, 10000));
+
       stopCamera();
+      alert(`Attendance marked successfully for ${code}!`);
     } else {
       attendanceInProgress = false;
-      showMessage(data.message || "Failed to mark attendance.", "error");
+      // showMessage(data.message || "Failed to mark attendance.", "error");
+      alert(data.message || "Failed to mark attendance.");
     }
   } catch (err) {
     attendanceInProgress = false;

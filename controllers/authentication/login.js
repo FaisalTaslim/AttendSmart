@@ -87,10 +87,10 @@ exports.request = async (req, res) => {
   } catch (err) {
     object.log = {
       type: 'failed',
-      org: object.user?.org ?? null,
+      org: object.user?.org ?? 'null',
       id: code,
-      name: object.user?.name ?? null,
-      role: role ?? null,
+      name: object.user?.name ?? 'null',
+      role: role ?? 'null',
       message: err.message ?? 'Login failed',
     };
 
